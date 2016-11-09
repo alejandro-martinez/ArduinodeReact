@@ -1,7 +1,12 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
+
+# docs
+server/out/*
+
 # dependencies
 node_modules
+server/bower_components
 
 # testing
 coverage

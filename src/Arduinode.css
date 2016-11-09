@@ -1,0 +1,933 @@
+html,
+body,
+div,
+span,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a,
+strike,
+center,
+ul,
+li,
+form,
+label,
+table,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+header,
+menu,
+nav,
+mark{
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+a {
+    cursor: pointer;
+}
+div.left {
+    float: left;
+    width: 100%;
+    text-align: left;
+}
+html {
+    height: 100%;
+}
+body {
+    line-height: 1;
+    font-family: Arial;
+    overflow-x: hidden;
+    padding: 50px 10px !important;
+	font-size:18px;
+}
+ul {
+    list-style: none;
+}
+ul.inline {
+	width:100%;
+	display:inline-block;
+}
+ul.inline li {
+	width:40% !important;
+	float:left;
+	margin-right:10px;
+}
+ul.inline li select {
+	width:100%;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+}
+/*FIN RESET*/
+#content {
+    padding: 19px 10px;
+}
+#all {
+	position:absolute;
+	top:0;
+	left:0;
+	width:100%;
+}
+th,
+td {
+    padding: 4px;
+    text-align: left;
+    border: 1px solid black;
+}
+label {
+    padding: 10px 0;
+		font-weight:bold;
+}
+input[type="text"],
+textarea,
+select {
+    margin-top: 5px;
+    border-radius: 2px;
+    padding: 3px;
+}
+.simple-form {} .simple-form .ng-invalid {
+    border: 1px solid red;
+}
+.simple-form label {
+    display: block;
+}
+.simple-form input,
+textarea {} .page ul {
+    margin: 0 auto;
+}
+.page ul li {
+    list-style: none
+}
+.page ul:first-child li a {
+    background: #039e74;
+    color: #fff;
+    padding: 15px;
+    margin-bottom: 6px;
+    border-radius: 3px;
+    display: block;
+    border: 1px solid #fff;
+    text-align: center;
+}
+/*GENERAL*/
+
+ul.actions li {
+    float: left;
+    margin-right: 10px;
+}
+ul.actionsPopup {
+    float: left;
+    bottom: -10px;
+    right: 0px;
+    position: relative;
+}
+.ngdialog ul
+{
+    float:none;
+}
+/*CasaCtrl HOME*/
+
+button,
+.button {
+    font-size: 1em;
+    background: #333;
+    color: #fff;
+    display: block;
+    border-radius: 5px;
+    font-weight: bold;
+    padding: 13px;
+}
+#actionsPage {
+    text-align: right;
+    margin-top: 20px;
+}
+.inlineButtons {
+    width: 100%;
+    overflow: hidden;
+}
+.inlineButtons li {
+    float: left;
+    text-align: right;
+    margin-right: 10px;
+}
+#actions button,
+ul.inlineButtons .button {
+    display: inline-block;
+}
+#img_div {
+    text-align: center;
+}
+/*CasaCtrl HOME*/
+
+/*DISPOSITIVOS*/
+#listaDispositivos tr {
+    position: relative;
+}
+.ngdialog-buttons a.button
+{
+    width:40%;
+    float:left;
+    margin-right:10px;
+}
+/*SPRITE ICONS*/
+.sprite {
+    background-image: url('sprite.png');
+    background-repeat: no-repeat;
+    display: block !important;
+}
+
+.sprite.back {
+    width: 32px;
+    height: 32px;
+    background-position: 0px -3px;
+		position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.sprite.home {
+    width: 29px;
+    height: 30px;
+    background-position: -42px -1px;
+}
+
+.sprite.duplicate {
+    width: 30px;
+    height: 32px;
+    background-position: -45px -43px;
+		position: absolute;
+    right: 5px;
+    top: 9px;
+}
+
+.sprite.clockpicker {
+    width: 12px;
+    height: 12px;
+     background-position: -4px -39px;
+}
+
+.sprite.refresh {
+    width: 30px;
+    height: 30px;
+    background-position: -106px -5px;
+}
+
+span.sprite {
+    width: 25px;
+    height: 28px;
+}
+
+.sprite.luz0 {
+	background-position: -167px 1px;
+}
+
+.sprite.luz1 {
+    background-position: -139px -1px;
+}
+.sprite.relojarena {
+    background-position: -109px -3px;
+}
+
+.sprite.activa1 {
+	background-position: -107px -41px;
+}
+
+.sprite.activa0 {
+    background-position: -82px -41px;
+}
+
+.sprite.preferencias {
+    width:32px;
+    height: 32px;
+    background-position: -158px -41px;
+}
+/* ABM Dispositivos */
+/*Estados salidas*/
+input.clockpicker.estados
+{
+
+	border: 0;
+    margin: 0 auto;
+    text-align: center;
+
+	width: 29px;
+
+	position: fixed;
+    border: 1px solid;
+    /* border-radius: 100%; */
+    background-color: #fff;
+    z-index: 10000;
+    height: 28px;
+}
+ul#estados {
+    margin-top: 41px;
+    text-align: left;
+}
+a.sprite.back
+a.sprite.home,
+a.sprite.refresh {
+    position: absolute;
+    top: 11px;
+    left:0;
+}
+a.back {left:10px;}
+a.home
+{
+	position:absolute;
+    right:10px;
+    top:10px;
+}
+.refresh {
+    left: 27%;
+    position: fixed;
+    display: block;
+    top: 0;
+    height: 50px;
+    background: none;
+    z-index: 99999;
+    width: 50%;
+}
+.switch {
+    position: relative;
+    display: block;
+    vertical-align: top;
+    width: 100px;
+    height: 30px;
+    padding: 3px;
+    background: linear-gradient(to bottom, #eeeeee, #FFFFFF 25px);
+    background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF 25px);
+    border-radius: 18px;
+    box-shadow: inset 0 -1px white, inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+}
+.switch-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+}
+.switch-label {
+    position: relative;
+    display: block;
+    height: inherit;
+    font-size: 10px;
+    text-transform: uppercase;
+    background: #eceeef;
+    border-radius: inherit;
+    /* box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 0 2px rgba(0, 0, 0, 0.15); */
+}
+.switch-label:before,
+.switch-label:after {
+    position: absolute;
+    top: 50%;
+    margin-top: -.5em;
+    line-height: 1;
+}
+.switch-label:before {
+    content: attr(data-off);
+    right: 11px;
+    color: #aaaaaa;
+    text-shadow: 0 1px rgba(255, 255, 255, 0.5);
+}
+.switch-label:after {
+    content: attr(data-on);
+    left: 11px;
+    color: #FFFFFF;
+    text-shadow: 0 1px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+}
+.switch-input.prendida ~ .switch-label {
+    background: #E1B42B;
+    /* box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(0, 0, 0, 0.2); */
+}
+.temporizada:after
+{
+    font-size:16px !important;
+}
+.switch-input.prendida ~ .switch-label:before {
+    opacity: 0;
+}
+.switch-input.prendida ~ .switch-label:after {
+    opacity: 1;
+}
+.switch-handle {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(to bottom, #FFFFFF 40%, #f0f0f0);
+    background-image: -webkit-linear-gradient(top, #FFFFFF 40%, #f0f0f0);
+    border-radius: 100%;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+}
+.switch-handle:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -6px 0 0 -6px;
+    width: 12px;
+    height: 12px;
+    background: linear-gradient(to bottom, #eeeeee, #FFFFFF);
+    background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF);
+    border-radius: 6px;
+}
+.switch-input.prendida ~ .switch-handle {
+    left: 74px;
+}
+
+#estados > li {
+    position: relative;
+    height: 4em;
+}
+#estados > li h4
+{
+    width:50%;
+}
+#estados > li .switch {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+/*Estados salidas*/
+#header {
+    background-color: #03ae74;
+    width: 100%;
+    height: 50px;
+		text-align:center;
+		position: fixed;
+		z-index:9999;
+}
+#header h1 {
+    display: block;
+    color: #fff;
+    font-size: 1.2em;
+    padding-top:6px;
+}
+/* MENU APLICACION*/
+
+/*Boton switch window*/
+
+.containerSwitchWindow {
+    background: #eceeef;
+    position: absolute;
+    right: 0;
+    top: 0;
+    border-radius: 10%;
+    padding: 0px 8px -1px 0px;
+}
+.containerSwitchWindow ul,
+.containerSwitchWindow li {
+    margin: 13px 3px;
+    padding: 0;
+    list-style: none;
+    display: inline-block;
+    vertical-align: top;
+}
+.containerSwitchWindow li.moveDown,
+.containerSwitchWindow li.stopIcon,
+.containerSwitchWindow li.moveUp {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    background: #E1B42B;
+    margin: 5px;
+    border-radius: 2px;
+    border: 1px solid #aaaaaa;
+    text-align: center;
+    line-height: 23px;
+}
+
+.stopIcon:before {
+    content: '';
+    display: inline-block;
+    vertical-align: middle;
+    height: 12px;
+    width: 12px;
+    border-radius: 0;
+}
+.moveUp:before {
+    transform: rotate(180deg);
+}
+.containerSwitchWindow .active {
+    background: green !important;
+}
+#viewSalida .switch,
+.persianaView .containerSwitchWindow {
+    float: right;
+    margin-right: 30px;
+}
+.timeIcon {
+    z-index: 1;
+    overflow: hidden;
+    list-style: none;
+    padding: 0;
+    position: absolute;
+    margin: 0 0 0.25em;
+    right: 5px;
+    top: -6px;
+}
+.timeIcon a {
+    display: block;
+    color: transparent;
+    width: 24px;
+    height: 24px;
+}
+.timeIcon:before,
+.timeIcon:after,
+.timeIcon a:before,
+.timeIcon a:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+}
+.timeIcon a:before,
+.timeIcon a:after {
+    left: 1px;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #c55500;
+    margin-top: -11px;
+    background: transparent;
+}
+.timeIcon a:before {
+    -webkit-border-radius: 18px;
+    -moz-border-radius: 18px;
+    border-radius: 19px;
+}
+.timeIcon a:after {
+    left: 10px;
+    width: 7px;
+    height: 8px;
+    border-width: 0 0 2px 2px;
+    margin-top: -7px;
+    background: transparent;
+}
+.timeIcon a:hover:before,
+.timeIcon a:focus:before,
+.timeIcon a:active:before,
+.timeIcon a:hover:after,
+.timeIcon a:focus:after,
+.timeIcon a:active:after {
+    border-color: #730800;
+    background: transparent;
+}
+/* Vista Estados, icono Programacion Salida */
+/*TAREAS*/
+div.switchContainer > span
+{
+	display:inline-block;
+}
+div.switchContainer > span {
+	float:right;
+}
+div.switchContainer > span:first-child {
+	float:left;
+}
+
+div.switchContainer label.switch
+{
+	margin-top: 7px;
+	float:right;
+}
+.tarea .switchContainer {
+	display:inline-block;
+	margin: 16px 0 16px 0 !important;
+}
+.tarea label.switch {
+	margin-top: 0px !important;
+}
+.datePicker select
+{
+    float:left;
+    width:50%;
+}
+div.dispositivo {
+	position:relative;
+	max-width: 305px;
+  margin: 0 auto;
+}
+div.dispositivo > label
+{
+    width: 100%;
+    position:relative;
+}
+div.dispositivo label select
+{
+    width: 100%;
+}
+div.dispositivo label > a
+{
+    font-size: 2.6em;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    color: #03ae74;
+}
+.left label textarea
+{
+	width:95%;
+	min-height:60px;
+}
+ul#tareas li {
+    border: 1px solid #ccc;
+    padding: 16px 9px;
+    position: relative;
+}
+ul#tareas li span {
+	display:block;
+	padding-top:10px;
+	color:red;
+}
+ul#tareas li ul {
+  position: absolute;
+  top:-7px;
+  right: 9px;
+  float:right;
+}
+ul#tareas li ul li {
+	display: inline-block;
+  border:0;
+}
+
+form #duracion
+{
+    width: 100px !important;
+}
+#estados > li {
+    position: relative;
+    height: 4em;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+#estados > li .switch {
+    position: absolute;
+    right: 0;
+    top: -8px;
+    margin-right: -10px;
+}
+#estados .switch.disabled
+{
+    display:none;
+}
+/*Estados salidas*/
+/*Boton switch window*/
+
+.containerSwitchWindow {
+    background: #eceeef;
+    position: absolute;
+    right: 0;
+    top: -25px;
+    border-radius: 10%;
+    padding: 0px 8px -1px 0px;
+}
+.containerSwitchWindow li.moveUp:before,
+.containerSwitchWindow li.moveDown:before {
+    content: '';
+    display: inline-block;
+    vertical-align: middle;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 12.7px 8px 0 8px;
+    border-color: #fff transparent transparent transparent;
+}
+.stopIcon:before {
+    content: '';
+    display: inline-block;
+    vertical-align: middle;
+    height: 12px;
+    width: 12px;
+    border-radius: 0;
+    box-shadow: 0 0 0 0px gray, inset 3px 35px 0 27px white;
+}
+.moveUp:before {
+    transform: rotate(180deg);
+}
+.containerSwitchWindow .active {
+    background: green !important;
+}
+/*Boton switch window*/
+
+#viewSalida .switch,
+.persianaView .containerSwitchWindow {
+    float: right;
+    margin-right: 30px;
+}
+
+/*TAREAS*/
+#subtareas ul {
+	margin:20px auto 30px auto;
+}
+#subtareas ul, #subtareas table {
+    position: relative;
+}
+#subtareas span.preferencias {
+    display:block;
+    position: absolute;
+    right: 0;
+}
+#subtareas ul span.preferencias {
+    top:20px;
+}
+#subtareas table span.preferencias{
+    top:10px;
+    right:7px;
+}
+#subtareas table .col3 {
+	width:33%;
+}
+#subtareas table .col2 {
+	width:49%;
+}
+#subtareas h1 {
+	text-align: center;
+	font-weight:bold;
+	margin-bottom:10px;
+}
+#subtareas table {
+	border:1px solid #ccc;
+	margin-bottom: 10px;
+	padding: 5px;
+	border-collapse:separate;
+}
+#subtareas table td {
+	max-width:50px;
+  border:none;
+	padding: 6px;
+}
+#subtareas table td.middle span.sprite{
+	float:left;
+	margin:-5px 8px 0px -6px;
+}
+
+#tareaForm {
+	text-align: center;
+	max-width: 309px;
+  margin: 0 auto;
+}
+
+#tareaForm .switchContainer {
+	margin-top: 13px;
+	text-align:center;
+	width:100%;
+}
+#tareaForm div
+{
+	margin: 0px 0 6px 0;
+	position: relative;
+	padding: 2px 0;
+}
+#tareaForm div.duracion
+{
+	margin-top: 25px;
+}
+
+#tareaForm div > span,
+#tareaForm ul li label span
+{
+	margin: 6px auto;
+}
+#tareaForm div.duracion span
+{
+	display:block;
+	margin-top:15px;
+	color:red;
+}
+
+#tareaForm .dispositivosAdded li
+{
+	position:relative;
+	margin:15px 0;
+}
+
+#tareaForm ul.actionsPopup
+{
+	margin-top:20px;
+}
+ul#tareas li {
+    border: 1px solid #ccc;
+    padding: 16px 15px;
+    position: relative;
+}
+
+ul#tareas li a {
+  width: 100%;
+  padding: 13px 133px 13px 0;
+}
+
+ul#tareas li .timeIcon
+{
+    top:6px;
+}
+div.dispositivosAdded h5
+{
+	font-weight:bold;
+}
+div.dispositivosAdded ul
+{
+    margin-left:10px;
+}
+div.dispositivosAdded ul li
+{
+    margin:10px 0;
+		padding: 0 10px;
+    position: relative;
+}
+.dispositivosAdded li a
+{
+    position: absolute;
+    color:red;
+    font-size: 1.6em;
+    right: -4px;
+    padding: 10px;
+    top: -5px;
+    font-weight:bold;
+}
+.popover {
+    position: fixed !important;
+    top: 26% !important;
+    left: 50% !important;
+    margin: auto;
+    border: 30px solid #03ae74;
+    margin-left: -144px;
+    margin-top: -30px;
+}
+/*Dias ejecucion*/
+.diasejecucion
+{
+	margin:0px 0 40px 0 !important;
+}
+.diasejecucion label {
+    float: left;
+    text-align: center;
+    width: 14%;
+}
+
+/*LOADING GIF*/
+
+#loadingDiv {
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    opacity:0.3;
+    z-index: 99999;
+}
+.cssload-whirlpool,
+.loading-min,
+.cssload-whirlpool::before,
+.cssload-whirlpool::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border: 2px solid rgb(204,204,204);
+    border-left-color: rgb(0,0,0);
+    border-radius: 1748px;
+    -o-border-radius: 1748px;
+    -ms-border-radius: 1748px;
+    -webkit-border-radius: 1748px;
+    -moz-border-radius: 1748px;
+}
+
+.loading-min {
+    position: relative;
+    width:15px !important;
+    height:15px !important;
+    padding:0;
+    margin:8px -2px -1px -8px !important;
+}
+
+.cssload-whirlpool,.loading-min {
+    margin: -44px 0 0 -44px;
+    height: 88px;
+    width: 88px;
+    animation: cssload-rotate 1150ms linear infinite;
+        -o-animation: cssload-rotate 1150ms linear infinite;
+        -ms-animation: cssload-rotate 1150ms linear infinite;
+        -webkit-animation: cssload-rotate 1150ms linear infinite;
+        -moz-animation: cssload-rotate 1150ms linear infinite;
+}
+
+.cssload-whirlpool::before {
+    content: "";
+    margin: -40px 0 0 -40px;
+    height: 77px;
+    width: 77px;
+    animation: cssload-rotate 1150ms linear infinite;
+        -o-animation: cssload-rotate 1150ms linear infinite;
+        -ms-animation: cssload-rotate 1150ms linear infinite;
+        -webkit-animation: cssload-rotate 1150ms linear infinite;
+        -moz-animation: cssload-rotate 1150ms linear infinite;
+}
+
+.cssload-whirlpool::after {
+    content: "";
+    margin: -51px 0 0 -51px;
+    height: 98px;
+    width: 98px;
+    animation: cssload-rotate 2300ms linear infinite;
+        -o-animation: cssload-rotate 2300ms linear infinite;
+        -ms-animation: cssload-rotate 2300ms linear infinite;
+        -webkit-animation: cssload-rotate 2300ms linear infinite;
+        -moz-animation: cssload-rotate 2300ms linear infinite;
+}
+#horaServidor {
+	position:relative;
+	text-align:center;
+	margin:0 auto;
+	font-size:20px;
+	color:#fff;
+}
+
+@keyframes cssload-rotate {
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+@-o-keyframes cssload-rotate {
+	100% {
+		-o-transform: rotate(360deg);
+	}
+}
+
+@-ms-keyframes cssload-rotate {
+	100% {
+		-ms-transform: rotate(360deg);
+	}
+}
+
+@-webkit-keyframes cssload-rotate {
+	100% {
+		-webkit-transform: rotate(360deg);
+	}
+}
+
+@-moz-keyframes cssload-rotate {
+	100% {
+		-moz-transform: rotate(360deg);
+	}
+}
