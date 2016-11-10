@@ -140,7 +140,7 @@ header h1 {
 }
 th,
 td {
-    padding: 4px;
+    padding: 12px;
     text-align: left;
     border: 1px solid black;
 }
@@ -230,8 +230,11 @@ ul.inlineButtons .button {
 /*CasaCtrl HOME*/
 
 /*DISPOSITIVOS*/
-#listaDispositivos tr {
-    position: relative;
+table.dispositivos {
+    margin-bottom:20px;
+}
+table.dispositivos div tr td{
+    width:100%;
 }
 .ngdialog-buttons a.button
 {

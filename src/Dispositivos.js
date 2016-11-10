@@ -1,31 +1,36 @@
-/*jshint esversion: 6 */
-import React, { Component } from 'react';
 
-class Table extends Component {
+/*jshint esversion: 6 */
+
+import React, { Component } from 'react';
+import * as HTML from './HTML';
+
+class ListaDispositivos extends Component {
+	constructor( props ) {
+		super(props);
+	}
 	generateRow( item ) {
 		return (
-			<div>
-				<td> { item.note } </td>
-				<td> { item.offline } </td>
-				<td> <a href="">Salidas</a> </td>
-			</div>
+			<tr>
+				<td> 
+					<a href={'Dispositivo/' + item.ip}> { item.note } </a>
+				</td>
+				<td> {item.version} </td>
+				<td> 
+					<a href={'Salidas/' + item.ip}> Salidas </a>
+				</td>
+			</tr>
 		);
 	}
 	render() {
-		var items = this.props.items.map( this.generateRow );
-
-		return (<table className={this.props.class}>
-					<tbody>
-						<tr>{ items } </tr>
-					</tbody>
-				</table>
-		);
+		var rows = this.props.dispositivos.map( this.generateRow );
+		
+    	return ( <div> {rows} </div> );
 	}
 };
 
 class Dispositivos extends Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.state = { dispositivos: [] }
 	}
 	componentDidMount() {
@@ -38,7 +43,14 @@ class Dispositivos extends Component {
 		window.socket.emit('getDispositivos');
 	}
 	render() {
-		return ( <Table class="dispositivosList" items={this.state.dispositivos} /> );
+		return ( 
+			<div>
+				<HTML.Table class="dispositivos">
+					<ListaDispositivos dispositivos={ this.state.dispositivos } />
+				</HTML.Table>
+				<HTML.LinkButton text="Nuevo" url="Dispositivos/create" class="button" />
+			</div>
+		);
 	}
 };
 
