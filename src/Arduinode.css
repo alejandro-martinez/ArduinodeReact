@@ -76,6 +76,31 @@ table {
     border-spacing: 0;
     width: 100%;
 }
+.container {
+    padding: 20px 0;
+}
+/* MENU APLICACION*/
+header {
+    background-color: #03ae74;
+    width: 100%;
+    height: 50px;
+    text-align: center;
+    top: 0;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+}
+header h1 {
+    display: block;
+    color: #fff;
+    padding-top:12px;
+}
+
+.menu li {
+    margin: 15px 5px;
+}
+/* MENU APLICACION*/
+
 /*FIN RESET*/
 #content {
     padding: 19px 10px;
@@ -142,6 +167,7 @@ ul.actionsPopup {
 {
     float:none;
 }
+h1 { font-size: 1.2em; }
 /*CasaCtrl HOME*/
 
 button,
@@ -408,21 +434,6 @@ a.home
     top: 0;
 }
 /*Estados salidas*/
-#header {
-    background-color: #03ae74;
-    width: 100%;
-    height: 50px;
-		text-align:center;
-		position: fixed;
-		z-index:9999;
-}
-#header h1 {
-    display: block;
-    color: #fff;
-    font-size: 1.2em;
-    padding-top:6px;
-}
-/* MENU APLICACION*/
 
 /*Boton switch window*/
 

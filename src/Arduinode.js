@@ -2,22 +2,84 @@
 import React, { Component } from 'react';
 import { Router, Route, hashHistory } from 'react-router'
 import './Arduinode.css';
-import LucesEncendidas from './LucesEncendidas'
-import Dispositivos from './Dispositivos'
+
+var menu = [
+  {
+    "text": "Dispositivos",
+    "url": "/#/Dispositivos"
+  },
+  {
+    "text": "Luces",
+    "url": "/#/Luces"
+  }
+];
+
+class Header extends Component {
+	constructor( props ) {
+		super( props );
+		this.state = {titulo: "Home"};
+	}
+	render() {
+		return (<header><h1>{ this.state.titulo }</h1></header>
+		);
+	}
+};
+
+class LinkButton extends Component {
+	constructor( props ) {
+		super( props );
+	}
+	render() {
+		return (
+	      <a className={ this.props.class } href={ this.props.url }>{ this.props.text }</a>
+	    );
+	}
+};
+
+class Menu extends Component {
+  generateItem( item ) {
+    return <li><LinkButton class={'button'} text={ item.text } url={  item.url } /></li>
+  }
+  render() {
+    var items = this.props.items.map( this.generateItem );
+    return (
+      <ul className="menu"> {items}  </ul>
+    );
+  }
+};
+
+class Home extends Component {
+	render() {
+		return (<Menu items={menu} />);
+	}
+};
+
+class Dispositivos extends Component {
+	render() {
+		return (<div> <h1> TODO: Menu Dispositivos </h1> </div>);
+	}
+};
+
+
+class Luces extends Component {
+	render() {
+		return (<div> <h1> TODO: Menu Luces </h1> </div>);
+	}
+};
 
 class Arduinode extends Component {
   render() {
     return (
-      <div className="Arduinode">
-        <div className="Arduinode-header">
-          <h1>Arduinode</h1>
-          
-          <Router history={hashHistory}>
-		    <Route path="/dispositivos" component={Dispositivos}/>
-		    <Route path="/lucesEncendidas" component={LucesEncendidas}/>    
-		  </Router>
 
-        </div>
+		<div className="Arduinode">
+			<Header titulo="Home" />
+			<div className="container">
+				<Router history={hashHistory}>
+			  		<Route path="/" component={ Home }/>
+			    	<Route path="/Dispositivos" component={ Dispositivos }/>
+			    	<Route path="/Luces" component={ Luces }/>    
+				</Router>
+			</div>
       </div>
     );
   }
