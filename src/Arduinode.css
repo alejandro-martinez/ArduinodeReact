@@ -79,6 +79,33 @@ table {
 .container {
     padding: 20px 0;
 }
+/* ICONOS */
+ 
+.iconHeader {
+    color:#fff;
+    font-size:1.3em; 
+}
+.iconHeader {
+    position:absolute;
+    top:11px;
+}
+.iconHeader.left {
+    left:15px;
+}
+.iconHeader.rigth {
+    right:15px;
+}
+.back:before { 
+    content: "\2770\ ";
+}
+.menu {
+    font-weight:bold;
+    top: 14px;
+}
+.menu:after {
+    content: "\2630\ "; 
+}
+/* ICONOS */
 /* MENU APLICACION*/
 header {
     background-color: #03ae74;
@@ -96,7 +123,7 @@ header h1 {
     padding-top:12px;
 }
 
-.menu li {
+.menuList li {
     margin: 15px 5px;
 }
 /* MENU APLICACION*/

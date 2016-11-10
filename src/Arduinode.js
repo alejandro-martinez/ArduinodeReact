@@ -9,8 +9,12 @@ var menu = [
     "url": "/#/Dispositivos"
   },
   {
-    "text": "Luces",
+    "text": "Luces encendidas",
     "url": "/#/Luces"
+  },
+  {
+    "text": "Tareas programadas",
+    "url": "/#/Tareas"
   }
 ];
 
@@ -20,7 +24,11 @@ class Header extends Component {
 		this.state = {titulo: "Home"};
 	}
 	render() {
-		return (<header><h1>{ this.state.titulo }</h1></header>
+		return (<header>
+					<a onClick={() => window.history.back()} className="back iconHeader left"></a>
+					<h1>{ this.state.titulo }</h1>
+					<a href="/" className="menu iconHeader rigth"></a>
+				</header>
 		);
 	}
 };
@@ -43,7 +51,7 @@ class Menu extends Component {
   render() {
     var items = this.props.items.map( this.generateItem );
     return (
-      <ul className="menu"> {items}  </ul>
+      <ul className="menuList"> {items}  </ul>
     );
   }
 };
