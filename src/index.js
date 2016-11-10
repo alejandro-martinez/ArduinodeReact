@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Arduinode from './Arduinode';
-import SocketIO from './SocketIO';
-import './index.css';
+import Socket from './Socket';
+import './Arduinode.css';
 
 ReactDOM.render(
   <Arduinode />,

@@ -56,13 +56,12 @@ http.listen(serverConfig.port, serverConfig.ip, function() {
 		Arduinode.listenSwitchEvents( serverConfig );
 
 		//Devuelve todos los dispositivos
-		sCliente.on('listaDispositivos', function() {			
+		sCliente.on('getDispositivos', function() {			
 			var dispositivos = Arduinode.dispositivos.lista;
 			Arduinode.dispositivos.getActivos();
 			sCliente.emit('numDispositivos',{ num: dispositivos.length });
 			sCliente.emit('dispositivos', dispositivos);
 		});
-
 
 		// Accion sobre una salida (Persiana, Luz, Bomba)
 		sCliente.on('accionarSalida', function( params ) {
