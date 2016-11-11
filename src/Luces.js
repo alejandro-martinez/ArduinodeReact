@@ -24,7 +24,7 @@ class Toggle extends React.Component {
 
   render() {
     return (
-      <Switch enabled={ this.state.enabled } onClick={this.handleClick} />
+      <Switch className={this.state.enabled} enabled={ this.state.enabled } onClick={this.handleClick} />
     );
   }
 }
