@@ -77,8 +77,9 @@ http.listen(serverConfig.port, serverConfig.ip, function() {
 
 		// Devuelve lista de salidas de un dispositivo (con sus estados)
 		sCliente.on('getSalidas', function( params, p) {
-
+			console.log("Get salidas",params)
 			var	onData = function( salidas ) {
+				console.log("SALIDAS",salidas)
 				sCliente.emit( 'salidas', salidas);
 			};
 

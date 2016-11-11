@@ -1,7 +1,6 @@
-
 /*jshint esversion: 6 */
-
 import React, { Component } from 'react';
+import { Router, Route, hashHistory } from 'react-router';
 import * as HTML from './HTML';
 
 class ListaDispositivos extends Component {
@@ -11,9 +10,9 @@ class ListaDispositivos extends Component {
 	generateRow( item ) {
 		return (
 			<tr>
-				<td> <a href={'Dispositivo/' + item.ip}> { item.note } </a> </td>
+				<td> <HTML.LinkButton url={'/#/Dispositivo/' + item.ip} text={ item.note } /></td>
 				<td> {item.version} </td>
-				<td> <a href={ 'Salidas/' + item.ip }> Salidas </a> </td>
+				<td> <HTML.LinkButton url={'/#/Salidas/' + item.ip} text={'Salidas'} /> </td>
 			</tr>
 		);
 	}
@@ -28,7 +27,7 @@ class Dispositivos extends Component {
 		super(props);
 		this.state = { dispositivos: [] }
 	}
-	componentDidMount() {
+	componentWillMount() {
 		var This = this;
 		
 		window.socket.on('dispositivos', function ( dispositivos ) {

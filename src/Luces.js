@@ -15,13 +15,11 @@ class Toggle extends React.Component {
   constructor(props) {
     super(props);
     this.state = { enabled: true };
-
-    // This binding is necessary to make `this` work in the callback
     this.handleClick = this.handleClick.bind(this);
   }
 
   handleClick() {
-  	console.log("ASDASD",this.state)
+  
   }
 
   render() {
@@ -31,9 +29,9 @@ class Toggle extends React.Component {
   }
 }
 
-class ListaLuces extends Component {
+class Luz extends Component {
 	constructor( props ) {
-		super(props);
+		super( props );
 		this.state = { luces: props.luces };
 	}
 	generateRow( item ) {
@@ -41,6 +39,11 @@ class ListaLuces extends Component {
 			<tr>
 				<td> 
 					<h4>{item.note}</h4>
+				</td>	
+				<td> 
+					{ item.temporizada }
+				</td>
+				<td>
 					<Toggle enabled={ item.estado } />
 				</td>
 			</tr>
@@ -52,16 +55,43 @@ class ListaLuces extends Component {
 	}
 };
 
-class Luces extends Component {
+export class Salidas extends Component {
+	constructor( props ) {
+		super( props );
+		console.log(props,this.props.params.ip)
+		this.state = { salidas: [] }
+	}
+	componentWillMount() {
+		var This = this;
+		
+		window.socket.on('salidas', function ( salidas ) {
+			console.log("Salidas",salidas,)
+			This.setState({salidas: salidas});
+		});
+		console.log(this.props.params.ip)
+		window.socket.emit('getSalidas', { ip: this.props.params.ip });
+	}
+	render() {
+		return (
+			<div>
+				<HTML.Table class="salidas">
+					<Luz luces={ this.state.salidas } />
+				</HTML.Table>
+			</div>
+		);
+	}
+};
+
+
+export class Luces extends Component {
 	constructor() {
 		super();
-		this.state = { lucesEncendidas: [] }
+		this.state = { salidas: [] }
 	}
 	componentDidMount() {
 		var This = this;
-		
-		window.socket.on('lucesEncendidas', function ( luzEncendida ) {
-			This.setState({lucesEncendidas: This.state.lucesEncendidas.concat([luzEncendida])});
+		window.socket.on('lucesEncendidas', function ( salida ) {
+			This.setState({salidas: This.state.salidas.concat([salida])});
 		});
 		
 		window.socket.emit('getLucesEncendidas');
@@ -70,11 +100,9 @@ class Luces extends Component {
 		return ( 
 			<div>
 				<HTML.Table class="salidas">
-					<ListaLuces luces={ this.state.lucesEncendidas } />
+					<Luz luces={ this.state.salidas } />
 				</HTML.Table>
 			</div>
 		);
 	}
 };
-
-export default Luces;

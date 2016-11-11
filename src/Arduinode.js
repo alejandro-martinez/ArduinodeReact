@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Router, Route, hashHistory } from 'react-router';
 import * as HTML from './HTML';
 import Dispositivos from './Dispositivos';
-import Luces from './Luces';
+import { Salidas, Luces } from './Luces';
 
 var menu = [
   {
@@ -12,7 +12,7 @@ var menu = [
   },
   {
     "text": "Luces encendidas",
-    "url": "/#/Luces"
+    "url": "/#/Luces/ON"
   },
   {
     "text": "Tareas programadas",
@@ -31,9 +31,10 @@ class Arduinode extends Component {
 				<HTML.Header titulo="Home" />
 				<div className="container">
 					<Router history={hashHistory}>
-				  		<Route path="/" component={ Home }/>
+						<Route path="/Salidas/:ip" component={ Salidas }/>
+						<Route path="/" component={ Home }/>
 				    	<Route path="/Dispositivos" component={ Dispositivos }/>
-				    	<Route path="/Luces" component={ Luces }/>    
+				    	<Route path="/Luces/ON" component={ Luces }/>    
 					</Router>
 				</div>
 	  		</div>

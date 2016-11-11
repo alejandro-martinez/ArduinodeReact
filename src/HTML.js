@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 export class Header extends Component {
 	constructor( props ) {
 		super( props );
+		console.log( window.location )
 		this.state = {titulo: "Home"};
 	}
 	render() {
