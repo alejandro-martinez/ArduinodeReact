@@ -163,3 +163,31 @@ button,
 table.dispositivos {
     margin-bottom:20px;
 }
+/*SALIDAS*/
+table.salidas td{
+    display:inline-block;
+}
+table.salidas td h4 {
+    float:left;
+}
+.switch {
+    position:relative;
+    width: 126px !important;
+}
+.switch:after {
+    position:absolute;
+    top:4px;
+    left:35px;
+    color:#fff;
+}
+.switch.luz0:after,
+.switch.on:after {
+    content: "Encendida";
+}
+.switch.on .switch-toggle {
+    left:84%;
+}
+.luz0, 
+.switch.on {
+    background: #03ae74 !important;
+}

@@ -10,23 +10,44 @@ import Switch from 'react-toggle-switch'
 <Switch enabled={false}/>
 <Switch className='other-class'/>
 */
+
+class Toggle extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { enabled: true };
+
+    // This binding is necessary to make `this` work in the callback
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+  	console.log("ASDASD",this.state)
+  }
+
+  render() {
+    return (
+      <Switch enabled={ this.state.enabled } onClick={this.handleClick} />
+    );
+  }
+}
+
 class ListaLuces extends Component {
 	constructor( props ) {
 		super(props);
+		this.state = { luces: props.luces };
 	}
 	generateRow( item ) {
 		return (
 			<tr>
 				<td> 
 					<h4>{item.note}</h4>
-					<Switch enabled={ item.estado == 0 } />
+					<Toggle enabled={ item.estado } />
 				</td>
 			</tr>
 		);
 	}
 	render() {
-		var rows = this.props.salidas.map( this.generateRow );
-		
+		var rows = this.props.luces.map( this.generateRow );	
     	return ( <div> {rows} </div> );
 	}
 };
@@ -49,7 +70,7 @@ class Luces extends Component {
 		return ( 
 			<div>
 				<HTML.Table class="salidas">
-					<ListaLuces salidas={ this.state.lucesEncendidas } />
+					<ListaLuces luces={ this.state.lucesEncendidas } />
 				</HTML.Table>
 			</div>
 		);
