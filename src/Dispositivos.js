@@ -12,7 +12,7 @@ class ListaDispositivos extends Component {
 			<tr>
 				<td> <HTML.LinkButton url={'/#/Dispositivo/' + item.ip} text={ item.note } /></td>
 				<td> {item.version} </td>
-				<td> <HTML.LinkButton url={'/#/Salidas/' + item.ip} text={'Salidas'} /> </td>
+				<td> <HTML.LinkButton class={'button'} url={'/#/Salidas/' + item.ip} text={'Salidas'} /> </td>
 			</tr>
 		);
 	}

@@ -19,12 +19,12 @@ class Toggle extends React.Component {
   }
 
   handleClick() {
-  
+  	this.props.enabled = !this.props.enabled;
   }
 
   render() {
     return (
-      <Switch className={this.state.enabled} enabled={ this.state.enabled } onClick={this.handleClick} />
+      <Switch className={'luz' + this.props.enabled } onClick={this.handleClick} />
     );
   }
 }

@@ -179,6 +179,7 @@ table.salidas td h4 {
 .switch.luz0:after,
 .switch.on:after {
     content: "Encendida";
+    color: #fff;
 }
 .switch:after {
     content: "Apagada";
@@ -191,7 +192,12 @@ table.salidas td h4 {
 .switch.on .switch-toggle {
     left:84% !important;
 }
+.luz1 .switch-toggle {
+    left:84% !important;
+}
+
 .luz0, 
 .switch.on {
     background: #03ae74 !important;
+    color:#fff;
 }
