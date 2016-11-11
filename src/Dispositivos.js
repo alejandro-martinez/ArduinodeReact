@@ -11,19 +11,14 @@ class ListaDispositivos extends Component {
 	generateRow( item ) {
 		return (
 			<tr>
-				<td> 
-					<a href={'Dispositivo/' + item.ip}> { item.note } </a>
-				</td>
+				<td> <a href={'Dispositivo/' + item.ip}> { item.note } </a> </td>
 				<td> {item.version} </td>
-				<td> 
-					<a href={'Salidas/' + item.ip}> Salidas </a>
-				</td>
+				<td> <a href={ 'Salidas/' + item.ip }> Salidas </a> </td>
 			</tr>
 		);
 	}
 	render() {
 		var rows = this.props.dispositivos.map( this.generateRow );
-		
     	return ( <div> {rows} </div> );
 	}
 };

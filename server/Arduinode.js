@@ -165,60 +165,60 @@ function Arduinode() {
 * @param callback Funcion callback que se ejecuta cuando se completa la operaciòn
 * @return Array
 */
-		getSalidasEncendidas: function( callback ) {
-			if (this.salidasEncendidas.length) {
-				callback( this.salidasEncendidas[0]);
-			}
-			else {
-				var This = this;
-				var salidasAux 	= [], 
-					sockets 	= [], 
-					processed	= [];
+		getLucesEncendidas: function( callback ) {
+			var This = this;
 
-				this.lista.forEach(function(item, key, array) {
-					item.buffer = "";
-					var salidas,
-						connectedSuccess = false,
-						encendidas = [],
-						params = {
-							noError: true,
-							ip: item.ip,
-							id_disp: item.id_disp
-						};
+			var salidasAux 	= [], 
+				sockets 	= [], 
+				processed	= [];
+			
+			this.lista.forEach(function(item, key, array) {
+				item.buffer = "";
+				var salidas,
+					connectedSuccess = false,
+					encendidas = [],
+					params = {
+						noError: true,
+						ip: item.ip,
+						id_disp: item.id_disp
+					};
 
-					sockets[key] = new net.Socket();
-					sockets[key].setTimeout( serverConfig.socketTimeout );
-					
-					sockets[key].connect(8000, item.ip, function(response) {
-						connectedSuccess = true;
-						sockets[key].write('G');
-					});
-
-					sockets[key].on('timeout',function(_err) {
-						if (processed.indexOf(item.ip) < 0) {
-							processed.push(item.ip);
-						}
-					});
-
-					sockets[key].on('data',function(_data) {
-						item.buffer+= _data;
-					});
-
-					sockets[key].on('error',function(_err) {
-						connectedSuccess = false;
-						if (processed.indexOf(item.ip) < 0) {
-							processed.push(item.ip);
-						}
-					});
-					sockets[key].on('end',function() {
-						var salidas = item.parseSalida(item, item.buffer);
-						if (salidas.length > 0 && connectedSuccess) {
-							This.salidasEncendidas.push(item.getSalidasByEstado(ON, salidas));
-							item.buffer = "";
-						}
-					});
+				sockets[key] = new net.Socket();
+				sockets[key].setTimeout( serverConfig.socketTimeout );
+				
+				sockets[key].connect(8000, item.ip, function(response) {
+					connectedSuccess = true;
+					sockets[key].write('G');
 				});
-			}
+
+				sockets[key].on('timeout',function(_err) {
+					if (processed.indexOf(item.ip) < 0) {
+						processed.push(item.ip);
+					}
+				});
+
+				sockets[key].on('data',function(_data) {
+					item.buffer+= _data;
+				});
+
+				sockets[key].on('error',function(_err) {
+					connectedSuccess = false;
+					if (processed.indexOf(item.ip) < 0) {
+						processed.push(item.ip);
+					}
+				});
+				sockets[key].on('end',function() {
+					var salidas = item.parseSalida(item, item.buffer);
+					
+					if (salidas.length > 0 && connectedSuccess) {
+						salidas.forEach(function(s) {
+							if ( s.estado == ON ) callback( s );								
+						})
+						
+						item.buffer = "";
+					}
+				});
+			});
 		},
 /**
 * Registra dispositivos cargados en el modelo (dispositivos.json), en DataStore.dispositivos

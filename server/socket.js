@@ -41,7 +41,7 @@ module.exports = function()
 				this.connect(params.ip, function(response, socket) {
 					
 					if (response) {
-					
+						console.log("COmando",params.comando)	
 						socket.write(params.comando);
 					
 						socket.on('data',function( _data ) {

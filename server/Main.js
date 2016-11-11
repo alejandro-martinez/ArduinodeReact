@@ -169,7 +169,7 @@ Dispositivo.prototype = {
 * @return Array
 */
 	getSalidasByEstado: function( _estado, _array ) {
-		return _.where(_array, {estado: _estado});
+		var salidas = _.where(_array, {estado: _estado});
 	},
 /**
 * Devuelve listado de salidas de un Dispositivo filtradas por Ip

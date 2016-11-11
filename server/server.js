@@ -82,7 +82,7 @@ http.listen(serverConfig.port, serverConfig.ip, function() {
 				sCliente.emit( 'salidas', salidas);
 			};
 
-			Arduinode.dispositivos["getSalidas"]( onData, params);
+			Arduinode.dispositivos.getSalidas( onData, params);
 		});
 
 		// Devuelve lista de luces encendidas
@@ -92,7 +92,7 @@ http.listen(serverConfig.port, serverConfig.ip, function() {
 				sCliente.emit( 'lucesEncendidas', luces);
 			};
 
-			Arduinode.dispositivos["getLucesEncendidas"]( onData, params);
+			Arduinode.dispositivos.getLucesEncendidas( onData, params);
 		});
 
 		// Envia la hora del servidor en cada request Socket.IO
