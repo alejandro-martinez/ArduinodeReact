@@ -10,13 +10,17 @@ class ListaDispositivos extends Component {
 	generateRow( item ) {
 		return (
 			<tr>
-				<td> <HTML.LinkButton url={'/#/Dispositivo/' + item.ip} text={ item.note } /></td>
-				<td> {item.version} </td>
-				<td> <HTML.LinkButton class={'button'} url={'/#/Salidas/' + item.ip} text={'Salidas'} /> </td>
+				<td> <HTML.LinkButton url={ 'Salidas/' + item.ip } 
+									  text={ item.note } /></td>
+				<td> { item.version } </td>
+				<td> <HTML.LinkButton class={ 'iconEdit' } 
+									  url={ 'Dispositivo/' + item.ip } 
+									  text={''} /> </td>
 			</tr>
 		);
 	}
 	render() {
+		console.log(this.props.dispositivos)
 		var rows = this.props.dispositivos.map( this.generateRow );
     	return ( <div> {rows} </div> );
 	}
@@ -27,7 +31,7 @@ class Dispositivos extends Component {
 		super(props);
 		this.state = { dispositivos: [] }
 	}
-	componentWillMount() {
+	componentDidMount() {
 		var This = this;
 		
 		window.socket.on('dispositivos', function ( dispositivos ) {

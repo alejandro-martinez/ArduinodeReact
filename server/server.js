@@ -64,15 +64,13 @@ http.listen(serverConfig.port, serverConfig.ip, function() {
 		});
 
 		// Accion sobre una salida (Persiana, Luz, Bomba)
-		sCliente.on('accionarSalida', function( params ) {
-
-			var onAccion = function(response) {
-				refreshSalidasEncendidas();
-				sCliente.emit('accionarResponse', response);
-				sCliente.broadcast.emit('switchBroadcast', params);
+		sCliente.on('switchSalida', function( params ) {
+			var onAccion = function( response ) {
+				console.log( "-",response,"-")
+				io.sockets.emit('switchBroadcast', response);
 			};
 
-			Arduinode.dispositivos.accionar(params, onAccion);
+			Arduinode.dispositivos.switch( params, onAccion);
 		});
 
 		// Devuelve lista de salidas de un dispositivo (con sus estados)
@@ -85,13 +83,13 @@ http.listen(serverConfig.port, serverConfig.ip, function() {
 		});
 
 		// Devuelve lista de luces encendidas
-		sCliente.on('getLucesEncendidas', function( params, p) {
-
+		sCliente.on('getSalidasActivas', function( params, p) {
+			console.log("PArams",params)
 			var	onData = function( luces ) {
-				sCliente.emit( 'lucesEncendidas', luces);
+				sCliente.emit( 'salidasActivas', luces);
 			};
 
-			Arduinode.dispositivos.getLucesEncendidas( onData, params);
+			Arduinode.dispositivos.getSalidasActivas( onData, params);
 		});
 
 		// Envia la hora del servidor en cada request Socket.IO

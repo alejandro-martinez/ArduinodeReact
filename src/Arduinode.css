@@ -54,8 +54,10 @@ body {
     line-height: 1;
     font-family: Arial;
     overflow-x: hidden;
-    padding: 50px 10px !important;
+    padding: 46px 0 !important;
 	font-size:18px;
+    width: 100%;
+    margin: 0 auto;
 }
 ul {
     list-style: none;
@@ -67,12 +69,11 @@ table {
 table tr {
     display: inline-block;
     width: 97%;
-    border: 1px solid;
-    padding: 7px;
+    border: 1px solid #8EA69E;
     margin-bottom: -1px;
 }
 .container {
-    padding: 15px 3px;
+    padding: 15px 0px 10px 10px;
 }
 /* ICONOS */
  
@@ -89,6 +90,9 @@ table tr {
 }
 .iconHeader.rigth {
     right:15px;
+}
+.iconEdit:after { 
+    content: "\270D";
 }
 .back:before { 
     content: "\2770\ ";
@@ -122,22 +126,32 @@ header h1 {
     margin: 15px 5px;
 }
 table {
+    width: 100%;
     margin-bottom:20px;
 }
 table td {
     display:inline-block;
-    width:15%;
     text-align: left;
 }
-table td:first-child {
-    width:59%;
-}
 table td:last-child {
-    width:24%;
+    float: right;
 }
+
+table td:first-child {
+    height: 35px;
+    width:50%;
+    border-right:1px solid;
+    padding:16px 0 0 6px;
+}
+table td:nth-child(2) {
+    float:none;
+    text-align: center;
+    width: 56px;
+}
+
 label {
     padding: 10px 0;
-		font-weight:bold;
+	font-weight:bold;
 }
 input[type="text"],
 textarea,
@@ -147,21 +161,44 @@ select {
     padding: 3px;
 }
 h1 { font-size: 1.2em; }
-/*CasaCtrl HOME*/
 
+/*CasaCtrl HOME*/
 button,
 .button {
     font-size: 1em;
-    background: #333;
-    color: #fff;
+    background: #fff;
+    border:1px solid #001C13;
+    color:#001C13;
     display: block;
-    border-radius: 5px;
+    border-radius: 3px;
+    min-width:60px !important;
     font-weight: bold;
     padding: 13px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
+
 /*DISPOSITIVOS*/
+
+.iconEdit {
+    font-size:2em !important;
+}
+.dispositivos tr {
+    position: relative;
+}
+.dispositivos tr .iconEdit{
+    position: absolute;
+    top: 0;
+    right:0;
+    padding: .2em .5em;
+}
+/*SALIDAS*/
+.salidas td:last-child {
+    padding: 12px;
+}
+
 table.salidas td{
     display:inline-block;
+    border:none !important;
 }
 table.salidas td h4 {
     float:left;
@@ -176,28 +213,25 @@ table.salidas td h4 {
     left:35px;
     color:#fff;
 }
-.switch.luz0:after,
 .switch.on:after {
     content: "Encendida";
     color: #fff;
+    left: 13px;
 }
 .switch:after {
     content: "Apagada";
     color:#000;
+    left:36px;
 }
-.switch.on:after {
-    left:10px;
-    color: #fff;
-}
-.switch.on .switch-toggle {
-    left:84% !important;
-}
-.luz1 .switch-toggle {
-    left:84% !important;
-}
-
-.luz0, 
 .switch.on {
     background: #03ae74 !important;
     color:#fff;
 }
+.switch.on .switch-toggle {
+    left: 99px !important;
+}
+.switch-toggle {
+    left:0px !important;
+}
+
+

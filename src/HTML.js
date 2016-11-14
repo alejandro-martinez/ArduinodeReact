@@ -3,8 +3,7 @@ import React, { Component } from 'react';
 export class Header extends Component {
 	constructor( props ) {
 		super( props );
-		console.log( window.location )
-		this.state = {titulo: "Home"};
+		this.state = { titulo: 'Home' };
 	}
 	render() {
 		return (
@@ -19,7 +18,7 @@ export class Header extends Component {
 
 export class LinkButton extends Component {
 	render() {
-		return ( <a className={ this.props.class } href={ this.props.url }>{ this.props.text }</a> );
+		return ( <a className={ this.props.class } href={ '#/' + this.props.url }>{ this.props.text }</a> );
 	}
 };
 

@@ -48,19 +48,20 @@ Dispositivo.prototype = {
 * @method getSalidaByNro
 * @return Salida
 */
-	getSalidaByNro: function(nro_salida) {
+	getSalidaByNro: function( nro_salida ) {
 		var salida = _.findWhere(this.salidas, { nro_salida: parseInt(nro_salida) });
 		return salida;
 	},
 
 /**
 * Ejecuta un comando sobre una salida de un dispositivo.
-* @method accionarSalida
+* @method switchSalida
 * @param params Objeto JSON con la clave IP del dispositivo, numero de salida, y comando
 * @param callback Funcion callback que se ejecuta cuando se completa la operaciòn
 * @return Boolean Resultado del comando
 */
-	accionarSalida: function(params, callback) {
+	switchSalida: function(params, callback) {
+		
 		var salida = this.getSalidaByNro( params.nro_salida );
 
 		if (salida) {
@@ -71,17 +72,16 @@ Dispositivo.prototype = {
 				
 				//Si la salida tiene distinto estado al que se quiere llevar
 				var estadoDeseado = String( params.estado ).concat( ".", params.temporizada || 0 );
-				
+				console.log("Estado deseado",estadoActual,estadoDeseado)
 				if ( estadoActual.trim() !=  estadoDeseado.trim() ) {
 
-					salida.switch( params ,function(response){
-						callback(response);
+					salida.switch( params ,function( response ) {
+						response = parseInt( response.replace(/(?:\r\n|\r|\n)/g, ''));
+						callback( response);
 					});
 				}
 				else {
-					if (params.hasOwnProperty('salidaNote')) {
-						console.log(params.salidaNote  + " ya se encuentra en el estado: ",estadoActual);
-					}
+					console.log(salida.note  + " ya se encuentra en el estado: ",estadoActual);
 				}
 			});
 		}

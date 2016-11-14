@@ -141,10 +141,11 @@ function Arduinode() {
 * @param callback Funcion callback que se ejecuta cuando se completa la operaciòn
 * @return Boolean
 */
-		accionar: function( params, callback ) {
+		switch: function( params, callback ) {
 			var This = this;
-			this.getByIP( params.ip ).accionarSalida( params, function(response) {
-				callback(response);
+			this.getByIP( params.ip ).switchSalida( params, function(response) {
+				console.log("response",response)
+				callback( response );
 			});
 		},
 
@@ -157,7 +158,12 @@ function Arduinode() {
 */
 		getSalidas: function( callback, params ) {
 			var disp = this.getByIP( params.ip );
-			disp.getSalidas(params, callback);
+			if ( disp ) {
+				disp.getSalidas(params, callback);
+			}
+			else {
+				callback( [] );
+			}
 		},
 /**
 * Devuelve listado de salidas de un Dispositivo, filtradas por estado = 0 (Encendidas)
@@ -165,7 +171,7 @@ function Arduinode() {
 * @param callback Funcion callback que se ejecuta cuando se completa la operaciòn
 * @return Array
 */
-		getLucesEncendidas: function( callback ) {
+		getSalidasActivas: function( callback ) {
 			var This = this;
 
 			var salidasAux 	= [], 
