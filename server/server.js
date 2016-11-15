@@ -3,14 +3,15 @@ var	express 	= require('express'),
 	app 		= express(),
 	fs			= require('fs'),
 	compress 	= require('compression'),
-	http 		= require('http').Server(app),
+	http 		= require('http').Server( app ),
 	taskManager	= require('./TaskManager'),
-	expressConfig = require('./config/config').config(app, express),
+	expressConf = require('./config/config').config( app, express ),
 	Arduinode	= require('./Arduinode').Arduinode;
 	middleware 	= require('socketio-wildcard')(),
-	io 			= require('socket.io')(http);
-	require('./controllers')(app);
-	app.use(compress());
+	io 			= require('socket.io')( http) ;
+	DataStore 	= require('./DataStore').DataStore;
+	require('./controllers')( app );
+	app.use( compress() );
 
 var serverConfig = {},
 	serverInfo	 = { host: "localhost", port:8888 },
@@ -31,19 +32,13 @@ http.listen(serverConfig.port, serverConfig.ip, function() {
 	console.log("Server iniciado en: ", serverConfig.ip + 
 								  ":" + serverConfig.port);
 
-	// Captura excepciones para no detener el servidor
+	// Captura excepciones para no detener el servidor 
 	process.on('uncaughtException', function (err) {
 		console.log("Ocurrió un error:", err);
 	});
 
-	/* Registra middleware para capturar requests de SocketIO
-	y enviar la hora del servidor */
-	io.use(middleware);
-
-	var refreshSalidasEncendidas = function() {
-		Arduinode.dispositivos.salidasEncendidas = [];
-		Arduinode.dispositivos.getSalidasEncendidas();
-	};
+	// Registra middleware para capturar requests de SocketIO 
+	io.use( middleware );
 
 	// Conexión de un cliente
 	io.on('connection', function( sCliente ) {
@@ -55,18 +50,22 @@ http.listen(serverConfig.port, serverConfig.ip, function() {
 		// Crea socket que recibe eventos de los disp. Arduino
 		Arduinode.listenSwitchEvents( serverConfig );
 
-		//Devuelve todos los dispositivos
-		sCliente.on('getDispositivos', function() {			
+		sCliente.on('updateDB', ( dispositivos ) => {
+			DataStore.saveModel('dispositivos',dispositivos, 'ip', ( err ) => {
+				Arduinode.dispositivos.load( serverConfig ).getActivos();
+				sCliente.emit('responseDB', (err) ? false : true);
+			});
+		});
+
+		sCliente.on('getDispositivos', () => {			
 			var dispositivos = Arduinode.dispositivos.lista;
 			Arduinode.dispositivos.getActivos();
-			sCliente.emit('numDispositivos',{ num: dispositivos.length });
 			sCliente.emit('dispositivos', dispositivos);
 		});
 
 		// Accion sobre una salida (Persiana, Luz, Bomba)
 		sCliente.on('switchSalida', function( params ) {
 			var onAccion = function( response ) {
-				console.log( "-",response,"-")
 				io.sockets.emit('switchBroadcast', response);
 			};
 
@@ -83,8 +82,7 @@ http.listen(serverConfig.port, serverConfig.ip, function() {
 		});
 
 		// Devuelve lista de luces encendidas
-		sCliente.on('getSalidasActivas', function( params, p) {
-			console.log("PArams",params)
+		sCliente.on('getSalidasActivas', ( params, p) => {
 			var	onData = function( luces ) {
 				sCliente.emit( 'salidasActivas', luces);
 			};

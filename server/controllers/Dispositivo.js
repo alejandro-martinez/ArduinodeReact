@@ -15,6 +15,7 @@ module.exports = function( app ) {
 		res.json( DataStore.findDispositivo('id_disp', req.params.id_disp) );
 	});
 
+
 	//Crea o modifica dispositivos
 	app.post('/dispositivo/save', function(req, res)
 	{

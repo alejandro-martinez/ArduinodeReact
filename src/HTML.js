@@ -1,16 +1,27 @@
 import React, { Component } from 'react';
+import Loading from 'react-loading';
 
 export class Header extends Component {
 	constructor( props ) {
 		super( props );
-		this.state = { titulo: 'Home' };
+		this.state = { titulo: 'Home', loading: false };
+		document.addEventListener("loadingEvent",( e ) => {
+			this.setState({ loading: e.detail }) 
+		});
 	}
 	render() {
 		return (
 			<header>
+				
+				<div id="loading" className={ 'show' + this.state.loading }>
+					<Loading type='cylon' color='#e3e3e3' />
+				</div>
+				
 				<a onClick={() => window.history.back()} className="back iconHeader left"></a>
+				
 				<h1>{ this.state.titulo }</h1>
-				<a href="/#/" className="menu iconHeader rigth"></a>
+
+				<a href="/#/" className="menu iconHeader right"></a>
 			</header>
 		);
 	}

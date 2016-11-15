@@ -30,8 +30,10 @@ class Arduinode extends Component {
 	render() {
 		return (
 			<div className="Arduinode">
+				
 				<HTML.Header titulo="Home" />
-				<div className="container">
+
+				<div className="container" loading="{ this.state.loading }">
 					<Router history={ hashHistory }>
 						<Route path="/" component={ Home } />
 						<Route path="Salidas/:ip" component={ Salidas } />

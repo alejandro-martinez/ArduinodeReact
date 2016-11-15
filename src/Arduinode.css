@@ -42,6 +42,9 @@ a {
     cursor: pointer;
     color: #000;
 }
+.showfalse {
+    display:none;
+}
 div.left {
     float: left;
     width: 100%;
@@ -93,7 +96,7 @@ table tr {
 .iconHeader.left {
     left:15px;
 }
-.iconHeader.rigth {
+.iconHeader.right {
     right:15px;
 }
 .iconEdit:after { 
@@ -111,12 +114,14 @@ table tr {
 }
 /* ICONOS */
 /* FORM */
-input:invalid {
-  border: 1px solid red;
+input:valid,
+input[type='text'] {
+  border: 1px solid green;
 }
 
-input:valid {
-  border: 1px solid green;
+input:invalid,
+input.validfalse {
+  border: 1px solid red;
 }
 /* MENU APLICACION*/
 header {
@@ -134,7 +139,9 @@ header h1 {
     color: #fff;
     padding-top:12px;
 }
-
+header #loading div {
+    margin: -8px auto;
+}
 .menuList li {
     margin: 15px 5px;
 }
