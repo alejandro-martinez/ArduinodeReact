@@ -101,11 +101,12 @@ export class DispositivoEdit extends Component {
 		super(props);
 		this.state = { dispositivo: {}, valid: false }
 		this.changed = this.changed.bind( this );
+		this.onSubmit = this.onSubmit.bind( this );
 	}
 	componentDidMount() {
 		
 		DispositivosModel.getByIP( this.props.params.ip ).then((model) => {
-			this.setState({ dispositivo:  model});
+			this.setState({ dispositivo:  model });
 		});
 	}
 	changed(e) {
