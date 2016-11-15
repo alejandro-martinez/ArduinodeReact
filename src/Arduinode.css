@@ -59,6 +59,11 @@ body {
     width: 100%;
     margin: 0 auto;
 }
+form input{
+    padding:15px !important;
+    display:block;
+    margin-bottom:15px;
+}
 ul {
     list-style: none;
 }
@@ -105,6 +110,14 @@ table tr {
     content: "\2630\ "; 
 }
 /* ICONOS */
+/* FORM */
+input:invalid {
+  border: 1px solid red;
+}
+
+input:valid {
+  border: 1px solid green;
+}
 /* MENU APLICACION*/
 header {
     background-color: #03ae74;

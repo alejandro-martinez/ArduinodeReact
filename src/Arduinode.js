@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { Router, Route, hashHistory } from 'react-router';
 import * as HTML from './HTML';
-import Dispositivos from './Dispositivos';
+import { Dispositivos, DispositivoEdit } from './Dispositivos';
 import { Salidas, SalidasActivas } from './Salidas';
 
 var menu = [
@@ -37,6 +37,7 @@ class Arduinode extends Component {
 						<Route path="Salidas/:ip" component={ Salidas } />
 						<Route path="SalidasON" component={ SalidasActivas } />
 				    	<Route path="Dispositivos" component={ Dispositivos } />
+				    	<Route path="Dispositivo/:ip" component={ DispositivoEdit } />
 					</Router>
 				</div>
 	  		</div>

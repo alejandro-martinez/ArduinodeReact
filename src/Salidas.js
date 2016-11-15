@@ -11,6 +11,7 @@ class Toggle extends React.Component {
   }
   switch() {
   	this.props.on = !this.props.on;
+  	
   	// Accion asociada al switch, se implementa en el componente que haga uso de Toggle
   	this.props.onSwitch( this.props.model );
   }
@@ -92,6 +93,7 @@ export class SalidasActivas extends Component {
 export class Salidas extends Component {
 	constructor( props ) {
 		super( props );
+		console.log(props)
 		this.state = { salidas: [] }
 	}
 	componentDidMount() {
@@ -99,12 +101,13 @@ export class Salidas extends Component {
 		var This = this;
 
 		Socket.listen('salidas', function ( salidas ) {
-			
-			salidas.forEach( function( v, k, _this ) {
-				_this[k].ip = This.props.params.ip;
-			});
+			if ( salidas ) {
+				salidas.forEach( function( v, k, _this ) {
+					_this[k].ip = This.props.params.ip;
+				});
 
-			This.setState({salidas: salidas});
+				This.setState({salidas: salidas});
+			}
 		});
 
 		Socket.emit('getSalidas', { ip: this.props.params.ip });
