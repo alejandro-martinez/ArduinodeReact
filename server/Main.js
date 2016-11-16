@@ -68,15 +68,16 @@ Dispositivo.prototype = {
 			var params_aux = params;
 			
 			//Consulta estado de la salida, antes de enviar comando			
-			salida.getEstado(params_aux, function( estadoActual ) {
+			salida.getEstado( params_aux,( estadoActual ) => {
 				
 				//Si la salida tiene distinto estado al que se quiere llevar
 				var estadoDeseado = String( params.estado ).concat( ".", params.temporizada || 0 );
-				console.log("Estado deseado",estadoActual,estadoDeseado)
+				
 				if ( estadoActual.trim() !=  estadoDeseado.trim() ) {
 
-					salida.switch( params ,function( response ) {
+					salida.switch( params , ( response ) => {
 						response = parseInt( response.replace(/(?:\r\n|\r|\n)/g, ''));
+						salida.estado = response;
 						callback( response);
 					});
 				}
@@ -199,13 +200,6 @@ Dispositivo.prototype = {
 				This.salidas.push( salida);
 			});
 		}
-	},
-/**
-* Carga lista de dispositivos en memoria
-* @method load
-*/
-	load: function() {
-		DataStore.getFile('dispositivos');
 	}
 };
 

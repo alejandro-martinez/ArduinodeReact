@@ -31,11 +31,7 @@ class Luz extends Component {
 	onSwitch( salida ) {
 		salida.temporizada = 0;
 		salida.estado = ( salida.estado === 0 ) ? 1 : 0;
-		
-		Socket.listen('switchBroadcast', function( estado ) {
-			salida.estado = estado;
-		})
-		
+				
 		Socket.emit('switchSalida', salida );
 	}
 	render() {
@@ -78,6 +74,11 @@ export class SalidasActivas extends Component {
 	componentDidMount() {
 		
 		var This = this;
+		
+		Socket.listen('switchBroadcast', function( _salida ) {
+			console.log("Switch broadcast",_salida)
+			
+		})
 
 		Socket.listen('salidasActivas', function ( salida ) {
 			This.setState({ salidas: This.state.salidas.concat(salida) });
@@ -99,6 +100,13 @@ export class Salidas extends Component {
 	componentDidMount() {
 		
 		var This = this;
+
+
+		Socket.listen('switchBroadcast', function( _salida ) {
+			
+
+			
+		})
 
 		Socket.listen('salidas', function ( salidas ) {
 			if ( salidas ) {

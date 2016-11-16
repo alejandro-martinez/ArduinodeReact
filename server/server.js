@@ -10,74 +10,68 @@ var	express 	= require('express'),
 	middleware 	= require('socketio-wildcard')(),
 	io 			= require('socket.io')( http) ;
 	DataStore 	= require('./DataStore').DataStore;
-	require('./controllers')( app );
+				  require('./controllers')( app );
 	app.use( compress() );
 
-var serverConfig = {},
-	serverInfo	 = { host: "localhost", port:8888 },
-	configPath 	 = './config/config.json';
+var serverConf = {}, configPath = './config/config.json';
 
-/* Crea o busca el archivo de configuracion para el servidor
-y Programador de tareas */
+// Busca o crea el archivo de config
 
 if ( !fs.existsSync( configPath )) {
 	var config = '{"ip":"localhost","port":8888, "tiempoEscaneoTareas":300000, "socketTimeout":500}';
-	fs.writeFileSync(configPath, config);
+	fs.writeFileSync( configPath, config );
 }
 
-var serverConfig = require(configPath);
+var serverConf = require( configPath );
 
 // Server HTTP
-http.listen(serverConfig.port, serverConfig.ip, function() {
-	console.log("Server iniciado en: ", serverConfig.ip + 
-								  ":" + serverConfig.port);
+
+http.listen( serverConf.port, serverConf.ip, function() {
+	console.log("Server iniciado en: ", serverConf.ip + ":" + serverConf.port);
 
 	// Captura excepciones para no detener el servidor 
-	process.on('uncaughtException', function (err) {
-		console.log("Ocurrió un error:", err);
-	});
+	process.on('uncaughtException', (err) => console.log("Ocurrió un error:", err) );
 
 	// Registra middleware para capturar requests de SocketIO 
 	io.use( middleware );
 
 	// Conexión de un cliente
-	io.on('connection', function( sCliente ) {
-		Arduinode.io = io;
-
+	io.on('connection', ( sCliente ) => {
+		
 		// Referencia al socket conectado
-		app.sCliente = Arduinode.dispositivos.sCliente = sCliente;
+		Arduinode.io = io;		
+		app.sCliente = sCliente;
 
 		// Crea socket que recibe eventos de los disp. Arduino
-		Arduinode.listenSwitchEvents( serverConfig );
+		Arduinode.listenSwitchEvents( serverConf );
 
 		sCliente.on('updateDB', ( dispositivos ) => {
-			DataStore.saveModel('dispositivos',dispositivos, 'ip', ( err ) => {
-				Arduinode.dispositivos.load( serverConfig ).getActivos();
-				sCliente.emit('responseDB', (err) ? false : true);
+			DataStore.saveModel('dispositivos', dispositivos, 'ip', ( err ) => {
+				Arduinode.dispositivos.load( serverConf ).getActivos();
+				sCliente.emit('DBupdated', (err) ? false : true);
 			});
 		});
 
-		sCliente.on('getDispositivos', () => {			
-			var dispositivos = Arduinode.dispositivos.lista;
-			Arduinode.dispositivos.getActivos();
-			sCliente.emit('dispositivos', dispositivos);
+		// ------------ OK
+		sCliente.on('getDispositivos', () => {
+			var response = () => sCliente.emit('dispositivos', Arduinode.dispositivos.lista);
+			response();
+			Arduinode.dispositivos.getActivos( response() );
 		});
 
 		// Accion sobre una salida (Persiana, Luz, Bomba)
-		sCliente.on('switchSalida', function( params ) {
-			var onAccion = function( response ) {
-				io.sockets.emit('switchBroadcast', response);
+		sCliente.on('switchSalida',( params ) => {
+			var onAccion = ( response ) => {
+				params.estado = response;
+				io.sockets.emit('switchBroadcast', params);
 			};
 
 			Arduinode.dispositivos.switch( params, onAccion);
 		});
 
 		// Devuelve lista de salidas de un dispositivo (con sus estados)
-		sCliente.on('getSalidas', function( params, p) {
-			var	onData = function( salidas ) {
-				sCliente.emit( 'salidas', salidas);
-			};
-
+		sCliente.on('getSalidas',( params, p) => {
+			var	onData = ( salidas ) => { sCliente.emit( 'salidas', salidas); };
 			Arduinode.dispositivos.getSalidas( onData, params);
 		});
 
@@ -91,27 +85,25 @@ http.listen(serverConfig.port, serverConfig.ip, function() {
 		});
 
 		// Envia la hora del servidor en cada request Socket.IO
-		sCliente.on('*', function() {
-			sCliente.emit('horaServidor', new Date().getTime());
-		});
-
+		sCliente.on('*', () => sCliente.emit('horaServidor', new Date().getTime()));
 	});
 
 	// Carga lista de dispositivos en memoria
-	Arduinode.dispositivos.load( serverConfig ).getActivos();
-	var timeInterval = serverConfig.tiempoActualizacionDispositivos || 60000;
+	Arduinode.dispositivos.load( serverConf ).getActivos();
+
+	var timeInterval = serverConf.tiempoActualizacionDispositivos || 60000;
 	
 	console.log("Actualizando dispositivos cada ",(timeInterval / 1000) / 60, "minutos" )
 	
 	// Comienza el intervalo de actualizacion de dispositivos
-	setInterval(function() { Arduinode.dispositivos.getActivos(); }, timeInterval);
-	taskManager.setConfig( serverConfig );
+	setInterval(() => { Arduinode.dispositivos.getActivos(); }, timeInterval);
+	taskManager.setConfig( serverConf );
 
 	// Carga de tareas programadas
-	setTimeout(function() {
+	setTimeout(() => {
 
 		// (watchChanges) Servicio que vigila la ejecución de tareas en caso de falla
 		taskManager.loadScheduler(true).watchChanges();
 
-	}, serverConfig.tiempoEsperaEscaneoTareas || 0);
+	}, serverConf.tiempoEsperaEscaneoTareas || 0);
 });

@@ -11,6 +11,7 @@ var clases 		= require('./Main.js'),
 	serverConfig= require('./config/config.json'),
 	DataStore 	= require('./DataStore').DataStore,
 	net 		= require('net');
+	var asyncLoop = require('node-async-loop');
 	Dispositivo = clases.Dispositivo;
 	const 	 ON = 0, 
 			OFF = 1;
@@ -72,6 +73,7 @@ function Arduinode() {
 							ip: This.ip
 						});
 					});
+					This.updateDB()
 					salidas.forEach( function(v) {
 						This.io.sockets.emit('switchBroadcast', v);
 					});
@@ -86,32 +88,31 @@ function Arduinode() {
 	this.dispositivos = {
 		lista: [],
 		sCliente: null,
-		salidasEncendidas: [],
-		getActivos: function() {
+		/*getActivos: function() {
 			console.log("Refrescando lista de dispositivos activos")
+			
 			var i = 0;
-			var This = this;
 
-			var loop = function(i) {
+			var loop = (i) => {
 				var disp = This.lista[i];
 
 				if (disp ) {
 					var version = null;
-					This.lista[i].offline = true;
-					This.lista[ i ].version = version;
+					this.lista[i].offline = true;
+					this.lista[i].version = version;
 
 					var onResponse = function( data, ip ) {
 						if ( data) {
 							var dataParsed = data.split("\n")[0];
 							var posV = dataParsed.indexOf('Version:');
 							version = dataParsed.trim().slice( posV + 9 );
-							This.lista[ i ].offline = false;
-							This.lista[ i ].version = version;
+							this.lista[ i ].offline = false;
+							this.lista[ i ].version = version;
 						}
 						
-						if ( i <= This.lista.length ) {
-							if (This.sCliente !== null) {
-								This.sCliente.emit('stateDispositivo', 
+						if ( i <= this.lista.length ) {
+							if (this.sCliente !== null) {
+								this.sCliente.emit('stateDispositivo', 
 											 { dispositivo: This.lista[ i ] });
 							}
 							i++;							
@@ -124,6 +125,26 @@ function Arduinode() {
 				}
 			};
 			loop(0);
+		},*/
+		getActivos: function( cb ) {
+			asyncLoop( this.lista, (item, next) => {
+				item.offline = true;
+				item.version = null;
+			    
+			    var onResponse = ( data, ip ) => {
+					if ( data) {
+						var dataParsed = data.split("\n")[0];
+						var posV = dataParsed.indexOf('Version:');
+						item.offline = false;
+						item.version = dataParsed.trim().slice( posV + 9 );
+					}
+					next();
+				};
+
+			    //Consulta la version del dispositivo
+				socket.send({ ip: item.ip, comando: 'I'}, onResponse);
+			},
+			() => if (cb) cb() );
 		},
 /**
 * Devuelve dispositivo filtrado por IP
@@ -131,22 +152,21 @@ function Arduinode() {
 * @param ip IP del dispositivo a buscar
 * @return Dispositivo
 */
-		getByIP: function(ip) {
-			return _.findWhere(this.lista,{ip: ip});
+		getByIP: function( ip ) { 
+			return _.findWhere( this.lista,{ ip: ip }); 
 		},
 /**
 * Ejecuta un comando sobre una salida de un Dispositivo
-* @method accionar
+* @method switch
 * @param params Objeto JSON con las claves: IP del dispositivo, numero de salida, accion y temporización
 * @param callback Funcion callback que se ejecuta cuando se completa la operaciòn
 * @return Boolean
 */
 		switch: function( params, callback ) {
-			var This = this;
-			this.getByIP( params.ip ).switchSalida( params, function(response) {
-				console.log("response",response)
-				callback( response );
-			});
+			this.getByIP( params.ip )
+				.switchSalida(params, function(response) {
+					callback( response )
+				});
 		},
 
 /**
@@ -167,7 +187,7 @@ function Arduinode() {
 		},
 /**
 * Devuelve listado de salidas de un Dispositivo, filtradas por estado = 0 (Encendidas)
-* @method getSalidasEncendidas
+* @method getSalidasActivas
 * @param callback Funcion callback que se ejecuta cuando se completa la operaciòn
 * @return Array
 */
@@ -219,7 +239,7 @@ function Arduinode() {
 					if (salidas.length > 0 && connectedSuccess) {
 						salidas.forEach(function(s) {
 							if ( s.estado == ON ) callback( s );								
-						})
+						});
 						
 						item.buffer = "";
 					}
@@ -227,18 +247,17 @@ function Arduinode() {
 			});
 		},
 /**
-* Registra dispositivos cargados en el modelo (dispositivos.json), en DataStore.dispositivos
-* y en atributo lista de esta clase
+* Registra dispositivos cargados en el modelo (dispositivos.json), en atributo lista de esta clase
 * @method load
 */
 		load: function() {
-			var This = this;
 			this.lista = [];
-			DataStore.getFile('dispositivos').forEach(function(d) {
+			DataStore.getFile('dispositivos').forEach((d) => {
 				var disp = new Dispositivo( d.id_disp, d.ip, d.note );
 				disp.setSalidas( d.salidas );
-				This.lista.push(disp);
+				this.lista.push( disp );
 			});
+
 			return this;
 		}
 	};

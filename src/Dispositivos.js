@@ -15,16 +15,17 @@ class Model {
 class DispositivosModel extends Model {
 	constructor() {
 		super();
+		this.lista = [];
 		this.model = { ip: "", note: "Nuevo" };
-		this.cached = [];
+		Socket.listen('DBupdated', ( dispositivos ) => { this.lista = dispositivos });
 	}
 	static getAll() {
 
 		var promise = new Promise((resolve, reject) => {
 			
 			Socket.listen('dispositivos', ( dispositivos ) => {
-				this.cached = dispositivos;
-				resolve( this.cached );
+				this.lista = dispositivos;
+				resolve( this.lista );
 			});
 
 			Socket.emit('getDispositivos');
@@ -35,18 +36,18 @@ class DispositivosModel extends Model {
 	static getByIP( ip ) {
 		var promise = new Promise((resolve, reject) => {  
 			
-			let find = () => {
-				let found = this.cached.filter( ( v, k, _this ) => {
+			let findDispositivo = () => {
+				let found = this.lista.filter( ( v, k, _this ) => {
 					if ( v.ip === ip ) return _this[k];
 				});
 
 				return found[0] || null;
 			}
 			
-			if ( this.cached ) resolve( find() );
+			if ( this.lista ) resolve( findDispositivo() );
 			else 
 				this.getAll().then( (dispositivos ) => {
-					resolve ( find() );
+					resolve ( findDispositivo() );
 				});
 		});
 
@@ -63,7 +64,7 @@ class DispositivosModel extends Model {
 					resolve( response );
 				});
 
-				Socket.emit('updateDB', { dispositivos: this.cached });
+				Socket.emit('updateDB', { dispositivos: this.lista });
 			}
 			else {
 				resolve( false );
@@ -131,7 +132,10 @@ export class DispositivoEdit extends Component {
 		var dispositivo = this.state.dispositivo;
 		
 		dispositivo[e.target.name] = e.target.value;
-		this.setState({ dispositivo: dispositivo, valid: this.validIP() });		
+		this.setState({ 
+			dispositivo: dispositivo, 
+			valid: this.validIP() 
+		});
 	}
 	onSubmit( e ) {
     	e.preventDefault();
