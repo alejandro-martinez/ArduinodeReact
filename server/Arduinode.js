@@ -88,35 +88,35 @@ function Arduinode() {
 	this.dispositivos = {
 		lista: [],
 		sCliente: null,
-		/*getActivos: function() {
+		getActivos: function( callback ) {
 			console.log("Refrescando lista de dispositivos activos")
 			
 			var i = 0;
 
 			var loop = (i) => {
-				var disp = This.lista[i];
+				var disp = this.lista[i];
 
-				if (disp ) {
+				if (disp) {
 					var version = null;
-					this.lista[i].offline = true;
-					this.lista[i].version = version;
+					disp.offline = true;
+					disp.version = version;
 
-					var onResponse = function( data, ip ) {
-						if ( data) {
+					var onResponse = ( data ) => {
+						if ( data ) {
 							var dataParsed = data.split("\n")[0];
 							var posV = dataParsed.indexOf('Version:');
 							version = dataParsed.trim().slice( posV + 9 );
-							this.lista[ i ].offline = false;
-							this.lista[ i ].version = version;
+							disp.offline = false;
+							disp.version = version;
 						}
-						
-						if ( i <= this.lista.length ) {
-							if (this.sCliente !== null) {
-								this.sCliente.emit('stateDispositivo', 
-											 { dispositivo: This.lista[ i ] });
-							}
-							i++;							
+						console.log(i, this.lista.length)
+						i++;
+						if ( i <= this.lista.length ) {							
 							loop(i);							
+						}
+						else {
+							console.log("callback")
+							if (callback) callback();
 						}
 					};
 
@@ -125,26 +125,6 @@ function Arduinode() {
 				}
 			};
 			loop(0);
-		},*/
-		getActivos: function( cb ) {
-			asyncLoop( this.lista, (item, next) => {
-				item.offline = true;
-				item.version = null;
-			    
-			    var onResponse = ( data, ip ) => {
-					if ( data) {
-						var dataParsed = data.split("\n")[0];
-						var posV = dataParsed.indexOf('Version:');
-						item.offline = false;
-						item.version = dataParsed.trim().slice( posV + 9 );
-					}
-					next();
-				};
-
-			    //Consulta la version del dispositivo
-				socket.send({ ip: item.ip, comando: 'I'}, onResponse);
-			},
-			() => if (cb) cb() );
 		},
 /**
 * Devuelve dispositivo filtrado por IP

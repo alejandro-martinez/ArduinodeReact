@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 import Loading from 'react-loading';
 
 export class Header extends Component {
@@ -16,20 +17,13 @@ export class Header extends Component {
 				<div id="loading" className={ 'show' + this.state.loading }>
 					<Loading type='cylon' color='#e3e3e3' />
 				</div>
+				<Link onClick={() => window.history.back()} className="back iconHeader left" />
 				
-				<a onClick={() => window.history.back()} className="back iconHeader left"></a>
 				
 				<h1>{ this.state.titulo }</h1>
-
-				<a href="/#/" className="menu iconHeader right"></a>
+				<Link to='/' className='menu iconHeader right'></Link>
 			</header>
 		);
-	}
-};
-
-export class LinkButton extends Component {
-	render() {
-		return ( <a className={ this.props.class } href={ '#/' + this.props.url }>{ this.props.text }</a> );
 	}
 };
 
@@ -48,7 +42,7 @@ export class ListaLinks extends Component {
   generateItem( item ) {
     return (
     	<li>
-    		<LinkButton class={'button'} text={ item.text } url={  item.url } />
+    		<Link to={item.url} className={'button'}>{ item.text }</Link>
     	</li>);
   }
   render() {

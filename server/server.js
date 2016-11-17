@@ -45,43 +45,24 @@ http.listen( serverConf.port, serverConf.ip, function() {
 		// Crea socket que recibe eventos de los disp. Arduino
 		Arduinode.listenSwitchEvents( serverConf );
 
-		sCliente.on('updateDB', ( dispositivos ) => {
-			DataStore.saveModel('dispositivos', dispositivos, 'ip', ( err ) => {
-				Arduinode.dispositivos.load( serverConf ).getActivos();
-				sCliente.emit('DBupdated', (err) ? false : true);
-			});
-		});
+		var updateDB = () => {
+			var response = () => {
+				sCliente.emit('DBUpdated', Arduinode.dispositivos.lista) 
+			};
+			response();
+			Arduinode.dispositivos.getActivos( response );
+		}
 
 		// ------------ OK
-		sCliente.on('getDispositivos', () => {
-			var response = () => sCliente.emit('dispositivos', Arduinode.dispositivos.lista);
-			response();
-			Arduinode.dispositivos.getActivos( response() );
-		});
+		sCliente.on('getDB', () => { updateDB() });
 
 		// Accion sobre una salida (Persiana, Luz, Bomba)
 		sCliente.on('switchSalida',( params ) => {
 			var onAccion = ( response ) => {
-				params.estado = response;
-				io.sockets.emit('switchBroadcast', params);
+				io.sockets.emit('DBUpdated', Arduinode.dispositivos.lista);
 			};
 
 			Arduinode.dispositivos.switch( params, onAccion);
-		});
-
-		// Devuelve lista de salidas de un dispositivo (con sus estados)
-		sCliente.on('getSalidas',( params, p) => {
-			var	onData = ( salidas ) => { sCliente.emit( 'salidas', salidas); };
-			Arduinode.dispositivos.getSalidas( onData, params);
-		});
-
-		// Devuelve lista de luces encendidas
-		sCliente.on('getSalidasActivas', ( params, p) => {
-			var	onData = function( luces ) {
-				sCliente.emit( 'salidasActivas', luces);
-			};
-
-			Arduinode.dispositivos.getSalidasActivas( onData, params);
 		});
 
 		// Envia la hora del servidor en cada request Socket.IO
@@ -89,14 +70,16 @@ http.listen( serverConf.port, serverConf.ip, function() {
 	});
 
 	// Carga lista de dispositivos en memoria
-	Arduinode.dispositivos.load( serverConf ).getActivos();
+	Arduinode.dispositivos.load( serverConf ).getActivos(function() {
+		console.log("Dispositivos cargados en memoria")
+	});
 
 	var timeInterval = serverConf.tiempoActualizacionDispositivos || 60000;
 	
-	console.log("Actualizando dispositivos cada ",(timeInterval / 1000) / 60, "minutos" )
+	//console.log("Actualizando dispositivos cada ",(timeInterval / 1000) / 60, "minutos" )
 	
 	// Comienza el intervalo de actualizacion de dispositivos
-	setInterval(() => { Arduinode.dispositivos.getActivos(); }, timeInterval);
+	//setInterval(() => { Arduinode.dispositivos.getActivos(); }, timeInterval);
 	taskManager.setConfig( serverConf );
 
 	// Carga de tareas programadas

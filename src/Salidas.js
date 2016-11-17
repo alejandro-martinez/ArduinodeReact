@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import * as HTML from './HTML';
 import Switch from 'react-toggle-switch';
 import Socket from './Socket';
+import { Dispositivos, DispositivosModel, DispositivoEdit } from './Dispositivos';
 
 class Toggle extends React.Component {
   constructor( props ) {
@@ -57,6 +58,7 @@ class Luz extends Component {
 
 
 function SalidasTable( props ) {
+	console.log("PROPS",props)
 	return ( 
 		<div>
 			<HTML.Table class="salidas">
@@ -69,59 +71,39 @@ function SalidasTable( props ) {
 export class SalidasActivas extends Component {
 	constructor( props ) {
 		super( props );
-		this.state = { salidas: [] }
+		this.state = props.route.root.state;
 	}
-	componentDidMount() {
-		
-		var This = this;
-		
-		Socket.listen('switchBroadcast', function( _salida ) {
-			console.log("Switch broadcast",_salida)
-			
-		})
-
-		Socket.listen('salidasActivas', function ( salida ) {
-			This.setState({ salidas: This.state.salidas.concat(salida) });
-		});
-
-		Socket.emit('getSalidasActivas');
+	componentWillMount() {
+		Socket.emit('getDB');
 	}
 	render() {
-		return ( <SalidasTable salidas={ this.state.salidas } /> );
+		var salidasActivas = [];
+		this.state.dispositivos.forEach(( disp ) => {
+			disp.salidas.forEach( (salida) => {
+				if (salida.estado === 0) {
+					salidasActivas.concat(salida);
+				}
+			})
+		});
+		console.log(salidasActivas)
+		return ( <SalidasTable salidas={ salidasActivas } /> );
 	}
 };
 
-export class Salidas extends Component {
+export class SalidasDispositivo extends Component {
 	constructor( props ) {
 		super( props );
-		console.log(props)
-		this.state = { salidas: [] }
+		this.state = props.route.root.state;
+		console.log("PAso",this.state)
 	}
-	componentDidMount() {
-		
-		var This = this;
-
-
-		Socket.listen('switchBroadcast', function( _salida ) {
-			
-
-			
-		})
-
-		Socket.listen('salidas', function ( salidas ) {
-			if ( salidas ) {
-				salidas.forEach( function( v, k, _this ) {
-					_this[k].ip = This.props.params.ip;
-				});
-
-				This.setState({salidas: salidas});
-			}
-		});
-
-		Socket.emit('getSalidas', { ip: this.props.params.ip });
+	componentWillMount() {
+		Socket.emit('getDB');
 	}
 	render() {
-		return ( <SalidasTable salidas={ this.state.salidas } /> );
+		var disp = this.state.dispositivos.filter(( disp ) => {
+			return disp.ip == this.props.params.ip;
+		});
+		return ( <SalidasTable salidas={ disp[0].salidas} /> );
 	}
 };
 

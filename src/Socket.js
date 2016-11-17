@@ -11,11 +11,13 @@ var showLoading = ( show ) => {
 
 class SocketIO {
 	emit( param, data ) {
+		console.log("Emit",param)
 		showLoading( true );
 		window.socket.emit( param, data );
 	}
 	listen( param, callback) {
 		var onResponse = function( data ) {
+			console.log("Listen",param)
 			showLoading( false );
 			callback( data );
 		};

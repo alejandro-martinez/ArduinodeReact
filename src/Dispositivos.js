@@ -1,6 +1,7 @@
 /*jshint esversion: 6 */
 import React, { Component } from 'react';
 import Socket from './Socket';
+import { Link } from 'react-router';
 import * as HTML from './HTML';
 
 class Model {
@@ -12,26 +13,14 @@ class Model {
 	}
 }
 
-class DispositivosModel extends Model {
+export class DispositivosModel extends Model {
 	constructor() {
 		super();
 		this.lista = [];
 		this.model = { ip: "", note: "Nuevo" };
-		Socket.listen('DBupdated', ( dispositivos ) => { this.lista = dispositivos });
+		
 	}
 	static getAll() {
-
-		var promise = new Promise((resolve, reject) => {
-			
-			Socket.listen('dispositivos', ( dispositivos ) => {
-				this.lista = dispositivos;
-				resolve( this.lista );
-			});
-
-			Socket.emit('getDispositivos');
-		});
-		
-		return promise;
 	}
 	static getByIP( ip ) {
 		var promise = new Promise((resolve, reject) => {  
@@ -60,11 +49,7 @@ class DispositivosModel extends Model {
 		this.model = newModel;
 		var promise = new Promise((resolve, reject) => {  
 			if ( this.isValid() ) {
-				Socket.listen('responseDB', (response) => {
-					resolve( response );
-				});
-
-				Socket.emit('updateDB', { dispositivos: this.lista });
+				Socket.emit('getDB', { dispositivos: this.lista });
 			}
 			else {
 				resolve( false );
@@ -75,45 +60,45 @@ class DispositivosModel extends Model {
 	}
 }
 
-class ListaDispositivos extends Component {
+export class Dispositivos extends Component {
 	constructor( props ) {
 		super( props );
-		this.state = { dispositivos: [] };
+		this.state = props.route.root.state;
 	}
-	componentDidMount() {
-		const This = this;
-		DispositivosModel.getAll().then(( dispositivos ) => {
-			This.setState({ dispositivos: dispositivos });
-		});
+	componentWillMount() {
+		Socket.emit('getDB');
 	}
 	generateRow( item ) {
 		return (
 			<tr>
-				<td> <HTML.LinkButton url={ 'Salidas/' + item.ip } 
-									  text={ item.note } />
+				<td> 
+				<Link to={ 'Dispositivos/salidas/' + item.ip }> { item.note } </Link>
 				</td>
 				<td> { item.version } </td>
-				<td> <HTML.LinkButton class={ 'iconEdit' } 
-									  url={ 'Dispositivo/' + item.ip }
-									  text={''} />
+				<td> 
+				<Link to= {'Dispositivo/' + item.ip } className='iconEdit'></Link>
 				</td>
 			</tr>
 		);
 	}
 	render() {
-		if ( this.state.dispositivos.length ) {
-			var rows = this.state.dispositivos.map( this.generateRow );
-	    	return ( <div> { rows } </div> );
-    	}
-    	else {
-    		return null;
-    	}
+		console.log("Render class Dispositivos")
+		var rows = this.state.dispositivos.map( this.generateRow );
+		
+		return ( 
+			<div>
+				<HTML.Table class="dispositivos"> { rows } </HTML.Table>
+				<Link to='Dispositivos/create/' className='button'>Nuevo</Link>
+			</div>
+		);
 	}
 };
+
 export class DispositivoEdit extends Component {
 	constructor( props ) {
 		super(props);
-		this.state = { dispositivo: {}, valid: false }
+		this.state = props.route.root.state;
+		this.state = { valid: false }
 		this.changed = this.changed.bind( this );
 		this.onSubmit = this.onSubmit.bind( this );
 	}
@@ -152,23 +137,6 @@ export class DispositivoEdit extends Component {
 				<input type="text" className={'valid' + this.validIP() } name="ip" onChange={this.changed} value={this.state.dispositivo.ip} />
 				<button type="submit" className="button">Guardar</button>
 			</form>
-		);
-	}
-};
-
-
-export class Dispositivos extends Component {
-	constructor(props) {
-		super(props);
-	}
-	render() {
-		return ( 
-			<div>
-				<HTML.Table class="dispositivos">
-					<ListaDispositivos />
-				</HTML.Table>
-				<HTML.LinkButton text="Nuevo" url="Dispositivos/create" class="button" />
-			</div>
 		);
 	}
 };
