@@ -3,9 +3,6 @@ var Arduinode = require('../Arduinode').Arduinode,
 	DataStore = require('../DataStore').DataStore;
 
 var refreshDispositivos = function() {
-		// Carga lista de dispositivos en memoria
-	Arduinode.dispositivos.load( serverConfig );
-	Arduinode.dispositivos.getActivos();
 };
 
 module.exports = function( app ) {
@@ -21,7 +18,6 @@ module.exports = function( app ) {
 	{
 		DataStore.saveModel('dispositivos',req.body,'ip', function(err) {
 			//Recargo dispositivos en memoria
-			refreshDispositivos();
 			res.json({success: (err) ? false : true});
 		});
 	});
@@ -30,7 +26,6 @@ module.exports = function( app ) {
 	app.get('/dispositivo/delete/:id_disp', function(req, res)
 	{
 		var onDelete = function(err) {
-			refreshDispositivos();
 			res.json({success: (err) ? false : true});			
 		};
 		DataStore.deleteModel('dispositivos',

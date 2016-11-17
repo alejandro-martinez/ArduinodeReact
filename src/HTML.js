@@ -17,15 +17,50 @@ export class Header extends Component {
 				<div id="loading" className={ 'show' + this.state.loading }>
 					<Loading type='cylon' color='#e3e3e3' />
 				</div>
-				<Link onClick={() => window.history.back()} className="back iconHeader left" />
+				<a onClick={() => window.history.back()} 
+				   className='back iconHeader left'></a>
 				
 				
 				<h1>{ this.state.titulo }</h1>
-				<Link to='/' className='menu iconHeader right'></Link>
+				<a href='/#/' className='menu iconHeader right'></a>
 			</header>
 		);
 	}
 };
+
+export class Popup extends Component {
+	constructor( props ) {
+		super( props );
+		this.state = { visible: false };
+		this.toggle = this.toggle.bind( this );
+	}
+	toggle() {
+		this.setState({ visible: !this.state.visible });
+	}
+	render( props ) {
+
+		if ( this.state.visible ) {
+			return (
+				<div>
+					<div className={'popup show' + this.state.visible}>
+					{
+						this.props.children
+					}
+					<input type="button" onClick={ this.toggle } value="Aceptar" />
+					</div>
+				</div>
+			);
+		}
+		else {
+			return ( 
+				<a className="iconReloj" onClick={ this.toggle }>
+					<span> { this.props.root.state.popupText } </span>
+				</a> 
+			);
+		}
+		
+	}
+}
 
 export class Table extends Component {
 	render() {

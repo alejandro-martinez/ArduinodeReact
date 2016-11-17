@@ -37,33 +37,23 @@ http.listen( serverConf.port, serverConf.ip, function() {
 
 	// Conexión de un cliente
 	io.on('connection', ( sCliente ) => {
+
+		io.sockets.emit('DBUpdated', Arduinode.dispositivos.lista);		
 		
 		// Referencia al socket conectado
-		Arduinode.io = io;		
+		Arduinode.dispositivos.io = io;		
 		app.sCliente = sCliente;
 
 		// Crea socket que recibe eventos de los disp. Arduino
 		Arduinode.listenSwitchEvents( serverConf );
 
-		var updateDB = () => {
-			var response = () => {
-				sCliente.emit('DBUpdated', Arduinode.dispositivos.lista) 
-			};
-			response();
-			Arduinode.dispositivos.load( serverConf );
-		}
-
-		// ------------ OK
-		sCliente.on('getDB', () => { 
-			console.log("Pedido de actualizacion de dispositivos")
-			updateDB() });
+		sCliente.on('getDB', () => { Arduinode.dispositivos.load( serverConf )});
 
 		// Accion sobre una salida (Persiana, Luz, Bomba)
 		sCliente.on('switchSalida',( params ) => {
-			var onAccion = ( response ) => {
+			var onAccion = () => {
 				io.sockets.emit('DBUpdated', Arduinode.dispositivos.lista);
 			};
-
 			Arduinode.dispositivos.switch( params, onAccion);
 		});
 
@@ -73,7 +63,7 @@ http.listen( serverConf.port, serverConf.ip, function() {
 
 	// Carga lista de dispositivos en memoria
 	Arduinode.dispositivos.load( serverConf );
-
+/*
 	var timeInterval = serverConf.tiempoActualizacionDispositivos || 60000;
 	
 	//console.log("Actualizando dispositivos cada ",(timeInterval / 1000) / 60, "minutos" )
@@ -88,5 +78,5 @@ http.listen( serverConf.port, serverConf.ip, function() {
 		// (watchChanges) Servicio que vigila la ejecución de tareas en caso de falla
 		taskManager.loadScheduler(true).watchChanges();
 
-	}, serverConf.tiempoEsperaEscaneoTareas || 0);
+	}, serverConf.tiempoEsperaEscaneoTareas || 0);*/
 });

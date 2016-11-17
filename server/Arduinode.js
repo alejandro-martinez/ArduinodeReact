@@ -69,10 +69,11 @@ function Arduinode() {
 						salidas.push({ 
 							nro_salida: parseInt( v.slice(1,-1) ), 
 							estado: parseInt( v.slice(-1)), 
-							temporizada: null,
+							temporizada: 0,
 							ip: This.ip
 						});
 					});
+					console.log("SWtich event",salidas)
 				});
 			});
 
@@ -85,7 +86,7 @@ function Arduinode() {
 		lista: [],
 		sCliente: null,
 		getActivos: function( callback ) {
-			console.log("Refrescando lista de dispositivos activos")
+			console.log("Refrescando lista de dispositivos activos.")
 			
 			var i = 0;
 
@@ -160,68 +161,6 @@ function Arduinode() {
 			}
 		},
 /**
-* Devuelve listado de salidas de un Dispositivo, filtradas por estado = 0 (Encendidas)
-* @method getSalidasActivas
-* @param callback Funcion callback que se ejecuta cuando se completa la operaciòn
-* @return Array
-*/
-		getSalidasActivas: function( callback ) {
-			var This = this;
-
-			var salidasAux 	= [], 
-				sockets 	= [], 
-				processed	= [];
-			
-			this.lista.forEach(function(item, key, array) {
-				item.buffer = "";
-				var salidas,
-					connectedSuccess = false,
-					encendidas = [],
-					params = {
-						noError: true,
-						ip: item.ip,
-						id_disp: item.id_disp
-					};
-
-				sockets[key] = new net.Socket();
-				sockets[key].setTimeout( serverConfig.socketTimeout );
-				
-				sockets[key].connect(8000, item.ip, function(response) {
-					connectedSuccess = true;
-					sockets[key].write('G');
-				});
-
-				sockets[key].on('timeout',function(_err) {
-					if (processed.indexOf(item.ip) < 0) {
-						processed.push(item.ip);
-					}
-				});
-
-				sockets[key].on('data',function(_data) {
-					item.buffer+= _data;
-				});
-
-				sockets[key].on('error',function(_err) {
-					connectedSuccess = false;
-					if (processed.indexOf(item.ip) < 0) {
-						processed.push(item.ip);
-					}
-				});
-				sockets[key].on('end',function() {
-					var salidas = item.parseSalida(item, item.buffer);
-					
-					if (salidas.length > 0 && connectedSuccess) {
-						salidas.forEach(function(s,k,_this) {
-							if ( s.estado == ON ) callback( s );								
-							_this['estado'] = s.estado;
-						});
-						
-						item.buffer = "";
-					}
-				});
-			});
-		},
-/**
 * Registra dispositivos cargados en el modelo (dispositivos.json),
 * y los sincroniza con el estado de los dispositivos Arduino reales
 * en atributo lista de esta clase
@@ -229,26 +168,28 @@ function Arduinode() {
 */
 		load: function() {
 			this.lista = [];
-			var lista = DataStore.getFile('dispositivos');
-			
-			var This = this;
 
-			Arrays.asyncLoop( lista, 
-			function(disp, report) {
-				if (disp) {
-					var _d = new Dispositivo( disp.id_disp, disp.ip, disp.note );
-					
-					_d.setSalidas( disp.salidas );
+			DataStore.getFile('dispositivos').forEach((d) => {
+				var _d = new Dispositivo( d.id_disp, d.ip, d.note );
+				_d.setSalidas( d.salidas );
+				this.lista.push(_d);
+			});
 
-					_d.getSalidas(function( estadosSalidas ) {
-						_d.setSalidas( estadosSalidas );
-						This.lista.push( _d );
+			Arrays.asyncLoop( this.lista, (disp, report) => {
+				
+				if ( disp ) {
+					disp.getSalidas( (estados) => {
+						if ( estados ) {
+							disp.setSalidas( estados );
+						}
 						report();
 					});
 				}
-			},
-			function(){
-				
+			},() => {
+				if (this.io) {
+					console.log("This.lista",this.lista)
+					this.io.sockets.emit('DBUpdated', this.lista);
+				}
 			});
 
 			return this;

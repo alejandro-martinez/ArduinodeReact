@@ -79,6 +79,7 @@ Dispositivo.prototype = {
 					salida.switch( params , ( response ) => {
 						response = parseInt( response.replace(/(?:\r\n|\r|\n)/g, ''));
 						salida.estado = response;
+						salida.temporizada = DateConvert.min_a_horario(params.temporizada); 
 						callback( response);
 					});
 				}
@@ -188,7 +189,7 @@ Dispositivo.prototype = {
 				callback( This.parseSalida( params,response ));
 			}
 			else {
-				callback([]);
+				callback();
 			}
 		});
 	},
@@ -199,19 +200,21 @@ Dispositivo.prototype = {
 * @param {JSON Array} _salidas listado de salidas del Dispositivo
 */
 	setSalidas: function( salidas ) {
-		var This = this;
-		This.salidas = [];
+		this.salidas = [];
 
-		if ( salidas && salidas.length ) {
-			salidas.forEach( function( s ) {
+		if ( salidas && salidas.length > 1) {
+			console.log("SALIDAS",salidas)
+			salidas.forEach( (s) => {
 				var factory = new SalidaFactory(),
-					salida 	= factory.create( s.nro_salida, s.tipo, s.note, This.ip );
+					salida 	= factory.create( s.nro_salida, s.tipo, s.note, this.ip );
 
 				// Actualiza estado si viene en el array
-				salida.temporizada = (s.temporizada !== null) ? s.temporizada : 0;
+				if ( s.temporizada && salida.temporizada === null ) {
+					salida.temporizada = s.temporizada;
+				}
 				salida.estado = s.estado;
 
-				This.salidas.push( salida);
+				this.salidas.push( salida);
 			});
 		}
 	}

@@ -35,15 +35,12 @@ mark{
     font: inherit;
     vertical-align: baseline;
 }
-[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
-  display: none !important;
-}
 a {
     cursor: pointer;
     color: #000;
 }
 .showfalse {
-    display:none;
+    display:none !important;
 }
 div.left {
     float: left;
@@ -84,7 +81,20 @@ table tr {
     padding: 15px 0px 10px 10px;
 }
 /* ICONOS */
- 
+.iconReloj {
+    position:fixed;
+    top:0;
+    left:1.3em;
+    z-index:2;
+    font-size:2.6em !important;
+    color:#fff;
+}
+.iconReloj span {
+    font-size:.6em !important;
+}
+.iconReloj:before {
+    content: "\23f1"
+}
 .iconHeader {
     color:#fff;
     font-size:1.3em; 
@@ -103,14 +113,14 @@ table tr {
     content: "\270D";
 }
 .back:before { 
-    content: "\2770\ ";
+    content: "\2770";
 }
 .menu {
     font-weight:bold;
     top: 14px;
 }
 .menu:after {
-    content: "\2630\ "; 
+    content: "\2630"; 
 }
 /* ICONOS */
 /* FORM */
@@ -131,7 +141,7 @@ header {
     text-align: center;
     top: 0;
     position: fixed;
-    z-index: 9999;
+    z-index: 1;
     left: 0;
 }
 header h1 {
@@ -196,7 +206,40 @@ button,
     padding: 13px;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 }
-
+.popup {
+    position:fixed;
+    width:50%;
+    height:200px;
+    border:1px solid green;
+    background:#fff;
+    top: 50%;
+    left: 50%;
+    margin-top: -100px;
+    margin-left: -25%;
+    padding:10px;
+    box-shadow: 0px 0px 0px 1000px rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+.popup input {
+    display: block;
+    padding: 25px;
+    text-align: center;
+    margin: 26px auto;
+}
+.popup input[type='time'] {
+    font-size: 2em;
+    padding: 1px 0;
+    width: 160px;
+}
+.popup input[type='button'] {
+    position: fixed;
+    padding: 0;
+    width: 162px;
+    height: 50px;
+    top: 50%;
+    left: 50%;
+    margin-top: 40px;
+    margin-left: -70px;
+}
 /*DISPOSITIVOS*/
 
 .iconEdit {
@@ -214,11 +257,13 @@ button,
 /*SALIDAS*/
 .salidas td:last-child {
     padding: 12px;
+    width:25%; 
 }
 
 table.salidas td{
     display:inline-block;
     border:none !important;
+    width: 65%;
 }
 table.salidas td h4 {
     float:left;
@@ -231,8 +276,8 @@ table.salidas td h4 {
     position: absolute;
     color: #fff;
     z-index: 1;
-    width: 100%;
-    right: 0;
+    width: 49px;
+    left: 8px;
     top: 5px;
     text-align: left;
 }

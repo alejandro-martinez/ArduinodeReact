@@ -65,9 +65,6 @@ export class Dispositivos extends Component {
 		super( props );
 		this.state = props.route.root.state;
 	}
-	componentWillMount() {
-		Socket.emit('getDB');
-	}
 	generateRow( item ) {
 		return (
 			<tr>
@@ -98,15 +95,11 @@ export class DispositivoEdit extends Component {
 	constructor( props ) {
 		super(props);
 		this.state = props.route.root.state;
-		this.state = { valid: false }
 		this.changed = this.changed.bind( this );
 		this.onSubmit = this.onSubmit.bind( this );
 	}
 	componentDidMount() {
-		
-		DispositivosModel.getByIP( this.props.params.ip ).then((model) => {
-			this.setState({ dispositivo:  model });
-		});
+		this.setState({ dispositivo: this.state.dispositivos });		
 	}
 	validIP() {
 		var ipPattern = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
