@@ -50,11 +50,13 @@ http.listen( serverConf.port, serverConf.ip, function() {
 				sCliente.emit('DBUpdated', Arduinode.dispositivos.lista) 
 			};
 			response();
-			Arduinode.dispositivos.getActivos( response );
+			Arduinode.dispositivos.load( serverConf );
 		}
 
 		// ------------ OK
-		sCliente.on('getDB', () => { updateDB() });
+		sCliente.on('getDB', () => { 
+			console.log("Pedido de actualizacion de dispositivos")
+			updateDB() });
 
 		// Accion sobre una salida (Persiana, Luz, Bomba)
 		sCliente.on('switchSalida',( params ) => {
@@ -70,9 +72,7 @@ http.listen( serverConf.port, serverConf.ip, function() {
 	});
 
 	// Carga lista de dispositivos en memoria
-	Arduinode.dispositivos.load( serverConf ).getActivos(function() {
-		console.log("Dispositivos cargados en memoria")
-	});
+	Arduinode.dispositivos.load( serverConf );
 
 	var timeInterval = serverConf.tiempoActualizacionDispositivos || 60000;
 	

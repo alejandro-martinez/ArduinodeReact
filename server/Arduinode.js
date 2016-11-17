@@ -7,11 +7,11 @@
 var clases 		= require('./Main.js'),
 	socket 		= require('./socket')(),
 	DateConvert = require('./utils/DateConvert')(),
+	Arrays 		= require('./utils/Arrays')(),
 	_ 			= require('underscore'),
 	serverConfig= require('./config/config.json'),
 	DataStore 	= require('./DataStore').DataStore,
 	net 		= require('net');
-	var asyncLoop = require('node-async-loop');
 	Dispositivo = clases.Dispositivo;
 	const 	 ON = 0, 
 			OFF = 1;
@@ -73,10 +73,6 @@ function Arduinode() {
 							ip: This.ip
 						});
 					});
-					This.updateDB()
-					salidas.forEach( function(v) {
-						This.io.sockets.emit('switchBroadcast', v);
-					});
 				});
 			});
 
@@ -109,13 +105,11 @@ function Arduinode() {
 							disp.offline = false;
 							disp.version = version;
 						}
-						console.log(i, this.lista.length)
 						i++;
 						if ( i <= this.lista.length ) {							
 							loop(i);							
 						}
 						else {
-							console.log("callback")
 							if (callback) callback();
 						}
 					};
@@ -217,8 +211,9 @@ function Arduinode() {
 					var salidas = item.parseSalida(item, item.buffer);
 					
 					if (salidas.length > 0 && connectedSuccess) {
-						salidas.forEach(function(s) {
+						salidas.forEach(function(s,k,_this) {
 							if ( s.estado == ON ) callback( s );								
+							_this['estado'] = s.estado;
 						});
 						
 						item.buffer = "";
@@ -227,15 +222,33 @@ function Arduinode() {
 			});
 		},
 /**
-* Registra dispositivos cargados en el modelo (dispositivos.json), en atributo lista de esta clase
+* Registra dispositivos cargados en el modelo (dispositivos.json),
+* y los sincroniza con el estado de los dispositivos Arduino reales
+* en atributo lista de esta clase
 * @method load
 */
 		load: function() {
 			this.lista = [];
-			DataStore.getFile('dispositivos').forEach((d) => {
-				var disp = new Dispositivo( d.id_disp, d.ip, d.note );
-				disp.setSalidas( d.salidas );
-				this.lista.push( disp );
+			var lista = DataStore.getFile('dispositivos');
+			
+			var This = this;
+
+			Arrays.asyncLoop( lista, 
+			function(disp, report) {
+				if (disp) {
+					var _d = new Dispositivo( disp.id_disp, disp.ip, disp.note );
+					
+					_d.setSalidas( disp.salidas );
+
+					_d.getSalidas(function( estadosSalidas ) {
+						_d.setSalidas( estadosSalidas );
+						This.lista.push( _d );
+						report();
+					});
+				}
+			},
+			function(){
+				
 			});
 
 			return this;

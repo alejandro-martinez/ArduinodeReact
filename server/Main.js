@@ -7,6 +7,7 @@
 var socket 		= require('./socket')(),
 	DateConvert = require('./utils/DateConvert')(),
 	DataStore	= require('./DataStore').DataStore,
+	Promise 	= require('promise'),
 	Arduinode	= require('./Arduinode'),
 	fs			= require('fs'),
 	events 		= require("events"),
@@ -125,13 +126,13 @@ Dispositivo.prototype = {
 					var salidaFound = This.getSalidaByNro(nro_salida );
 
 					if (salidaFound) {
-						var salida 				 = JSON.parse(JSON.stringify(salidaFound));
-						salida.estado 		 = parseInt( str[posDospuntos+1] );
+						var salida = JSON.parse(JSON.stringify(salidaFound));
+						salida.estado = parseInt( str[posDospuntos+1] );
 						salida.temporizada = temporizada;
 					}
 					else {
 						newSalidas = true;
-						var dispositivos = DataStore.dispositivos;
+						var dispositivos = Arduinode.Arduinode.dispositivos.lista;
 						var dispositivo = _.findWhere(dispositivos,{ ip: params.ip });
 
 						dispositivo.salidas.push({
@@ -179,24 +180,37 @@ Dispositivo.prototype = {
 * @param callback Funcion callback que se ejecuta cuando se completa la operación
 * @return Array
 */
-	getSalidas: function( params, callback ) {
-		params.comando = 'G';
+	getSalidas: function( callback ) {
+		var params = { comando: 'G', ip: this.ip };
 		var This = this;
-		socket.send( params, function( response ) {
-			callback( This.parseSalida( params, response ) );
+		socket.send(params, function( response ) {
+			if (response) {
+				callback( This.parseSalida( params,response ));
+			}
+			else {
+				callback([]);
+			}
 		});
 	},
 /**
 * Almacena listado de salidas en la instancia de un Dispositivo
+* junto con los estados reales
 * @method setSalidas
 * @param {JSON Array} _salidas listado de salidas del Dispositivo
 */
-	setSalidas: function( _salidas ) {
+	setSalidas: function( salidas ) {
 		var This = this;
-		if (_salidas && _salidas.length) {
-			_salidas.forEach(function(s) {
+		This.salidas = [];
+
+		if ( salidas && salidas.length ) {
+			salidas.forEach( function( s ) {
 				var factory = new SalidaFactory(),
 					salida 	= factory.create( s.nro_salida, s.tipo, s.note, This.ip );
+
+				// Actualiza estado si viene en el array
+				salida.temporizada = (s.temporizada !== null) ? s.temporizada : 0;
+				salida.estado = s.estado;
+
 				This.salidas.push( salida);
 			});
 		}

@@ -223,6 +223,25 @@ table.salidas td{
 table.salidas td h4 {
     float:left;
 }
+.switchContainer {
+    position:relative;
+    width: 122px;
+}
+.switchContainer span {
+    position: absolute;
+    color: #fff;
+    z-index: 1;
+    width: 100%;
+    right: 0;
+    top: 5px;
+    text-align: left;
+}
+.temporizadafalse span {
+    display:none;
+}
+.temporizadatrue .on:after {
+    content:"" !important;
+}
 .switch {
     position:relative;
     width: 126px !important;

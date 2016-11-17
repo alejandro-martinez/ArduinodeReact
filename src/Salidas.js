@@ -19,7 +19,13 @@ class Toggle extends React.Component {
 
   render() {
     return (
-      <Switch model={ this.props.model } on={ this.props.on } onClick={ this.switch } />
+		<div className={'switchContainer temporizada' + (this.props.model.temporizada != 0)}>
+			<span> { this.props.temporizada + ' min'}</span>
+			
+			<Switch model={ this.props.model } on={ this.props.on } 
+					onClick={ this.switch }>
+			</Switch>
+		</div>
     );
   }
 }
@@ -30,7 +36,7 @@ class Luz extends Component {
 		this.onSwitch = this.onSwitch.bind( this );
 	}
 	onSwitch( salida ) {
-		salida.temporizada = 0;
+		salida.temporizada = 60;
 		salida.estado = ( salida.estado === 0 ) ? 1 : 0;
 				
 		Socket.emit('switchSalida', salida );
@@ -41,12 +47,9 @@ class Luz extends Component {
 				<tr>
 					<td> 
 						<h4>{ item.note }</h4>
-					</td>	
-					<td> 
-						{ item.temporizada }
 					</td>
 					<td>
-						<Toggle model={ item } onSwitch={ this.onSwitch } on={ item.estado == 0 } />
+						<Toggle model={ item } temporizada={item.temporizada} onSwitch={ this.onSwitch } on={ item.estado == 0 } />
 					</td>
 				</tr>
 			);
@@ -58,7 +61,7 @@ class Luz extends Component {
 
 
 function SalidasTable( props ) {
-	console.log("PROPS",props)
+	console.log("PROPS",props.salidas)
 	return ( 
 		<div>
 			<HTML.Table class="salidas">
@@ -85,7 +88,6 @@ export class SalidasActivas extends Component {
 				}
 			})
 		});
-		console.log(salidasActivas)
 		return ( <SalidasTable salidas={ salidasActivas } /> );
 	}
 };
@@ -94,9 +96,8 @@ export class SalidasDispositivo extends Component {
 	constructor( props ) {
 		super( props );
 		this.state = props.route.root.state;
-		console.log("PAso",this.state)
 	}
-	componentWillMount() {
+	componentDidMount() {
 		Socket.emit('getDB');
 	}
 	render() {
