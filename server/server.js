@@ -69,7 +69,6 @@ http.listen( serverConf.port, serverConf.ip, function() {
 	//console.log("Actualizando dispositivos cada ",(timeInterval / 1000) / 60, "minutos" )
 	
 	// Comienza el intervalo de actualizacion de dispositivos
-	//setInterval(() => { Arduinode.dispositivos.getActivos(); }, timeInterval);
 	taskManager.setConfig( serverConf );
 
 	// Carga de tareas programadas

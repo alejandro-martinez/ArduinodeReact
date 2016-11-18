@@ -95,42 +95,6 @@ function Arduinode() {
 	this.dispositivos = {
 		lista: [],
 		sCliente: null,
-		getActivos: function( callback ) {
-			console.log("Refrescando lista de dispositivos activos.")
-			
-			var i = 0;
-
-			var loop = (i) => {
-				var disp = this.lista[i];
-
-				if (disp) {
-					var version = null;
-					disp.offline = true;
-					disp.version = version;
-
-					var onResponse = ( data ) => {
-						if ( data ) {
-							var dataParsed = data.split("\n")[0];
-							var posV = dataParsed.indexOf('Version:');
-							version = dataParsed.trim().slice( posV + 9 );
-							disp.offline = false;
-							disp.version = version;
-						}
-						i++;
-						if ( i <= this.lista.length ) {							
-							loop(i);							
-						}
-						else {
-							if (callback) callback();
-						}
-					};
-
-					//Consulta la version
-					socket.send({ ip: disp.ip, comando: 'I'}, onResponse);
-				}
-			};
-			loop(0);
-		},
 /**
 * Devuelve dispositivo filtrado por IP
 * @method getByIP
