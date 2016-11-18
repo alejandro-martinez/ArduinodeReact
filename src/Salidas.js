@@ -21,7 +21,7 @@ class Toggle extends React.Component {
   render() {
     return (
 
-		<div className={'switchContainer temporizada' + ( this.props.on && this.props.model.temporizada !== null )}>
+		<div className={'switchContainer temporizada' + ( this.props.on && ( this.props.model.temporizada && this.props.model.temporizada.length ) )}>
 			<span> { Utils.min_a_horario( this.props.model.temporizada ) }</span>
 			
 			<Switch model={ this.props.model } on={ this.props.on } 
@@ -36,7 +36,6 @@ class Luz extends Component {
 	constructor( props ) {
 		super( props );
 		this.onSwitch = this.onSwitch.bind( this );
-		this.state = props.root.state;
 	}
 	onSwitch( salida ) {
 		salida.temporizada = 0;
@@ -52,7 +51,7 @@ class Luz extends Component {
 		Socket.emit('switchSalida', salida );
 	}
 	render() {
-		var rows = this.state.salidas.map( function( item ) {
+		var rows = this.props.salidas.map( function( item ) {
 			return (
 				<tr>
 					<td> 
@@ -72,8 +71,8 @@ class Luz extends Component {
 class SalidasTable extends Component {
 	constructor( props ) {
 		super( props );
+		this.root = props.root;
 		this.state = { 
-			salidas 	: props.salidas,
 			popupVisible: false, 
 			popupData	: ""
 		};
@@ -89,14 +88,13 @@ class SalidasTable extends Component {
 	}
 	render() {
 		const This = this;
-
 		return (
 			<div>
 				<HTML.Popup className="temporizacion" root={ This }>
 					<input type="time" onChange={ this.onTemporizacion } value={ this.state.popupData } />
 				</HTML.Popup>
 				<HTML.Table class="salidas">
-					<Luz root={ This }/>
+					<Luz root={ this.root } salidas={this.props.salidas} />
 				</HTML.Table>
 			</div>
 		);
@@ -106,19 +104,19 @@ class SalidasTable extends Component {
 export class SalidasActivas extends Component {
 	constructor( props ) {
 		super( props );
+		this.root = props.route.root;
+		this.state = this.root.state;
 	}
-	render() {
+	render() {		
 		var salidasActivas = [];
-		
 		this.props.route.root.state.dispositivos.forEach(( disp ) => {
 			disp.salidas.forEach( (salida) => {
-				if (salida.estado === 0) {
+				if (salida.estado == 0) {
 					salidasActivas.push( salida );
 				}
 			})
 		});
-
-		return ( <SalidasTable salidas={ salidasActivas } /> );
+		return ( <SalidasTable root={ this.root } salidas={ salidasActivas } /> );
 	}
 };
 

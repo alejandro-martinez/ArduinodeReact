@@ -33,15 +33,11 @@ class Arduinode extends Component {
 		this.state = { dispositivos: [] };
 	}
 	componentWillMount() {
-		let This = this;
-
 		Socket.listen('DBUpdated', ( dispositivos ) => {
-			console.log("Broadcast",dispositivos)
-			This.setState({ dispositivos: dispositivos });
+			this.setState({ dispositivos: dispositivos });
 		});
 	}
 	render() {
-		
 		const This = this;
 		return (
 			<div className="Arduinode">
@@ -52,7 +48,7 @@ class Arduinode extends Component {
 					<Router history={ hashHistory }>
 						<Route path="/" component={ Home } />
 						<Route root={This} path="Dispositivos" component={ Dispositivos } />
-						<Route root={This} path="Dispositivos/salidasOn" component={ SalidasActivas } />
+						<Route root={this} path="Dispositivos/salidasOn" component={ SalidasActivas } />
 						<Route root={This} path="Dispositivo/:ip" component={ DispositivoEdit } />
 						<Route root={This} path="Dispositivos/salidas/:ip" component={ SalidasDispositivo } />
 					</Router>

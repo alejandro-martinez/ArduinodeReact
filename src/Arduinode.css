@@ -286,7 +286,8 @@ table.salidas td h4 {
     top: 5px;
     text-align: left;
 }
-.temporizadafalse span {
+.temporizadafalse span,
+.temporizadanull span {
     display:none;
 }
 .temporizadatrue .on:after {

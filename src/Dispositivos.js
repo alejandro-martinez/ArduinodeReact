@@ -47,7 +47,6 @@ export class Dispositivos extends Component {
 		);
 	}
 	render() {
-		console.log("Render class Dispositivos")
 		var rows = this.state.dispositivos.map( this.generateRow );
 		
 		return ( 
@@ -89,8 +88,6 @@ export class DispositivoEdit extends Component {
 	onSubmit( e ) {
     	e.preventDefault();
     	DispositivosModel.save( this.state.dispositivo ).then( (response) => {
-    		console.log("response",response)
-
     	})
 	}
 	render() {
