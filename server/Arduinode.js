@@ -54,15 +54,14 @@ function Arduinode() {
 				
 				This.data = "";
 
-				socket.on('data', function( data ) {
+				socket.on('data', ( data ) => {
 					This.ip = socket.remoteAddress;
-					console.log(data.toString())
 					This.data+= data.toString().replace("\r","+");
 				});
 
 				socket.on('end', function() {
-					
-					//This.data = This.data.replace("\n","-").replace("+n"," ").slice(0, -1);
+					console.log("Evento externo de: ", This.ip);
+					This.data = This.data.replace("\n","-").replace("+n"," ").slice(0, -1);
 					var salidas_raw = This.data.slice(0,-1).split("+-");
 					
 					var salidas = [];
@@ -74,10 +73,20 @@ function Arduinode() {
 							ip: This.ip
 						});
 					});
-					console.log("SWtich event",salidas)
+					
+					var dispositivo = This.dispositivos.getByIP( This.ip );
+
+					salidas.map((t) => {
+						var index = dispositivo.salidas.findIndex((s) => { 
+							return s.nro_salida == t.nro_salida;
+						});
+						dispositivo.salidas[index].estado = t.estado;
+					});
+
+					This.io.sockets.emit('DBUpdated', This.dispositivos.lista)
 				});
 			});
-
+				
 			this.socketTCP.listen({ host: conf.ip, port: conf.port + 1 }, function() {
 				console.log('Socket escuchando arduinos en:'+ conf.ip, conf.port+1);
 			});
@@ -188,7 +197,6 @@ function Arduinode() {
 				}
 			},() => {
 				if (this.io) {
-					console.log("This.lista",this.lista)
 					this.io.sockets.emit('DBUpdated', this.lista);
 				}
 			});

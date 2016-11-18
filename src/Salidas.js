@@ -44,7 +44,7 @@ class Luz extends Component {
 			salida.estado = 1;
 		}
 		else {
-			salida.temporizada = this.props.root.state.popupData;
+			salida.temporizada = this.props.salidasState.popupData;
 			salida.estado = 0;
 		}
 
@@ -75,7 +75,7 @@ class SalidasTable extends Component {
 		this.state = { 
 			popupVisible: false, 
 			popupData	: ""
-		};
+		}
 		this.onTemporizacion = this.onTemporizacion.bind( this );
 		this.onAceptar 		 = this.onAceptar.bind( this );
 	}
@@ -91,10 +91,10 @@ class SalidasTable extends Component {
 		return (
 			<div>
 				<HTML.Popup className="temporizacion" root={ This }>
-					<input type="time" onChange={ this.onTemporizacion } value={ this.state.popupData } />
+					<input type="time" onChange={ this.onTemporizacion } value={ this.root.state.popupData } />
 				</HTML.Popup>
 				<HTML.Table class="salidas">
-					<Luz root={ this.root } salidas={this.props.salidas} />
+					<Luz salidasState={ this.state } root={ this.root } salidas={this.props.salidas} />
 				</HTML.Table>
 			</div>
 		);
@@ -123,12 +123,14 @@ export class SalidasActivas extends Component {
 export class SalidasDispositivo extends Component {
 	constructor( props ) {
 		super( props );
+		this.root = props.route.root;
+		this.state = this.root.state;
 	}
 	render() {
-		var disp = this.props.route.root.state.dispositivos.filter(( disp ) => {
+		var disp = this.state.dispositivos.filter(( disp ) => {
 			return disp.ip == this.props.params.ip;
 		});
-		return ( <SalidasTable salidas={ disp[0].salidas } /> );
+		return ( <SalidasTable root={ this.root } salidas={ disp[0].salidas } /> );
 	}
 };
 

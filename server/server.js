@@ -41,7 +41,7 @@ http.listen( serverConf.port, serverConf.ip, function() {
 		io.sockets.emit('DBUpdated', Arduinode.dispositivos.lista);		
 		
 		// Referencia al socket conectado
-		Arduinode.dispositivos.io = io;		
+		Arduinode.io = io;		
 		app.sCliente = sCliente;
 
 		// Crea socket que recibe eventos de los disp. Arduino

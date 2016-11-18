@@ -203,7 +203,6 @@ Dispositivo.prototype = {
 		this.salidas = [];
 
 		if ( salidas && salidas.length > 1) {
-			console.log("SALIDAS",salidas)
 			salidas.forEach( (s) => {
 				var factory = new SalidaFactory(),
 					salida 	= factory.create( s.nro_salida, s.tipo, s.note, this.ip );
