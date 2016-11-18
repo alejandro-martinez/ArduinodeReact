@@ -20,28 +20,6 @@ export class DispositivosModel extends Model {
 		this.model = { ip: "", note: "Nuevo" };
 		
 	}
-	static getAll() {
-	}
-	static getByIP( ip ) {
-		var promise = new Promise((resolve, reject) => {  
-			
-			let findDispositivo = () => {
-				let found = this.lista.filter( ( v, k, _this ) => {
-					if ( v.ip === ip ) return _this[k];
-				});
-
-				return found[0] || null;
-			}
-			
-			if ( this.lista ) resolve( findDispositivo() );
-			else 
-				this.getAll().then( (dispositivos ) => {
-					resolve ( findDispositivo() );
-				});
-		});
-
-		return promise;
-	}
 	static isValid() {
 		return true;
 	}
@@ -99,7 +77,10 @@ export class DispositivoEdit extends Component {
 		this.onSubmit = this.onSubmit.bind( this );
 	}
 	componentDidMount() {
-		this.setState({ dispositivo: this.state.dispositivos });		
+		let found = this.state.dispositivos.filter( ( v, k, _this ) => {
+			return v.ip === this.props.params.ip;
+		});
+		this.setState({ dispositivo: found[0] });		
 	}
 	validIP() {
 		var ipPattern = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
@@ -119,17 +100,21 @@ export class DispositivoEdit extends Component {
     	e.preventDefault();
     	DispositivosModel.save( this.state.dispositivo ).then( (response) => {
     		console.log("response",response)
+
     	})
 	}
 	render() {
-		return ( 
-			<form ref="DispositivoForm" id="DispositivoForm" onSubmit={this.onSubmit}>
-				Descripción
-				<input type="text" name="note" onChange={ this.changed } value={this.state.dispositivo.note} />
-				IP
-				<input type="text" className={'valid' + this.validIP() } name="ip" onChange={this.changed} value={this.state.dispositivo.ip} />
-				<button type="submit" className="button">Guardar</button>
-			</form>
-		);
+		if ( this.state.dispositivo ) {
+			return ( 
+				<form ref="DispositivoForm" id="DispositivoForm" onSubmit={this.onSubmit}>
+					Descripción
+					<input type="text" name="note" onChange={ this.changed } value={this.state.dispositivo.note} />
+					IP
+					<input type="text" className={'valid' + this.validIP() } name="ip" onChange={this.changed} value={this.state.dispositivo.ip} />
+					<button type="submit" className="button">Guardar</button>
+				</form>
+			);
+		}
+		else return null;
 	}
 };
