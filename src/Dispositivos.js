@@ -4,18 +4,8 @@ import Socket from './Socket';
 import { Link } from 'react-router';
 import * as HTML from './HTML';
 
-class Model {
-	constructor( db ) {
-		this.jsonDB = db;
-	}
-	save() {
-		console.log("Parent")
-	}
-}
-
-export class DispositivosModel extends Model {
+export class DispositivosModel {
 	constructor() {
-		super();
 		this.lista = [];
 		this.model = { ip: "", note: "Nuevo" };
 		

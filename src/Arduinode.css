@@ -60,9 +60,11 @@ body {
     margin: 0 auto;
 }
 form input{
-    padding:15px !important;
-    display:block;
-    margin-bottom:15px;
+    padding: 15px 0 15px 11px !important;
+    display: block;
+    margin-bottom: 15px;
+    width: 100%;
+    box-sizing: border-box;
 }
 ul {
     list-style: none;

@@ -56,12 +56,13 @@ function Arduinode() {
 
 				socket.on('data', function( data ) {
 					This.ip = socket.remoteAddress;
+					console.log(data.toString())
 					This.data+= data.toString().replace("\r","+");
 				});
 
 				socket.on('end', function() {
 					
-					This.data = This.data.replace("\n","-").replace("+n"," ").slice(0, -1);
+					//This.data = This.data.replace("\n","-").replace("+n"," ").slice(0, -1);
 					var salidas_raw = This.data.slice(0,-1).split("+-");
 					
 					var salidas = [];

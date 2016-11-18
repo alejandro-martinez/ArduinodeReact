@@ -19,10 +19,9 @@ class Toggle extends React.Component {
   }
 
   render() {
-  	console.log("model",this.props.model)
     return (
 
-		<div className={'switchContainer temporizada' + ( this.props.model.temporizada !== null )}>
+		<div className={'switchContainer temporizada' + ( this.props.on && this.props.model.temporizada !== null )}>
 			<span> { Utils.min_a_horario( this.props.model.temporizada ) }</span>
 			
 			<Switch model={ this.props.model } on={ this.props.on } 
@@ -107,15 +106,14 @@ class SalidasTable extends Component {
 export class SalidasActivas extends Component {
 	constructor( props ) {
 		super( props );
-		this.state = props.route.root.state;
 	}
 	render() {
 		var salidasActivas = [];
 		
-		this.state.dispositivos.forEach(( disp ) => {
+		this.props.route.root.state.dispositivos.forEach(( disp ) => {
 			disp.salidas.forEach( (salida) => {
 				if (salida.estado === 0) {
-					salidasActivas.concat(salida);
+					salidasActivas.push( salida );
 				}
 			})
 		});
@@ -127,13 +125,12 @@ export class SalidasActivas extends Component {
 export class SalidasDispositivo extends Component {
 	constructor( props ) {
 		super( props );
-		this.state = props.route.root.state;
 	}
 	render() {
-		var disp = this.state.dispositivos.filter(( disp ) => {
+		var disp = this.props.route.root.state.dispositivos.filter(( disp ) => {
 			return disp.ip == this.props.params.ip;
 		});
-		return ( <SalidasTable salidas={ disp[0].salidas} /> );
+		return ( <SalidasTable salidas={ disp[0].salidas } /> );
 	}
 };
 
