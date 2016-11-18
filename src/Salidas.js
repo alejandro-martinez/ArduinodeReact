@@ -19,9 +19,11 @@ class Toggle extends React.Component {
   }
 
   render() {
+  	console.log("model",this.props.model)
     return (
-		<div className={'switchContainer temporizada' + (this.props.model.temporizada != '00:00')}>
-			<span> { Utils.min_a_horario(this.props.temporizada) }</span>
+
+		<div className={'switchContainer temporizada' + ( this.props.model.temporizada !== null )}>
+			<span> { Utils.min_a_horario( this.props.model.temporizada ) }</span>
 			
 			<Switch model={ this.props.model } on={ this.props.on } 
 					onClick={ this.switch }>
@@ -39,29 +41,26 @@ class Luz extends Component {
 	}
 	onSwitch( salida ) {
 		salida.temporizada = 0;
-		
+
 		if ( salida.estado === 0 ) {
-			salida.estado = 1;	
+			salida.estado = 1;
 		}
 		else {
-			salida.temporizada = this.state.temporizada;
+			salida.temporizada = this.props.root.state.popupData;
 			salida.estado = 0;
 		}
-				
+
 		Socket.emit('switchSalida', salida );
 	}
 	render() {
-		var rows = this.props.salidas.map( function( item ) {
+		var rows = this.state.salidas.map( function( item ) {
 			return (
 				<tr>
 					<td> 
 						<h4>{ item.note }</h4>
 					</td>
 					<td className={ 'show' + (item.estado !== null) }>
-						<Toggle model={ item } 
-								temporizada={item.temporizada} 
-								onSwitch={ this.onSwitch } 
-								on={ item.estado == 0 } />
+						<Toggle model={ item } onSwitch={ this.onSwitch } on={ item.estado === 0 }/>
 					</td>
 				</tr>
 			);
@@ -74,14 +73,17 @@ class Luz extends Component {
 class SalidasTable extends Component {
 	constructor( props ) {
 		super( props );
-		this.temporizacion = "";
-		this.state = { popupVisible: false, popupText: this.temporizacion};
+		this.state = { 
+			salidas 	: props.salidas,
+			popupVisible: false, 
+			popupData	: ""
+		};
 		this.onTemporizacion = this.onTemporizacion.bind( this );
-		this.onAceptar = this.onAceptar.bind( this );
+		this.onAceptar 		 = this.onAceptar.bind( this );
 	}
 	onTemporizacion ( e ) {
-		this.temporizacion = e.target.value;
-		this.setState({ popupText: this.temporizacion });
+		e.preventDefault();
+		this.setState({ popupData: e.target.value == "" ? null : e.target.value });
 	}
 	onAceptar() {
 		this.setState({ popupVisible: false });
@@ -92,10 +94,10 @@ class SalidasTable extends Component {
 		return (
 			<div>
 				<HTML.Popup className="temporizacion" root={ This }>
-					<input type="time" onChange={ this.onTemporizacion } value={ this.state.temporizacion } />
+					<input type="time" onChange={ this.onTemporizacion } value={ this.state.popupData } />
 				</HTML.Popup>
 				<HTML.Table class="salidas">
-					<Luz salidas={ this.props.salidas } root={ This }/>
+					<Luz root={ This }/>
 				</HTML.Table>
 			</div>
 		);

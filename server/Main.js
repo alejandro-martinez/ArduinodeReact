@@ -79,7 +79,7 @@ Dispositivo.prototype = {
 					salida.switch( params , ( response ) => {
 						response = parseInt( response.replace(/(?:\r\n|\r|\n)/g, ''));
 						salida.estado = response;
-						salida.temporizada = DateConvert.min_a_horario(params.temporizada); 
+						salida.temporizada = params.temporizada;
 						callback( response);
 					});
 				}

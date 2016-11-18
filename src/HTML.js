@@ -38,7 +38,6 @@ export class Popup extends Component {
 		this.setState({ visible: !this.state.visible });
 	}
 	render( props ) {
-
 		if ( this.state.visible ) {
 			return (
 				<div>
@@ -54,7 +53,7 @@ export class Popup extends Component {
 		else {
 			return ( 
 				<a className="iconReloj" onClick={ this.toggle }>
-					<span> { this.props.root.state.popupText } </span>
+					<span> { this.props.root.state.popupData } </span>
 				</a> 
 			);
 		}
