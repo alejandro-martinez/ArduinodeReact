@@ -37,15 +37,13 @@ function DataStore() {
 	this.tareas 	  = [];
 	this.tareasActivas= [];
 	this.getFile = function( file ) {
-
-		//Si el archivo solicitado no existe, se crea
 		var filePath = './models/' + file + '.json';
+		
 		if ( !fs.existsSync( filePath ) ) {
 			fs.writeFileSync(filePath, '[]');
 		}
-		var content = JSON.parse(fs.readFileSync('./models/' + file + '.json', 'utf8'));
-		
-		return content;
+
+		return JSON.parse( fs.readFileSync('./models/' + file + '.json', 'utf8'));
 	};
 /**
 * Método para actualizar JSON

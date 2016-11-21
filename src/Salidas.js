@@ -116,9 +116,6 @@ class SalidasTable extends Component {
 		this.onTemporizacion = this.onTemporizacion.bind( this );
 		this.onAceptar 		 = this.onAceptar.bind( this );
 	}
-	editDescripcion() {
-
-	}
 	onTemporizacion ( e ) {
 		e.preventDefault();
 		this.setState({ popupData: e.target.value == "" ? null : e.target.value });
@@ -136,10 +133,9 @@ class SalidasTable extends Component {
 
 			tableItems.push(
 				<Luz item={ item }
-					 salidasState={ this.state } 
-					 root={ this.root } 
+					 salidasState={ This.state } 
+					 root={ This.root } 
 					 switchClass= { ' temporizada' + estaTemporizada }
-					 onItemClick={ this.onItemClick }
 				/>
 			);
 		}, this);

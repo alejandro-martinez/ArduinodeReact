@@ -8,10 +8,10 @@ var socket 		= require('./socket')(),
 	DateConvert = require('./utils/DateConvert')(),
 	DataStore	= require('./DataStore').DataStore,
 	Promise 	= require('promise'),
-	Arduinode	= require('./Arduinode'),
 	fs			= require('fs'),
 	events 		= require("events"),
-	_ 			= require('underscore');
+	_ 			= require('underscore'),
+	Arduinode	= require('./Arduinode');
 
 /**
 * Representa un Dispositivo Arduino. Permite:
@@ -65,12 +65,12 @@ Dispositivo.prototype = {
 		
 		var salida = this.getSalidaByNro( params.nro_salida );
 
-		if (salida) {
+		if ( salida ) {
 			var params_aux = params;
 			
 			//Consulta estado de la salida, antes de enviar comando			
 			salida.getEstado( params_aux,( estadoActual ) => {
-				
+
 				//Si la salida tiene distinto estado al que se quiere llevar
 				var estadoDeseado = String( params.estado ).concat( ".", params.temporizada || 0 );
 				
@@ -133,7 +133,7 @@ Dispositivo.prototype = {
 					}
 					else {
 						newSalidas = true;
-						var dispositivos = Arduinode.Arduinode.dispositivos.lista;
+						var dispositivos = Arduinode.dispositivos.lista;
 						var dispositivo = _.findWhere(dispositivos,{ ip: params.ip });
 
 						dispositivo.salidas.push({
@@ -212,7 +212,7 @@ Dispositivo.prototype = {
 					salida.temporizada = s.temporizada;
 				}
 				salida.estado = s.estado;
-
+				salida.ip = this.ip;
 				this.salidas.push( salida);
 			});
 		}

@@ -140,6 +140,36 @@ function Arduinode() {
 				callback( [] );
 			}
 		},
+		removeMemKeys: ( remove, arr ) => {
+			var keys = ['tipo','estado', 'accion','comando','ip','temporizada'];
+			var lista = arr || Arduinode.getInstance().dispositivos.lista;
+			var deleteMemoryKeys = () => {
+				lista.forEach( ( disp ) => {
+					disp.salidas.forEach( ( s, k, _this ) => {
+						keys.forEach((_k) => {
+							if (Object.keys( s ).indexOf(_k) > -1) {
+								if ( remove ) {
+									delete _this[k][_k];
+								}
+							}
+							else {
+								if (!remove) {
+									_this[k][_k] = null;
+								}
+							}
+						});
+					});
+				});
+				return lista;
+			}
+			
+			return deleteMemoryKeys();
+		},
+		update: function( dispositivos ) {
+			var dispositivos = this.removeMemKeys( true, dispositivos );
+			this.lista = dispositivos;
+			return DataStore.updateDB('dispositivos', dispositivos);
+		},
 /**
 * Registra dispositivos cargados en el modelo (dispositivos.json),
 * y los sincroniza con el estado de los dispositivos Arduino reales
@@ -150,27 +180,27 @@ function Arduinode() {
 			var This = this;
 			this.lista = [];
 
-			var file = DataStore.getFile('dispositivos');
-			
-			file.forEach((d) => {
+			DataStore.getFile('dispositivos').forEach((d) => {
 				var _d = new Dispositivo( d.id_disp, d.ip, d.note );
 				_d.setSalidas( d.salidas );
-				this.lista.push(_d);
+				This.lista.push(_d);
 			});
 
-			Arrays.asyncLoop( this.lista, (disp, report) => {
+			Arrays.asyncLoop( this.lista, ( disp, report ) => {
 				
 				if ( disp ) {
 					disp.getSalidas( (estados) => {
-						if ( estados ) {
-							disp.setSalidas( estados );
-						}
+						if ( estados ) disp.setSalidas( estados );
 						report();
 					});
 				}
 			},() => {
+				
 				var This = Arduinode.getInstance();
-				if (This.io.hasOwnProperty('sockets')) {
+				
+				This.dispositivos.removeMemKeys( false );
+
+				if ( This.io.hasOwnProperty('sockets') ) {
 					This.io.sockets.emit('DBUpdated', this.lista);
 				}
 			});

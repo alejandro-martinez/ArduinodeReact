@@ -50,8 +50,7 @@ http.listen( serverConf.port, serverConf.ip, function() {
 		sCliente.on('getDB', () => { Arduinode.dispositivos.load( serverConf )});
 
 		sCliente.on('updateDB', ( db ) => { 
-			if ( DataStore.updateDB('dispositivos', db ) ) {
-				Arduinode.dispositivos.lista = db;
+			if ( Arduinode.dispositivos.update( db )) {
 				Arduinode.dispositivos.load( serverConf );
 			}
 			io.sockets.emit('DBUpdated', db);
