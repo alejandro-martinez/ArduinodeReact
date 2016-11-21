@@ -38,6 +38,34 @@ var clases 		= require('./Main.js'),
 function Arduinode() {
 	this.io = {};
 	this.socketTCP = null;
+
+/**
+* Recibe un array de salidas con los estados actuales de un dispositivo,
+* y actualiza las salidas del dispositivo en memoria
+*/
+	this.updateEstadoSalidas = function( salidas_raw ) {
+		
+		var salidas = [];
+		salidas_raw.forEach( function(v) {
+			salidas.push({ 
+				nro_salida: parseInt( v.slice(1,-1) ), 
+				estado: parseInt( v.slice(-1)), 
+				temporizada: 0,
+				ip: This.ip
+			});
+		});
+		
+		var dispositivo = this.dispositivos.getByIP( This.ip );
+
+		salidas.map((t) => {
+			var index = dispositivo.salidas.findIndex((s) => { 
+				return s.nro_salida == t.nro_salida;
+			});
+			dispositivo.salidas[index].estado = t.estado;
+		});
+
+		this.io.sockets.emit('DBUpdated', this.dispositivos.lista);
+	},
 /**
 * Registra un socket para escuchar eventos de los dispositivos Arduino reales.
 * Emite un broadcast a todos los dispositivos conectados a la aplicacion,
@@ -62,28 +90,7 @@ function Arduinode() {
 				socket.on('end', function() {
 					console.log("Evento externo de: ", This.ip);
 					This.data = This.data.replace("\n","-").replace("+n"," ").slice(0, -1);
-					var salidas_raw = This.data.slice(0,-1).split("+-");
-					
-					var salidas = [];
-					salidas_raw.forEach( function(v) {
-						salidas.push({ 
-							nro_salida: parseInt( v.slice(1,-1) ), 
-							estado: parseInt( v.slice(-1)), 
-							temporizada: 0,
-							ip: This.ip
-						});
-					});
-					
-					var dispositivo = This.dispositivos.getByIP( This.ip );
-
-					salidas.map((t) => {
-						var index = dispositivo.salidas.findIndex((s) => { 
-							return s.nro_salida == t.nro_salida;
-						});
-						dispositivo.salidas[index].estado = t.estado;
-					});
-
-					This.io.sockets.emit('DBUpdated', This.dispositivos.lista)
+					This.updateEstadoSalidas( This.data.slice(0,-1).split("+-") );
 				});
 			});
 				
