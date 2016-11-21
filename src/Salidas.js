@@ -20,10 +20,8 @@ class Toggle extends React.Component {
 
   render() {
     return (
-
-		<div className={'switchContainer temporizada' + ( this.props.on && ( this.props.model.temporizada && this.props.model.temporizada.length ) )}>
-			<span> { Utils.min_a_horario( this.props.model.temporizada ) }</span>
-			
+		<div className={ 'switchContainer' + this.props.switchClass }>
+			<span> { this.props.model.temporizada } </span>
 			<Switch model={ this.props.model } on={ this.props.on } 
 					onClick={ this.switch }>
 			</Switch>
@@ -52,13 +50,19 @@ class Luz extends Component {
 	}
 	render() {
 		var rows = this.props.salidas.map( function( item ) {
+			var estaTemporizada = (item.temporizada !== null && item.temporizada !== "");
+
 			return (
 				<tr>
 					<td> 
 						<h4>{ item.note }</h4>
 					</td>
 					<td className={ 'show' + (item.estado !== null) }>
-						<Toggle model={ item } onSwitch={ this.onSwitch } on={ item.estado === 0 }/>
+						<Toggle model={ item } 
+								onSwitch={ this.onSwitch } 
+								on={ item.estado === 0 }
+								switchClass={' temporizada' + estaTemporizada}
+						/>
 					</td>
 				</tr>
 			);
