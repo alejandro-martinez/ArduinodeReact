@@ -33,7 +33,12 @@ class Toggle extends React.Component {
 class Luz extends Component {
 	constructor( props ) {
 		super( props );
+		this.root = props.root;
 		this.onSwitch = this.onSwitch.bind( this );
+		this.onChangeDescripcion = this.onChangeDescripcion.bind( this );
+		this.onItemClick = this.onItemClick.bind( this );
+		this.onReset = this.onReset.bind( this );
+		this.state = { model: props.item, editMode: false};
 	}
 	onSwitch( salida ) {
 		salida.temporizada = 0;
@@ -48,27 +53,47 @@ class Luz extends Component {
 
 		Socket.emit('switchSalida', salida );
 	}
+	onItemClick() {
+		this.setState({ editMode: !this.editMode });
+	}
+	onChangeDescripcion( item, e ) {
+		item.note = e.target.value;
+		this.forceUpdate();
+	}
+	onReset(e) {
+		this.setState({ editMode: false });
+	}
 	render() {
-		var rows = this.props.salidas.map( function( item ) {
-			var estaTemporizada = (item.temporizada !== null && item.temporizada !== "");
+		let itemEdit; 
 
-			return (
-				<tr>
-					<td> 
-						<h4>{ item.note }</h4>
-					</td>
-					<td className={ 'show' + (item.estado !== null) }>
-						<Toggle model={ item } 
-								onSwitch={ this.onSwitch } 
-								on={ item.estado === 0 }
-								switchClass={' temporizada' + estaTemporizada}
-						/>
-					</td>
-				</tr>
-			);
-		}, this);		
+		if ( this.state.editMode ) {
+			itemEdit = <input type="text" 
+							  onChange={ this.onChangeDescripcion } 
+							  value={ this.state.model.note } />
 
-    	return ( <div> {rows} </div> );
+		}
+		else {
+			itemEdit = <h4 onClick={ this.onItemClick }>{ this.state.model.note }</h4>;
+		}
+		let showSwitch = ( this.state.model.estado !== null) && ( !this.state.editMode);
+		return (
+			<tr className={ 'editRow' + this.state.editMode }>
+				<td> 
+					{ itemEdit } 
+				</td>
+				<td className={'edit show' + this.state.editMode}>
+					<a className='iconDELETE' onClick={ this.onReset }></a>
+					<a className='iconOK' onClick={ this.root.updateDB }></a>
+				</td>
+				<td className={ 'show' + showSwitch }>
+					<Toggle model={ this.state.model } 
+							onSwitch={ this.onSwitch } 
+							on={ this.state.model.estado === 0 }
+							switchClass={ this.props.switchClass }
+					/>
+				</td>
+			</tr>
+		);
 	}
 };
 
@@ -83,6 +108,9 @@ class SalidasTable extends Component {
 		this.onTemporizacion = this.onTemporizacion.bind( this );
 		this.onAceptar 		 = this.onAceptar.bind( this );
 	}
+	editDescripcion() {
+
+	}
 	onTemporizacion ( e ) {
 		e.preventDefault();
 		this.setState({ popupData: e.target.value == "" ? null : e.target.value });
@@ -92,13 +120,30 @@ class SalidasTable extends Component {
 	}
 	render() {
 		const This = this;
+		var tableItems = [];
+
+		var rows = this.props.salidas.map( function( item ) {
+			
+			let estaTemporizada = (item.temporizada !== null && item.temporizada !== "");
+
+			tableItems.push(
+				<Luz item={ item }
+					 salidasState={ this.state } 
+					 root={ this.root } 
+					 switchClass= { ' temporizada' + estaTemporizada }
+					 onItemClick={ this.onItemClick }
+				/>
+			);
+		}, this);
+
 		return (
 			<div>
 				<HTML.Popup className="temporizacion" root={ This }>
-					<input type="time" onChange={ this.onTemporizacion } value={ this.root.state.popupData } />
+					<input type="time" onChange={ this.onTemporizacion } 
+									   value={ this.root.state.popupData } />
 				</HTML.Popup>
 				<HTML.Table class="salidas">
-					<Luz salidasState={ this.state } root={ this.root } salidas={this.props.salidas} />
+					{ tableItems }					
 				</HTML.Table>
 			</div>
 		);
@@ -130,11 +175,16 @@ export class SalidasDispositivo extends Component {
 		this.root = props.route.root;
 		this.state = this.root.state;
 	}
-	render() {
+	componentWillMount() {
 		var disp = this.state.dispositivos.filter(( disp ) => {
 			return disp.ip == this.props.params.ip;
 		});
-		return ( <SalidasTable root={ this.root } salidas={ disp[0].salidas } /> );
+
+		this.setState({ salidas: disp[0].salidas });
+	}
+	render() {
+		return ( <SalidasTable root={ this.root }
+							   salidas={ this.state.salidas } /> );
 	}
 };
 

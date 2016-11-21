@@ -15,6 +15,7 @@ export class DispositivosModel {
 	}
 	static save( newModel ) {
 		this.model = newModel;
+		
 		var promise = new Promise((resolve, reject) => {  
 			if ( this.isValid() ) {
 				Socket.emit('getDB', { dispositivos: this.lista });
@@ -36,13 +37,9 @@ export class Dispositivos extends Component {
 	generateRow( item ) {
 		return (
 			<tr>
-				<td> 
-				<Link to={ 'Dispositivos/salidas/' + item.ip }> { item.note } </Link>
-				</td>
+				<td> <Link to={ 'Dispositivos/salidas/' + item.ip }> { item.note } </Link> </td>
 				<td> { item.version } </td>
-				<td> 
-				<Link to= {'Dispositivo/' + item.ip } className='iconEdit'></Link>
-				</td>
+				<td> <Link to= {'Dispositivo/' + item.ip } className='iconEdit'></Link> </td>
 			</tr>
 		);
 	}
@@ -87,18 +84,19 @@ export class DispositivoEdit extends Component {
 	}
 	onSubmit( e ) {
     	e.preventDefault();
-    	DispositivosModel.save( this.state.dispositivo ).then( (response) => {
-    	})
+    	DispositivosModel.save( this.state.dispositivo ).then( (response) => {})
 	}
 	render() {
 		if ( this.state.dispositivo ) {
 			return ( 
-				<form ref="DispositivoForm" id="DispositivoForm" onSubmit={this.onSubmit}>
+				<form ref="DispositivoForm" id="DispositivoForm" onSubmit={ this.onSubmit }>
 					Descripción
-					<input type="text" name="note" onChange={ this.changed } value={this.state.dispositivo.note} />
+					<input type="text" name="note" onChange={ this.changed } 
+									   value={ this.state.dispositivo.note } />
 					IP
-					<input type="text" className={'valid' + this.validIP() } name="ip" onChange={this.changed} value={this.state.dispositivo.ip} />
-					<button type="submit" className="button">Guardar</button>
+					<input type="text" className={ 'valid' + this.validIP() } name="ip" 
+						   onChange={ this.changed } value={ this.state.dispositivo.ip } />
+					<button type="submit" className="button"> Guardar </button>
 				</form>
 			);
 		}

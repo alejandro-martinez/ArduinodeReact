@@ -101,6 +101,12 @@ table tr {
     color:#fff;
     font-size:1.3em; 
 }
+.iconOK:after {
+    content: "\2713"
+}
+.iconDELETE:after {
+    content: "\2717"
+}
 .iconHeader {
     position:absolute;
     top:11px;
@@ -164,6 +170,11 @@ table {
 table td {
     display:inline-block;
     text-align: left;
+}
+td.edit a{
+    color:green;
+    font-size:2em;
+    margin-right:.6em;
 }
 table td:last-child {
     float: right;
@@ -262,10 +273,14 @@ button,
     padding: 12px;
     width: 120px;
 }
-
 table.salidas td{
     display:inline-block;
     border:none !important;
+}
+table.salidas td.edit {
+    float:right;
+    width:90px;
+    margin:15px 0;
 }
 table.salidas tr td:last-child {
     float:right;
@@ -324,4 +339,16 @@ table.salidas td h4 {
     left:0px !important;
 }
 
+@media screen and (max-width: 350px) {
+    table.salidas td {
+        width:90% !important;
+    }
+    table.salidas td input{
+        width:100% !important;
+    }
+    table.salidas td.edit {
+        margin:15px 10px;
+        text-align:left;
+    }
+}
 

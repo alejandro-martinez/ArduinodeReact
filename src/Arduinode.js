@@ -31,11 +31,15 @@ class Arduinode extends Component {
 	constructor( props ) {
 		super( props );
 		this.state = { dispositivos: [] };
+		this.updateDB = this.updateDB.bind(this);
 	}
 	componentWillMount() {
 		Socket.listen('DBUpdated', ( dispositivos ) => {
 			this.setState({ dispositivos: dispositivos });
 		});
+	}
+	updateDB() {
+		Socket.emit('updateDB', { dispositivos: this.state.dispositivos });
 	}
 	render() {
 		const This = this;
