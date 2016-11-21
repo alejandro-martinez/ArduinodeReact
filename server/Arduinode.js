@@ -63,7 +63,6 @@ function Arduinode() {
 			});
 			dispositivo.salidas[index].estado = t.estado;
 		});
-
 		this.io.sockets.emit('DBUpdated', this.dispositivos.lista);
 	},
 /**
@@ -148,9 +147,12 @@ function Arduinode() {
 * @method load
 */
 		load: function() {
+			var This = this;
 			this.lista = [];
 
-			DataStore.getFile('dispositivos').forEach((d) => {
+			var file = DataStore.getFile('dispositivos');
+			
+			file.forEach((d) => {
 				var _d = new Dispositivo( d.id_disp, d.ip, d.note );
 				_d.setSalidas( d.salidas );
 				this.lista.push(_d);
@@ -167,8 +169,9 @@ function Arduinode() {
 					});
 				}
 			},() => {
-				if (this.io) {
-					this.io.sockets.emit('DBUpdated', this.lista);
+				var This = Arduinode.getInstance();
+				if (This.io.hasOwnProperty('sockets')) {
+					This.io.sockets.emit('DBUpdated', this.lista);
 				}
 			});
 
@@ -176,7 +179,6 @@ function Arduinode() {
 		}
 	};
 }
-
 Arduinode.instance = null;
 Arduinode.getInstance = function() {
     if( this.instance === null ){

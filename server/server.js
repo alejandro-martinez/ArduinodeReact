@@ -38,16 +38,24 @@ http.listen( serverConf.port, serverConf.ip, function() {
 	// Conexión de un cliente
 	io.on('connection', ( sCliente ) => {
 
-		io.sockets.emit('DBUpdated', Arduinode.dispositivos.lista);		
+		sCliente.emit('DBUpdated', Arduinode.dispositivos.lista);		
 		
 		// Referencia al socket conectado
-		Arduinode.io = io;		
+		Arduinode.io = io;
 		app.sCliente = sCliente;
 
 		// Crea socket que recibe eventos de los disp. Arduino
 		Arduinode.listenSwitchEvents( serverConf );
 
 		sCliente.on('getDB', () => { Arduinode.dispositivos.load( serverConf )});
+
+		sCliente.on('updateDB', ( db ) => { 
+			if ( DataStore.updateDB('dispositivos', db ) ) {
+				Arduinode.dispositivos.lista = db;
+				Arduinode.dispositivos.load( serverConf );
+			}
+			io.sockets.emit('DBUpdated', db);
+		});
 
 		// Accion sobre una salida (Persiana, Luz, Bomba)
 		sCliente.on('switchSalida',( params ) => {

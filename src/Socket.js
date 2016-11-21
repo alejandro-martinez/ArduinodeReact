@@ -11,7 +11,6 @@ var showLoading = ( show ) => {
 
 class SocketIO {
 	emit( param, data ) {
-		console.log("Emit",param)
 		showLoading( true );
 		window.socket.emit( param, data );
 	}

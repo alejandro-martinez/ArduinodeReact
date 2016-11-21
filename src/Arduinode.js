@@ -39,7 +39,8 @@ class Arduinode extends Component {
 		});
 	}
 	updateDB() {
-		Socket.emit('updateDB', { dispositivos: this.state.dispositivos });
+		Socket.emit('updateDB', this.state.dispositivos);
+		console.log(this.state.dispositivos[0].salidas)
 	}
 	render() {
 		const This = this;

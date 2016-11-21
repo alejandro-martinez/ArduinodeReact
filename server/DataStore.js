@@ -33,70 +33,32 @@ var fs	= require('fs'),
 * @type Array
 */
 function DataStore() {
-	this.reader 	  = require('jsonfile');
 	this.dispositivos = [];
 	this.tareas 	  = [];
 	this.tareasActivas= [];
-	this.getFile = function(file) {
+	this.getFile = function( file ) {
 
 		//Si el archivo solicitado no existe, se crea
 		var filePath = './models/' + file + '.json';
 		if ( !fs.existsSync( filePath ) ) {
 			fs.writeFileSync(filePath, '[]');
 		}
-		this[ file]  = this.reader.readFileSync('./models/' + file + '.json');
+		var content = JSON.parse(fs.readFileSync('./models/' + file + '.json', 'utf8'));
 		
-		return this[ file ];
+		return content;
 	};
 /**
-* Método para actualizar un modelo
-* @method saveModel
-* @param {String} fileName Nombre del archivo JSON
-* @param {JSON} model Datos del nuevo o modificado modelo
-* @param {String} key Clave por la cual filtrar el modelo a modificar
-* @param {Function} callback Function de retorno
+* Método para actualizar JSON
+* @method updateDB
 */
-	this.saveModel = function( fileName, model, key, callback ) {
-		if (model.isNew) {
-			delete model.isNew;
-			this[fileName].push( model );
+	this.updateDB = function( filename, data ) {
+		if ( data && Array.isArray( data )) {
+			return fs.writeFileSync('./models/' + filename + '.json', 
+									JSON.stringify(data, null, 2),
+									'utf8', 
+									{ spaces: 2 });
 		}
-		else {
-			var filter = {};
-				filter[key] = model[key];
-			_.extend(_.findWhere(this[fileName], filter ), model);
-		}
-
-		this.updateFile(fileName,function(response) {
-			callback(response, model)
-		});
-	};
-/**
-* Método para escribir en el archivo JSON
-* @method updateFile
-* @param {String} file Nombre del modelo
-* @param {Function} callback Function de retorno
-*/
-	this.updateFile = function(file, callback) {
-
-		var onWrite = function(err) {
-			callback(err);
-		}
-		this.reader.writeFile('./models/'+file+'.json', this[file],{spaces: 2}, onWrite);
-	};
-/**
-* Método para escribir en el archivo JSON
-* @method deleteModel
-* @param {String} fileName Nombre del archivo JSON
-* @param {JSON} filter Filtro para encontrar el modelo a eliminar
-* @param {Function} callback Function de retorno
-*/
-	this.deleteModel = function(fileName, filter, callback) {
-		this[fileName] = _.without(this[fileName],_.findWhere(this[fileName], filter));
-
-		this.updateFile(fileName,function(response) {
-			callback(response)
-		});
+		return false;
 	};
 };
 

@@ -37,7 +37,7 @@ class Luz extends Component {
 		this.onSwitch = this.onSwitch.bind( this );
 		this.onChangeDescripcion = this.onChangeDescripcion.bind( this );
 		this.onItemClick = this.onItemClick.bind( this );
-		this.onReset = this.onReset.bind( this );
+		this.onUpdate = this.onUpdate.bind( this );
 		this.state = { model: props.item, editMode: false};
 	}
 	onSwitch( salida ) {
@@ -56,11 +56,20 @@ class Luz extends Component {
 	onItemClick() {
 		this.setState({ editMode: !this.editMode });
 	}
-	onChangeDescripcion( item, e ) {
-		item.note = e.target.value;
-		this.forceUpdate();
+	onChangeDescripcion( e ) {
+		var model = this.state.model;
+		model.note = e.target.value;
+		this.setState({ model: model });
 	}
-	onReset(e) {
+	onUpdate( e ) {
+		this.root.state.dispositivos.forEach(( disp ) => {
+			disp.salidas.forEach( (salida, k, _this) => {
+				if ( salida.nro_salida == this.state.model.nro_salida ) {
+					_this[k].note = this.state.model.note;
+				}
+			})
+		});
+		this.root.updateDB();
 		this.setState({ editMode: false });
 	}
 	render() {
@@ -82,8 +91,7 @@ class Luz extends Component {
 					{ itemEdit } 
 				</td>
 				<td className={'edit show' + this.state.editMode}>
-					<a className='iconDELETE' onClick={ this.onReset }></a>
-					<a className='iconOK' onClick={ this.root.updateDB }></a>
+					<a className='iconOK' onClick={ this.onUpdate }></a>
 				</td>
 				<td className={ 'show' + showSwitch }>
 					<Toggle model={ this.state.model } 

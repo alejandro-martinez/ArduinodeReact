@@ -136,7 +136,10 @@ input:valid,
 input[type='text'] {
   border: 1px solid green;
 }
-
+input[type=text] {
+    font-size:1em;
+    box-shadow: 5px 5px 5px #888888;
+}
 input:invalid,
 input.validfalse {
   border: 1px solid red;
@@ -279,7 +282,7 @@ table.salidas td{
 }
 table.salidas td.edit {
     float:right;
-    width:90px;
+    width: 38px;
     margin:15px 0;
 }
 table.salidas tr td:last-child {
