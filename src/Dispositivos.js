@@ -12,12 +12,23 @@ export class Dispositivos extends Component {
 		this.generateRow = this.generateRow.bind( this );
 		this.onUpdate = this.onUpdate.bind( this );
 		this.onNew = this.onNew.bind( this );
+		this.state = { edit: false };
 	}
 	generateRow( item ) {
-		return ( <HTML.EditRow root={ this.root }
-							   onUpdate={ this.onUpdate } 
-							   edit={ false } 
-							   model={ item } /> );
+		return ( 
+				<HTML.EditContainer edit={this.state.edit}>
+					<HTML.EditRow root={ this.root }
+								   onUpdate={ this.onUpdate }
+								   edit={ false }
+								   inputKey='note'
+								   model={ item } />
+					<HTML.EditRow root={ this.root }
+								   onUpdate={ this.onUpdate }
+								   edit={ false } 
+								   inputKey='ip'
+								   model={ item } />
+				</HTML.EditContainer>
+		);
 	}
 	onUpdate( model ) {
 		this.root.state.dispositivos = this.root.state.dispositivos.map(( disp ) => {

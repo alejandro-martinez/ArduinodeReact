@@ -60,6 +60,15 @@ export class Popup extends Component {
 		
 	}
 }
+
+export function EditContainer(props) {
+	return (
+			<tr className={ 'editRow' +  props.edit }>
+				{ props.children }
+			</tr>
+	);
+}
+
 export class EditRow extends Component {
 	constructor( props ) {
 		super( props );
@@ -75,7 +84,7 @@ export class EditRow extends Component {
 	}
 	onChange(e) {
 		var model = this.state.model;
-		model.note = e.target.value;
+		model[this.props.inputKey] = e.target.value;
 		this.setState({ model: model });
 	}
 	onUpdate(model) {
@@ -85,26 +94,23 @@ export class EditRow extends Component {
 	}
 	render() {
 		let itemEdit; 
-		console.log("Render",this.state.model)
+		console.log(this.props)
 		if ( this.state.edit ) {
 			itemEdit = <input type="text" 
 						  onChange={ this.onChange } 
-						  value={ this.state.model.note } />
+						  value={ this.state.model[this.props.inputKey] } />
 
 		}
 		else {
-			itemEdit = <h4 onClick={ this.onClick }>{ this.state.model.note }</h4>;
+			itemEdit = <h4 onClick={ this.onClick }>{ this.state.model[this.props.inputKey] }</h4>;
 		}
 		return (
-			<tr className={ 'editRow' +  this.state.edit }>
-				<td> 
+			<td className={ 'editRow' +  this.state.edit }>
+				<div> 
 					{ itemEdit } 
-				</td>
-				<td className={'edit show' + this.state.edit}>
 					<a className='iconOK' onClick={ this.onUpdate.bind(this, this.state.model) }></a>
-				</td>
-				{ this.props.children }
-			</tr>
+				</div>
+			</td>
 		);
 	}
 };

@@ -57,12 +57,13 @@ class Luz extends Component {
 	render() {
 		let showSwitch = ( this.props.item.estado !== null) && ( !this.state.edit);
 		return (
-			
-			<HTML.EditRow edit={ false }
-					 root={ this.root }
-					 model={ this.props.item }
-					 onUpdate={ this.onUpdate }>
-
+			<HTML.EditContainer edit={this.state.edit}>
+				<HTML.EditRow edit={ false }
+						 root={ this.root }
+						 inputKey='note'
+						 model={ this.props.item }
+						 onUpdate={ this.onUpdate }>
+				</HTML.EditRow>
 				<td className={ 'show' + showSwitch }>
 					<Toggle model={ this.props.item } 
 							onSwitch={ this.onSwitch } 
@@ -70,7 +71,7 @@ class Luz extends Component {
 							switchClass={ this.props.switchClass }
 					/>
 				</td>
-			</HTML.EditRow>
+			</HTML.EditContainer>
 		);
 	}
 };

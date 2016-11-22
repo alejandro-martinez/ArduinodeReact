@@ -78,6 +78,7 @@ table tr {
     width: 100%;
     border: 1px solid #8EA69E;
     margin-bottom: -1px;
+    padding: 10px;
 }
 .container {
     padding:15px 10px 10px 10px    
@@ -174,24 +175,17 @@ table td {
     display:inline-block;
     text-align: left;
 }
-td.edit a{
+td.editRowtrue a {
+    float:right;
     color:green;
     font-size:2em;
-    margin-right:.6em;
+    margin-left:10px;
+}
+td.editRowfalse a {
+    display: none;
 }
 table td:last-child {
     float: right;
-}
-
-table td:first-child {
-    height: 35px;
-    width:50%;
-    padding:16px 0 0 6px;
-}
-table td:nth-child(2) {
-    float:none;
-    text-align: center;
-    width: 56px;
 }
 
 label {
@@ -257,8 +251,8 @@ button,
     margin-left: -70px;
 }
 /*DISPOSITIVOS*/
-table.dispositivos tr.editRowtrue td:first-child {
-    height: 56px;
+table.dispositivos td {
+    padding:6px 5px 0px 5px;
 }
 
 .iconEdit {
@@ -282,15 +276,11 @@ table.salidas td{
     display:inline-block;
     border:none !important;
 }
-table.salidas td.edit {
-    float:right;
-    width: 38px;
-    margin:15px 0;
-}
 table.salidas tr td:last-child {
     float:right;
 }
 table.salidas td h4 {
+    padding: 15px 0 0 0;
     float:left;
 }
 .switchContainer {
@@ -350,10 +340,6 @@ table.salidas td h4 {
     }
     table.salidas td input{
         width:100% !important;
-    }
-    table.salidas td.edit {
-        margin:15px 10px;
-        text-align:left;
     }
 }
 
