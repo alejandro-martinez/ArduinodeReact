@@ -22,7 +22,9 @@ var menu = [
 ];
 
 class DB {
-	constructor() {}
+	constructor() {
+		this.db = null;
+	}
 	static get() {
 		return new Promise((resolve, reject) => {
 	    	Socket.listen('DBUpdated', ( db ) => { 
@@ -40,27 +42,13 @@ export class Dispositivo extends DB {
 	constructor() {
 		super();
 		this.errors = null;
-		this.model = { 
+		var model = { 
 			ip: "0.0.0.0", 
 			note: "Nuevo dispositivo",
 			salidas: []
 		};
 
-		return this.model;
-	}
-	new() {
-		return this.model;
-	}
-	isValid() {
-		return true;
-	}
-	save( model ) {
-		if ( this.isValid() ) {
-			this.db.push( this.model );
-		}
-		else {
-			return this.errors;
-		}
+		return model;
 	}
 }
 

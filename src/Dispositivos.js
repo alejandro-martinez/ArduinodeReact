@@ -43,8 +43,6 @@ export class Dispositivos extends Component {
 		var dispositivos = this.root.state.dispositivos;
 		dispositivos.push( new Dispositivo() );
 		this.root.setState({dispositivos: dispositivos});
-		
-		console.log("paso ")
 	}
 	render() {
 		var rows = this.root.state.dispositivos.map( this.generateRow );
