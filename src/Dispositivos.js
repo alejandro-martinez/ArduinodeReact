@@ -3,7 +3,25 @@ import React, { Component } from 'react';
 import Socket from './Socket';
 import { Link } from 'react-router';
 import * as HTML from './HTML';
-import { Dispositivo } from './Arduinode';
+
+export class Dispositivo {
+	constructor() {
+		this.errors = null;
+		var model = { 
+			ip: "0.0.0.0", 
+			note: "Nuevo dispositivo",
+			salidas: []
+		};
+
+		return model;
+	}
+	static isValidNOTE() {
+		return true;
+	}
+	static isValidIP( ip ) {		
+		return (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ip));
+	}
+}
 
 export class Dispositivos extends Component {
 	constructor( props ) {
@@ -32,12 +50,14 @@ export class Dispositivos extends Component {
 	}
 	onUpdate( model ) {
 		this.root.state.dispositivos = this.root.state.dispositivos.map(( disp ) => {
+			
 			if ( disp.ip == model.ip ) {
 				disp.note = model.note;
 				disp.ip = model.ip;
 			}
 			return disp;
 		});
+		return true;
 	}
 	onNew() {
 		var dispositivos = this.root.state.dispositivos;

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import Loading from 'react-loading';
+import { Dispositivo } from './Dispositivos';
 
 export class Header extends Component {
 	constructor( props ) {
@@ -63,9 +64,9 @@ export class Popup extends Component {
 
 export function EditContainer(props) {
 	return (
-			<tr className={ 'editRow' +  props.edit }>
-				{ props.children }
-			</tr>
+		<tr className={ 'editRow' +  props.edit }>
+			{ props.children }
+		</tr>
 	);
 }
 
@@ -73,7 +74,6 @@ export class EditRow extends Component {
 	constructor( props ) {
 		super( props );
 		this.root = props.root;
-		console.log(props.model)
 		var editMode = (props.edit || props.model.ip == '0.0.0.0');
 		this.state = { edit: editMode, model: props.model };
 		this.onChange = this.onChange.bind(this);
@@ -84,17 +84,20 @@ export class EditRow extends Component {
 	}
 	onChange(e) {
 		var model = this.state.model;
-		model[this.props.inputKey] = e.target.value;
-		this.setState({ model: model });
+		var validator = 'isValid' + this.props.inputKey.toUpperCase();
+		if ( Dispositivo[validator]( e.target.value ) ) {
+			model[this.props.inputKey] =  e.target.value;
+			this.setState({ model: model });
+		}
 	}
 	onUpdate(model) {
 		this.setState({ edit: false });
-		this.props.onUpdate(model);
-		this.root.updateDB();
+		if ( this.props.onUpdate( model )) {
+			this.root.updateDB();	
+		}		
 	}
 	render() {
 		let itemEdit; 
-		console.log(this.props)
 		if ( this.state.edit ) {
 			itemEdit = <input type="text" 
 						  onChange={ this.onChange } 

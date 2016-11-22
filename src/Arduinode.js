@@ -21,7 +21,7 @@ var menu = [
   }
 ];
 
-class DB {
+export class DB {
 	constructor() {
 		this.db = null;
 	}
@@ -35,20 +35,6 @@ class DB {
 	}
 	static update( db ) {
 		Socket.emit('updateDB', db );
-	}
-}
-
-export class Dispositivo extends DB {
-	constructor() {
-		super();
-		this.errors = null;
-		var model = { 
-			ip: "0.0.0.0", 
-			note: "Nuevo dispositivo",
-			salidas: []
-		};
-
-		return model;
 	}
 }
 
