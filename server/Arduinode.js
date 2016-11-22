@@ -167,8 +167,23 @@ function Arduinode() {
 		},
 		update: function( dispositivos ) {
 			var dispositivos = this.removeMemKeys( true, dispositivos );
-			this.lista = dispositivos;
-			return DataStore.updateDB('dispositivos', dispositivos);
+						
+			if ( DataStore.updateDB('dispositivos', dispositivos) ) {
+				this.reloadJsonData();
+				return true;
+			}
+			return false;
+		},
+		reloadJsonData: function() {
+			this.lista = [];
+
+			DataStore.getFile('dispositivos').forEach((d) => {
+				var _d = new Dispositivo( d.id_disp, d.ip, d.note );
+				_d.setSalidas( d.salidas );
+				this.lista.push(_d);
+			});
+
+			return true;
 		},
 /**
 * Registra dispositivos cargados en el modelo (dispositivos.json),
@@ -178,14 +193,7 @@ function Arduinode() {
 */
 		load: function() {
 			var This = this;
-			this.lista = [];
-
-			DataStore.getFile('dispositivos').forEach((d) => {
-				var _d = new Dispositivo( d.id_disp, d.ip, d.note );
-				_d.setSalidas( d.salidas );
-				This.lista.push(_d);
-			});
-
+			this.reloadJsonData();
 			Arrays.asyncLoop( this.lista, ( disp, report ) => {
 				
 				if ( disp ) {
