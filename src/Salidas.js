@@ -132,7 +132,7 @@ class SalidasTable extends Component {
 			let estaTemporizada = (item.temporizada !== null && item.temporizada !== "");
 
 			tableItems.push(
-				<Luz item={ item }
+				<Luz key={ item.nro_salida.toString() } item={ item }
 					 salidasState={ This.state } 
 					 root={ This.root } 
 					 switchClass= { ' temporizada' + estaTemporizada }
