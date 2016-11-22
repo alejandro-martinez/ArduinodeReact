@@ -64,7 +64,9 @@ export class EditRow extends Component {
 	constructor( props ) {
 		super( props );
 		this.root = props.root;
-		this.state = { edit: props.edit, model: props.model };
+		console.log(props.model)
+		var editMode = (props.edit || props.model.ip == '0.0.0.0');
+		this.state = { edit: editMode, model: props.model };
 		this.onChange = this.onChange.bind(this);
 		this.onClick = this.onClick.bind(this);
 	}
@@ -83,9 +85,9 @@ export class EditRow extends Component {
 	}
 	render() {
 		let itemEdit; 
-
-	if ( this.state.edit ) {
-		itemEdit = <input type="text" 
+		console.log("Render",this.state.model)
+		if ( this.state.edit ) {
+			itemEdit = <input type="text" 
 						  onChange={ this.onChange } 
 						  value={ this.state.model.note } />
 

@@ -40,7 +40,13 @@ export class Dispositivo extends DB {
 	constructor() {
 		super();
 		this.errors = null;
-		this.model = { ip: "0.0.0.0", note: "Nuevo dispositivo"};
+		this.model = { 
+			ip: "0.0.0.0", 
+			note: "Nuevo dispositivo",
+			salidas: []
+		};
+
+		return this.model;
 	}
 	new() {
 		return this.model;

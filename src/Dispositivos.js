@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import Socket from './Socket';
 import { Link } from 'react-router';
 import * as HTML from './HTML';
+import { Dispositivo } from './Arduinode';
 
 export class Dispositivos extends Component {
 	constructor( props ) {
@@ -10,6 +11,7 @@ export class Dispositivos extends Component {
 		this.root = props.route.root;
 		this.generateRow = this.generateRow.bind( this );
 		this.onUpdate = this.onUpdate.bind( this );
+		this.onNew = this.onNew.bind( this );
 	}
 	generateRow( item ) {
 		return ( <HTML.EditRow root={ this.root }
@@ -26,13 +28,20 @@ export class Dispositivos extends Component {
 			return disp;
 		});
 	}
+	onNew() {
+		var dispositivos = this.root.state.dispositivos;
+		dispositivos.push( new Dispositivo() );
+		this.root.setState({dispositivos: dispositivos});
+		
+		console.log("paso ")
+	}
 	render() {
 		var rows = this.root.state.dispositivos.map( this.generateRow );
 		
 		return ( 
 			<div>
 				<HTML.Table class="dispositivos"> { rows } </HTML.Table>
-				<Link to='Dispositivos/create/' className='button'>Nuevo</Link>
+				<button onClick={ this.onNew }>Nuevo</button>
 			</div>
 		);
 	}
