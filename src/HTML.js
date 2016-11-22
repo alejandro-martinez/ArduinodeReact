@@ -60,7 +60,52 @@ export class Popup extends Component {
 		
 	}
 }
+export class EditRow extends Component {
+	constructor( props ) {
+		super( props );
+		this.root = props.root;
+		this.state = { edit: props.edit, model: props.model };
+		this.onChange = this.onChange.bind(this);
+		this.onClick = this.onClick.bind(this);
+	}
+	onClick() {
+		this.setState({ edit: !this.state.edit });
+	}
+	onChange(e) {
+		var model = this.state.model;
+		model.note = e.target.value;
+		this.setState({ model: model });
+	}
+	onUpdate(model) {
+		this.setState({ edit: false });
+		this.props.onUpdate(model);
+		this.root.updateDB();
+	}
+	render() {
+		let itemEdit; 
 
+	if ( this.state.edit ) {
+		itemEdit = <input type="text" 
+						  onChange={ this.onChange } 
+						  value={ this.state.model.note } />
+
+		}
+		else {
+			itemEdit = <h4 onClick={ this.onClick }>{ this.state.model.note }</h4>;
+		}
+		return (
+			<tr className={ 'editRow' +  this.state.edit }>
+				<td> 
+					{ itemEdit } 
+				</td>
+				<td className={'edit show' + this.state.edit}>
+					<a className='iconOK' onClick={ this.onUpdate.bind(this, this.state.model) }></a>
+				</td>
+				{ this.props.children }
+			</tr>
+		);
+	}
+};
 export class Table extends Component {
 	render() {
 		return (<table className={this.props.class}>

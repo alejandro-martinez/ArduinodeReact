@@ -34,73 +34,42 @@ class Luz extends Component {
 	constructor( props ) {
 		super( props );
 		this.root = props.root;
-		this.onSwitch = this.onSwitch.bind( this );
-		this.onChangeDescripcion = this.onChangeDescripcion.bind( this );
-		this.onItemClick = this.onItemClick.bind( this );
-		this.onUpdate = this.onUpdate.bind( this );
-		this.state = { model: props.item, editMode: false};
+		this.onSwitch 			 = this.onSwitch.bind( this );
+		this.onUpdate 			 = this.onUpdate.bind( this );
 	}
 	onSwitch( salida ) {
+		var tiempo = this.props.salidasState.popupData;
 		salida.temporizada = 0;
-
-		if ( salida.estado === 0 ) {
-			salida.estado = 1;
-		}
-		else {
-			salida.temporizada = this.props.salidasState.popupData;
-			salida.estado = 0;
-		}
-
+		salida.estado = (salida.estado === 0) ? 1 : 0;
+		salida.temporizada = (tiempo == "") ? 0 : tiempo;
 		Socket.emit('switchSalida', salida );
 	}
-	onItemClick() {
-		this.setState({ editMode: !this.editMode });
-	}
-	onChangeDescripcion( e ) {
-		var model = this.state.model;
-		model.note = e.target.value;
-		this.setState({ model: model });
-	}
-	onUpdate( e ) {
+	onUpdate( model ) {
 		this.root.state.dispositivos.forEach(( disp ) => {
 			disp.salidas.forEach( (salida, k, _this) => {
-				if ( salida.nro_salida == this.state.model.nro_salida ) {
-					_this[k].note = this.state.model.note;
+				if ( salida.nro_salida == model.nro_salida ) {
+					_this[k].note = model.note;
 				}
 			})
 		});
-		this.root.updateDB();
-		this.setState({ editMode: false });
 	}
 	render() {
-		let itemEdit; 
-
-		if ( this.state.editMode ) {
-			itemEdit = <input type="text" 
-							  onChange={ this.onChangeDescripcion } 
-							  value={ this.state.model.note } />
-
-		}
-		else {
-			itemEdit = <h4 onClick={ this.onItemClick }>{ this.state.model.note }</h4>;
-		}
 		let showSwitch = ( this.state.model.estado !== null) && ( !this.state.editMode);
 		return (
-			<tr className={ 'editRow' + this.state.editMode }>
-				<td> 
-					{ itemEdit } 
-				</td>
-				<td className={'edit show' + this.state.editMode}>
-					<a className='iconOK' onClick={ this.onUpdate }></a>
-				</td>
+			
+			<EditRow edit={ false }
+					 root={ this.root }
+					 model={ this.props.item }
+					 onUpdate={ this.onUpdate }>
+
 				<td className={ 'show' + showSwitch }>
-					<Toggle model={ this.state.model } 
+					<Toggle model={ this.props.item } 
 							onSwitch={ this.onSwitch } 
-							on={ this.state.model.estado === 0 }
+							on={ this.props.item.estado === 0 }
 							switchClass={ this.props.switchClass }
 					/>
 				</td>
-			</tr>
+			</EditRow>
 		);
 	}
 };

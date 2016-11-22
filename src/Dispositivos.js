@@ -32,19 +32,27 @@ export class DispositivosModel {
 export class Dispositivos extends Component {
 	constructor( props ) {
 		super( props );
-		this.state = props.route.root.state;
+		this.root = props.route.root;
+		this.generateRow = this.generateRow.bind( this );
+		this.onUpdate = this.onUpdate.bind( this );
 	}
 	generateRow( item ) {
-		return (
-			<tr>
-				<td> <Link to={ 'Dispositivos/salidas/' + item.ip }> { item.note } </Link> </td>
-				<td> { item.version } </td>
-				<td> <Link to= {'Dispositivo/' + item.ip } className='iconEdit'></Link> </td>
-			</tr>
-		);
+		return ( <HTML.EditRow root={ this.root }
+							   onUpdate={ this.onUpdate } 
+							   edit={ false } 
+							   model={ item } /> );
+	}
+	onUpdate( model ) {
+		this.root.state.dispositivos = this.root.state.dispositivos.map(( disp ) => {
+			if ( disp.ip == model.ip ) {
+				disp.note = model.note;
+				disp.ip = model.ip;
+			}
+			return disp;
+		});
 	}
 	render() {
-		var rows = this.state.dispositivos.map( this.generateRow );
+		var rows = this.root.state.dispositivos.map( this.generateRow );
 		
 		return ( 
 			<div>
