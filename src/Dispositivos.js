@@ -45,6 +45,9 @@ export class Dispositivos extends Component {
 								   edit={ false } 
 								   inputKey='ip'
 								   model={ item } />
+					<td>								  
+					<Link className="button" to={'Dispositivos/salidas/' + item.ip}>Salidas</Link>
+					</td>
 				</HTML.EditContainer>
 		);
 	}
