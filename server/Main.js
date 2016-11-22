@@ -216,6 +216,10 @@ Dispositivo.prototype = {
 				this.salidas.push( salida);
 			});
 		}
+
+		this.salidas = _.uniq(this.salidas, function (item, key, a) {
+            return item.ip && item.nro_salida;
+        });
 	}
 };
 
