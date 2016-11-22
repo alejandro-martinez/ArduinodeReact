@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Router,Link, Route, hashHistory } from 'react-router';
 import * as HTML from './HTML';
 import Socket from './Socket';
-import { Dispositivos, DispositivosModel, DispositivoEdit } from './Dispositivos';
+import { Dispositivos } from './Dispositivos';
 import { SalidasDispositivo, SalidasActivas } from './Salidas';
 
 var menu = [
@@ -21,6 +21,43 @@ var menu = [
   }
 ];
 
+class DB {
+	constructor() {}
+	static get() {
+		return new Promise((resolve, reject) => {
+	    	Socket.listen('DBUpdated', ( db ) => { 
+	    		this.db = db;
+	    		resolve( db ); 
+	    	});
+	    });
+	}
+	static update( db ) {
+		Socket.emit('updateDB', db );
+	}
+}
+
+export class Dispositivo extends DB {
+	constructor() {
+		super();
+		this.errors = null;
+		this.model = { ip: "0.0.0.0", note: "Nuevo dispositivo"};
+	}
+	new() {
+		return this.model;
+	}
+	isValid() {
+		return true;
+	}
+	save( model ) {
+		if ( this.isValid() ) {
+			this.db.push( this.model );
+		}
+		else {
+			return this.errors;
+		}
+	}
+}
+
 class Home extends Component {
 	render() { 
 		return ( <HTML.ListaLinks items={ menu } /> ); 
@@ -34,13 +71,12 @@ class Arduinode extends Component {
 		this.updateDB = this.updateDB.bind(this);
 	}
 	componentWillMount() {
-		Socket.listen('DBUpdated', ( dispositivos ) => {
-			this.setState({ dispositivos: dispositivos });
+		DB.get().then(( data )=> {
+			this.setState({ dispositivos: data });
 		});
 	}
 	updateDB() {
-		Socket.emit('updateDB', this.state.dispositivos);
-		console.log("emit",this.state.dispositivos[0])
+		DB.update( this.state.dispositivos );
 	}
 	render() {
 		const This = this;
@@ -54,7 +90,6 @@ class Arduinode extends Component {
 						<Route path="/" component={ Home } />
 						<Route root={This} path="Dispositivos" component={ Dispositivos } />
 						<Route root={this} path="Dispositivos/salidasOn" component={ SalidasActivas } />
-						<Route root={This} path="Dispositivo/:ip" component={ DispositivoEdit } />
 						<Route root={This} path="Dispositivos/salidas/:ip" component={ SalidasDispositivo } />
 					</Router>
 				</div>

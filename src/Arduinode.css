@@ -186,7 +186,6 @@ table td:last-child {
 table td:first-child {
     height: 35px;
     width:50%;
-    border-right:1px solid;
     padding:16px 0 0 6px;
 }
 table td:nth-child(2) {
@@ -258,6 +257,9 @@ button,
     margin-left: -70px;
 }
 /*DISPOSITIVOS*/
+table.dispositivos tr.editRowtrue td:first-child {
+    height: 56px;
+}
 
 .iconEdit {
     font-size:2em !important;

@@ -36,6 +36,7 @@ class Luz extends Component {
 		this.root = props.root;
 		this.onSwitch 			 = this.onSwitch.bind( this );
 		this.onUpdate 			 = this.onUpdate.bind( this );
+		this.state = { edit: false };
 	}
 	onSwitch( salida ) {
 		var tiempo = this.props.salidasState.popupData;
@@ -54,10 +55,10 @@ class Luz extends Component {
 		});
 	}
 	render() {
-		let showSwitch = ( this.state.model.estado !== null) && ( !this.state.editMode);
+		let showSwitch = ( this.props.item.estado !== null) && ( !this.state.edit);
 		return (
 			
-			<EditRow edit={ false }
+			<HTML.EditRow edit={ false }
 					 root={ this.root }
 					 model={ this.props.item }
 					 onUpdate={ this.onUpdate }>
@@ -69,7 +70,7 @@ class Luz extends Component {
 							switchClass={ this.props.switchClass }
 					/>
 				</td>
-			</EditRow>
+			</HTML.EditRow>
 		);
 	}
 };
