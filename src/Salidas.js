@@ -113,7 +113,7 @@ class SalidasTable extends Component {
 
 		return (
 			<div>
-				<HTML.Popup className="temporizacion" root={ This }>
+				<HTML.Popup showTimerIcon="true" className="temporizacion" root={ This }>
 					<input type="time" onChange={ this.onTemporizacion } 
 									   value={ this.root.state.popupData } />
 				</HTML.Popup>
