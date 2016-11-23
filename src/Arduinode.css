@@ -255,7 +255,7 @@ table.dispositivos td {
     padding:6px 5px 0px 5px;
 }
 
-table.dispositivos tr td div{
+table tr td div{
     width:50%;
     position:relative;
     display:inline-block;
@@ -295,6 +295,14 @@ table.dispositivos tr td:last-child {
 .salidas td:last-child {
     padding: 12px;
     width: 120px;
+}
+table.salidas tr td div{
+    width:50%;
+    position:relative;
+    display:inline-block;
+}
+table.salidas tr td > div {
+    width:100%;
 }
 table.salidas td{
     display:inline-block;
