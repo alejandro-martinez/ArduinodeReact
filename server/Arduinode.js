@@ -101,12 +101,6 @@ function Arduinode() {
 	this.dispositivos = {
 		lista: [],
 		sCliente: null,
-/**
-* Devuelve dispositivo filtrado por IP
-* @method getByIP
-* @param ip IP del dispositivo a buscar
-* @return Dispositivo
-*/
 		getByIP: function( ip ) { 
 			return _.findWhere( this.lista,{ ip: ip }); 
 		},
@@ -122,23 +116,6 @@ function Arduinode() {
 				.switchSalida(params, function(response) {
 					callback( response )
 				});
-		},
-
-/**
-* Devuelve las salidas de un Dispositivo Arduino
-* @method getSalidas
-* @param callback Funcion callback que se ejecuta cuando se completa la operaciòn
-* @param params Objeto JSON con la clave IP del dispositivo
-* @return Array
-*/
-		getSalidas: function( callback, params ) {
-			var disp = this.getByIP( params.ip );
-			if ( disp ) {
-				disp.getSalidas(params, callback);
-			}
-			else {
-				callback( [] );
-			}
 		},
 		removeMemKeys: ( remove, arr ) => {
 			var keys = ['tipo','estado', 'accion','comando','ip','temporizada'];

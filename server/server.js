@@ -70,19 +70,14 @@ http.listen( serverConf.port, serverConf.ip, function() {
 
 	// Carga lista de dispositivos en memoria
 	Arduinode.dispositivos.load( serverConf );
-/*
-	var timeInterval = serverConf.tiempoActualizacionDispositivos || 60000;
-	
-	//console.log("Actualizando dispositivos cada ",(timeInterval / 1000) / 60, "minutos" )
-	
-	// Comienza el intervalo de actualizacion de dispositivos
+
 	taskManager.setConfig( serverConf );
 
 	// Carga de tareas programadas
 	setTimeout(() => {
 
-		// (watchChanges) Servicio que vigila la ejecución de tareas en caso de falla
+		// Servicio que vigila la ejecución de tareas en caso de falla
 		taskManager.loadScheduler(true).watchChanges();
 
-	}, serverConf.tiempoEsperaEscaneoTareas || 0);*/
+	}, serverConf.tiempoEsperaEscaneoTareas || 0);
 });

@@ -7,8 +7,7 @@ var DataStore	= require('./DataStore').DataStore;
 var Arduinode	= require('./Arduinode').Arduinode,
 	DateConvert = require('./utils/DateConvert')(),
 	_ 			= require('underscore'),
-	schedule 	= require('node-schedule'),
-	extend 	= require('util')._extend;
+	schedule 	= require('node-schedule');
 
 function Tarea() {
 	this.subtareas 		= [];
@@ -17,6 +16,7 @@ function Tarea() {
 	this.accion 		= null;
 	this.descripcion 		= null;
 }
+
 //Asignacion masiva de atributos
 Tarea.prototype.parseData = function( model ) {
 
@@ -30,14 +30,11 @@ Tarea.prototype.parseData = function( model ) {
 function Subtarea() {
 	Tarea.call(this);
 	this.reglasEjecucion = {};
-	this.diainicio		 = null;
-	this.diafin			 = null;
-	this.mesinicio 		 = null;
-	this.mesfin 		 = null;
-	this.horainicio 	 = null;
-	this.horafin 		 = null;
-	this.duracion 		 = null;
-	this.diasejecucion 	 = null;	
+	var keys = ['diainicio','diafin','mesinicio','mesfin','horainicio','horafin','duracion','diasejecucion'];
+
+	keys.forEach(( attrib )=> {
+		this[attrib] = null;
+	});
 }
 
 Subtarea.prototype = Object.create(Tarea.prototype);
