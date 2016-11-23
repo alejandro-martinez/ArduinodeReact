@@ -38,28 +38,37 @@ http.listen( serverConf.port, serverConf.ip, function() {
 	// Conexión de un cliente
 	io.on('connection', ( sCliente ) => {
 
-		sCliente.emit('DBUpdated', Arduinode.dispositivos.lista);		
+		sCliente.emit('DBDispositivosUpdated', Arduinode.dispositivos.lista);		
 		
 		// Referencia al socket conectado
 		Arduinode.io = io;
-		app.sCliente = sCliente;
-
+		
 		// Crea socket que recibe eventos de los disp. Arduino
 		Arduinode.listenSwitchEvents( serverConf );
 
-		sCliente.on('getDB', () => { Arduinode.dispositivos.load( serverConf )});
+		sCliente.on('getDispositivosDB', () => { Arduinode.dispositivos.load( serverConf )});
 
-		sCliente.on('updateDB', ( db ) => { 
+		sCliente.on('getTareasDB', () => { 
+			console.log("llego")
+			sCliente.emit('DBTareasUpdated', DataStore.tareas);
+		});
+
+		sCliente.on('updateDispositivosDB', ( db ) => { 
 			if ( Arduinode.dispositivos.update( db )) {
 				Arduinode.dispositivos.load( serverConf );
 			}
-			io.sockets.emit('DBUpdated', db);
+			io.sockets.emit('DBDispositivosUpdated', db);
+		});
+
+		sCliente.on('updateTareasDB', ( db ) => { 
+			
+			io.sockets.emit('DBTareasUpdated', db);
 		});
 
 		// Accion sobre una salida (Persiana, Luz, Bomba)
 		sCliente.on('switchSalida',( params ) => {
 			var onAccion = () => {
-				io.sockets.emit('DBUpdated', Arduinode.dispositivos.lista);
+				io.sockets.emit('DBDispositivosUpdated', Arduinode.dispositivos.lista);
 			};
 			Arduinode.dispositivos.switch( params, onAccion);
 		});

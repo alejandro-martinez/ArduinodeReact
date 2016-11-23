@@ -5,6 +5,7 @@ import * as HTML from './HTML';
 import Socket from './Socket';
 import { Dispositivos } from './Dispositivos';
 import { SalidasDispositivo, SalidasActivas } from './Salidas';
+import { Tareas } from './Tareas';
 
 var menu = [
   {
@@ -22,19 +23,47 @@ var menu = [
 ];
 
 export class DB {
-	constructor() {
-		this.db = null;
+	constructor( filename ) {
+		this.filename = filename;
 	}
-	static get() {
+	get( emit ) {
 		return new Promise((resolve, reject) => {
-	    	Socket.listen('DBUpdated', ( db ) => { 
-	    		this.db = db;
-	    		resolve( db ); 
+	    	Socket.listen('DB' + this.filename +'Updated', ( db ) => {
+	    		resolve( db );
 	    	});
+	    	if (emit) Socket.emit('get' + this.filename + 'DB');
 	    });
 	}
-	static update( db ) {
-		Socket.emit('updateDB', db );
+	update( db ) {
+		Socket.emit('update'+ this.filename +'DB', db );
+	}
+}
+
+export class Dispositivo extends DB {
+	constructor() {
+		super('Dispositivos');
+		this.errors = null;
+	}
+	static newModel() {
+		var model = { 
+			ip: "192.168.20.000", 
+			note: "Nuevo dispositivo",
+			salidas: []
+		};
+
+		return model;
+	}
+	static isValidNOTE() {
+		return true;
+	}
+	static isValidIP( ip ) {		
+		return (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ip));
+	}
+}
+
+export class Tarea extends DB {
+	constructor() {
+		super('Tareas');
 	}
 }
 
@@ -49,14 +78,15 @@ class Arduinode extends Component {
 		super( props );
 		this.state = { dispositivos: [] };
 		this.updateDB = this.updateDB.bind(this);
+		this.Dispositivo = new Dispositivo();
 	}
 	componentWillMount() {
-		DB.get().then(( data )=> {
+		this.Dispositivo.get().then(( data )=> {
 			this.setState({ dispositivos: data });
 		});
 	}
 	updateDB() {
-		DB.update( this.state.dispositivos );
+		this.Dispositivo.update( this.state.dispositivos );
 	}
 	render() {
 		const This = this;
@@ -68,6 +98,7 @@ class Arduinode extends Component {
 				<div className="container">
 					<Router history={ hashHistory }>
 						<Route path="/" component={ Home } />
+						<Route root={This} path="Tareas" component={ Tareas } />
 						<Route root={This} path="Dispositivos" component={ Dispositivos } />
 						<Route root={this} path="Dispositivos/salidasOn" component={ SalidasActivas } />
 						<Route root={This} path="Dispositivos/salidas/:ip" component={ SalidasDispositivo } />
