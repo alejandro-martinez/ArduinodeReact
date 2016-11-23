@@ -39,7 +39,8 @@ export class Popup extends Component {
 		this.root.setState({ popupVisible: !this.root.state.popupVisible });
 	}
 	render( props ) {
-		if ( this.root.state.popupVisible) {
+		console.log(this.root.state)
+		if ( this.root.state.popupVisible) {			
 			return (
 				<div>
 					<div className={'popup show' + this.root.state.popupVisible}>

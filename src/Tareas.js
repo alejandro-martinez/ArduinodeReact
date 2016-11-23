@@ -60,26 +60,37 @@ export class Subtareas extends Tareas {
 		this.onNew = this.onNew.bind( this );
 		this.showTimerPopup = this.showTimerPopup.bind( this );
 		this.onTemporizacion = this.onTemporizacion.bind( this );
+		this.onTemporizacionDia = this.onTemporizacionDia.bind( this );
+		this.subtareas = [];
+		this.selectedKey = null;
+		this.ItemSelected = null;
 		var state = this.state;
-
 		state.popupVisible = false;
+		state.showDateInput = false;
 		state.showTimerIcon = false;
 		state.popupData = "";
-		this.setState(state);
+		this.setState( state );
 	}
-	showTimerPopup(e) {
-		console.log("Paso",e)
-		this.setState({ popupVisible: true})
-	}
-	onTemporizacion(item, e) {
-		console.log("item",e)
+	showTimerPopup(item, showDateInput, e) {
+		this.selectedKey = e.target.className.split(" ")[1];		
+		this.ItemSelected = item;
+
+		console.log("Date",item[this.selectedKey])
+
+		this.setState({ showDateInput: showDateInput, 
+						popupVisible: true, 
+						popupData: item[this.selectedKey]
+		})
 	}
 	onNew() {
 
 	}
 	generateRow( item ) {
-		console.log("RERENDER")
-		
+		var d = new Date();
+		console.log("item ", item)
+		item.fechaInicio = new Date(d.getFullYear(), item.mesinicio,item.diainicio).toISOString().slice(0,10);
+		item.fechaFin = new Date(d.getFullYear(), item.mesfin,item.diafin).toISOString().slice(0,10);
+
 		var diasSemana = ['Domingo','Lunes', 'Martes', 'Miercoles',
 					 'Jueves','Viernes','Sabado'];
 		var meses = ['Enero', 'Febrero', 'Marzo', 'Abril',
@@ -88,8 +99,9 @@ export class Subtareas extends Tareas {
 		return ( 
 			<HTML.Table class="subtareas">
 				<tr className="col2">
-					<td>Inicio: { item.diainicio + "/" + meses[item.mesinicio].substr(0,3) }</td>
-					<td>Fin: { item.diafin + "/" + meses[item.mesfin].substr(0,3) }</td>
+					<td className=" fechaInicio" onClick={ this.showTimerPopup.bind(this, item, true) }>Inicio: { item.diainicio + "/" + meses[ item.mesinicio].substr(0,3) }</td>
+					{ console.log( item) }
+					<td className=" fechaFin" onClick={ this.showTimerPopup.bind(this, item, true) }>Fin: { item.diafin + "/" + meses[item.mesfin].substr(0,3) }</td>
 				</tr>
 				<tr className="col3 titulos">
 					<td>Inicio</td>
@@ -98,15 +110,15 @@ export class Subtareas extends Tareas {
 				</tr>
 				<tr className="col3">
 					<td>
-						<span onClick={ this.showTimerPopup } className="iconReloj horainicio"></span>
+						<span onClick={ this.showTimerPopup.bind(this, item, false) } className="iconReloj horainicio"></span>
 						{ item.horainicio }
 					</td>
 					<td className="middle">
-						<span onClick={ this.showTimerPopup } className="iconReloj duracion"></span>
+						<span onClick={ this.showTimerPopup.bind(this, item, false) } className="iconReloj duracion"></span>
 						{ item.duracion }
 					</td>
 					<td>
-						<span onClick={ this.showTimerPopup } className="iconReloj horafin"></span>
+						<span onClick={ this.showTimerPopup.bind(this, item, false) } className="iconReloj horafin"></span>
 						{ item.horafin }
 					</td>
 					<td>
@@ -118,8 +130,15 @@ export class Subtareas extends Tareas {
 		);
 	}
 	onTemporizacion ( e ) {
-		e.preventDefault();
 		this.setState({ popupData: e.target.value == "" ? null : e.target.value });
+		this.ItemSelected[ this.selectedKey ] = this.state.popupData;
+	}
+	onTemporizacionDia ( e ) {
+		this.onTemporizacion(e);
+		var val = e.target.value == "" ? null : e.target.value;
+		var input = this.selectedKey.slice(5).toLowerCase();
+		this.ItemSelected['dia' + input] = parseInt(val.slice(-2));
+		this.ItemSelected['mes' + input] = parseInt(val.slice(5,7)) - 1;
 	}
 	render() {
 		var This = this;
@@ -134,7 +153,14 @@ export class Subtareas extends Tareas {
 					<HTML.Popup showTimerIcon={ this.state.showTimerIcon } 
 								className="temporizacion" 
 								root={ This }>
+
+						<input type="date" 
+							   className={"show" + This.state.showDateInput}
+							   onChange={ This.onTemporizacionDia } 
+							   value={ This.state.popupData } />
+
 						<input type="time" 
+							   className={"show" + !This.state.showDateInput}
 							   onChange={ This.onTemporizacion } 
 							   value={ This.state.popupData } />
 					</HTML.Popup>
