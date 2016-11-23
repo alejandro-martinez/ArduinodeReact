@@ -10,7 +10,6 @@ export class Dispositivos extends Component {
 	constructor( props ) {
 		super( props );
 		this.root = props.route.root;
-		this.generateRow = this.generateRow.bind( this );
 		this.onUpdate = this.onUpdate.bind( this );
 		this.onNew = this.onNew.bind( this );
 		this.state = { edit: false };
@@ -51,7 +50,7 @@ export class Dispositivos extends Component {
 		this.root.setState({dispositivos: dispositivos});
 	}
 	render() {
-		var rows = this.root.state.dispositivos.map( this.generateRow );
+		var rows = this.root.state.dispositivos.map( this.generateRow, this );
 		
 		return ( 
 			<div>

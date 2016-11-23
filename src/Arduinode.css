@@ -80,6 +80,17 @@ table tr {
     margin-bottom: -1px;
     padding: 10px;
 }
+table td:last-child {
+    display:inline-block;
+    margin-right:15px;
+}
+
+td.middle {
+    text-align:center;
+}
+td.middle + td{
+    text-align:right;
+}
 .container {
     padding:15px 10px 10px 10px    
 }
@@ -265,9 +276,9 @@ table.dispositivos tr td div input{
     width:100%;
 }
 td.editRowtrue a {
-  position:absolute;
-  right:-50px;
-  top:0;
+    position:absolute;
+    right:-50px;
+    top:0;
 }
 table.dispositivos tr td {
     display:block;
@@ -275,7 +286,7 @@ table.dispositivos tr td {
 }
 table.dispositivos tr td:last-child {
     position:absolute;
-    right:15px;
+    right:10px;
     top:4px;
     width:90px;
 }
@@ -378,4 +389,16 @@ table.salidas td h4 {
 /* Tareas */
 table.tareas tr div {
     width:96%;
+}
+table.tareas td:last-child a{
+    float:left;
+    margin-left:10px;
+}
+table .iconReloj {
+    position:relative;
+    color:#000;
+    left:0;
+}
+.col3 td {
+    width:32%;
 }
