@@ -5,7 +5,7 @@ import * as HTML from './HTML';
 import Socket from './Socket';
 import { Dispositivos } from './Dispositivos';
 import { SalidasDispositivo, SalidasActivas } from './Salidas';
-import { Tareas } from './Tareas';
+import { Tareas, Subtareas } from './Tareas';
 
 var menu = [
   {
@@ -99,6 +99,7 @@ class Arduinode extends Component {
 					<Router history={ hashHistory }>
 						<Route path="/" component={ Home } />
 						<Route root={This} path="Tareas" component={ Tareas } />
+						<Route root={This} path="Tareas/subtareas/:id" component={ Subtareas } />
 						<Route root={This} path="Dispositivos" component={ Dispositivos } />
 						<Route root={this} path="Dispositivos/salidasOn" component={ SalidasActivas } />
 						<Route root={This} path="Dispositivos/salidas/:ip" component={ SalidasDispositivo } />

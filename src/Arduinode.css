@@ -375,3 +375,7 @@ table.salidas td h4 {
     }
 }
 
+/* Tareas */
+table.tareas tr div {
+    width:96%;
+}
