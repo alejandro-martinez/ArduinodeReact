@@ -95,6 +95,16 @@ td.middle + td{
     padding:15px 10px 10px 10px    
 }
 /* ICONOS */
+.headerIcons > span {
+    position:fixed;
+    top:4px;
+    right:62px;
+    z-index:2;
+    font-size:2.3em;
+}
+.headerIcons span + span {
+    right:105px;
+}
 .iconReloj {
     position: fixed;
     top: 3px;
@@ -413,14 +423,4 @@ table.subtareas .col3 td.middle input{
 }
 table.subtareas .col3 td:last-child {
     width:70px;
-}
-#subtareas > span {
-    position:fixed;
-    top:4px;
-    right:62px;
-    z-index:2;
-    font-size:2.3em;
-}
-#subtareas span + span {
-    right:105px;
 }

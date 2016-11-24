@@ -6,7 +6,7 @@ import Socket from './Socket';
 import Utils from './Utils';
 import { Dispositivos } from './Dispositivos';
 import { SalidasDispositivo, SalidasActivas } from './Salidas';
-import { Tareas, Subtareas } from './Tareas';
+import { Tareas, TareaDispositivos, Subtareas } from './Tareas';
 
 var menu = [
   {
@@ -128,6 +128,7 @@ class Arduinode extends Component {
 						<Route path="/" component={ Home } />
 						<Route root={This} path="Tareas" component={ Tareas } />
 						<Route root={This} path="Tareas/subtareas/:id" component={ Subtareas } />
+						<Route root={This} path="Tareas/:id/dispositivos" component={ TareaDispositivos } />
 						<Route root={This} path="Dispositivos" component={ Dispositivos } />
 						<Route root={this} path="Dispositivos/salidasOn" component={ SalidasActivas } />
 						<Route root={This} path="Dispositivos/salidas/:ip" component={ SalidasDispositivo } />

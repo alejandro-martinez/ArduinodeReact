@@ -38,7 +38,7 @@ export class Tareas extends Component {
 							   model={ item } />
 				<td>								  
 					<Link className="button" to={'Tareas/subtareas/' + item.id}>Horarios</Link>
-					<Link className="button">Dispositivos</Link>
+					<Link className="button" to={'Tareas/' + item.id + '/dispositivos'}>Dispositivos</Link>
 				</td>
 			</HTML.EditContainer>
 		);
@@ -120,10 +120,63 @@ export class Subtareas extends Tareas {
 		if ( this.tarea.length ) {
 			var subtareas = this.tarea[0].subtareas.map( this.generateRow, this );
 			return ( 
-				<div id="subtareas"> 
+				<div className="headerIcons"> 
 					<span onClick={ this.onNew } className='iconHeader'> + </span>
 					<span onClick={ this.onUpdate } className={'iconHeader iconOK show' + this.state.changed}></span>
 					{ subtareas }
+				</div>
+			);
+		}
+		else {
+			return null;
+		}
+	}
+}
+
+export class TareaDispositivos extends Tareas {
+	constructor( props ) {
+		super( props );
+		this.onRemove = this.onRemove.bind(this);
+		this.onNew = this.onNew.bind( this );
+		this.onChange = this.onChange.bind(this);
+	}
+	onNew() {
+		
+		
+	}
+	onRemove() {
+		
+		
+	}
+	componentDidMount(){
+		this.setState({ changed: false });
+	}
+	generateRow( item ) {
+		return ( 
+			<tr className="col2">
+				<td>{ item.note + ' - ' + item.salidaNote }</td>
+				<td><span onClick={ this.onRemove.bind( this, item )} class="iconDELETE">X</span></td>
+			</tr>
+		);
+	}
+	onChange ( item, e ) {
+		item[e.target.name] = e.target.value;
+		this.setState({ changed: true });
+	}
+	render() {
+		this.tarea = this.state.tareas.filter((t) => {
+			return this.props.routeParams.id == t.id;
+		});
+
+		if ( this.tarea.length ) {
+			var dispositivos = this.tarea[0].dispositivos.map( this.generateRow, this );
+			return (
+				<div className="headerIcons">
+					<span onClick={ this.onNew } className='iconHeader'> + </span>
+					<span onClick={ this.onUpdate } className={'iconHeader iconOK show' + this.state.changed}></span>
+					<HTML.Table> 
+						{ dispositivos }
+					</HTML.Table>
 				</div>
 			);
 		}
