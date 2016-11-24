@@ -95,15 +95,36 @@ td.middle + td{
     padding:15px 10px 10px 10px    
 }
 /* ICONOS */
-.headerIcons > span {
-    position:fixed;
-    top:4px;
-    right:62px;
-    z-index:2;
-    font-size:2.3em;
+
+a[class*="icon"] {
+    color:#fff;
+    font-size:1.3em; 
 }
-.headerIcons span + span {
-    right:105px;
+.headerIcons li{
+    float:left;    
+}
+.headerIcons a{
+    position:relative;
+    z-index:9;
+}
+.headerIcons {
+    display:inline-block;
+    position:fixed;
+    top: 10px;
+    right: 57px;
+    z-index:2;
+}
+.iconMAS:before {
+    content: "\271A"
+}
+.iconMAS{
+    font-size:1.7em !important;
+}
+.iconOK{
+    font-size:2.1em !important;
+}
+.iconOK:after {
+    content: "\2713"
 }
 .iconReloj {
     position: fixed;
@@ -118,13 +139,6 @@ td.middle + td{
 }
 .iconReloj:before {
     content: "\23f1"
-}
-.iconHeader {
-    color:#fff;
-    font-size:1.3em; 
-}
-.iconOK:after {
-    content: "\2713"
 }
 .iconDELETE:after {
     content: "\2717"

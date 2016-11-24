@@ -4,7 +4,8 @@ import { Router,Link, Route, hashHistory } from 'react-router';
 import * as HTML from './HTML';
 import Socket from './Socket';
 import Utils from './Utils';
-import {Tarea} from './Arduinode';
+import { Tarea } from './Arduinode';
+import { SelectDispositivos } from './Dispositivos';
 
 export class Tareas extends Component {
 	constructor( props ) {
@@ -17,6 +18,7 @@ export class Tareas extends Component {
 		this.state = { tareas: [], edit:false };
 		this.Tarea = new Tarea();
 		this.Tarea.get( true ).then(( data )=> {
+			console.log("TAREAS", data)
 			this.setState({ tareas: data });
 		});
 	}
@@ -120,9 +122,11 @@ export class Subtareas extends Tareas {
 		if ( this.tarea.length ) {
 			var subtareas = this.tarea[0].subtareas.map( this.generateRow, this );
 			return ( 
-				<div className="headerIcons"> 
-					<span onClick={ this.onNew } className='iconHeader'> + </span>
-					<span onClick={ this.onUpdate } className={'iconHeader iconOK show' + this.state.changed}></span>
+				<div> 
+					<ul className="headerIcons">
+						<li><a onClick={ this.onNew } className='iconHeader'> + </a></li>
+						<li><a onClick={ this.onUpdate } className={'iconHeader iconOK show' + this.state.changed}></a></li>
+					</ul>						
 					{ subtareas }
 				</div>
 			);
@@ -136,28 +140,34 @@ export class Subtareas extends Tareas {
 export class TareaDispositivos extends Tareas {
 	constructor( props ) {
 		super( props );
+		this.root = props.route.root;
 		this.onRemove = this.onRemove.bind(this);
 		this.onNew = this.onNew.bind( this );
+		this.onLaunchPopup = this.onLaunchPopup.bind( this );
 		this.onChange = this.onChange.bind(this);
 	}
 	onNew() {
 		
 		
 	}
-	onRemove() {
-		
-		
+	onLaunchPopup() {
+
 	}
-	componentDidMount(){
-		this.setState({ changed: false });
+	onRemove( item, e ) {
+		var i = this.dispositivos.indexOf( item );
+		this.dispositivos.splice(i, 1);
+		this.setState({ dispositivos: this.dispositivos });
 	}
 	generateRow( item ) {
 		return ( 
 			<tr className="col2">
 				<td>{ item.note + ' - ' + item.salidaNote }</td>
-				<td><span onClick={ this.onRemove.bind( this, item )} class="iconDELETE">X</span></td>
+				<td><a onClick={ this.onRemove.bind( this, item )} class="iconDELETE">X</a></td>
 			</tr>
 		);
+	}
+	componentDidMount(){
+		this.setState({ changed: false });
 	}
 	onChange ( item, e ) {
 		item[e.target.name] = e.target.value;
@@ -167,15 +177,19 @@ export class TareaDispositivos extends Tareas {
 		this.tarea = this.state.tareas.filter((t) => {
 			return this.props.routeParams.id == t.id;
 		});
-
-		if ( this.tarea.length ) {
-			var dispositivos = this.tarea[0].dispositivos.map( this.generateRow, this );
+		if (this.tarea.length) {
+			this.dispositivos = this.tarea[0].dispositivos.map( this.generateRow, this );
 			return (
-				<div className="headerIcons">
-					<span onClick={ this.onNew } className='iconHeader'> + </span>
-					<span onClick={ this.onUpdate } className={'iconHeader iconOK show' + this.state.changed}></span>
+				<div>
+					<ul className="headerIcons">
+						<li><a href="javascript:void(0)" onClick={ this.onLaunchPopup } className='iconMAS'></a></li>
+						<li><a href="javascript:void(0)" onClick={ this.onUpdate } className={'iconOK show' + this.state.changed}></a></li>
+					</ul>
+					<HTML.Popup launchIcon="iconMAS" className="dispositivos" root={ this }>
+						<SelectDispositivos added={ this.tarea[0].dispositivos } root={ this.root }/>
+					</HTML.Popup>
 					<HTML.Table> 
-						{ dispositivos }
+						{ this.dispositivos }
 					</HTML.Table>
 				</div>
 			);

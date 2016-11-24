@@ -6,6 +6,16 @@ import * as HTML from './HTML';
 import { Dispositivo } from './Arduinode';
 
 
+export function SelectDispositivos( props ) {
+	console.log(props)
+	var dispositivos = props.root.state.dispositivos.map( ( item ) => {
+		if ( props.added.indexOf( item ) < 0 ) {
+			return (<option value={ item.ip }>{ item.note }</option>);
+		}
+	});
+	return (<select>{ dispositivos }</select>);
+};
+
 export class Dispositivos extends Component {
 	constructor( props ) {
 		super( props );

@@ -52,10 +52,12 @@ export class Popup extends Component {
 			);
 		}
 		else {
-			return ( 
-				<a className="iconReloj" onClick={ this.toggle }>
-					<span> { this.props.root.state.popupData } </span>
-				</a> 
+			return (
+				<ul className="headerIcons">
+					<li><a className={ this.props.launchIcon } onClick={ this.toggle }>
+						<span> { this.props.root.state.popupData } </span>
+					</a></li>
+				</ul>
 			);
 		}
 		
