@@ -307,7 +307,7 @@ table.dispositivos tr td:last-child {
     padding: 12px;
     width: 120px;
 }
-table.salidas tr td div{
+table.salidas > tr td div{
     width:50%;
     position:relative;
     display:inline-block;
@@ -401,4 +401,26 @@ table .iconReloj {
 }
 .col3 td {
     width:32%;
+}
+/*SUBTAREAS*/
+
+table.subtareas .col3 td input {
+    margin:0;
+    display:block;
+}
+table.subtareas .col3 td.middle input{
+    margin:0 auto;
+}
+table.subtareas .col3 td:last-child {
+    width:70px;
+}
+#subtareas > span {
+    position:fixed;
+    top:4px;
+    right:62px;
+    z-index:2;
+    font-size:2.3em;
+}
+#subtareas span + span {
+    right:105px;
 }

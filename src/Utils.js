@@ -24,6 +24,19 @@ class Utils {
 			return hrs + ":" + min;
 		}
 	}
+	static parseDate( dia, mes ) {
+		var d = new Date();
+		return new Date(d.getFullYear(), dia, mes).toISOString().slice(0,10);
+	}
+	static getDiasSemana() {
+		return ['Domingo','Lunes', 'Martes', 'Miercoles',
+					 'Jueves','Viernes','Sabado'];		
+	}
+	static getMeses() {
+		return ['Enero', 'Febrero', 'Marzo', 'Abril',
+					'Mayo', 'Junio', 'Julio','Agosto',
+					'Septiembre','Octubre', 'Noviembre', 'Diciembre'];
+	}
 }
 
 export default Utils;

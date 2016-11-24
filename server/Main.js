@@ -89,6 +89,9 @@ Dispositivo.prototype = {
 			});
 		}
 	},
+	parseVersionDispositivo() {
+
+	},
 /**
 * Parsea los datos recibidos desde los dispositivos Arduino
 * @method parseSalida
@@ -98,19 +101,13 @@ Dispositivo.prototype = {
 */
 	parseSalida: function(params, _data ) {
 		This = this;
+
 		if (_data && _data.length > 0) {
+
 			var newSalidas = false;
-
 			var parsed = [],
-				salidasParsed = [];
-
-			if (_data.indexOf("\n") < 0) {
-				salidasParsed.push(_data);
-			}
-			else {
-				salidasParsed = _data.split("\n");
-			}
-
+				salidasParsed = _data;
+			
 			salidasParsed.forEach(function(str) {
 				if (str && str.length) {
 					var posGuion 	= str.indexOf("-"),
@@ -183,10 +180,13 @@ Dispositivo.prototype = {
 */
 	getSalidas: function( callback ) {
 		var params = { comando: 'G', ip: this.ip };
-		var This = this;
-		socket.send(params, function( response ) {
+		
+		socket.send(params, ( response ) => {
 			if (response) {
-				callback( This.parseSalida( params,response ));
+				response = response.split("\n");
+				this.version = response[0];
+				response.shift();
+				callback( This.parseSalida( params, response ));
 			}
 			else {
 				callback();

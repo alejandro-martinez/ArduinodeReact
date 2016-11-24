@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Router,Link, Route, hashHistory } from 'react-router';
 import * as HTML from './HTML';
 import Socket from './Socket';
+import Utils from './Utils';
 import {Tarea} from './Arduinode';
 
 export class Tareas extends Component {
@@ -58,114 +59,72 @@ export class Subtareas extends Tareas {
 	constructor( props ) {
 		super( props );
 		this.onNew = this.onNew.bind( this );
-		this.showTimerPopup = this.showTimerPopup.bind( this );
-		this.onTemporizacion = this.onTemporizacion.bind( this );
-		this.onTemporizacionDia = this.onTemporizacionDia.bind( this );
-		this.subtareas = [];
-		this.selectedKey = null;
-		this.ItemSelected = null;
-		var state = this.state;
-		state.popupVisible = false;
-		state.showDateInput = false;
-		state.showTimerIcon = false;
-		state.popupData = "";
-		this.setState( state );
-	}
-	showTimerPopup(item, showDateInput, e) {
-		this.selectedKey = e.target.className.split(" ")[1];		
-		this.ItemSelected = item;
-
-		console.log("Date",item[this.selectedKey])
-
-		this.setState({ showDateInput: showDateInput, 
-						popupVisible: true, 
-						popupData: item[this.selectedKey]
-		})
+		this.onChange = this.onChange.bind(this);
 	}
 	onNew() {
-
+		var subtareas = this.tarea[0].subtareas;
+		subtareas.push( Tarea.newSubtareaModel() );		
+	}
+	componentDidMount(){
+		this.setState({ changed: false });
 	}
 	generateRow( item ) {
-		var d = new Date();
-		console.log("item ", item)
-		item.fechaInicio = new Date(d.getFullYear(), item.mesinicio,item.diainicio).toISOString().slice(0,10);
-		item.fechaFin = new Date(d.getFullYear(), item.mesfin,item.diafin).toISOString().slice(0,10);
-
-		var diasSemana = ['Domingo','Lunes', 'Martes', 'Miercoles',
-					 'Jueves','Viernes','Sabado'];
-		var meses = ['Enero', 'Febrero', 'Marzo', 'Abril',
-					'Mayo', 'Junio', 'Julio','Agosto',
-					'Septiembre','Octubre', 'Noviembre', 'Diciembre'];
+		var diasSemana = Utils.getDiasSemana();
+		var meses = Utils.getMeses();
 		return ( 
 			<HTML.Table class="subtareas">
 				<tr className="col2">
-					<td className=" fechaInicio" onClick={ this.showTimerPopup.bind(this, item, true) }>Inicio: { item.diainicio + "/" + meses[ item.mesinicio].substr(0,3) }</td>
-					{ console.log( item) }
-					<td className=" fechaFin" onClick={ this.showTimerPopup.bind(this, item, true) }>Fin: { item.diafin + "/" + meses[item.mesfin].substr(0,3) }</td>
+					<td>Inicio: <input type="date" 
+						   onChange={ this.onChange.bind(this, item) } 
+						   name="fechainicio" 
+						   value={ item.fechainicio } />
+					</td>
+					<td>Fin: <input type="date"
+						   name="fechafin" 
+						   onChange={ this.onChange.bind(this, item) } 
+						   value={ item.fechafin } /></td>
 				</tr>
 				<tr className="col3 titulos">
-					<td>Inicio</td>
-					<td className="middle">Duración</td>
-					<td>Fin</td>
-				</tr>
-				<tr className="col3">
-					<td>
-						<span onClick={ this.showTimerPopup.bind(this, item, false) } className="iconReloj horainicio"></span>
-						{ item.horainicio }
+					<td>Inicio
+						<input type="time"
+						   name="horainicio" 
+						   onChange={ this.onChange.bind(this, item) } 
+						   value={ item.horainicio } />
 					</td>
 					<td className="middle">
-						<span onClick={ this.showTimerPopup.bind(this, item, false) } className="iconReloj duracion"></span>
-						{ item.duracion }
+						Duración
+						<input type="time" 
+						   name="duracion" 
+						   onChange={ this.onChange.bind(this, item) } 
+						   value={ item.duracion } />
 					</td>
-					<td>
-						<span onClick={ this.showTimerPopup.bind(this, item, false) } className="iconReloj horafin"></span>
-						{ item.horafin }
-					</td>
-					<td>
-						<span className="iconPreferencias">
-						</span>
+					<td>Fin
+						<input type="time"
+						   name="horafin" 
+						   onChange={ this.onChange.bind(this, item) } 
+						   value={ item.horafin } />
 					</td>
 				</tr>
 			</HTML.Table>
 		);
 	}
-	onTemporizacion ( e ) {
-		this.setState({ popupData: e.target.value == "" ? null : e.target.value });
-		this.ItemSelected[ this.selectedKey ] = this.state.popupData;
-	}
-	onTemporizacionDia ( e ) {
-		this.onTemporizacion(e);
-		var val = e.target.value == "" ? null : e.target.value;
-		var input = this.selectedKey.slice(5).toLowerCase();
-		this.ItemSelected['dia' + input] = parseInt(val.slice(-2));
-		this.ItemSelected['mes' + input] = parseInt(val.slice(5,7)) - 1;
+	onChange ( item, e ) {
+		console.log("CAmbio",e.target.name,e.target.value)
+		item[e.target.name] = e.target.value;
+		this.setState({ changed: true });
 	}
 	render() {
-		var This = this;
-		var tarea = this.state.tareas.filter((t) => {
+		this.tarea = this.state.tareas.filter((t) => {
 			return this.props.routeParams.id == t.id;
 		});
 
-		if ( tarea.length ) {
-			var subtareas = tarea[0].subtareas.map( this.generateRow, this );
+		if ( this.tarea.length ) {
+			var subtareas = this.tarea[0].subtareas.map( this.generateRow, this );
 			return ( 
-				<div>
-					<HTML.Popup showTimerIcon={ this.state.showTimerIcon } 
-								className="temporizacion" 
-								root={ This }>
-
-						<input type="date" 
-							   className={"show" + This.state.showDateInput}
-							   onChange={ This.onTemporizacionDia } 
-							   value={ This.state.popupData } />
-
-						<input type="time" 
-							   className={"show" + !This.state.showDateInput}
-							   onChange={ This.onTemporizacion } 
-							   value={ This.state.popupData } />
-					</HTML.Popup>
+				<div id="subtareas"> 
+					<span className='iconHeader'> + </span>
+					<span className={'iconHeader iconOK show' + this.state.changed}></span>
 					{ subtareas }
-					<button onClick={ this.onNew }>Nueva</button>
 				</div>
 			);
 		}

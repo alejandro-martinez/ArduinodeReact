@@ -32,18 +32,17 @@ export class Header extends Component {
 export class Popup extends Component {
 	constructor( props ) {
 		super( props );
-		this.root = props.root;
+		this.state = { visible: false };
 		this.toggle = this.toggle.bind( this );
 	}
 	toggle() {
-		this.root.setState({ popupVisible: !this.root.state.popupVisible });
+		this.setState({ visible: !this.state.visible });
 	}
 	render( props ) {
-		console.log(this.root.state)
-		if ( this.root.state.popupVisible) {			
+		if ( this.state.visible ) {
 			return (
 				<div>
-					<div className={'popup show' + this.root.state.popupVisible}>
+					<div className={'popup show' + this.state.visible}>
 					{
 						this.props.children
 					}
@@ -53,20 +52,16 @@ export class Popup extends Component {
 			);
 		}
 		else {
-			if (this.props.showTimerIcon) {
-				return ( 
-					<a className="iconReloj" onClick={ this.toggle }>
-						<span> { this.root.state.popupData } </span>
-					</a> 
-				);
-			}
-			else {
-				return null;
-			}
+			return ( 
+				<a className="iconReloj" onClick={ this.toggle }>
+					<span> { this.props.root.state.popupData } </span>
+				</a> 
+			);
 		}
 		
 	}
 }
+
 
 export function EditContainer(props) {
 	return (
