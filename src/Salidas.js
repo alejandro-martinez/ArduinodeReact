@@ -48,7 +48,7 @@ class Luz extends Component {
 	onUpdate( model ) {
 		this.root.state.dispositivos.forEach(( disp ) => {
 			disp.salidas.forEach( (salida, k, _this) => {
-				if ( salida.nro_salida == model.nro_salida ) {
+				if ( salida.nro == model.nro ) {
 					_this[k].note = model.note;
 				}
 			})
@@ -103,7 +103,7 @@ class SalidasTable extends Component {
 			let estaTemporizada = (item.temporizada !== null && item.temporizada !== "");
 
 			tableItems.push(
-				<Luz key={ item.nro_salida.toString() } item={ item }
+				<Luz key={ item.nro.toString() } item={ item }
 					 salidasState={ This.state } 
 					 root={ This.root } 
 					 switchClass= { ' temporizada' + estaTemporizada }

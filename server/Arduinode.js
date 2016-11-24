@@ -48,7 +48,7 @@ function Arduinode() {
 		var salidas = [];
 		salidas_raw.forEach( function(v) {
 			salidas.push({ 
-				nro_salida: parseInt( v.slice(1,-1) ), 
+				nro: parseInt( v.slice(1,-1) ), 
 				estado: parseInt( v.slice(-1)), 
 				temporizada: 0,
 				ip: This.ip
@@ -59,7 +59,7 @@ function Arduinode() {
 
 		salidas.map((t) => {
 			var index = dispositivo.salidas.findIndex((s) => { 
-				return s.nro_salida == t.nro_salida;
+				return s.nro == t.nro;
 			});
 			dispositivo.salidas[index].estado = t.estado;
 		});

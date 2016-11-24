@@ -49,8 +49,8 @@ Dispositivo.prototype = {
 * @method getSalidaByNro
 * @return Salida
 */
-	getSalidaByNro: function( nro_salida ) {
-		var salida = _.findWhere(this.salidas, { nro_salida: parseInt(nro_salida) });
+	getSalidaByNro: function( nro ) {
+		var salida = _.findWhere(this.salidas, { nro: parseInt(nro) });
 		return salida;
 	},
 
@@ -63,7 +63,7 @@ Dispositivo.prototype = {
 */
 	switchSalida: function(params, callback) {
 		
-		var salida = this.getSalidaByNro( params.nro_salida );
+		var salida = this.getSalidaByNro( params.nro );
 
 		if ( salida ) {
 			var params_aux = params;
@@ -113,7 +113,7 @@ Dispositivo.prototype = {
 					var posGuion 	= str.indexOf("-"),
 						posDospuntos= str.indexOf(":"),
 						posPunto 	= str.indexOf("."),
-						nro_salida 	= str[posGuion+1] + str[posGuion+2];
+						nro 	= str[posGuion+1] + str[posGuion+2];
 					
 					var temporizada = 0;
 
@@ -121,7 +121,7 @@ Dispositivo.prototype = {
 						temporizada = DateConvert.min_a_horario(str.substr( posPunto + 1));
 					}
 					// Si la salida existe en el JSON
-					var salidaFound = This.getSalidaByNro(nro_salida );
+					var salidaFound = This.getSalidaByNro(nro );
 
 					if (salidaFound) {
 						var salida = JSON.parse(JSON.stringify(salidaFound));
@@ -134,15 +134,15 @@ Dispositivo.prototype = {
 						var dispositivo = _.findWhere(dispositivos,{ ip: params.ip });
 
 						dispositivo.salidas.push({
-							nro_salida		: parseInt( nro_salida ),
-							tipo			: str[0],
-							note			: "Salida " + nro_salida
+							nro	 : parseInt( nro ),
+							tipo : str[0],
+							note : "Salida " + nro
 						});
 
 						var salida = {
-							nro_salida	: parseInt(nro_salida),
+							nro			: parseInt(nro),
 							tipo		: str[0],
-							note		: "Salida " + nro_salida,
+							note		: "Salida " + nro,
 							ip			: params.ip,
 							estado		: parseInt( str[posDospuntos+1] ),
 							temporizada	: temporizada
@@ -205,7 +205,7 @@ Dispositivo.prototype = {
 		if ( salidas && salidas.length > 1) {
 			salidas.forEach( (s) => {
 				var factory = new SalidaFactory(),
-					salida 	= factory.create( s.nro_salida, s.tipo, s.note, this.ip );
+					salida 	= factory.create( s.nro, s.tipo, s.note, this.ip );
 
 				// Actualiza estado si viene en el array
 				if ( s.temporizada && salida.temporizada === null ) {
@@ -218,7 +218,7 @@ Dispositivo.prototype = {
 		}
 
 		this.salidas = _.uniq(this.salidas, function (item, key, a) {
-            return item.ip && item.nro_salida;
+            return item.ip && item.nro;
         });
 	}
 };
@@ -231,7 +231,7 @@ Dispositivo.prototype = {
 */
 /**
 * Numero de salida
-* @property nro_salida
+* @property nro
 * @type Integer
 */
 /**
@@ -279,9 +279,9 @@ Dispositivo.prototype = {
 * @type Integer
 */
 
-function Salida( _nro_salida, _note, _tipo ) {
+function Salida( _nro, _note, _tipo ) {
 
-	this.nro_salida 	= _nro_salida 	|| null;
+	this.nro 	= _nro 	|| null;
 	this.note 			= _note 		|| null;
 	this.tipo 			= _tipo 		|| null;
 	this.estado 		= null;
@@ -298,7 +298,7 @@ function Salida( _nro_salida, _note, _tipo ) {
 * @return Boolean Resultado del comando
 */
 Salida.prototype.getEstado = function( params, callback ) {
-	params.comando = "S" + params.nro_salida;
+	params.comando = "S" + params.nro;
 	socket.send( params, function( response, timeout ) {
 		callback(response)
 	});
@@ -325,12 +325,12 @@ Salida.prototype.switch = function( params, callback ) {
 *
 * @class Luz
 * @constructor
-* @params {Integer} nro_salida Numero de Salida
+* @params {Integer} nro Numero de Salida
 * @params {String} _note Descripción de Salida
 * @params {String} _ip IP del dispositivo Arduino
 */
-function Luz( nro_salida, _note, _ip ) {
-	Salida.apply(this, [nro_salida, _note]);
+function Luz( nro, _note, _ip ) {
+	Salida.apply(this, [nro, _note]);
 	this.ip 	 	 = _ip;
 	this.tipo 	 = 'L';
 	this.comando = 'T';
@@ -349,7 +349,7 @@ Luz.prototype.constructor = Luz;
 */
 Luz.prototype.switch = function( params, callback ) {
 	var comando = this.comando
-							+ this.nro_salida
+							+ this.nro
 							+ params.estado
 							+ "."
 							+ DateConvert.horario_a_min(params.temporizada);
@@ -361,12 +361,12 @@ Luz.prototype.switch = function( params, callback ) {
 * Representa una Salida tipo Persiana
 * @class Persiana
 * @constructor
-* @params {Integer} nro_salida Numero de Salida
+* @params {Integer} nro Numero de Salida
 * @params {String} _note Descripción de Salida
 */
 
-function Persiana( nro_salida, _note ) {
-	Salida.apply(this,[nro_salida, _note]);
+function Persiana( nro, _note ) {
+	Salida.apply(this,[nro, _note]);
 	this.tipo = this.comando = 'P';
 };
 
@@ -387,7 +387,7 @@ Persiana.prototype.constructor = Persiana;
 */
 Persiana.prototype.switch = function( params, callback ) {
 	var comando = this.comando
-				+ this.nro_salida
+				+ this.nro
 				+ params.estado;
 	Salida.prototype.switch({ comando: comando, ip: this.ip}, callback);
 };
@@ -398,17 +398,17 @@ Persiana.prototype.switch = function( params, callback ) {
 * @return {Salida} Objeto Salida segun atributo tipo
 */
 function SalidaFactory() {
-	this.create = function( nro_salida, _tipo, _note, _ip ) {
+	this.create = function( nro, _tipo, _note, _ip ) {
 
 		switch (_tipo) {
 			case "P":
-				return new Persiana(nro_salida, _note, _ip);
+				return new Persiana(nro, _note, _ip);
 				break;
 			case "S":
-				return new Sensor(nro_salida, _note, _ip);
+				return new Sensor(nro, _note, _ip);
 				break;
 			default:
-				return new Luz(nro_salida, _note, _ip);
+				return new Luz(nro, _note, _ip);
 		}
 	}
 }

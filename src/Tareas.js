@@ -11,12 +11,13 @@ export class Tareas extends Component {
 	constructor( props ) {
 		super( props );
 		
-		this.generateRow = this.generateRow.bind(this);
-		this.onUpdate = this.onUpdate.bind(this);
-		this.onNew = this.onNew.bind(this);
+		this.generateRow= this.generateRow.bind(this);
+		this.onUpdate 	= this.onUpdate.bind(this);
+		this.onNew 		= this.onNew.bind(this);
 		
 		this.state = { tareas: [], edit:false };
 		this.Tarea = new Tarea();
+
 		this.Tarea.get( true ).then(( data )=> {
 			console.log("TAREAS", data)
 			this.setState({ tareas: data });
@@ -140,18 +141,10 @@ export class Subtareas extends Tareas {
 export class TareaDispositivos extends Tareas {
 	constructor( props ) {
 		super( props );
-		this.root = props.route.root;
-		this.onRemove = this.onRemove.bind(this);
-		this.onNew = this.onNew.bind( this );
-		this.onLaunchPopup = this.onLaunchPopup.bind( this );
-		this.onChange = this.onChange.bind(this);
-	}
-	onNew() {
-		
-		
-	}
-	onLaunchPopup() {
-
+		this.root 			= props.route.root;
+		this.onRemove 		= this.onRemove.bind(this);
+		this.onNew 			= this.onNew.bind( this );
+		this.onChange 		= this.onChange.bind(this);
 	}
 	onRemove( item, e ) {
 		var i = this.dispositivos.indexOf( item );
@@ -167,26 +160,40 @@ export class TareaDispositivos extends Tareas {
 		);
 	}
 	componentDidMount(){
-		this.setState({ changed: false });
+		this.setState({ changed: false  });
 	}
 	onChange ( item, e ) {
 		item[e.target.name] = e.target.value;
 		this.setState({ changed: true });
 	}
+	onNew( dispositivo, salida ) {
+		var salidaParsed = salida.split("-"),
+			newDispositivo = { 
+				ip: dispositivo.ip, 
+				note: dispositivo.note,
+				nro: salidaParsed[0],
+				salidaNote: salidaParsed[1] 
+			};
+		
+		this.tarea.dispositivos.push( newDispositivo );		
+		this.setState({ changed:true });
+	}
 	render() {
-		this.tarea = this.state.tareas.filter((t) => {
-			return this.props.routeParams.id == t.id;
-		});
-		if (this.tarea.length) {
-			this.dispositivos = this.tarea[0].dispositivos.map( this.generateRow, this );
+		if ( this.state.tareas.length ) {
+			var tarea = this.state.tareas.filter((t) => {
+				return this.props.routeParams.id == t.id;
+			});
+			this.tarea = tarea[0];
+			this.dispositivos = this.tarea.dispositivos.map( this.generateRow, this );
 			return (
 				<div>
 					<ul className="headerIcons">
-						<li><a href="javascript:void(0)" onClick={ this.onLaunchPopup } className='iconMAS'></a></li>
-						<li><a href="javascript:void(0)" onClick={ this.onUpdate } className={'iconOK show' + this.state.changed}></a></li>
+						<li><a onClick={ this.onUpdate } className={'iconOK show' + this.state.changed}></a></li>
 					</ul>
 					<HTML.Popup launchIcon="iconMAS" className="dispositivos" root={ this }>
-						<SelectDispositivos added={ this.tarea[0].dispositivos } root={ this.root }/>
+						<SelectDispositivos added={ this.tarea.dispositivos } 
+											onAdd={ this.onNew }
+											root={ this.root } />
 					</HTML.Popup>
 					<HTML.Table> 
 						{ this.dispositivos }
