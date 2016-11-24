@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Router,Link, Route, hashHistory } from 'react-router';
 import * as HTML from './HTML';
 import Socket from './Socket';
+import Utils from './Utils';
 import { Dispositivos } from './Dispositivos';
 import { SalidasDispositivo, SalidasActivas } from './Salidas';
 import { Tareas, Subtareas } from './Tareas';
@@ -38,6 +39,15 @@ export class DB {
 		Socket.emit('update'+ this.filename +'DB', db );
 	}
 }
+export class Validator {
+	static isValidNOTE() {
+		return true;
+	}
+	static isValidIP( ip ) {		
+		return (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ip));
+	}
+}
+
 
 export class Dispositivo extends DB {
 	constructor() {
@@ -53,18 +63,36 @@ export class Dispositivo extends DB {
 
 		return model;
 	}
-	static isValidNOTE() {
-		return true;
-	}
-	static isValidIP( ip ) {		
-		return (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ip));
-	}
+	static isValidNOTE = Validator.isValidNOTE;
+	static isValidIP = Validator.isValidIP;
 }
 
 export class Tarea extends DB {
 	constructor() {
 		super('Tareas');
 	}
+	static newModel() {
+		return {
+		    "note": "Nueva tarea",
+		    "id": Math.random().toString(36).slice(18),
+		    "dispositivos": [],
+		    "subtareas": [],
+		    "accion": 0,
+		    "activa": 1	    
+		}
+	}
+	static newSubtareaModel() {
+		return { 
+			"id": Math.random().toString(36).slice(18),
+	        "diasejecucion": "1,2,3,4,5",
+	        "fechainicio": Utils.getDate(),
+	        "fechafin": Utils.getDate(),
+	        "duracion": "01:00",
+	        "horainicio": "00:00",
+	        "horafin": "00:00"
+		};
+	}
+	static isValidNOTE = Validator.isValidNOTE;
 }
 
 class Home extends Component {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import Loading from 'react-loading';
-import { Dispositivo } from './Dispositivos';
+import { Dispositivo, Validator } from './Arduinode';
 
 export class Header extends Component {
 	constructor( props ) {
@@ -86,7 +86,7 @@ export class EditRow extends Component {
 	onChange(e) {
 		var model = this.state.model;
 		var validator = 'isValid' + this.props.inputKey.toUpperCase();
-		if ( Dispositivo[validator]( e.target.value ) ) {
+		if ( Validator[validator]( e.target.value ) ) {
 			model[this.props.inputKey] =  e.target.value;
 			this.setState({ model: model });
 		}

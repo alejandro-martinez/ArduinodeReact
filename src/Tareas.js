@@ -17,24 +17,24 @@ export class Tareas extends Component {
 		this.state = { tareas: [], edit:false };
 		this.Tarea = new Tarea();
 		this.Tarea.get( true ).then(( data )=> {
-			console.log(data)
 			this.setState({ tareas: data });
 		});
 	}
 	onNew() {
-		this.state.tareas.push( Tarea.newModel() );
-		this.Tarea.updateDB( this.state.tareas );
+		var tareas = this.state.tareas;
+		tareas.push( Tarea.newModel() );
+		this.setState({ tareas: tareas });
 	}
 	onUpdate() {
 		this.Tarea.update( this.state.tareas );
 	}
 	generateRow( item ) {
 		return ( 
-			<HTML.EditContainer edit={this.state.edit}>
+			<HTML.EditContainer edit={this.state.edit || item.note.length === 0}>
 				<HTML.EditRow root={ this.root }
 							   onUpdate={ this.onUpdate }
 							   edit={ false }
-							   inputKey='descripcion'
+							   inputKey='note'
 							   model={ item } />
 				<td>								  
 					<Link className="button" to={'Tareas/subtareas/' + item.id}>Horarios</Link>
@@ -62,8 +62,8 @@ export class Subtareas extends Tareas {
 		this.onChange = this.onChange.bind(this);
 	}
 	onNew() {
-		var subtareas = this.tarea[0].subtareas;
-		subtareas.push( Tarea.newSubtareaModel() );		
+		this.tarea[0].subtareas.push( Tarea.newSubtareaModel() );
+		this.forceUpdate();
 	}
 	componentDidMount(){
 		this.setState({ changed: false });
@@ -109,7 +109,6 @@ export class Subtareas extends Tareas {
 		);
 	}
 	onChange ( item, e ) {
-		console.log("CAmbio",e.target.name,e.target.value)
 		item[e.target.name] = e.target.value;
 		this.setState({ changed: true });
 	}
@@ -122,8 +121,8 @@ export class Subtareas extends Tareas {
 			var subtareas = this.tarea[0].subtareas.map( this.generateRow, this );
 			return ( 
 				<div id="subtareas"> 
-					<span className='iconHeader'> + </span>
-					<span className={'iconHeader iconOK show' + this.state.changed}></span>
+					<span onClick={ this.onNew } className='iconHeader'> + </span>
+					<span onClick={ this.onUpdate } className={'iconHeader iconOK show' + this.state.changed}></span>
 					{ subtareas }
 				</div>
 			);

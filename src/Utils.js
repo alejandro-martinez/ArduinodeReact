@@ -24,6 +24,9 @@ class Utils {
 			return hrs + ":" + min;
 		}
 	}
+	static getDate() {
+		return new Date().toISOString().slice(0,10);
+	}
 	static parseDate( dia, mes ) {
 		var d = new Date();
 		return new Date(d.getFullYear(), dia, mes).toISOString().slice(0,10);
