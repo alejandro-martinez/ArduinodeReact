@@ -403,6 +403,14 @@ table.salidas td h4 {
 }
 
 /* Tareas */
+table.tareas tr td:last-child a {
+    font-size:2.1em;
+    color:#03ae74;
+}
+table.tareas td a {
+    top:-3px !important;
+    left:-10px;
+}
 table.tareas tr div {
     width:96%;
 }

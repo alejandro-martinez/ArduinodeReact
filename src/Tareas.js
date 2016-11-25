@@ -40,8 +40,8 @@ export class Tareas extends Component {
 							   inputKey='note'
 							   model={ item } />
 				<td>								  
-					<Link className="button" to={'Tareas/subtareas/' + item.id}>Horarios</Link>
-					<Link className="button" to={'Tareas/' + item.id + '/dispositivos'}>Dispositivos</Link>
+					<Link className="iconReloj" to={'Tareas/subtareas/' + item.id}></Link>
+					<Link to={'Tareas/' + item.id + '/dispositivos'}>&#9854;</Link>
 				</td>
 			</HTML.EditContainer>
 		);
