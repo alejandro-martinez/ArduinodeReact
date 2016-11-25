@@ -15,7 +15,7 @@ export class Tareas extends Component {
 		this.onUpdate 	= this.onUpdate.bind(this);
 		this.onNew 		= this.onNew.bind(this);
 		this.onSetActiva = this.onSetActiva.bind(this);
-		
+		this.onSetAccion = this.onSetAccion.bind(this);
 		this.state = { tareas: [], edit:false };
 		this.Tarea = new Tarea();
 
@@ -26,6 +26,10 @@ export class Tareas extends Component {
 	}
 	onSetActiva(tarea, e) {
 		tarea.activa = (tarea.activa) ? 0 : 1;
+		this.setState({ changed: true });
+	}
+	onSetAccion(tarea, e) {
+		tarea.accion = (tarea.accion) ? 0 : 1;
 		this.setState({ changed: true });
 	}
 	onNew() {
@@ -41,7 +45,6 @@ export class Tareas extends Component {
 		this.setState({ changed: false });
 	}
 	generateRow( item ) {
-		var tareaActiva = ( item.activa === 1 ) ? 'iconACTIVA' : 'iconINACTIVA';
 		return ( 
 			<HTML.EditContainer edit={this.state.edit || item.note.length === 0}>
 				<HTML.EditRow root={ this.root }
@@ -51,7 +54,8 @@ export class Tareas extends Component {
 							   model={ item } />
 				<td>								  
 					<ul className="listIcons tareasIcons">
-						<li><Link className={tareaActiva} onClick={ this.onSetActiva.bind(this, item) }></Link></li>
+						<li><Link className={'iconLAMP' + item.accion} onClick={ this.onSetAccion.bind(this, item) }></Link></li>
+						<li><Link className={'iconACTIVA' + item.activa } onClick={ this.onSetActiva.bind(this, item) }></Link></li>
 						<li><Link className="iconReloj" to={'Tareas/subtareas/' + item.id}></Link></li>
 						<li><Link to={'Tareas/' + item.id + '/dispositivos'}>&#9854;</Link></li>
 					</ul>

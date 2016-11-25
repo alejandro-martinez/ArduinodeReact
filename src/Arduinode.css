@@ -123,13 +123,29 @@ a[class*="icon"] {
     top: 10px;
     right: 57px;
 }
-.iconINACTIVA {
+.iconLAMP0:before {
+    content:"\2600"
+}
+.iconLAMP1 {
+    margin-right:8px;
+    font-size:1.6em !important;
+}
+.iconLAMP0 {
+    color:#c1c100 !important;
+}
+.iconLAMP1:before {
+    content:"\25CF";
+}
+.iconLAMP1:before{
     color:grey !important;
 }
-.iconINACTIVA:before {
+.iconACTIVA0 {
+    color:grey !important;
+}
+.iconACTIVA0:before {
     content: "\2610"
 }
-.iconACTIVA:before {
+.iconACTIVA1:before {
     content: "\2611"   
 }
 .iconMAS:before {
