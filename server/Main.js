@@ -100,15 +100,13 @@ Dispositivo.prototype = {
 * @return Boolean Resultado del comando
 */
 	parseSalida: function(params, _data ) {
-		This = this;
-
+		const This = this;
 		if (_data && _data.length > 0) {
 
 			var newSalidas = false;
-			var parsed = [],
-				salidasParsed = _data;
+			var parsed = [];
 			
-			salidasParsed.forEach(function(str) {
+			_data.forEach(function(str) {
 				if (str && str.length) {
 					var posGuion 	= str.indexOf("-"),
 						posDospuntos= str.indexOf(":"),
@@ -130,9 +128,9 @@ Dispositivo.prototype = {
 					}
 					else {
 						newSalidas = true;
-						var dispositivos = Arduinode.dispositivos.lista;
+						var dispositivos = Arduinode.Arduinode.dispositivos.lista;
 						var dispositivo = _.findWhere(dispositivos,{ ip: params.ip });
-
+						
 						dispositivo.salidas.push({
 							nro	 : parseInt( nro ),
 							tipo : str[0],
@@ -154,9 +152,8 @@ Dispositivo.prototype = {
 
 			//Actualiza el JSON si se encontraron salidas nuevas
 			if ( newSalidas ) {
-				DataStore.updateFile('dispositivos', function(err) {
-					Arduinode.Arduinode.dispositivos.load();
-				});
+				console.log("Nuevas salidas")
+				Arduinode.Arduinode.dispositivos.update();
 			}
 			return parsed;
 		}
@@ -181,12 +178,12 @@ Dispositivo.prototype = {
 	getSalidas: function( callback ) {
 		var params = { comando: 'G', ip: this.ip };
 		
-		socket.send(params, ( response ) => {
-			if (response) {
+		socket.send( params, ( response ) => {
+			if ( response ) {
 				response = response.split("\n");
 				this.version = response[0];
 				response.shift();
-				callback( This.parseSalida( params, response ));
+				callback( this.parseSalida( params, response ));
 			}
 			else {
 				callback();

@@ -120,6 +120,7 @@ function Arduinode() {
 		removeMemKeys: ( remove, arr ) => {
 			var keys = ['tipo','estado', 'accion','comando','ip','temporizada'];
 			var lista = arr || Arduinode.getInstance().dispositivos.lista;
+			console.log("lista",lista)
 			var deleteMemoryKeys = () => {
 				lista.forEach( ( disp ) => {
 					disp.salidas.forEach( ( s, k, _this ) => {
@@ -139,10 +140,11 @@ function Arduinode() {
 				});
 				return lista;
 			}
-			
-			return deleteMemoryKeys();
+			this.lista = deleteMemoryKeys();
+			return this.lista;
 		},
 		update: function( dispositivos ) {
+			console.log("DB",dispositivos[0].salidas)
 			var dispositivos = this.removeMemKeys( true, dispositivos );
 						
 			if ( DataStore.updateDB('dispositivos', dispositivos) ) {
