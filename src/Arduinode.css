@@ -101,7 +101,6 @@ td.middle + td{
 }
 .container > div ul:first-child {
     top:7px;
-    right:100px;
 }
 a[class*="icon"] {
     color:#fff;
@@ -123,6 +122,9 @@ a[class*="icon"] {
     position:fixed;
     top: 10px;
     right: 57px;
+}
+.iconINACTIVA {
+    color:grey !important;
 }
 .iconINACTIVA:before {
     content: "\2610"

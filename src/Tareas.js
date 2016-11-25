@@ -35,6 +35,10 @@ export class Tareas extends Component {
 	}
 	onUpdate() {
 		this.Tarea.update( this.state.tareas );
+		this.setState({ changed: false });
+	}
+	componentDidMount(){
+		this.setState({ changed: false });
 	}
 	generateRow( item ) {
 		var tareaActiva = ( item.activa === 1 ) ? 'iconACTIVA' : 'iconINACTIVA';
@@ -60,6 +64,9 @@ export class Tareas extends Component {
 		
 		return ( 
 			<div>
+				<ul className="listIcons headerIcons">
+					<li><a onClick={ this.onUpdate } className={'iconOK show' + this.state.changed}></a></li>
+				</ul>
 				<HTML.Table class="tareas"> { rows } </HTML.Table>
 				<button onClick={ this.onNew }>Nueva</button>
 			</div>
@@ -134,7 +141,7 @@ export class Subtareas extends Tareas {
 			return ( 
 				<div> 
 					<ul className="listIcons headerIcons">
-						<li><a onClick={ this.onNew } className='iconHeader'> + </a></li>
+						<li><a onClick={ this.onNew } className='iconMAS'></a></li>
 						<li><a onClick={ this.onUpdate } className={'iconHeader iconOK show' + this.state.changed}></a></li>
 					</ul>						
 					{ subtareas }
