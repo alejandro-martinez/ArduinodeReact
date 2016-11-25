@@ -27,13 +27,10 @@ export class DB {
 	constructor( filename ) {
 		this.filename = filename;
 	}
-	get( emit ) {
-		return new Promise((resolve, reject) => {
-	    	if (emit) Socket.emit('get' + this.filename + 'DB');
-	    });
+	get() {	
+	    Socket.emit('get' + this.filename + 'DB');
 	}
 	update( db ) {
-		console.log("Emit")
 		Socket.emit('update'+ this.filename +'DB', db );
 	}
 }
@@ -105,11 +102,15 @@ class Arduinode extends Component {
 		this.state = { dispositivos: [] };
 		this.updateDB = this.updateDB.bind(this);
 		this.Dispositivo = new Dispositivo();
+		Socket.listen('DBDispositivosUpdated', ( db ) => {
+			console.log("D")
+    		this.setState({ dispositivos: db }, ()=>{
+    			this.forceUpdate()
+    		});
+    	});
 	}
 	componentWillMount() {
-		Socket.listen('DBDispositivosUpdated', ( db ) => {
-    		this.setState({ dispositivos: db });
-    	});		
+		
 	}
 	updateDB() {
 		this.Dispositivo.update( this.state.dispositivos );

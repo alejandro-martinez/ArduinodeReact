@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import Loading from 'react-loading';
+import Socket from './Socket';
 import { Dispositivo, Validator } from './Arduinode';
 
 export class Header extends Component {
@@ -11,6 +12,9 @@ export class Header extends Component {
 			this.setState({ loading: e.detail }) 
 		});
 	}
+	refresh() {
+		Socket.emit('getDispositivosDB');
+	}
 	render() {
 		return (
 			<header>
@@ -20,9 +24,7 @@ export class Header extends Component {
 				</div>
 				<a onClick={() => window.history.back()} 
 				   className='back iconHeader left'></a>
-				
-				
-				<h1>{ this.state.titulo }</h1>
+				<h1 onClick={ this.refresh }>{ this.state.titulo }</h1>
 				<a href='/#/' className='menu iconHeader right'></a>
 			</header>
 		);

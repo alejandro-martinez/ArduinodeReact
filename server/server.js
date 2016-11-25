@@ -46,16 +46,19 @@ http.listen( serverConf.port, serverConf.ip, function() {
 		// Crea socket que recibe eventos de los disp. Arduino
 		Arduinode.listenSwitchEvents( serverConf );
 
-		sCliente.on('getDispositivosDB', () => { Arduinode.dispositivos.load( serverConf )});
+		sCliente.on('getDispositivosDB', () => { 
+			Arduinode.dispositivos.load( function() {
+				sCliente.emit('DBDispositivosUpdated', Arduinode.dispositivos.lista);
+			})
+		});
 
 		sCliente.on('getTareasDB', () => { 
-			console.log("llego")
 			sCliente.emit('DBTareasUpdated', DataStore.tareas);
 		});
 
 		sCliente.on('updateDispositivosDB', ( db ) => { 
 			if ( Arduinode.dispositivos.update( db )) {
-				Arduinode.dispositivos.load( serverConf );
+				Arduinode.dispositivos.load();
 			}
 			io.sockets.emit('DBDispositivosUpdated', db);
 		});
@@ -79,7 +82,7 @@ http.listen( serverConf.port, serverConf.ip, function() {
 	});
 
 	// Carga lista de dispositivos en memoria
-	Arduinode.dispositivos.load( serverConf );
+	Arduinode.dispositivos.load();
 
 	taskManager.setConfig( serverConf );
 
@@ -87,7 +90,7 @@ http.listen( serverConf.port, serverConf.ip, function() {
 	setTimeout(() => {
 
 		// Servicio que vigila la ejecución de tareas en caso de falla
-		taskManager.loadScheduler(true).watchChanges();
+//		taskManager.loadScheduler(true).watchChanges();
 
 	}, serverConf.tiempoEsperaEscaneoTareas || 0);
 });

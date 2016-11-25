@@ -125,7 +125,6 @@ Dispositivo.prototype = {
 						var salida = JSON.parse(JSON.stringify(salidaFound));
 						salida.estado = parseInt( str[posDospuntos+1] );
 						salida.temporizada = (temporizada === null) ? 0 : temporizada;
-						console.log("temporizada",salida.temporizada)
 					}
 					else {
 						newSalidas = true;
@@ -153,7 +152,6 @@ Dispositivo.prototype = {
 
 			//Actualiza el JSON si se encontraron salidas nuevas
 			if ( newSalidas ) {
-				console.log("Nuevas salidas")
 				Arduinode.Arduinode.dispositivos.update();
 			}
 			return parsed;
@@ -182,8 +180,9 @@ Dispositivo.prototype = {
 		socket.send( params, ( response ) => {
 			if ( response ) {
 				response = response.split("\n");
-				this.version = response[0];
-				response.shift();
+				var tieneVersion = (response[0].slice(0,1).trim() === "V");
+				this.version = (tieneVersion) ? response[0] : "V.XXX";
+				if (tieneVersion) response.shift();
 				callback( this.parseSalida( params, response ));
 			}
 			else {

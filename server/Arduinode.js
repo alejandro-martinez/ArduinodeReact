@@ -63,7 +63,6 @@ function Arduinode() {
 			});
 			dispositivo.salidas[index].estado = t.estado;
 		});
-		console.log("broadcast")
 		this.io.sockets.emit('DBDispositivosUpdated', this.dispositivos.lista);
 	},
 /**
@@ -121,7 +120,7 @@ function Arduinode() {
 		removeMemKeys: ( remove, arr ) => {
 			var keys = ['tipo','estado', 'accion','comando','ip','temporizada'];
 			var lista = arr || Arduinode.getInstance().dispositivos.lista;
-			console.log("lista",lista)
+
 			var deleteMemoryKeys = () => {
 				lista.forEach( ( disp ) => {
 					disp.salidas.forEach( ( s, k, _this ) => {
@@ -169,7 +168,7 @@ function Arduinode() {
 * en atributo lista de esta clase
 * @method load
 */
-		load: function() {
+		load: function( callback ) {
 			var This = this;
 			this.reloadJsonData();
 			Arrays.asyncLoop( this.lista, ( disp, report ) => {
@@ -182,9 +181,9 @@ function Arduinode() {
 				}
 			},() => {
 				Arduinode.getInstance().dispositivos.removeMemKeys( false );
-
+				if (callback) callback();
 				if ( this.io && this.io.hasOwnProperty('sockets') ) {
-					console.log("Broadcast")
+
 					this.io.sockets.emit('DBDispositivosUpdated', this.lista);
 				}
 			});
