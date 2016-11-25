@@ -95,6 +95,7 @@ export class Dispositivos extends Component {
 								   edit={ false }
 								   inputKey='descripcion'
 								   model={ item } />
+					<td>{ item.version }</td>
 					<HTML.EditRow root={ this.root }
 								   onUpdate={ this.onUpdate }
 								   edit={ false } 

@@ -94,7 +94,7 @@ function Arduinode() {
 				});
 			});
 				
-			this.socketTCP.listen({ host: conf.ip, port: conf.port + 1 }, function() {
+			this.socketTCP.listen({ host: conf.ip, port: 8889 }, function() {
 				console.log('Socket escuchando arduinos en:'+ conf.ip, conf.port+1);
 			});
 		}
@@ -141,7 +141,6 @@ function Arduinode() {
 				});
 				return lista;
 			}
-			this.lista = deleteMemoryKeys();
 			return this.lista;
 		},
 		update: function( dispositivos ) {
@@ -182,13 +181,11 @@ function Arduinode() {
 					});
 				}
 			},() => {
-				
-				var This = Arduinode.getInstance();
-				
-				This.dispositivos.removeMemKeys( false );
+				Arduinode.getInstance().dispositivos.removeMemKeys( false );
 
-				if ( This.io.hasOwnProperty('sockets') ) {
-					This.io.sockets.emit('DBDispositivosUpdated', this.lista);
+				if ( this.io && this.io.hasOwnProperty('sockets') ) {
+					console.log("Broadcast")
+					this.io.sockets.emit('DBDispositivosUpdated', this.lista);
 				}
 			});
 

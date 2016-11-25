@@ -36,7 +36,10 @@ export class Popup extends Component {
 		this.toggle = this.toggle.bind( this );
 	}
 	toggle() {
-		this.setState({ visible: !this.state.visible });
+		if (this.state.visible) {
+			this.props.onLaunchPopup();
+		}
+		this.setState({ visible: !this.state.visible});
 	}
 	render( props ) {
 		if ( this.state.visible ) {

@@ -33,6 +33,7 @@ export class DB {
 	    });
 	}
 	update( db ) {
+		console.log("Emit")
 		Socket.emit('update'+ this.filename +'DB', db );
 	}
 }
@@ -108,8 +109,7 @@ class Arduinode extends Component {
 	componentWillMount() {
 		Socket.listen('DBDispositivosUpdated', ( db ) => {
     		this.setState({ dispositivos: db });
-    	});
-		
+    	});		
 	}
 	updateDB() {
 		this.Dispositivo.update( this.state.dispositivos );

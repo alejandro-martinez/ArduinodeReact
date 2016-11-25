@@ -20,11 +20,11 @@ class Toggle extends React.Component {
 
   render() {
   	
-  	let estaTemporizada = (this.props.model.temporizada !== 0 && this.props.on);
+  	let estaTemporizada = ((this.props.model.temporizada !== 0 && this.props.model.temporizada != "00:00") && this.props.on);
 
     return (
 		<div className={ 'switchContainer temporizada' + estaTemporizada}>
-			<span> { this.props.model.temporizada } </span>
+			<span> { Utils.min_a_horario(this.props.model.temporizada) } </span>
 			<Switch model={ this.props.model } on={ this.props.on } 
 					onClick={ this.switch }>
 			</Switch>
@@ -43,9 +43,8 @@ class Luz extends Component {
 	}
 	onSwitch( salida ) {
 		salida.estado = (salida.estado === 0) ? 1 : 0;
-		salida.temporizada = this.props.salidasState.popupData;
+		salida.temporizada = Utils.horario_a_min( this.props.salidasState.popupData );
 		Socket.emit('switchSalida', salida );
-		this.forceUpdate();
 	}
 	onUpdate( model ) {
 		
@@ -60,6 +59,7 @@ class Luz extends Component {
 	}
 	render() {
 		let showSwitch = ( this.props.item.estado !== null) && ( !this.state.edit);
+		let estaTemporizada = (this.props.item.temporizada !== 0 && this.props.item.temporizada != "00:00");
 
 		return (
 			<HTML.EditContainer edit={ this.state.edit }>
@@ -73,7 +73,7 @@ class Luz extends Component {
 					<Toggle model={ this.props.item } 
 							onSwitch={ this.onSwitch } 
 							on={ this.props.item.estado === 0 }
-							switchClass={ 'temporizada' + this.props.item.temporizada }
+							switchClass={ 'temporizada' + estaTemporizada }
 					/>
 				</td>
 			</HTML.EditContainer>
@@ -87,10 +87,14 @@ class SalidasTable extends Component {
 		this.root = props.root;
 		this.state = { 
 			popupVisible: false, 
-			popupData: 0
+			popupData: "00:00"
 		}
 		this.onTemporizacion = this.onTemporizacion.bind( this );
 		this.onAceptar 		 = this.onAceptar.bind( this );
+		this.onLaunchPopup 	 = this.onLaunchPopup.bind( this );
+	}
+	onLaunchPopup() {
+		console.log("launch popup")
 	}
 	onTemporizacion ( e ) {
 		e.preventDefault();
@@ -105,7 +109,7 @@ class SalidasTable extends Component {
 
 		var rows = this.props.salidas.map( function( item ) {
 			
-			let estaTemporizada = (item.temporizada !== 0);
+			let estaTemporizada = (item.temporizada !== 0 && item.temporizada != "00:00");
 			
 			tableItems.push(
 				<Luz key={ item.nro.toString() } item={ item }
@@ -118,9 +122,12 @@ class SalidasTable extends Component {
 
 		return (
 			<div>
-				<HTML.Popup launchIcon="iconReloj" class="temporizacion" root={ This }>
+				<HTML.Popup launchIcon="iconReloj" 
+							class="temporizacion" 
+							onLaunchPopup={ this.onLaunchPopup }
+							root={ This }>
 					<input type="time" onChange={ this.onTemporizacion } 
-									   value={ this.root.state.popupData } />
+									   value={ this.state.popupData } />
 				</HTML.Popup>
 				<HTML.Table class="salidas">
 					{ tableItems }					

@@ -24,6 +24,18 @@ class Utils {
 			return hrs + ":" + min;
 		}
 	}
+	static horario_a_min ( horario ) {
+		if (horario && horario.length == 5)
+		{
+			var hrs = parseInt(horario.substr(0,2)),
+			min = parseInt(horario.substr(-2));
+			return (hrs * 60) + min;
+		}
+		else
+		{
+			return horario;
+		}
+	}
 	static getDate() {
 		return new Date().toISOString().slice(0,10);
 	}
