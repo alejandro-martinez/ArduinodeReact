@@ -46,6 +46,7 @@ class Luz extends Component {
 		Socket.emit('switchSalida', salida );
 	}
 	onUpdate( model ) {
+		console.log("Update",model)
 		this.root.state.dispositivos.forEach(( disp ) => {
 			disp.salidas.forEach( (salida, k, _this) => {
 				if ( salida.nro == model.nro ) {
@@ -53,6 +54,7 @@ class Luz extends Component {
 				}
 			})
 		});
+		this.root.updateDB();
 	}
 	render() {
 		let showSwitch = ( this.props.item.estado !== null) && ( !this.state.edit);
