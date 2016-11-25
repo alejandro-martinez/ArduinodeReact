@@ -29,9 +29,6 @@ export class DB {
 	}
 	get( emit ) {
 		return new Promise((resolve, reject) => {
-	    	Socket.listen('DB' + this.filename +'Updated', ( db ) => {
-	    		resolve( db );
-	    	});
 	    	if (emit) Socket.emit('get' + this.filename + 'DB');
 	    });
 	}
@@ -40,7 +37,7 @@ export class DB {
 	}
 }
 export class Validator {
-	static isValidNOTE() {
+	static isValidDESCRIPCION() {
 		return true;
 	}
 	static isValidIP( ip ) {		
@@ -57,13 +54,13 @@ export class Dispositivo extends DB {
 	static newModel() {
 		var model = { 
 			ip: "192.168.20.000", 
-			note: "Nuevo dispositivo",
+			descripcion: "Nuevo dispositivo",
 			salidas: []
 		};
 
 		return model;
 	}
-	static isValidNOTE = Validator.isValidNOTE;
+	static isValidDESCRIPCION = Validator.isValiddescripcion;
 	static isValidIP = Validator.isValidIP;
 }
 
@@ -73,7 +70,7 @@ export class Tarea extends DB {
 	}
 	static newModel() {
 		return {
-		    "note": "Nueva tarea",
+		    "descripcion": "Nueva tarea",
 		    "id": Math.random().toString(36).slice(18),
 		    "dispositivos": [],
 		    "subtareas": [],
@@ -92,7 +89,7 @@ export class Tarea extends DB {
 	        "horafin": "00:00"
 		};
 	}
-	static isValidNOTE = Validator.isValidNOTE;
+	static isValidDESCRIPCION = Validator.isValidDESCRIPCION;
 }
 
 class Home extends Component {
@@ -109,9 +106,10 @@ class Arduinode extends Component {
 		this.Dispositivo = new Dispositivo();
 	}
 	componentWillMount() {
-		this.Dispositivo.get().then(( data )=> {
-			this.setState({ dispositivos: data });
-		});
+		Socket.listen('DBDispositivosUpdated', ( db ) => {
+    		this.setState({ dispositivos: db });
+    	});
+		
 	}
 	updateDB() {
 		this.Dispositivo.update( this.state.dispositivos );

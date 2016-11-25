@@ -46,11 +46,11 @@ export class Tareas extends Component {
 	}
 	generateRow( item ) {
 		return ( 
-			<HTML.EditContainer edit={this.state.edit || item.note.length === 0}>
+			<HTML.EditContainer edit={this.state.edit || item.descripcion.length === 0}>
 				<HTML.EditRow root={ this.root }
 							   onUpdate={ this.onUpdate }
 							   edit={ false }
-							   inputKey='note'
+							   inputKey='descripcion'
 							   model={ item } />
 				<td>								  
 					<ul className="listIcons tareasIcons">
@@ -175,7 +175,7 @@ export class TareaDispositivos extends Tareas {
 	generateRow( item ) {
 		return ( 
 			<tr className="col2">
-				<td>{ item.note + ' - ' + item.salidaNote }</td>
+				<td>{ item.descripcion + ' - ' + item.salidadescripcion }</td>
 				<td><a onClick={ this.onRemove.bind( this, item )} class="iconDELETE">X</a></td>
 			</tr>
 		);
@@ -191,9 +191,9 @@ export class TareaDispositivos extends Tareas {
 		var salidaParsed = salida.split("-"),
 			newDispositivo = { 
 				ip: dispositivo.ip, 
-				note: dispositivo.note,
+				descripcion: dispositivo.descripcion,
 				nro: salidaParsed[0],
-				salidaNote: salidaParsed[1] 
+				salidadescripcion: salidaParsed[1] 
 			};
 		
 		this.tarea.dispositivos.push( newDispositivo );		

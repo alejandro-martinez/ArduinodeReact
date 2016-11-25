@@ -18,7 +18,7 @@ var serverConf = {}, configPath = './config/config.json';
 // Busca o crea el archivo de config
 
 if ( !fs.existsSync( configPath )) {
-	var config = '{"ip":"localhost","port":8888, "tiempoEscaneoTareas":300000, "socketTimeout":500}';
+	var config = '{"ip":"localhost","port":9999, "tiempoEscaneoTareas":300000, "socketTimeout":500}';
 	fs.writeFileSync( configPath, config );
 }
 
@@ -69,6 +69,7 @@ http.listen( serverConf.port, serverConf.ip, function() {
 		// Accion sobre una salida (Persiana, Luz, Bomba)
 		sCliente.on('switchSalida',( params ) => {
 			var onAccion = () => {
+				console.log("switchSalida", params)
 				io.sockets.emit('DBDispositivosUpdated', Arduinode.dispositivos.lista);
 			};
 			Arduinode.dispositivos.switch( params, onAccion);

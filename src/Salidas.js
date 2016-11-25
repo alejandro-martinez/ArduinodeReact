@@ -52,7 +52,7 @@ class Luz extends Component {
 		this.root.state.dispositivos.forEach(( disp ) => {
 			disp.salidas.forEach( (salida, k, _this) => {
 				if ( salida.nro == model.nro ) {
-					_this[k].note = model.note;
+					_this[k].descripcion = model.descripcion;
 				}
 			})
 		});
@@ -65,7 +65,7 @@ class Luz extends Component {
 			<HTML.EditContainer edit={ this.state.edit }>
 				<HTML.EditRow edit={ false }
 						 root={ this.root }
-						 inputKey='note'
+						 inputKey='descripcion'
 						 model={ this.props.item }
 						 onUpdate={ this.onUpdate }>
 				</HTML.EditRow>

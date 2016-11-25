@@ -14,7 +14,7 @@ function Tarea() {
 	this.dispositivos 	= [];
 	this.activa 		= null;
 	this.accion 		= null;
-	this.descripcion 		= null;
+	this.descripcion 			= null;
 }
 
 //Asignacion masiva de atributos
@@ -177,7 +177,7 @@ function Programador() {
 				subtarea.execute();
 			}
 			else {
-				console.log(subtarea.tarea.note, " no es valida");
+				console.log(subtarea.tarea.descripcion, " no es valida");
 			}
 		}
 	};

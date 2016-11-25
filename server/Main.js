@@ -28,7 +28,7 @@ var socket 		= require('./socket')(),
 */
 /**
 * Descripción del dispositivo
-* @property note
+* @property descripcion
 * @type String
 */
 /**
@@ -36,10 +36,10 @@ var socket 		= require('./socket')(),
 * @property salidas
 * @type Array
 */
-function Dispositivo(_id, _ip, _note) {
+function Dispositivo(_id, _ip, _descripcion) {
 	this.id_disp = _id 	 || null;
 	this.ip 	 = _ip 	 || null;
-	this.note 	 = _note || null;
+	this.descripcion 	 = _descripcion || null;
 	this.salidas = [];
 }
 
@@ -84,7 +84,7 @@ Dispositivo.prototype = {
 					});
 				}
 				else {
-					console.log(salida.note  + " ya se encuentra en el estado: ",estadoActual);
+					console.log(salida.descripcion  + " ya se encuentra en el estado: ",estadoActual);
 				}
 			});
 		}
@@ -135,13 +135,13 @@ Dispositivo.prototype = {
 						dispositivo.salidas.push({
 							nro	 : parseInt( nro ),
 							tipo : str[0],
-							note : "Salida " + nro
+							descripcion : "Salida " + nro
 						});
 
 						var salida = {
 							nro			: parseInt(nro),
 							tipo		: str[0],
-							note		: "Salida " + nro,
+							descripcion		: "Salida " + nro,
 							ip			: params.ip,
 							estado		: parseInt( str[posDospuntos+1] ),
 							temporizada	: temporizada
@@ -203,7 +203,7 @@ Dispositivo.prototype = {
 		if ( salidas && salidas.length > 1) {
 			salidas.forEach( (s) => {
 				var factory = new SalidaFactory(),
-					salida 	= factory.create( s.nro, s.tipo, s.note, this.ip );
+					salida 	= factory.create( s.nro, s.tipo, s.descripcion, this.ip );
 
 				// Actualiza estado si viene en el array
 				if ( s.temporizada && salida.temporizada === null ) {
@@ -234,7 +234,7 @@ Dispositivo.prototype = {
 */
 /**
 * Descripción de la salida
-* @property note
+* @property descripcion
 * @type String
 */
 /**
@@ -277,10 +277,10 @@ Dispositivo.prototype = {
 * @type Integer
 */
 
-function Salida( _nro, _note, _tipo ) {
+function Salida( _nro, _descripcion, _tipo ) {
 
 	this.nro 	= _nro 	|| null;
-	this.note 			= _note 		|| null;
+	this.descripcion 			= _descripcion 		|| null;
 	this.tipo 			= _tipo 		|| null;
 	this.estado 		= null;
 	this.accion 		= null;
@@ -324,11 +324,11 @@ Salida.prototype.switch = function( params, callback ) {
 * @class Luz
 * @constructor
 * @params {Integer} nro Numero de Salida
-* @params {String} _note Descripción de Salida
+* @params {String} _descripcion Descripción de Salida
 * @params {String} _ip IP del dispositivo Arduino
 */
-function Luz( nro, _note, _ip ) {
-	Salida.apply(this, [nro, _note]);
+function Luz( nro, _descripcion, _ip ) {
+	Salida.apply(this, [nro, _descripcion]);
 	this.ip 	 	 = _ip;
 	this.tipo 	 = 'L';
 	this.comando = 'T';
@@ -360,11 +360,11 @@ Luz.prototype.switch = function( params, callback ) {
 * @class Persiana
 * @constructor
 * @params {Integer} nro Numero de Salida
-* @params {String} _note Descripción de Salida
+* @params {String} _descripcion Descripción de Salida
 */
 
-function Persiana( nro, _note ) {
-	Salida.apply(this,[nro, _note]);
+function Persiana( nro, _descripcion ) {
+	Salida.apply(this,[nro, _descripcion]);
 	this.tipo = this.comando = 'P';
 };
 
@@ -396,17 +396,17 @@ Persiana.prototype.switch = function( params, callback ) {
 * @return {Salida} Objeto Salida segun atributo tipo
 */
 function SalidaFactory() {
-	this.create = function( nro, _tipo, _note, _ip ) {
+	this.create = function( nro, _tipo, _descripcion, _ip ) {
 
 		switch (_tipo) {
 			case "P":
-				return new Persiana(nro, _note, _ip);
+				return new Persiana(nro, _descripcion, _ip);
 				break;
 			case "S":
-				return new Sensor(nro, _note, _ip);
+				return new Sensor(nro, _descripcion, _ip);
 				break;
 			default:
-				return new Luz(nro, _note, _ip);
+				return new Luz(nro, _descripcion, _ip);
 		}
 	}
 }

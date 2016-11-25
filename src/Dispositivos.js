@@ -14,7 +14,7 @@ export class SelectSalida extends Component {
 		this.props.onSelect( this.props.dispositivo, e.target.value );
 	}
 	generateRow( salida ) {
-		var row = <option value={ salida.nro + "-" + salida.note }>{ salida.note }</option>;
+		var row = <option value={ salida.nro + "-" + salida.descripcion }>{ salida.descripcion }</option>;
 
 		if ( this.props.added.length === 0) {
 			return row;
@@ -61,7 +61,7 @@ export class SelectDispositivos extends Component {
 	}
 	render() {
 		var dispositivos = this.props.root.state.dispositivos.map( ( item ) => {
-			return (<option value={ item.ip }>{ item.note }</option>);
+			return (<option value={ item.ip }>{ item.descripcion }</option>);
 		});
 
 		return (
@@ -93,7 +93,7 @@ export class Dispositivos extends Component {
 					<HTML.EditRow root={ this.root }
 								   onUpdate={ this.onUpdate }
 								   edit={ false }
-								   inputKey='note'
+								   inputKey='descripcion'
 								   model={ item } />
 					<HTML.EditRow root={ this.root }
 								   onUpdate={ this.onUpdate }
@@ -110,7 +110,7 @@ export class Dispositivos extends Component {
 		this.root.state.dispositivos = this.root.state.dispositivos.map(( disp ) => {
 			
 			if ( disp.ip == model.ip ) {
-				disp.note = model.note;
+				disp.descripcion = model.descripcion;
 				disp.ip = model.ip;
 			}
 			return disp;

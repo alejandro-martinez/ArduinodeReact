@@ -44,7 +44,7 @@ function Arduinode() {
 * y actualiza las salidas del dispositivo en memoria
 */
 	this.updateEstadoSalidas = function( salidas_raw ) {
-		
+		var This = this;
 		var salidas = [];
 		salidas_raw.forEach( function(v) {
 			salidas.push({ 
@@ -63,7 +63,8 @@ function Arduinode() {
 			});
 			dispositivo.salidas[index].estado = t.estado;
 		});
-		this.io.sockets.emit('DBUpdated', this.dispositivos.lista);
+		console.log("broadcast")
+		this.io.sockets.emit('DBDispositivosUpdated', this.dispositivos.lista);
 	},
 /**
 * Registra un socket para escuchar eventos de los dispositivos Arduino reales.
@@ -144,7 +145,6 @@ function Arduinode() {
 			return this.lista;
 		},
 		update: function( dispositivos ) {
-			console.log("DB",dispositivos[0].salidas)
 			var dispositivos = this.removeMemKeys( true, dispositivos );
 						
 			if ( DataStore.updateDB('dispositivos', dispositivos) ) {
@@ -157,7 +157,7 @@ function Arduinode() {
 			this.lista = [];
 
 			DataStore.getFile('dispositivos').forEach((d) => {
-				var _d = new Dispositivo( d.id_disp, d.ip, d.note );
+				var _d = new Dispositivo( d.id_disp, d.ip, d.descripcion );
 				_d.setSalidas( d.salidas );
 				this.lista.push(_d);
 			});
@@ -188,7 +188,7 @@ function Arduinode() {
 				This.dispositivos.removeMemKeys( false );
 
 				if ( This.io.hasOwnProperty('sockets') ) {
-					This.io.sockets.emit('DBUpdated', this.lista);
+					This.io.sockets.emit('DBDispositivosUpdated', this.lista);
 				}
 			});
 
