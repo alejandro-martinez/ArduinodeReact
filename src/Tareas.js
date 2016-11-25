@@ -147,9 +147,10 @@ export class TareaDispositivos extends Tareas {
 		this.onChange 		= this.onChange.bind(this);
 	}
 	onRemove( item, e ) {
-		var i = this.dispositivos.indexOf( item );
-		this.dispositivos.splice(i, 1);
-		this.setState({ dispositivos: this.dispositivos });
+		console.log("REMove",item)
+		var i = this.tarea.dispositivos.indexOf( item );
+		this.tarea.dispositivos.splice(i, 1);
+		this.setState({ changed: true });
 	}
 	generateRow( item ) {
 		return ( 
