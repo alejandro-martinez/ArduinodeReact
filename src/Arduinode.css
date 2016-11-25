@@ -110,6 +110,9 @@ a[class*="icon"] {
     position:relative;
     z-index:9;
 }
+.headerIcons li:last-child a{
+    left:0;
+}
 .listIcons{
     display:inline-block;
     z-index:2;
@@ -122,6 +125,7 @@ a[class*="icon"] {
     position:fixed;
     top: 10px;
     right: 57px;
+    z-index: 2;
 }
 .iconLAMP0:before {
     content:"\2600"
@@ -152,7 +156,8 @@ a[class*="icon"] {
     content: "\271A"
 }
 .iconMAS{
-    font-size:1.7em !important;
+    font-size: 1.5em!important;
+    top: 6px;
 }
 .iconOK{
     font-size:2.1em !important;
@@ -162,10 +167,8 @@ a[class*="icon"] {
 }
 .iconReloj {
     position: fixed;
-    top: 3px;
-    left: 1.3em;
     z-index: 2;
-    font-size: 2.3em!important;
+    font-size: 1.9em!important;
     color: #fff;
 }
 .iconReloj span {
