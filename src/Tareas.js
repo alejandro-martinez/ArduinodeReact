@@ -190,7 +190,7 @@ export class TareaDispositivos extends Tareas {
 					<ul className="headerIcons">
 						<li><a onClick={ this.onUpdate } className={'iconOK show' + this.state.changed}></a></li>
 					</ul>
-					<HTML.Popup launchIcon="iconMAS" className="dispositivos" root={ this }>
+					<HTML.Popup launchIcon="iconMAS" class="dispositivos" root={ this }>
 						<SelectDispositivos added={ this.tarea.dispositivos } 
 											onAdd={ this.onNew }
 											root={ this.root } />

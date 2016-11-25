@@ -19,8 +19,11 @@ class Toggle extends React.Component {
   }
 
   render() {
+  	
+  	let estaTemporizada = (this.props.model.temporizada !== 0 && this.props.on);
+
     return (
-		<div className={ 'switchContainer' + this.props.switchClass }>
+		<div className={ 'switchContainer temporizada' + estaTemporizada}>
 			<span> { this.props.model.temporizada } </span>
 			<Switch model={ this.props.model } on={ this.props.on } 
 					onClick={ this.switch }>
@@ -39,14 +42,13 @@ class Luz extends Component {
 		this.state = { edit: false };
 	}
 	onSwitch( salida ) {
-		var tiempo = this.props.salidasState.popupData;
-		salida.temporizada = 0;
 		salida.estado = (salida.estado === 0) ? 1 : 0;
-		salida.temporizada = (tiempo == "") ? 0 : tiempo;
+		salida.temporizada = this.props.salidasState.popupData;
 		Socket.emit('switchSalida', salida );
+		this.forceUpdate();
 	}
 	onUpdate( model ) {
-		console.log("Update",model)
+		
 		this.root.state.dispositivos.forEach(( disp ) => {
 			disp.salidas.forEach( (salida, k, _this) => {
 				if ( salida.nro == model.nro ) {
@@ -58,8 +60,9 @@ class Luz extends Component {
 	}
 	render() {
 		let showSwitch = ( this.props.item.estado !== null) && ( !this.state.edit);
+
 		return (
-			<HTML.EditContainer edit={this.state.edit}>
+			<HTML.EditContainer edit={ this.state.edit }>
 				<HTML.EditRow edit={ false }
 						 root={ this.root }
 						 inputKey='note'
@@ -70,7 +73,7 @@ class Luz extends Component {
 					<Toggle model={ this.props.item } 
 							onSwitch={ this.onSwitch } 
 							on={ this.props.item.estado === 0 }
-							switchClass={ this.props.switchClass }
+							switchClass={ 'temporizada' + this.props.item.temporizada }
 					/>
 				</td>
 			</HTML.EditContainer>
@@ -84,7 +87,7 @@ class SalidasTable extends Component {
 		this.root = props.root;
 		this.state = { 
 			popupVisible: false, 
-			popupData	: ""
+			popupData: 0
 		}
 		this.onTemporizacion = this.onTemporizacion.bind( this );
 		this.onAceptar 		 = this.onAceptar.bind( this );
@@ -102,8 +105,8 @@ class SalidasTable extends Component {
 
 		var rows = this.props.salidas.map( function( item ) {
 			
-			let estaTemporizada = (item.temporizada !== null && item.temporizada !== "");
-
+			let estaTemporizada = (item.temporizada !== 0);
+			
 			tableItems.push(
 				<Luz key={ item.nro.toString() } item={ item }
 					 salidasState={ This.state } 
@@ -115,7 +118,7 @@ class SalidasTable extends Component {
 
 		return (
 			<div>
-				<HTML.Popup launchIcon="iconReloj" className="temporizacion" root={ This }>
+				<HTML.Popup launchIcon="iconReloj" class="temporizacion" root={ This }>
 					<input type="time" onChange={ this.onTemporizacion } 
 									   value={ this.root.state.popupData } />
 				</HTML.Popup>

@@ -124,7 +124,8 @@ Dispositivo.prototype = {
 					if (salidaFound) {
 						var salida = JSON.parse(JSON.stringify(salidaFound));
 						salida.estado = parseInt( str[posDospuntos+1] );
-						salida.temporizada = temporizada;
+						salida.temporizada = (temporizada === null) ? 0 : temporizada;
+						console.log("temporizada",salida.temporizada)
 					}
 					else {
 						newSalidas = true;
@@ -284,7 +285,7 @@ function Salida( _nro, _note, _tipo ) {
 	this.estado 		= null;
 	this.accion 		= null;
 	this.comando 		= null,
-	this.temporizada	= null;
+	this.temporizada	= 0;
 }
 
 /**

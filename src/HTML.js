@@ -42,7 +42,7 @@ export class Popup extends Component {
 		if ( this.state.visible ) {
 			return (
 				<div>
-					<div className={'popup show' + this.state.visible}>
+					<div className={ this.props.class + ' popup show' + this.state.visible}>
 					{
 						this.props.children
 					}
@@ -55,7 +55,7 @@ export class Popup extends Component {
 			return (
 				<ul className="headerIcons">
 					<li><a className={ this.props.launchIcon } onClick={ this.toggle }>
-						<span> { this.props.root.state.popupData } </span>
+						<span className={'show' + (this.props.root.state.popupData !=0)}> { this.props.root.state.popupData } </span>
 					</a></li>
 				</ul>
 			);

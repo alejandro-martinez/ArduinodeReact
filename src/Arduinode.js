@@ -36,7 +36,6 @@ export class DB {
 	    });
 	}
 	update( db ) {
-		console.log("UPDATE")
 		Socket.emit('update'+ this.filename +'DB', db );
 	}
 }
