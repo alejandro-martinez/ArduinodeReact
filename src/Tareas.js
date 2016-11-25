@@ -14,6 +14,7 @@ export class Tareas extends Component {
 		this.generateRow= this.generateRow.bind(this);
 		this.onUpdate 	= this.onUpdate.bind(this);
 		this.onNew 		= this.onNew.bind(this);
+		this.onSetActiva = this.onSetActiva.bind(this);
 		
 		this.state = { tareas: [], edit:false };
 		this.Tarea = new Tarea();
@@ -22,6 +23,10 @@ export class Tareas extends Component {
 			console.log("TAREAS", data)
 			this.setState({ tareas: data });
 		});
+	}
+	onSetActiva(tarea, e) {
+		tarea.activa = (tarea.activa) ? 0 : 1;
+		this.setState({ changed: true });
 	}
 	onNew() {
 		var tareas = this.state.tareas;
@@ -32,6 +37,7 @@ export class Tareas extends Component {
 		this.Tarea.update( this.state.tareas );
 	}
 	generateRow( item ) {
+		var tareaActiva = ( item.activa === 1 ) ? 'iconACTIVA' : 'iconINACTIVA';
 		return ( 
 			<HTML.EditContainer edit={this.state.edit || item.note.length === 0}>
 				<HTML.EditRow root={ this.root }
@@ -40,8 +46,11 @@ export class Tareas extends Component {
 							   inputKey='note'
 							   model={ item } />
 				<td>								  
-					<Link className="iconReloj" to={'Tareas/subtareas/' + item.id}></Link>
-					<Link to={'Tareas/' + item.id + '/dispositivos'}>&#9854;</Link>
+					<ul className="listIcons tareasIcons">
+						<li><Link className={tareaActiva} onClick={ this.onSetActiva.bind(this, item) }></Link></li>
+						<li><Link className="iconReloj" to={'Tareas/subtareas/' + item.id}></Link></li>
+						<li><Link to={'Tareas/' + item.id + '/dispositivos'}>&#9854;</Link></li>
+					</ul>
 				</td>
 			</HTML.EditContainer>
 		);
@@ -124,7 +133,7 @@ export class Subtareas extends Tareas {
 			var subtareas = this.tarea[0].subtareas.map( this.generateRow, this );
 			return ( 
 				<div> 
-					<ul className="headerIcons">
+					<ul className="listIcons headerIcons">
 						<li><a onClick={ this.onNew } className='iconHeader'> + </a></li>
 						<li><a onClick={ this.onUpdate } className={'iconHeader iconOK show' + this.state.changed}></a></li>
 					</ul>						
@@ -188,7 +197,7 @@ export class TareaDispositivos extends Tareas {
 			this.dispositivos = this.tarea.dispositivos.map( this.generateRow, this );
 			return (
 				<div>
-					<ul className="headerIcons">
+					<ul className="listIcons headerIcons">
 						<li><a onClick={ this.onUpdate } className={'iconOK show' + this.state.changed}></a></li>
 					</ul>
 					<HTML.Popup launchIcon="iconMAS" class="dispositivos" root={ this }>
