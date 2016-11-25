@@ -271,7 +271,13 @@ button,
     padding:10px;
     width:80%;
 }
+.popup input:last-child {
+    margin-bottom:30px;
+}
 /*DISPOSITIVOS*/
+.popup.dispositivos {
+    width:300px;
+}
 table.dispositivos td {
     padding:6px 5px 0px 5px;
 }

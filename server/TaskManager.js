@@ -177,7 +177,7 @@ function Programador() {
 				subtarea.execute();
 			}
 			else {
-				console.log(subtarea.tarea.descripcion, " no es valida");
+				console.log(subtarea.tarea.note, " no es valida");
 			}
 		}
 	};

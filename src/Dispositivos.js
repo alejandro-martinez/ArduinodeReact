@@ -33,7 +33,10 @@ export class SelectSalida extends Component {
 			var salidas = this.props.dispositivo.salidas.map( this.generateRow, this);
 
 			if ( salidas ) {
-				return (<select onChange={ this.onChange }>{ salidas }</select>);
+				return (<select onChange={ this.onChange }>
+					<option value="">Selecciona salida</option>
+					{ salidas }
+				</select>);
 			}
 		}
 		return null;
@@ -53,6 +56,9 @@ export class SelectDispositivos extends Component {
 		});
 		this.setState({ selected: selected[0] });
 	}
+	componentDidMount() {
+		this.setState({ selected: this.props.root.state.dispositivos[0] });	
+	}
 	render() {
 		var dispositivos = this.props.root.state.dispositivos.map( ( item ) => {
 			return (<option value={ item.ip }>{ item.note }</option>);
@@ -60,7 +66,10 @@ export class SelectDispositivos extends Component {
 
 		return (
 			<div>
-				<select onChange={ this.onChange }>{ dispositivos }</select>
+				<select onChange={ this.onChange }>
+					<option value="">Selecciona dispositivo</option>
+					{ dispositivos }
+				</select>
 				<SelectSalida root={ this.props.root }
 							  onSelect={ this.props.onAdd }
 							  added={ this.props.added } 
