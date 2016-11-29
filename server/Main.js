@@ -182,6 +182,7 @@ Dispositivo.prototype = {
 		
 		//Asumo que el dispositivo no está disponible, sino, piso la versión
 		this.version = "V.XXX";
+		this.offline = true;
 
 		socket.send( params, ( response ) => {
 			if ( response ) {
@@ -189,6 +190,7 @@ Dispositivo.prototype = {
 				var tieneVersion = (response[0].slice(0,1).trim() === "V");
 				this.version = response[0];				
 				if (tieneVersion) response.shift();
+				this.offline = false;
 				callback( this.parseSalida( params, response ));
 			}
 			else {

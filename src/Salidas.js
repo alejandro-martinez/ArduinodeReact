@@ -60,7 +60,7 @@ class Luz extends Component {
 	render() {
 		let showSwitch = ( this.props.item.estado !== null) && ( !this.state.edit);
 		let estaTemporizada = (this.props.item.temporizada !== 0 && this.props.item.temporizada != "00:00");
-
+		let dispositivoOffline = this.props.hide;
 		return (
 			<HTML.EditContainer edit={ this.state.edit }>
 				<HTML.EditRow edit={ false }
@@ -69,11 +69,11 @@ class Luz extends Component {
 						 model={ this.props.item }
 						 onUpdate={ this.onUpdate }>
 				</HTML.EditRow>
-				<td className={ 'show' + showSwitch }>
+				<td className={ 'show' + (showSwitch && !dispositivoOffline)}>
 					<Toggle model={ this.props.item } 
 							onSwitch={ this.onSwitch } 
 							on={ this.props.item.estado === 0 }
-							switchClass={ 'temporizada' + estaTemporizada }
+							switchClass={ 'show' + this.props.show + ' temporizada' + estaTemporizada }
 					/>
 				</td>
 			</HTML.EditContainer>
@@ -111,6 +111,7 @@ class SalidasTable extends Component {
 			tableItems.push(
 				<Luz key={ item.nro.toString() } item={ item }
 					 salidasState={ This.state } 
+					 hide={ this.props.dispositivo.offline }
 					 root={ This.root } 
 					 switchClass= { ' temporizada' + estaTemporizada }
 				/>
@@ -149,7 +150,8 @@ export class SalidasActivas extends Component {
 				}
 			})
 		});
-		return ( <SalidasTable root={ this.root } salidas={ salidasActivas } /> );
+		const dispositivo = {"offline": false}
+		return ( <SalidasTable dispositivo={dispositivo} root={ this.root } salidas={ salidasActivas } /> );
 	}
 };
 
@@ -158,16 +160,18 @@ export class SalidasDispositivo extends Component {
 		super( props );
 		this.root = props.route.root;
 		this.state = this.root.state;
+		this.disp = {};
 	}
 	componentWillMount() {
-		var disp = this.state.dispositivos.filter(( disp ) => {
+		this.disp = this.state.dispositivos.filter(( disp ) => {
 			return disp.ip == this.props.params.ip;
-		});
+		})[0];
 
-		this.setState({ salidas: disp[0].salidas });
+		this.setState({ salidas: this.disp.salidas });
 	}
 	render() {
 		return ( <SalidasTable root={ this.root }
+							   dispositivo={this.disp}
 							   salidas={ this.state.salidas } /> );
 	}
 };
