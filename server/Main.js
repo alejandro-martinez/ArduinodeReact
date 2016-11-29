@@ -180,11 +180,14 @@ Dispositivo.prototype = {
 	getSalidas: function( callback ) {
 		var params = { comando: 'G', ip: this.ip };
 		
+		//Asumo que el dispositivo no está disponible, sino, piso la versión
+		this.version = "V.XXX";
+
 		socket.send( params, ( response ) => {
 			if ( response ) {
 				response = response.split("\n");
 				var tieneVersion = (response[0].slice(0,1).trim() === "V");
-				this.version = (tieneVersion) ? response[0] : "V.XXX";
+				this.version = response[0];				
 				if (tieneVersion) response.shift();
 				callback( this.parseSalida( params, response ));
 			}
