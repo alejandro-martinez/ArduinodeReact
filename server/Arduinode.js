@@ -112,9 +112,10 @@ function Arduinode() {
 * @return Boolean
 */
 		switch: function( params, callback ) {
+			console.log("switch",params)
 			this.getByIP( params.ip )
-				.switchSalida(params, function(response) {
-					callback( response )
+				.switchSalida(params,(response) => {
+					if (callback) callback( response );
 				});
 		},
 		removeMemKeys: ( remove, arr ) => {

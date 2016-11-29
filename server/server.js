@@ -65,7 +65,7 @@ http.listen( serverConf.port, serverConf.ip, function() {
 
 		sCliente.on('updateTareasDB', ( db ) => { 
 			DataStore.updateDB('tareas', db);
-			taskManager.loadScheduler(true);
+			taskManager.loadScheduler( true );
 			io.sockets.emit('DBTareasUpdated', db);
 		});
 
@@ -90,7 +90,7 @@ http.listen( serverConf.port, serverConf.ip, function() {
 	setTimeout(() => {
 
 		// Servicio que vigila la ejecución de tareas en caso de falla
-//		taskManager.loadScheduler(true).watchChanges();
+		taskManager.loadScheduler( true ).watchChanges();
 
-	}, serverConf.tiempoEsperaEscaneoTareas || 0);
+	}, serverConf.tiempoEsperaEscaneoTareas || 100);
 });
