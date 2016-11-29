@@ -177,10 +177,12 @@ export class TareaDispositivos extends Tareas {
 		this.setState({ changed: true });
 	}
 	generateRow( item ) {
-		console.log("item",item)
+		var descripcion = ( item.salidadescripcion )
+						  ? item.salidadescripcion 
+						  : "Salida " + item.nro;
 		return ( 
 			<tr className="col2">
-				<td>{ item.descripcion + ' - ' + item.salidadescripcion || "Salida " + item.nro }</td>
+				<td>{ item.descripcion + ' - ' + descripcion }</td>
 				<td><a onClick={ this.onRemove.bind( this, item )} class="iconDELETE">X</a></td>
 			</tr>
 		);
@@ -195,10 +197,10 @@ export class TareaDispositivos extends Tareas {
 	onNew( dispositivo, salida ) {
 		var salidaParsed = salida.split("-"),
 			newDispositivo = { 
-				ip: dispositivo.ip, 
-				descripcion: dispositivo.descripcion,
-				nro: salidaParsed[0],
-				salidadescripcion: salidaParsed[1] 
+				ip 				 : dispositivo.ip, 
+				descripcion		 : dispositivo.descripcion,
+				nro				 : salidaParsed[0],
+				salidadescripcion: salidaParsed[1]
 			};
 		
 		this.tarea.dispositivos.push( newDispositivo );		
@@ -221,9 +223,7 @@ export class TareaDispositivos extends Tareas {
 											onAdd={ this.onNew }
 											root={ this.root } />
 					</HTML.Popup>
-					<HTML.Table> 
-						{ this.dispositivos }
-					</HTML.Table>
+					<HTML.Table> { this.dispositivos } </HTML.Table>
 				</div>
 			);
 		}
