@@ -71,26 +71,28 @@ Dispositivo.prototype = {
 			//Consulta estado de la salida, antes de enviar comando			
 			salida.getEstado( params_aux,( estadoActual ) => {
 
-				//Si la salida tiene distinto estado al que se quiere llevar
-				var estadoDeseado = String( params.estado ).concat( ".", params.temporizada || 0 );
-				
-				if ( estadoActual.trim() !=  estadoDeseado.trim() ) {
-					salida.switch( params , ( response ) => {
-						response = parseInt( response.replace(/(?:\r\n|\r|\n)/g, ''));
-						salida.estado = response;
-						salida.temporizada = params.temporizada;
-						callback( response);
-					});
+				if (estadoActual) {
+					//Si la salida tiene distinto estado al que se quiere llevar
+					var estadoDeseado = String( params.estado ).concat( ".", params.temporizada || 0 );
+					
+					if ( estadoActual.trim() !=  estadoDeseado.trim() ) {
+						salida.switch( params , ( response ) => {
+							response = parseInt( response.replace(/(?:\r\n|\r|\n)/g, ''));
+							salida.estado = response;
+							salida.temporizada = params.temporizada;
+							callback( response);
+						});
+					}
+					else {
+						log(salida.descripcion + " ya está en: " + estadoDeseado.trim());
+						callback();
+					}
 				}
 				else {
-					log(salida.descripcion + " ya está en: " + estadoActual.trim());
-					callback();
+					log("No se pudo conectar con: " + params.ip);
 				}
 			});
 		}
-	},
-	parseVersionDispositivo() {
-
 	},
 /**
 * Parsea los datos recibidos desde los dispositivos Arduino
@@ -296,8 +298,11 @@ function Salida( _nro, _descripcion, _tipo ) {
 */
 Salida.prototype.getEstado = function( params, callback ) {
 	params.comando = "S" + params.nro;
-	socket.send( params, function( response, timeout ) {
-		callback(response)
+	socket.send( params, ( response, timeout ) => {
+		if (typeof response != 'undefined') {
+			response = response.replace("\r\n","");
+		}
+		callback( response );
 	});
 };
 

@@ -66,7 +66,6 @@ http.listen( serverConf.port, serverConf.ip, () => {
 		});
 
 		sCliente.on('updateTareasDB', ( db ) => { 
-			console.log("tareas",db)
 			DataStore.updateDB('tareas', db);
 			taskManager.loadScheduler( true );
 			io.sockets.emit('DBTareasUpdated', db);

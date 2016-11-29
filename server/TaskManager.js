@@ -64,7 +64,7 @@ class Subtarea extends Tarea {
 	}
 	isValid() {
 		//Si la tarea deberia estar ejecutandose, retorna el tiempo restante
-		if ( this.activa && ( this.isFechaValida() && this.isHorarioValido() )) {
+		if ( this.tarea.activa && ( this.isFechaValida() && this.isHorarioValido() )) {
 			if ( this.getTiempoRestante() > 0 ) return this.getTiempoRestante();
 		}
 		return false;
@@ -138,7 +138,7 @@ const Programador = class {
 */
 	forceExecute( subtarea ) {
 		// Se forza la ejecucion solo si es una tarea de encendido
-		if ( subtarea.tarea.accion === 0 ) {
+		if ( subtarea.tarea.accion === 0 && subtarea.isValid()) {
 			subtarea.temporizada = subtarea.getTiempoRestante();
 			this.execute( subtarea );
 		}
