@@ -183,7 +183,7 @@ export class TareaDispositivos extends Tareas {
 		return ( 
 			<tr className="col2">
 				<td>{ item.descripcion + ' - ' + descripcion }</td>
-				<td><a onClick={ this.onRemove.bind( this, item )} class="iconDELETE">X</a></td>
+				<td><a onClick={ this.onRemove.bind( this, item )} className="iconDELETE"></a></td>
 			</tr>
 		);
 	}
