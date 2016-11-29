@@ -144,6 +144,9 @@ const Programador = class {
 		}
 	}
 	createJob( subtarea ) {
+		
+		delete subtarea.job;
+
 		if ( subtarea.reglasEjecucion ) {
 			var job = schedule.scheduleJob( subtarea.reglasEjecucion,() => { 
 				if ( subtarea.isValid() ) {
@@ -158,6 +161,7 @@ const Programador = class {
 * @method loadTareas
 */	
 	loadScheduler( reloadJobs ) {
+		log("Cargando tareas al Scheduler");
 		this.tareas = [];
 		
 		var db = DataStore.getFile('tareas');
@@ -178,6 +182,7 @@ const Programador = class {
 			this.tareas.push( tarea );
 			if ( reloadJobs ) tarea.subtareas.map( this.createJob );
 		}
+		log(this.tareas.length + " tareas cargadas");
 		return this;
 	};
 }
