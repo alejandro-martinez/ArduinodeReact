@@ -2,7 +2,6 @@
 
 /**
  * Módulo para la programación y ejecución de tareas sobre los dispositivos
- *
  * @module Programador de Tareas
  */
 var DataStore	= require('./DataStore').DataStore;
@@ -30,7 +29,7 @@ class Tarea {
 		}
 	}
 }
-// Herencia
+
 class Subtarea extends Tarea {
 	constructor( model ) {
 		super();
@@ -63,10 +62,8 @@ class Subtarea extends Tarea {
 		return DateConvert.horaActualValida( this.raw_horainicio, this.raw_duracion);
 	}
 	isValid() {
-		console.log("subtarea activa?=",this.activa)
 		//Si la tarea deberia estar ejecutandose, retorna el tiempo restante
 		if ( this.activa && ( this.isFechaValida() && this.isHorarioValido() )) {
-
 			if ( this.getTiempoRestante() > 0 ) return this.getTiempoRestante();
 		}
 		return false;
@@ -112,12 +109,23 @@ const Programador = class {
 		this.tareas.forEach( tarea => { tarea.subtareas.map( this.forceExecute ) });
 	}
 	execute ( subtarea, accion, callback ) {
-		
+		var executed = 0;
 		Arrays.asyncLoop( subtarea.tarea.dispositivos, ( d, report ) => {
+				
 				d.temporizada = (accion) ? 0 : subtarea.temporizada;
-				d.estado 	 	= (accion) ? accion : subtarea.accion;
-				Arduinode.dispositivos.switch( d );
-		},() => { if (callback) callback() });
+				d.estado 	  = (accion) ? accion : subtarea.tarea.accion;
+
+				Arduinode.dispositivos.switch( d, (response) => { 
+					if (typeof response != 'undefined') executed++;
+					report();
+				});
+		},() => { 
+			console.log("Ejecución de tarea:", 
+						subtarea.tarea.descripcion, 
+						" finalizada. ",
+						"Se accionaron:", executed, "salidas");
+			if (callback) callback();
+		});
 		
 		return this;
 	}
@@ -137,7 +145,6 @@ const Programador = class {
 	}
 	createJob( subtarea ) {
 		if ( subtarea.reglasEjecucion ) {
-			console.log(subtarea.reglasEjecucion)
 			var job = schedule.scheduleJob( subtarea.reglasEjecucion,() => { 
 				if ( subtarea.isValid() ) {
 					this.execute( subtarea );	

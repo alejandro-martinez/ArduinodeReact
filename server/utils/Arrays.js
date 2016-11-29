@@ -6,14 +6,17 @@ module.exports = function()
 	     	var nextItemIndex = 0;  
 
 		    function report() {
+
 		        nextItemIndex++;
 
 		        // if nextItemIndex equals the number of items in list, then we're done
-		        if(nextItemIndex === list.length)
+		        if (nextItemIndex === list.length) {
 		            callback();
-		        else
+		        }
+		        else {
 		            // otherwise, call the iterator on the next item
 		            iterator(list[nextItemIndex], report);
+		        }
 		    }
 
 		    // instead of starting all the iterations, we only start the 1st one

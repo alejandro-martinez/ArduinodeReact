@@ -112,11 +112,9 @@ function Arduinode() {
 * @return Boolean
 */
 		switch: function( params, callback ) {
-			console.log("switch",params)
-			this.getByIP( params.ip )
-				.switchSalida(params,(response) => {
-					if (callback) callback( response );
-				});
+			this.getByIP( params.ip ).switchSalida(params,(response) => {
+				if (callback) callback( response );
+			});
 		},
 		removeMemKeys: ( remove, arr ) => {
 			var keys = ['tipo','estado', 'accion','comando','ip','temporizada'];
@@ -171,23 +169,24 @@ function Arduinode() {
 */
 		load: function( callback ) {
 			var This = this;
-			this.reloadJsonData();
-			Arrays.asyncLoop( this.lista, ( disp, report ) => {
-				
-				if ( disp ) {
-					disp.getSalidas( (estados) => {
-						if ( estados ) disp.setSalidas( estados );
-						report();
-					});
-				}
-			},() => {
-				Arduinode.getInstance().dispositivos.removeMemKeys( false );
-				if (callback) callback();
-				if ( this.io && this.io.hasOwnProperty('sockets') ) {
+			if (this.reloadJsonData()) {
+				Arrays.asyncLoop( this.lista, ( disp, report ) => {
+					
+					if ( disp ) {
+						disp.getSalidas( (estados) => {
+							if ( estados ) disp.setSalidas( estados );
+							report();
+						});
+					}
+				},() => {
+					Arduinode.getInstance().dispositivos.removeMemKeys( false );
+					if (callback) callback();
+					if ( this.io && this.io.hasOwnProperty('sockets') ) {
 
-					this.io.sockets.emit('DBDispositivosUpdated', this.lista);
-				}
-			});
+						this.io.sockets.emit('DBDispositivosUpdated', this.lista);
+					}
+				});
+			}
 
 			return this;
 		}

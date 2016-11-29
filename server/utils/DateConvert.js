@@ -3,6 +3,9 @@ module.exports = function()
 {
 	var DateConvert =
 	{
+		getTime: function() {
+			return new Date().toISOString().slice(11,19);
+		},
 		//Recibe 15, devuelve 00:15
 		min_a_horario: function(min)
 		{

@@ -8,12 +8,15 @@ var	express 	= require('express'),
 	expressConf = require('./config/config').config( app, express ),
 	Arduinode	= require('./Arduinode').Arduinode;
 	middleware 	= require('socketio-wildcard')(),
-	io 			= require('socket.io')( http) ;
+	Utils 		= require('./utils/DateConvert')(),
+	io 			= require('socket.io')( http);
 	DataStore 	= require('./DataStore').DataStore;
 				  require('./controllers')( app );
 	app.use( compress() );
 
 var serverConf = {}, configPath = './config/config.json';
+
+var log = (msg) => { console.log(msg,"---------------------------->", Utils.getTime()) }
 
 // Busca o crea el archivo de config
 
@@ -26,11 +29,12 @@ var serverConf = require( configPath );
 
 // Server HTTP
 
-http.listen( serverConf.port, serverConf.ip, function() {
-	console.log("Server iniciado en: ", serverConf.ip + ":" + serverConf.port);
+http.listen( serverConf.port, serverConf.ip, () => {
+
+	log("Server iniciado en: " + serverConf.ip + ":" + serverConf.port);
 
 	// Captura excepciones para no detener el servidor 
-	process.on('uncaughtException', (err) => console.log("Ocurrió un error:", err) );
+	process.on('uncaughtException', (err) => log("Ocurrió un error:" + err));
 
 	// Registra middleware para capturar requests de SocketIO 
 	io.use( middleware );

@@ -37,9 +37,9 @@ var socket 		= require('./socket')(),
 * @type Array
 */
 function Dispositivo(_id, _ip, _descripcion) {
-	this.id_disp = _id 	 || null;
-	this.ip 	 = _ip 	 || null;
-	this.descripcion 	 = _descripcion || null;
+	this.id_disp 	 = _id 	 || null;
+	this.ip 	 	 = _ip 	 || null;
+	this.descripcion = _descripcion || null;
 	this.salidas = [];
 }
 
@@ -53,7 +53,6 @@ Dispositivo.prototype = {
 		var salida = _.findWhere(this.salidas, { nro: parseInt(nro) });
 		return salida;
 	},
-
 /**
 * Ejecuta un comando sobre una salida de un dispositivo.
 * @method switchSalida
@@ -67,7 +66,7 @@ Dispositivo.prototype = {
 
 		if ( salida ) {
 			var params_aux = params;
-			
+
 			//Consulta estado de la salida, antes de enviar comando			
 			salida.getEstado( params_aux,( estadoActual ) => {
 
@@ -75,7 +74,6 @@ Dispositivo.prototype = {
 				var estadoDeseado = String( params.estado ).concat( ".", params.temporizada || 0 );
 				
 				if ( estadoActual.trim() !=  estadoDeseado.trim() ) {
-
 					salida.switch( params , ( response ) => {
 						response = parseInt( response.replace(/(?:\r\n|\r|\n)/g, ''));
 						salida.estado = response;
@@ -84,7 +82,8 @@ Dispositivo.prototype = {
 					});
 				}
 				else {
-					console.log(salida.descripcion  + " ya se encuentra en el estado: ",estadoActual);
+					console.log(salida.descripcion," ya se encuentra en el estado: ",estadoActual);
+					callback();
 				}
 			});
 		}
