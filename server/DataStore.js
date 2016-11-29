@@ -7,6 +7,7 @@
 */
 
 var fs	= require('fs'),
+	log	= require('./utils/Log');
 	_	= require('underscore');
 
 /**
@@ -53,10 +54,16 @@ function DataStore() {
 */
 	this.updateDB = function( filename, data ) {
 		if ( data && Array.isArray( data )) {
-			return fs.writeFileSync('./models/' + filename + '.json', 
+			
+			fs.writeFileSync('./models/' + filename + '.json', 
 									JSON.stringify(data, null, 2),
 									'utf8', 
 									{ spaces: 2 });
+			log("Se actualizó el archivo de  " + filename);
+			return true;
+		}
+		else {
+			log("No se pudo actualizar el archivo de " + filename, ". data No es un array");
 		}
 		return false;
 	};

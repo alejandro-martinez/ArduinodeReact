@@ -121,10 +121,9 @@ const Programador = class {
 					report();
 				});
 		},() => { 
-			log("Ejecución de tarea:" +
-						subtarea.tarea.descripcion +
-						" finalizada. " +
-						"Se accionaron:", executed, "salidas");
+			log("Ejecución de tarea: " +
+				 subtarea.tarea.descripcion + " finalizada. " + 
+				 "Se accionaron: " + executed + " salidas");
 			if (callback) callback();
 		});
 		

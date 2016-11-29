@@ -95,7 +95,7 @@ function Arduinode() {
 			});
 				
 			this.socketTCP.listen({ host: conf.ip, port: 8889 }, function() {
-				log('Socket escuchando arduinos en:'+ conf.ip, conf.port+1);
+				log('Socket escuchando eventos en: '+ conf.ip  + ":" + "8889");
 			});
 		}
 	};
@@ -119,7 +119,7 @@ function Arduinode() {
 		},
 		removeMemKeys: ( remove, arr ) => {
 			var keys = ['tipo','estado', 'accion','comando','ip','temporizada'];
-			var lista = arr || Arduinode.getInstance().dispositivos.lista;
+			var lista = arr;
 
 			var deleteMemoryKeys = () => {
 				lista.forEach( ( disp ) => {
@@ -140,18 +140,20 @@ function Arduinode() {
 				});
 				return lista;
 			}
-			return this.lista;
+			return lista;
 		},
 		update: function( dispositivos ) {
+			if (!dispositivos) dispositivos = this.lista;
+
 			var dispositivos = this.removeMemKeys( true, dispositivos );
+			
 			if ( DataStore.updateDB('dispositivos', dispositivos) ) {
-				console.log("se actualizo el JSON")
-				this.reloadJsonData();
+				this.reloadDispositivos();
 				return true;
 			}
 			return false;
 		},
-		reloadJsonData: function() {
+		reloadDispositivos: function() {
 			this.lista = [];
 
 			DataStore.getFile('dispositivos').forEach((d) => {
@@ -170,7 +172,7 @@ function Arduinode() {
 */
 		load: function( callback ) {
 			var This = this;
-			if (this.reloadJsonData()) {
+			if (this.reloadDispositivos()) {
 				Arrays.asyncLoop( this.lista, ( disp, report ) => {
 					
 					if ( disp ) {
