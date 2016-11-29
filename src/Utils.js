@@ -1,5 +1,8 @@
 
 class Utils {
+	static randomID() {
+		return Math.random().toString(36).slice(18);
+	}
 	static min_a_horario( min ) {
 		if (min && min.length > 1) {
 			return min;

@@ -69,7 +69,7 @@ export class Tarea extends DB {
 	static newModel() {
 		return {
 		    "descripcion": "Nueva tarea",
-		    "id": Math.random().toString(36).slice(18),
+		    "id": Utils.randomID(),
 		    "dispositivos": [],
 		    "subtareas": [],
 		    "accion": 0,
@@ -78,7 +78,7 @@ export class Tarea extends DB {
 	}
 	static newSubtareaModel() {
 		return { 
-			"id": Math.random().toString(36).slice(18),
+			"id": Utils.randomID(),
 	        "diasejecucion": "1,2,3,4,5",
 	        "fechainicio": Utils.getDate(),
 	        "fechafin": Utils.getDate(),
@@ -103,14 +103,8 @@ class Arduinode extends Component {
 		this.updateDB = this.updateDB.bind(this);
 		this.Dispositivo = new Dispositivo();
 		Socket.listen('DBDispositivosUpdated', ( db ) => {
-			console.log("D")
-    		this.setState({ dispositivos: db }, ()=>{
-    			this.forceUpdate()
-    		});
+    		this.setState({ dispositivos: db });
     	});
-	}
-	componentWillMount() {
-		
 	}
 	updateDB() {
 		this.Dispositivo.update( this.state.dispositivos );
