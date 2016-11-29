@@ -99,8 +99,14 @@ td.middle + td{
 .container {
     padding:15px 10px 10px 10px    
 }
-/* ICONOS */
 
+/* ICONOS */
+.container > div .headerIcons:first-child {
+    right:102px;
+}
+.container > div .headerIcons:last-child {
+    right:3px !important;
+}
 .container > div ul {
     right:60px;
 }
