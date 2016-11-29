@@ -90,6 +90,7 @@ Dispositivo.prototype = {
 				}
 				else {
 					log("No se pudo conectar con: " + params.ip);
+					callback();
 				}
 			});
 		}

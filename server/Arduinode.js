@@ -120,7 +120,7 @@ function Arduinode() {
 		removeMemKeys: ( remove, arr ) => {
 			var keys = ['tipo','estado', 'accion','comando','ip','temporizada'];
 			var lista = arr || this.lista;
-		
+			
 			lista.forEach( ( disp ) => {
 				disp.salidas.forEach( ( s, k, _this ) => {
 					keys.forEach((_k) => {
@@ -179,7 +179,7 @@ function Arduinode() {
 						});
 					}
 				},() => {
-					Arduinode.getInstance().dispositivos.removeMemKeys( false );
+					Arduinode.getInstance().dispositivos.removeMemKeys( false, this.lista );
 					if (callback) callback();
 					if ( this.io && this.io.hasOwnProperty('sockets') ) {
 
