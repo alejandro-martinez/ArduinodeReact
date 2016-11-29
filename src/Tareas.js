@@ -17,12 +17,13 @@ export class Tareas extends Component {
 		this.onSetActiva = this.onSetActiva.bind(this);
 		this.onSetAccion = this.onSetAccion.bind(this);
 		this.state = { tareas: [], edit:false };
-		this.Tarea = new Tarea();
+		
+		Socket.listen('DBTareasUpdated', ( db ) => {
+    		this.setState({ tareas: db });
+    	});
 
-		this.Tarea.get( true ).then(( data )=> {
-			console.log("TAREAS", data)
-			this.setState({ tareas: data });
-		});
+		this.Tarea = new Tarea();		
+		this.Tarea.get();
 	}
 	onSetActiva(tarea, e) {
 		tarea.activa = (tarea.activa) ? 0 : 1;
