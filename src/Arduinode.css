@@ -177,6 +177,9 @@ a[class*="icon"] {
 .iconReloj:before {
     content: "\23f1"
 }
+.iconDELETE {
+    color:red !important;
+}
 .iconDELETE:after {
     content: "\2717"
 }

@@ -95,6 +95,7 @@ export class EditRow extends Component {
 		var validator = 'isValid' + this.props.inputKey.toUpperCase();
 		if ( Validator[validator]( e.target.value ) ) {
 			model[this.props.inputKey] =  e.target.value;
+			console.log(validator,"valid")
 			this.setState({ model: model });
 		}
 	}

@@ -89,9 +89,9 @@ class SalidasTable extends Component {
 			popupVisible: false, 
 			popupData: "00:00"
 		}
-		this.onTemporizacion = this.onTemporizacion.bind( this );
-		this.onAceptar 		 = this.onAceptar.bind( this );
-		this.onLaunchPopup 	 = this.onLaunchPopup.bind( this );
+		['onTemporizacion','onAceptar','onLaunchPopup'].forEach((m)=>{
+			this[m] = this[m].bind(this);
+		});
 	}
 	onLaunchPopup() {
 		console.log("launch popup")

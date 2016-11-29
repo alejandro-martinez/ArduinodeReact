@@ -10,12 +10,9 @@ import { SelectDispositivos } from './Dispositivos';
 export class Tareas extends Component {
 	constructor( props ) {
 		super( props );
-		
-		this.generateRow= this.generateRow.bind(this);
-		this.onUpdate 	= this.onUpdate.bind(this);
-		this.onNew 		= this.onNew.bind(this);
-		this.onSetActiva = this.onSetActiva.bind(this);
-		this.onSetAccion = this.onSetAccion.bind(this);
+		['generateRow','onUpdate','onNew','onSetActiva','onSetAccion','onRemove'].forEach((m)=>{
+			this[m] = this[m].bind( this );
+		});
 		this.state = { tareas: [], edit:false };
 		
 		Socket.listen('DBTareasUpdated', ( db ) => {
@@ -42,6 +39,12 @@ export class Tareas extends Component {
 		this.Tarea.update( this.state.tareas );
 		this.setState({ changed: false });
 	}
+	onRemove( tarea, e ) {
+		var tareas = this.state.tareas;
+		var i = tareas.indexOf( tarea );
+		tareas.splice(i, 1);
+		this.setState({ changed: true, tareas: tareas });
+	}
 	componentDidMount(){
 		this.setState({ changed: false });
 	}
@@ -59,6 +62,7 @@ export class Tareas extends Component {
 						<li><Link className={'iconACTIVA' + item.activa } onClick={ this.onSetActiva.bind(this, item) }></Link></li>
 						<li><Link className="iconReloj" to={'Tareas/subtareas/' + item.id}></Link></li>
 						<li><Link to={'Tareas/' + item.id + '/dispositivos'}>&#9854;</Link></li>
+						<li><Link className="iconDELETE" onClick={ this.onRemove.bind(this,item) }></Link></li>
 					</ul>
 				</td>
 			</HTML.EditContainer>
@@ -163,20 +167,20 @@ export class TareaDispositivos extends Tareas {
 	constructor( props ) {
 		super( props );
 		this.root 			= props.route.root;
-		this.onRemove 		= this.onRemove.bind(this);
-		this.onNew 			= this.onNew.bind( this );
-		this.onChange 		= this.onChange.bind(this);
+		['onRemove','onNew','onChange'].forEach((m)=>{
+			this[m] = this[m].bind(this);
+		});
 	}
-	onRemove( item, e ) {
-		console.log("REMove",item)
-		var i = this.tarea.dispositivos.indexOf( item );
+	onRemove( dispositivo, e ) {
+		var i = this.tarea.dispositivos.indexOf( dispositivo );
 		this.tarea.dispositivos.splice(i, 1);
 		this.setState({ changed: true });
 	}
 	generateRow( item ) {
+		console.log("item",item)
 		return ( 
 			<tr className="col2">
-				<td>{ item.descripcion + ' - ' + item.salidadescripcion }</td>
+				<td>{ item.descripcion + ' - ' + item.salidadescripcion || "Salida " + item.nro }</td>
 				<td><a onClick={ this.onRemove.bind( this, item )} class="iconDELETE">X</a></td>
 			</tr>
 		);
