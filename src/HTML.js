@@ -47,7 +47,7 @@ export class Popup extends Component {
 		if ( this.state.visible ) {
 			return (
 				<div>
-					<div className={ this.props.class + ' popup show' + this.state.visible}>
+					<div className={ this.props.class + ' center popup show' + this.state.visible}>
 					{
 						this.props.children
 					}
