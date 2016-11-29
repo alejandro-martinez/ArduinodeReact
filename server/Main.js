@@ -71,7 +71,7 @@ Dispositivo.prototype = {
 			//Consulta estado de la salida, antes de enviar comando			
 			salida.getEstado( params_aux,( estadoActual ) => {
 
-				if (estadoActual) {
+				if (typeof estadoActual != 'undefined') {
 					//Si la salida tiene distinto estado al que se quiere llevar
 					var estadoDeseado = String( params.estado ).concat( ".", params.temporizada || 0 );
 					
