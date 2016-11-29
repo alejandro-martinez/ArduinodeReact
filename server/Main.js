@@ -10,6 +10,7 @@ var socket 		= require('./socket')(),
 	Promise 	= require('promise'),
 	fs			= require('fs'),
 	events 		= require("events"),
+	log			= require('./utils/Log');
 	_ 			= require('underscore'),
 	Arduinode	= require('./Arduinode');
 
@@ -82,7 +83,7 @@ Dispositivo.prototype = {
 					});
 				}
 				else {
-					console.log(salida.descripcion," ya se encuentra en el estado: ",estadoActual);
+					log(salida.descripcion + " ya está en: " + estadoActual.trim());
 					callback();
 				}
 			});

@@ -8,15 +8,13 @@ var	express 	= require('express'),
 	expressConf = require('./config/config').config( app, express ),
 	Arduinode	= require('./Arduinode').Arduinode;
 	middleware 	= require('socketio-wildcard')(),
-	Utils 		= require('./utils/DateConvert')(),
 	io 			= require('socket.io')( http);
+	log			= require('./utils/Log');
 	DataStore 	= require('./DataStore').DataStore;
 				  require('./controllers')( app );
 	app.use( compress() );
 
 var serverConf = {}, configPath = './config/config.json';
-
-var log = (msg) => { console.log(msg,"---------------------------->", Utils.getTime()) }
 
 // Busca o crea el archivo de config
 

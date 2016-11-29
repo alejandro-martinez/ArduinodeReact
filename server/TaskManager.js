@@ -9,6 +9,7 @@ var Arduinode	= require('./Arduinode').Arduinode,
 	Arrays 		= require('./utils/Arrays')(),
 	DateConvert = require('./utils/DateConvert')(),
 	_ 			= require('underscore'),
+	log			= require('./utils/Log'),
 	schedule 	= require('node-schedule');
 
 class Tarea {
@@ -100,8 +101,8 @@ const Programador = class {
 		return remove;
 	}
 	watchChanges() {
-		console.log("Observando las tareas cada ",
-					parseInt((this.config.tiempoEscaneoTareas / 1000) / 60),
+		log("Observando las tareas cada " +
+					parseInt((this.config.tiempoEscaneoTareas / 1000) / 60) +
 					" minutos ...");
 		setInterval( this.refreshScheduler, this.config.tiempoEscaneoTareas );
 	}
@@ -120,9 +121,9 @@ const Programador = class {
 					report();
 				});
 		},() => { 
-			console.log("Ejecución de tarea:", 
-						subtarea.tarea.descripcion, 
-						" finalizada. ",
+			log("Ejecución de tarea:" +
+						subtarea.tarea.descripcion +
+						" finalizada. " +
 						"Se accionaron:", executed, "salidas");
 			if (callback) callback();
 		});

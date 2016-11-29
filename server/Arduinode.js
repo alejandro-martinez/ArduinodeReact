@@ -11,6 +11,7 @@ var clases 		= require('./Main.js'),
 	_ 			= require('underscore'),
 	serverConfig= require('./config/config.json'),
 	DataStore 	= require('./DataStore').DataStore,
+	log			= require('./utils/Log');
 	net 		= require('net');
 	Dispositivo = clases.Dispositivo;
 	const 	 ON = 0, 
@@ -87,14 +88,14 @@ function Arduinode() {
 				});
 
 				socket.on('end', function() {
-					console.log("Evento externo de: ", This.ip);
+					log("Evento externo de: " + This.ip);
 					This.data = This.data.replace("\n","-").replace("+n"," ").slice(0, -1);
 					This.updateEstadoSalidas( This.data.slice(0,-1).split("+-") );
 				});
 			});
 				
 			this.socketTCP.listen({ host: conf.ip, port: 8889 }, function() {
-				console.log('Socket escuchando arduinos en:'+ conf.ip, conf.port+1);
+				log('Socket escuchando arduinos en:'+ conf.ip, conf.port+1);
 			});
 		}
 	};
@@ -143,8 +144,8 @@ function Arduinode() {
 		},
 		update: function( dispositivos ) {
 			var dispositivos = this.removeMemKeys( true, dispositivos );
-						
 			if ( DataStore.updateDB('dispositivos', dispositivos) ) {
+				console.log("se actualizo el JSON")
 				this.reloadJsonData();
 				return true;
 			}
