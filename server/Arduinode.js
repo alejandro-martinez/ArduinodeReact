@@ -119,27 +119,24 @@ function Arduinode() {
 		},
 		removeMemKeys: ( remove, arr ) => {
 			var keys = ['tipo','estado', 'accion','comando','ip','temporizada'];
-			var lista = arr;
-
-			var deleteMemoryKeys = () => {
-				lista.forEach( ( disp ) => {
-					disp.salidas.forEach( ( s, k, _this ) => {
-						keys.forEach((_k) => {
-							if (Object.keys( s ).indexOf(_k) > -1) {
-								if ( remove ) {
-									delete _this[k][_k];
-								}
+			var lista = arr || this.lista;
+		
+			lista.forEach( ( disp ) => {
+				disp.salidas.forEach( ( s, k, _this ) => {
+					keys.forEach((_k) => {
+						if (Object.keys( s ).indexOf(_k) > -1) {
+							if ( remove ) {
+								delete _this[k][_k];
 							}
-							else {
-								if (!remove) {
-									_this[k][_k] = null;
-								}
+						}
+						else {
+							if (!remove) {
+								_this[k][_k] = null;
 							}
-						});
+						}
 					});
 				});
-				return lista;
-			}
+			});
 			return lista;
 		},
 		update: function( dispositivos ) {

@@ -79,20 +79,19 @@ module.exports = function()
 			return Math.abs((((hora_1.getTime() - hora_2.getTime() ) / 1000) / 60));
 		},
 		// Chequea si fechaActual esta entre 2 fechas
-		fechaBetween: function(config)
-		{
+		fechaBetween: function( config ) {
 			var fechaActual = new Date(),
 			desde = new Date(),
 			hasta = new Date();
 
 			//desde y hasta pertenecen a la tarea
 			//se usan para comparar con fecha Actual
-			desde.setDate(config.diainicio);
+			desde.setDate(config.fechainicio.slice(8,10));
 
 			//Resto 1 ya que los meses arrancan en 0
-			desde.setMonth(config.mesinicio);
-			hasta.setDate(config.diafin);
-			hasta.setMonth( config.mesfin);
+			desde.setMonth(config.fechainicio.slice(7,9));
+			hasta.setDate(config.fechafin.slice(7,9));
+			hasta.setMonth( config.fechafin.slice(8,10));
 			
 			// valida tareas que arrancan en año actual y terminan en el siguiente
 			// suma 1 año a desde para comparar inicio y fin

@@ -35,6 +35,8 @@ class Subtarea extends Tarea {
 	constructor( model ) {
 		super();
 		this.reglasEjecucion = {};
+		this.fechainicio 	= model.fechainicio;
+		this.fechafin 		= model.fechafin;
 		this.raw_horainicio = model.horainicio;
 		this.horainicio 	= this.raw_horainicio.substr(0,2);
 		this.mininicio 		= this.raw_horainicio.substr(-2);	
@@ -80,26 +82,6 @@ const Programador = class {
 		})
 	}
 	setConfig( config ) { this.config = config }
-	reprogramTarea( _tarea ) {
-		this.removeTareaScheduler( _tarea );
-		this.loadScheduler( false );
-	};
-	/**
-* Quita una tarea del array de tareasActivas de DataStore
-* @method quitarTareaEnEjecucion
-* @param tarea la tarea a quitar
-* @return null
-*/
-	removeTareaScheduler( id ) {
-		var remove = false;
-		this.tareas.forEach((s, k,_this) => {
-			if ( s.id == id ) {
-				remove = true;
-				delete _this[k];
-			}
-		});
-		return remove;
-	}
 	watchChanges() {
 		log("Observando las tareas cada " +
 					parseInt((this.config.tiempoEscaneoTareas / 1000) / 60) +
@@ -137,10 +119,16 @@ const Programador = class {
 * @return null
 */
 	forceExecute( subtarea ) {
+		var onTask = (subtarea.tarea.accion == 0);
+		log("Forzando ejecución de tarea: " + subtarea.tarea.descripcion);
+		
 		// Se forza la ejecucion solo si es una tarea de encendido
-		if ( subtarea.tarea.accion === 0 && subtarea.isValid()) {
+		if ( onTask && subtarea.isValid()) {
 			subtarea.temporizada = subtarea.getTiempoRestante();
 			this.execute( subtarea );
+		}
+		else {
+			log("La tarea no es " + ((onTask) ? "válida" : " de encendido"));
 		}
 	}
 	createJob( subtarea ) {
@@ -150,6 +138,7 @@ const Programador = class {
 		if ( subtarea.reglasEjecucion ) {
 			var job = schedule.scheduleJob( subtarea.reglasEjecucion,() => { 
 				if ( subtarea.isValid() ) {
+					log("Ejecutando tarea" + subtarea.tarea.descripcion);
 					this.execute( subtarea );	
 				}				
 			});
@@ -161,9 +150,8 @@ const Programador = class {
 * @method loadTareas
 */	
 	loadScheduler( reloadJobs ) {
-		log("Cargando tareas al Scheduler");
 		this.tareas = [];
-		
+		log("- Leyendo archivo de tareas");
 		var db = DataStore.getFile('tareas');
 
 		for (var _tarea in db) {
@@ -180,9 +168,12 @@ const Programador = class {
 			}
 
 			this.tareas.push( tarea );
-			if ( reloadJobs ) tarea.subtareas.map( this.createJob );
+			if ( reloadJobs ) {
+				log("-- Cargando tareas al Scheduler");
+				tarea.subtareas.map( this.createJob );
+			}
 		}
-		log(this.tareas.length + " tareas cargadas");
+		log("--- " + this.tareas.length + " tareas cargadas");
 		return this;
 	};
 }
