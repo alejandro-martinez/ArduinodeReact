@@ -118,7 +118,7 @@ function Arduinode() {
 			});
 		},
 		removeMemKeys: ( remove, arr ) => {
-			var keys = ['tipo','offline','estado', 'accion','comando','ip','temporizada'];
+			var keys = ['offline','estado', 'accion','comando','ip','temporizada'];
 			var lista = arr || this.lista;
 			
 			lista.forEach( ( disp ) => {
