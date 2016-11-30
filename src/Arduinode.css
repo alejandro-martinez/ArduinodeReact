@@ -177,44 +177,29 @@ a[class*="icon"] {
     right: 57px;
     z-index: 2;
 }
-.iconLAMP0:before {
-    content:"\2600"
-}
+.iconDOWN:before { content: "\25BC" }
+.iconSTOP:before { content: "\25FC" }
+.iconUP:before { content: "\25B2" }
+.iconLAMP0:before { content:"\2600" }
 .iconLAMP1 {
     margin-right:8px;
     font-size:1.6em !important;
 }
-.iconLAMP0 {
-    color:#c1c100 !important;
-}
-.iconLAMP1:before {
-    content:"\25CF";
-}
-.iconLAMP1:before{
-    color:grey !important;
-}
-.iconACTIVA0 {
-    color:grey !important;
-}
-.iconACTIVA0:before {
-    content: "\2610"
-}
-.iconACTIVA1:before {
-    content: "\2611"   
-}
-.iconMAS:before {
-    content: "\271A"
-}
-.iconMAS{
+.iconLAMP0 { color:#c1c100 !important; }
+.iconLAMP1:before { content:"\25CF"; }
+.iconLAMP1:before{ color:grey !important; }
+.iconACTIVA0 { color:grey !important; }
+.iconACTIVA0:before { content: "\2610" }
+.iconACTIVA1:before { content: "\2611" }
+.iconMAS:before { content: "\271A" }
+.iconMAS {
     font-size: 1.5em!important;
     top: 2px;
 }
 .iconOK{
     font-size:2.1em !important;
 }
-.iconOK:after {
-    content: "\2713"
-}
+.iconOK:after { content: "\2713" }
 .headerIcons li:last-child a.iconReloj {
     right: -17px;
     left:auto;
@@ -231,37 +216,33 @@ a[class*="icon"] {
     right: -44px;
     top: 13px;
 }
-.iconReloj:before {
-    content: "\23f1"
-}
-.iconDELETE {
-    color:red !important;
-}
-.iconDELETE:after {
-    content: "\2717"
-}
+.iconReloj:before { content: "\23f1" }
+.iconDELETE { color:red !important; }
+.iconDELETE:after { content: "\2717" }
 .iconHeader {
     position:absolute;
     top:11px;
 }
-.iconHeader.left {
-    left:15px;
-}
-.iconHeader.right {
-    right:15px;
-}
-.iconEdit:after { 
-    content: "\270D";
-}
-.back:before { 
-    content: "\2770";
-}
+.iconHeader.left { left:15px; }
+.iconHeader.right { right:15px; }
+.iconEdit:after { content: "\270D"; }
+.back:before { content: "\2770"; }
 .menu {
     font-weight:bold;
     top: 14px;
 }
-.menu:after {
-    content: "\2630"; 
+.menu:after { content: "\2630"; }
+.controlPersianas {
+    width:180px;
+    margin:-8px 0 0 -24px;
+}
+.controlPersianas li {
+    display:inline-block;
+    width:30%;
+}
+.controlPersianas a[class*=icon] {
+    font-size:2.2em;
+    color:#03ae74 !important;
 }
 /* ICONOS */
 /* FORM */
