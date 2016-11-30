@@ -47,6 +47,40 @@ a {
 .showfalse {
     display:none !important;
 }
+
+table {
+    width: 100%;
+    margin-bottom:20px;
+}
+table td {
+    display:inline-block;
+    text-align: left;
+}
+td.editRowtrue a {
+    float:right;
+    color:green;
+    font-size:2em;
+    margin-left:10px;
+}
+td.editRowfalse a {
+    display: none;
+}
+table td:last-child {
+    float: right;
+}
+
+label {
+    padding: 10px 0;
+    font-weight:bold;
+}
+input[type="text"],
+textarea,
+select {
+    margin-top: 5px;
+    border-radius: 2px;
+    padding: 3px;
+}
+h1 { font-size: 1em; }
 div.left {
     float: left;
     width: 100%;
@@ -254,39 +288,6 @@ header #loading div {
 .menuList li {
     margin: 15px 5px;
 }
-table {
-    width: 100%;
-    margin-bottom:20px;
-}
-table td {
-    display:inline-block;
-    text-align: left;
-}
-td.editRowtrue a {
-    float:right;
-    color:green;
-    font-size:2em;
-    margin-left:10px;
-}
-td.editRowfalse a {
-    display: none;
-}
-table td:last-child {
-    float: right;
-}
-
-label {
-    padding: 10px 0;
-	font-weight:bold;
-}
-input[type="text"],
-textarea,
-select {
-    margin-top: 5px;
-    border-radius: 2px;
-    padding: 3px;
-}
-h1 { font-size: 1.2em; }
 
 /*CasaCtrl HOME*/
 button,

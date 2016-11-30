@@ -57,7 +57,6 @@ class Subtarea extends Tarea {
 	}
 	isFechaValida () {
 		if ( DateConvert.fechaBetween( this ) ) {
-			console.log("Fecha fechaBetween valida")
 			return DateConvert.diaActualValido( this.diasejecucion );
 		}
 		return false;
