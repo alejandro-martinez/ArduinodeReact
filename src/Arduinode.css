@@ -210,6 +210,10 @@ a[class*="icon"] {
 .iconOK:after {
     content: "\2713"
 }
+.headerIcons li:last-child a.iconReloj {
+    right: -58px;
+    left:auto;
+}
 .iconReloj {
     position: fixed;
     z-index: 2;
@@ -374,13 +378,20 @@ table.dispositivos tr td:last-child {
     font-size:2em !important;
 }
 /*SALIDAS*/
+table.salidas tr {
+    height:42px;
+    padding:0 0 2px 5px;
+}
 table.salidas tr td:last-child {
     float:right;
+    padding:8px 0 0 0;
+    margin-right:10px;    
 }
 table.salidas td{
     display:inline-block;
     border:none !important;
 }
+
 table.salidas td h4 {
     padding: 15px 0 0 0;
     float:left;
@@ -396,6 +407,9 @@ table.salidas tr td > div {
 table.salidas td:last-child {
     padding: 12px;
     width: 120px;
+}
+.popup.temporizacion {
+    height:170px;
 }
 .switchContainer {
     position:relative;
