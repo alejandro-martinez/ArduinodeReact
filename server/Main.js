@@ -139,6 +139,7 @@ Dispositivo.prototype = {
 							tipo : str[0],
 							descripcion : "Salida " + nro
 						});
+
 						var salida = {
 							nro			: parseInt(nro),
 							tipo		: str[0],
@@ -285,9 +286,9 @@ Dispositivo.prototype = {
 
 function Salida( _nro, _descripcion, _tipo ) {
 
-	this.nro 	= _nro 	|| null;
-	this.descripcion 			= _descripcion 		|| null;
-	this.tipo 			= _tipo 		|| null;
+	this.nro 			= _nro;
+	this.descripcion 	= _descripcion;
+	this.tipo 			= _tipo;
 	this.estado 		= null;
 	this.accion 		= null;
 	this.comando 		= null,
@@ -338,7 +339,7 @@ Salida.prototype.switch = function( params, callback ) {
 */
 function Luz( nro, _descripcion, _ip ) {
 	Salida.apply(this, [nro, _descripcion]);
-	this.ip 	 	 = _ip;
+	this.ip 	 = _ip;
 	this.tipo 	 = 'L';
 	this.comando = 'T';
 };
@@ -377,7 +378,7 @@ function Persiana( nro, _descripcion ) {
 	this.tipo = this.comando = 'P';
 };
 
-Persiana.prototype = Object.create(Persiana.prototype);
+Persiana.prototype = Object.create(Salida.prototype);
 Persiana.prototype.constructor = Persiana;
 
 /**
@@ -406,7 +407,7 @@ Persiana.prototype.switch = function( params, callback ) {
 */
 function SalidaFactory() {
 	this.create = function( nro, _tipo, _descripcion, _ip ) {
-
+		
 		switch (_tipo) {
 			case "P":
 				return new Persiana(nro, _descripcion, _ip);

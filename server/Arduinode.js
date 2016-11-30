@@ -113,8 +113,12 @@ function Arduinode() {
 * @return Boolean
 */
 		switch: function( params, callback ) {
+
 			this.getByIP( params.ip ).switchSalida(params,(response) => {
-				if (callback) callback( response );
+				Arduinode.getInstance().io.sockets.emit('DBDispositivosUpdated', this.lista);
+				if (callback) {
+					callback( response );
+				}
 			});
 		},
 		removeMemKeys: ( remove, arr ) => {

@@ -33,12 +33,45 @@ class Toggle extends React.Component {
   }
 }
 
+class Persiana extends Component {
+	constructor( props ) {
+		super( props );
+		this.root = props.root;
+		this.onClick = this.onClick.bind( this );
+		this.state = { edit: false };
+	}
+	onClick(salida, direction,e) {
+		salida.estado = direction; 
+		Socket.emit('switchSalida', salida );
+	}
+	render() {
+		return (
+			<HTML.EditContainer edit={ this.state.edit }>
+				<HTML.EditRow edit={ false }
+						 root={ this.root }
+						 inputKey='descripcion'
+						 model={ this.props.item }
+						 onUpdate={ this.onUpdate }>
+				</HTML.EditRow>
+				<td className={ 'show' + this.props.online}>
+					<ul className="controlPersianas">
+						<li><a className="iconDOWN" onClick={this.onClick.bind(this,this.props.item,1)}></a></li>
+						<li><a className="iconSTOP" onClick={this.onClick.bind(this,this.props.item,2)}></a></li>
+						<li><a className="iconUP" onClick={this.onClick.bind(this,this.props.item,0)}></a></li>
+					</ul>
+				</td>
+			</HTML.EditContainer>
+		);
+	}
+
+}
+
 class Luz extends Component {
 	constructor( props ) {
 		super( props );
 		this.root = props.root;
-		this.onSwitch 			 = this.onSwitch.bind( this );
-		this.onUpdate 			 = this.onUpdate.bind( this );
+		this.onSwitch = this.onSwitch.bind( this );
+		this.onUpdate = this.onUpdate.bind( this );
 		this.state = { edit: false };
 	}
 	onSwitch( salida ) {
@@ -106,15 +139,26 @@ class SalidasTable extends Component {
 		var rows = this.props.salidas.map( function( item ) {
 			
 			let estaTemporizada = (item.temporizada !== 0 && item.temporizada != "00:00");
-			
-			tableItems.push(
-				<Luz key={ item.nro.toString() } item={ item }
+
+			var salida = null;
+
+			if (item.tipo == 'L') {
+				salida = <Luz key={ item.nro.toString() } item={ item }
 					 salidasState={ This.state } 
 					 online={ this.props.online }
 					 root={ This.root } 
 					 switchClass= { ' temporizada' + estaTemporizada }
+				/>;
+			}
+			else {
+				salida = <Persiana key={ item.nro.toString() } item={ item }
+					 salidasState={ This.state } 
+					 online={ this.props.online }
+					 root={ This.root }
 				/>
-			);
+			}
+
+			tableItems.push(salida);
 		}, this);
 
 		return (
@@ -145,7 +189,9 @@ export class SalidasActivas extends Component {
 		var salidasActivas = [];
 		this.props.route.root.state.dispositivos.forEach(( disp ) => {
 			disp.salidas.forEach( (salida) => {
-				if (salida.estado == 0) salidasActivas.push( salida );				
+				if (salida.estado == 0 && salida.tipo === 'L') {
+					salidasActivas.push( salida );
+				}
 			})
 		});
 		return ( <SalidasTable online={ true } root={ this.root } salidas={ salidasActivas } /> );

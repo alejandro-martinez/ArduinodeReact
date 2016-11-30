@@ -107,6 +107,7 @@ class Arduinode extends Component {
     	});
 	}
 	updateDB() {
+		console.log("Actualizando")
 		this.Dispositivo.update( this.state.dispositivos );
 	}
 	setTitlePage( title ) {
@@ -120,7 +121,7 @@ class Arduinode extends Component {
 				<HTML.Header root={This} />
 
 				<div className="container">
-					<Router onChange={this.onChange} history={ hashHistory }>
+					<Router history={ hashHistory }>
 						<Route root={This} path="/" component={ Home } />
 						<Route root={This} path="Tareas" component={ Tareas } />
 						<Route root={This} path="Tareas/subtareas/:id" component={ Subtareas } />
