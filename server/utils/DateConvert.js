@@ -4,7 +4,7 @@ module.exports = function()
 	var DateConvert =
 	{
 		getTime: function() {
-			return new Date().toISOString().slice(11,19);
+			return new Date().toString().slice(16,21);
 		},
 		//Recibe 15, devuelve 00:15
 		min_a_horario: function(min)
@@ -44,13 +44,6 @@ module.exports = function()
 			{
 				return horario;
 			}
-		},
-		horarioEnHHMM: function()
-		{
-			var time = new Date();
-			var horario = ("0" + time.getHours()).slice(-2)
-						+ ":" + ("0" + time.getMinutes()).slice(-2);
-			return horario;
 		},
 		//Convierte "1,2,3,4,5" en [1,2,3,4,5]
 		strToArray: function(str)
@@ -111,11 +104,6 @@ module.exports = function()
 			return new Date(date.getFullYear(),date.getMonth(),
 									   date.getDate(),parseInt(time.substr(0,2)),
 									   parseInt(time.substr(3,2)));
-		},
-		currentTime: function()
-		{
-			var date = new Date();
-			return date.getTime();
 		},
 		horario_a_ms: function(horario)
 		{
