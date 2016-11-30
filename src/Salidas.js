@@ -58,7 +58,6 @@ class Luz extends Component {
 		this.root.updateDB();
 	}
 	render() {
-		let showSwitch = ( this.props.item.estado !== null) && ( !this.state.edit);
 		let estaTemporizada = (this.props.item.temporizada !== 0 && this.props.item.temporizada != "00:00");
 		
 		return (
@@ -69,7 +68,7 @@ class Luz extends Component {
 						 model={ this.props.item }
 						 onUpdate={ this.onUpdate }>
 				</HTML.EditRow>
-				<td className={ 'show' + (showSwitch && !this.props.hide)}>
+				<td className={ 'show' + this.props.online}>
 					<Toggle model={ this.props.item } 
 							onSwitch={ this.onSwitch } 
 							on={ this.props.item.estado === 0 }
@@ -111,7 +110,7 @@ class SalidasTable extends Component {
 			tableItems.push(
 				<Luz key={ item.nro.toString() } item={ item }
 					 salidasState={ This.state } 
-					 hide={ this.props.dispositivo.offline }
+					 online={ this.props.online }
 					 root={ This.root } 
 					 switchClass= { ' temporizada' + estaTemporizada }
 				/>
@@ -145,13 +144,10 @@ export class SalidasActivas extends Component {
 		var salidasActivas = [];
 		this.props.route.root.state.dispositivos.forEach(( disp ) => {
 			disp.salidas.forEach( (salida) => {
-				if (salida.estado == 0) {
-					salidasActivas.push( salida );
-				}
+				if (salida.estado == 0) salidasActivas.push( salida );				
 			})
 		});
-		const dispositivo = {"offline": false}
-		return ( <SalidasTable dispositivo={dispositivo} root={ this.root } salidas={ salidasActivas } /> );
+		return ( <SalidasTable online={ true } root={ this.root } salidas={ salidasActivas } /> );
 	}
 };
 
@@ -171,7 +167,7 @@ export class SalidasDispositivo extends Component {
 	}
 	render() {
 		return ( <SalidasTable root={ this.root }
-							   dispositivo={this.disp}
+							   online={ !this.disp.offline }
 							   salidas={ this.state.salidas } /> );
 	}
 };
