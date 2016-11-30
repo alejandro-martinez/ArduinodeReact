@@ -99,9 +99,11 @@ class Home extends Component {
 class Arduinode extends Component {
 	constructor( props ) {
 		super( props );
-		this.state = { dispositivos: [] };
+		
+		this.state = { page: "Home", dispositivos: [] };
 		this.updateDB = this.updateDB.bind(this);
 		this.Dispositivo = new Dispositivo();
+		
 		Socket.listen('DBDispositivosUpdated', ( db ) => {
     		this.setState({ dispositivos: db });
     	});
@@ -109,16 +111,19 @@ class Arduinode extends Component {
 	updateDB() {
 		this.Dispositivo.update( this.state.dispositivos );
 	}
+	setTitlePage( title ) {
+		this.setState({ page: title })
+	}
 	render() {
 		const This = this;
 		return (
 			<div className="Arduinode">
 				
-				<HTML.Header titulo="Home" />
+				<HTML.Header root={This} />
 
 				<div className="container">
-					<Router history={ hashHistory }>
-						<Route path="/" component={ Home } />
+					<Router onChange={this.onChange} history={ hashHistory }>
+						<Route root={This} path="/" component={ Home } />
 						<Route root={This} path="Tareas" component={ Tareas } />
 						<Route root={This} path="Tareas/subtareas/:id" component={ Subtareas } />
 						<Route root={This} path="Tareas/:id/dispositivos" component={ TareaDispositivos } />

@@ -7,10 +7,13 @@ import { Dispositivo, Validator } from './Arduinode';
 export class Header extends Component {
 	constructor( props ) {
 		super( props );
-		this.state = { titulo: 'Home', loading: false };
 		document.addEventListener("loadingEvent",( e ) => {
 			this.setState({ loading: e.detail }) 
 		});
+		this.state = { loading: false };
+	}
+	componentDidMount(){
+		
 	}
 	refresh() {
 		Socket.emit('getDispositivosDB');
@@ -18,13 +21,12 @@ export class Header extends Component {
 	render() {
 		return (
 			<header>
-				
 				<div id="loading" className={ 'show' + this.state.loading }>
 					<Loading type='cylon' color='#e3e3e3' />
 				</div>
 				<a onClick={() => window.history.back()} 
 				   className='back iconHeader left'></a>
-				<h1 onClick={ this.refresh }>{ this.state.titulo }</h1>
+				<h1 onClick={ this.refresh }>{ this.props.root.state.page }</h1>
 				<a href='/#/' className='menu iconHeader right'></a>
 			</header>
 		);

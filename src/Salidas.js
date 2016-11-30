@@ -140,6 +140,7 @@ export class SalidasActivas extends Component {
 		super( props );
 		this.root = props.route.root;
 		this.state = this.root.state;
+		this.root.setTitlePage("Luces encendidas");
 	}
 	render() {		
 		var salidasActivas = [];
@@ -166,7 +167,8 @@ export class SalidasDispositivo extends Component {
 		this.disp = this.state.dispositivos.filter(( disp ) => {
 			return disp.ip == this.props.params.ip;
 		})[0];
-
+		console.log("Will mount")
+		this.root.setTitlePage("Salidas de " + this.disp.descripcion);
 		this.setState({ salidas: this.disp.salidas });
 	}
 	render() {

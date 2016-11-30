@@ -13,6 +13,8 @@ export class Tareas extends Component {
 		['generateRow','onUpdate','onNew','onSetActiva','onSetAccion','onRemove'].forEach((m)=>{
 			this[m] = this[m].bind( this );
 		});
+
+		this.props.route.root.setTitlePage("Tareas");
 		this.state = { tareas: [], edit:false };
 		
 		Socket.listen('DBTareasUpdated', ( db ) => {
@@ -95,6 +97,7 @@ export class Subtareas extends Tareas {
 	}
 	componentDidMount(){
 		this.setState({ changed: false });
+		this.props.route.root.setTitlePage("Horarios");
 	}
 	generateRow( item ) {
 		var diasSemana = Utils.getDiasSemana();

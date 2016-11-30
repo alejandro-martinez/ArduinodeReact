@@ -83,6 +83,7 @@ export class Dispositivos extends Component {
 	constructor( props ) {
 		super( props );
 		this.root = props.route.root;
+		this.root.setTitlePage("Dispositivos");
 		this.onUpdate = this.onUpdate.bind( this );
 		this.onNew = this.onNew.bind( this );
 		this.state = { edit: false };
@@ -117,6 +118,19 @@ export class Dispositivos extends Component {
 			return disp;
 		});
 		return true;
+	}
+	componentDidMount(){
+		console.log("componentDidMount")
+	}
+	componentWillMount() {
+		console.log("componentWillMount")
+	}
+	shouldComponentUpdate() {
+		console.log("shouldComponentUpdate")
+		return true;
+	}
+	componentDidUpdate() {
+		console.log("componentDidUpdate")
 	}
 	onNew() {
 		var dispositivos = this.root.state.dispositivos;
