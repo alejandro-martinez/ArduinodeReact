@@ -163,7 +163,6 @@ export class SalidasDispositivo extends Component {
 		this.disp = this.state.dispositivos.filter(( disp ) => {
 			return disp.ip == this.props.params.ip;
 		})[0];
-		console.log("Will mount")
 		this.root.setTitlePage("Salidas de " + this.disp.descripcion);
 		this.setState({ salidas: this.disp.salidas });
 	}

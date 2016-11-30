@@ -119,19 +119,6 @@ export class Dispositivos extends Component {
 		});
 		return true;
 	}
-	componentDidMount(){
-		console.log("componentDidMount")
-	}
-	componentWillMount() {
-		console.log("componentWillMount")
-	}
-	shouldComponentUpdate() {
-		console.log("shouldComponentUpdate")
-		return true;
-	}
-	componentDidUpdate() {
-		console.log("componentDidUpdate")
-	}
 	onNew() {
 		var dispositivos = this.root.state.dispositivos;
 		dispositivos.push( Dispositivo.newModel() );

@@ -413,7 +413,7 @@ table.salidas td:last-child {
 }
 .switchContainer {
     position:relative;
-    width: 122px;
+    width: 122px !important;
 }
 .switchContainer span {
     position: absolute;
