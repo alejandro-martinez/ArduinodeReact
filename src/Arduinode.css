@@ -321,6 +321,15 @@ button,
     width: 300px;
     height: 254px;
 }
+
+table.dispositivos ul li a {
+    font-size:2.6em;
+    color:#03ae74;
+}
+table.dispositivos tr td div {
+    width:80%;
+}
+
 table.dispositivos td {
     padding:6px 5px 0px 5px;
 }

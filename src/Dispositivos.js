@@ -102,8 +102,10 @@ export class Dispositivos extends Component {
 								   edit={ false } 
 								   inputKey='ip'
 								   model={ item } />
-					<td>								  
-					<Link className="button" to={'Dispositivos/salidas/' + item.ip}>Salidas</Link>
+					<td>
+						<ul className="listIcons">
+							<li><Link to={'Dispositivos/salidas/' + item.ip}>&#9854;</Link></li>
+						</ul>
 					</td>
 				</HTML.EditContainer>
 		);

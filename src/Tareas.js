@@ -151,7 +151,7 @@ export class Subtareas extends Tareas {
 				<div> 
 					<ul className="listIcons headerIcons">
 						<li><a onClick={ this.onNew } className='iconMAS'></a></li>
-						<li><a onClick={ this.onUpdate } className={'iconHeader iconOK show' + this.state.changed}></a></li>
+						<li><a onClick={ this.onUpdate } className={'iconOK show' + this.state.changed}></a></li>
 					</ul>						
 					{ subtareas }
 				</div>
