@@ -15,7 +15,7 @@ export class Tareas extends Component {
 		});
 
 		this.props.route.root.setTitlePage("Tareas");
-		this.state = { tareas: [], edit:false };
+		this.state = { tareas: [], edit:false, changed: false };
 		
 		Socket.listen('DBTareasUpdated', ( db ) => {
     		this.setState({ tareas: db });
@@ -46,9 +46,6 @@ export class Tareas extends Component {
 		var i = tareas.indexOf( tarea );
 		tareas.splice(i, 1);
 		this.setState({ changed: true, tareas: tareas });
-	}
-	componentDidMount(){
-		this.setState({ changed: false });
 	}
 	generateRow( item ) {
 		return ( 
