@@ -104,8 +104,8 @@ const Programador = class {
 				});
 		},() => { 
 			log("Ejecución de tarea: " +
-				 subtarea.tarea.descripcion + " finalizada. " + 
-				 "Se accionaron: " + executed + " salidas");
+				 subtarea.tarea.descripcion + 
+				 ". Se accionaron: " + executed + " salidas");
 			if (callback) callback();
 		});
 		

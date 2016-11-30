@@ -60,7 +60,7 @@ class Luz extends Component {
 	render() {
 		let showSwitch = ( this.props.item.estado !== null) && ( !this.state.edit);
 		let estaTemporizada = (this.props.item.temporizada !== 0 && this.props.item.temporizada != "00:00");
-		let dispositivoOffline = this.props.hide;
+		
 		return (
 			<HTML.EditContainer edit={ this.state.edit }>
 				<HTML.EditRow edit={ false }
@@ -69,7 +69,7 @@ class Luz extends Component {
 						 model={ this.props.item }
 						 onUpdate={ this.onUpdate }>
 				</HTML.EditRow>
-				<td className={ 'show' + (showSwitch && !dispositivoOffline)}>
+				<td className={ 'show' + (showSwitch && !this.props.hide)}>
 					<Toggle model={ this.props.item } 
 							onSwitch={ this.onSwitch } 
 							on={ this.props.item.estado === 0 }
