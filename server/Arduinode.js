@@ -179,7 +179,9 @@ function Arduinode() {
 						});
 					}
 				},() => {
+					
 					Arduinode.getInstance().dispositivos.removeMemKeys( false, this.lista );
+
 					if (callback) callback();
 					if ( this.io && this.io.hasOwnProperty('sockets') ) {
 

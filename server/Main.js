@@ -139,11 +139,10 @@ Dispositivo.prototype = {
 							tipo : str[0],
 							descripcion : "Salida " + nro
 						});
-
 						var salida = {
 							nro			: parseInt(nro),
 							tipo		: str[0],
-							descripcion		: "Salida " + nro,
+							descripcion	: "Salida " + nro,
 							ip			: params.ip,
 							estado		: parseInt( str[posDospuntos+1] ),
 							temporizada	: temporizada
@@ -213,7 +212,7 @@ Dispositivo.prototype = {
 					salida 	= factory.create( s.nro, s.tipo, s.descripcion, this.ip );
 
 				// Actualiza estado si viene en el array
-				if ( s.temporizada && salida.temporizada === null ) {
+				if ( s.temporizada && salida.temporizada !== null ) {
 					salida.temporizada = s.temporizada;
 				}
 				salida.estado = s.estado;
