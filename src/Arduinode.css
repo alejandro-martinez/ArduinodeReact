@@ -236,7 +236,7 @@ header {
     background-color: #03ae74;
     width: 100%;
     height: 50px;
-    text-align: center;
+    text-align: left;
     top: 0;
     position: fixed;
     z-index: 1;
@@ -245,7 +245,8 @@ header {
 header h1 {
     display: block;
     color: #fff;
-    padding-top:12px;
+    padding-top:15px;
+    margin-left: 35px;
 }
 header #loading div {
     margin: -8px auto;
@@ -335,42 +336,53 @@ table tr td div{
     position:relative;
     display:inline-block;
 }
-table.dispositivos tr td div input{
-    float:left;
-    width:100%;
-}
+
 td.editRowtrue a {
     position:absolute;
     right:-50px;
     top:0;
 }
-table.dispositivos tr td {
-    display:block;
-    height:22%;
-}
-table.dispositivos tr td:last-child {
-    position:absolute;
-    right:10px;
-    top:4px;
-    width:90px;
-}
-.iconEdit {
-    font-size:2em !important;
-}
+
 table.dispositivos tr {
     position: relative;
     height: 67px;
+    padding: 1px;
 }
-.dispositivos tr .iconEdit{
+table.dispositivos tr .iconEdit{
     position: absolute;
     top: 0;
     right:0;
     padding: .2em .5em;
 }
+table.dispositivos tr td {
+    display:block;
+    height:22%;
+    font-size:.8em;
+}
+table.dispositivos tr td div input{
+    float:left;
+    width:100%;
+}
+table.dispositivos tr td:first-child {
+    font-size:1em;
+}
+table.dispositivos tr td:last-child {
+    margin: -57px 0;
+}
+.iconEdit {
+    font-size:2em !important;
+}
 /*SALIDAS*/
-.salidas td:last-child {
-    padding: 12px;
-    width: 120px;
+table.salidas tr td:last-child {
+    float:right;
+}
+table.salidas td{
+    display:inline-block;
+    border:none !important;
+}
+table.salidas td h4 {
+    padding: 15px 0 0 0;
+    float:left;
 }
 table.salidas > tr td div{
     width:50%;
@@ -380,16 +392,9 @@ table.salidas > tr td div{
 table.salidas tr td > div {
     width:100%;
 }
-table.salidas td{
-    display:inline-block;
-    border:none !important;
-}
-table.salidas tr td:last-child {
-    float:right;
-}
-table.salidas td h4 {
-    padding: 15px 0 0 0;
-    float:left;
+table.salidas td:last-child {
+    padding: 12px;
+    width: 120px;
 }
 .switchContainer {
     position:relative;
