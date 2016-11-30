@@ -144,6 +144,11 @@ td.middle + td{
 .container > div ul {
     right:60px;
 }
+.headerIcons li:last-child a.iconReloj {
+    right: -13px;
+    left: auto;
+    top: -2px;
+}
 .container > div ul:first-child {
     top:7px;
 }
@@ -221,7 +226,10 @@ a[class*="icon"] {
     color: #fff;
 }
 .iconReloj span {
-    font-size:.6em !important;
+    font-size: .5em!important;
+    position: absolute;
+    right: -44px;
+    top: 13px;
 }
 .iconReloj:before {
     content: "\23f1"
