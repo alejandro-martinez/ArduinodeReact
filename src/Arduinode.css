@@ -346,7 +346,7 @@ td.editRowtrue a {
 }
 table.dispositivos tr td {
     display:block;
-    height:37px;
+    height:22%;
 }
 table.dispositivos tr td:last-child {
     position:absolute;
@@ -357,8 +357,9 @@ table.dispositivos tr td:last-child {
 .iconEdit {
     font-size:2em !important;
 }
-.dispositivos tr {
+table.dispositivos tr {
     position: relative;
+    height: 67px;
 }
 .dispositivos tr .iconEdit{
     position: absolute;
