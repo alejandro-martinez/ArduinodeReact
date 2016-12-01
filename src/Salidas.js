@@ -50,8 +50,7 @@ class Persiana extends Component {
 				<HTML.EditRow edit={ false }
 						 root={ this.root }
 						 inputKey='descripcion'
-						 model={ this.props.item }
-						 onUpdate={ this.onUpdate }>
+						 model={ this.props.item }>
 				</HTML.EditRow>
 				<td className={ 'show' + this.props.online}>
 					<ul className="controlPersianas">
@@ -71,24 +70,12 @@ class Luz extends Component {
 		super( props );
 		this.root = props.root;
 		this.onSwitch = this.onSwitch.bind( this );
-		this.onUpdate = this.onUpdate.bind( this );
 		this.state = { edit: false };
 	}
 	onSwitch( salida ) {
 		salida.estado = (salida.estado === 0) ? 1 : 0;
 		salida.temporizada = Utils.horario_a_min( this.props.salidasState.popupData );
 		Socket.emit('switchSalida', salida );
-	}
-	onUpdate( model ) {
-		
-		this.root.state.dispositivos.forEach(( disp ) => {
-			disp.salidas.forEach( (salida, k, _this) => {
-				if ( salida.nro == model.nro ) {
-					_this[k].descripcion = model.descripcion;
-				}
-			})
-		});
-		this.root.updateDB();
 	}
 	render() {
 		let estaTemporizada = (this.props.item.temporizada !== 0 && this.props.item.temporizada != "00:00");
@@ -98,8 +85,7 @@ class Luz extends Component {
 				<HTML.EditRow edit={ false }
 						 root={ this.root }
 						 inputKey='descripcion'
-						 model={ this.props.item }
-						 onUpdate={ this.onUpdate }>
+						 model={ this.props.item }>
 				</HTML.EditRow>
 				<td className={ 'show' + this.props.online}>
 					<Toggle model={ this.props.item } 

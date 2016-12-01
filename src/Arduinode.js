@@ -35,7 +35,9 @@ export class DB {
 	}
 }
 export class Validator {
-	static isValidDESCRIPCION() { return true }
+	static isValidDESCRIPCION( descripcion ) { 
+		return descripcion && descripcion.length;
+	}
 	static isValidIP( ip ) {		
 		return (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ip));
 	}
@@ -89,26 +91,26 @@ export class Tarea extends DB {
 }
 
 class Home extends Component {
-	render() { 
-		return ( <HTML.ListaLinks items={ menu } /> ); 
-	}
+	render() { return ( <HTML.ListaLinks items={ menu } /> ); }
 };
 
 class Arduinode extends Component {
 	constructor( props ) {
 		super( props );
 		
-		this.state = { page: "Home", dispositivos: [] };
+		this.state = { dbActual: "Dispositivo", page: "Home", edit: false, tareas: [], dispositivos: [] };
 		this.updateDB = this.updateDB.bind(this);
 		this.Dispositivo = new Dispositivo();
-		
+		this.Tarea = new Tarea();
 		Socket.listen('DBDispositivosUpdated', ( db ) => {
     		this.setState({ dispositivos: db });
     	});
 	}
 	updateDB() {
-		console.log("Actualizando")
-		this.Dispositivo.update( this.state.dispositivos );
+		console.log("Actualizando" + this.state.dbActual)
+		var db = this.state.dbActual;
+		this[db].update( this.state[ db.concat("s").toLowerCase() ] );
+		this.setState({ edit: false });
 	}
 	setTitlePage( title ) {
 		this.setState({ page: title })

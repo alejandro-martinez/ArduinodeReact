@@ -84,6 +84,7 @@ export class Dispositivos extends Component {
 		super( props );
 		this.root = props.route.root;
 		this.root.setTitlePage("Dispositivos");
+		this.root.setState({ dbActual: "Dispositivo"});
 		this.onUpdate = this.onUpdate.bind( this );
 		this.onNew = this.onNew.bind( this );
 		this.state = { edit: false };
@@ -93,18 +94,17 @@ export class Dispositivos extends Component {
 				<HTML.EditContainer edit={this.state.edit}>
 					<HTML.EditRow root={ this.root }
 								   onUpdate={ this.onUpdate }
-								   edit={ false }
 								   inputKey='descripcion'
 								   model={ item } />
 					<td>{ item.version }</td>
 					<HTML.EditRow root={ this.root }
 								   onUpdate={ this.onUpdate }
-								   edit={ false } 
 								   inputKey='ip'
 								   model={ item } />
 					<td>
 						<ul className="listIcons">
 							<li><Link to={'Dispositivos/salidas/' + item.ip}>&#9854;</Link></li>
+							<li><a onClick={ this.onRemove.bind( this, item )} className="iconDELETE"></a></li>
 						</ul>
 					</td>
 				</HTML.EditContainer>
@@ -124,7 +124,13 @@ export class Dispositivos extends Component {
 	onNew() {
 		var dispositivos = this.root.state.dispositivos;
 		dispositivos.push( Dispositivo.newModel() );
-		this.root.setState({dispositivos: dispositivos});
+		this.root.setState({ dispositivos: dispositivos, edit: true });
+	}
+	onRemove(item, e) {
+		var dispositivos = this.root.state.dispositivos;
+		var i = dispositivos.indexOf( item );
+		dispositivos.splice(i, 1);
+		this.root.setState({ edit: true, dispositivos: dispositivos });
 	}
 	render() {
 		var rows = this.root.state.dispositivos.map( this.generateRow, this );

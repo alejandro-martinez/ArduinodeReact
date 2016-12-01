@@ -135,19 +135,43 @@ td.middle + td{
 }
 
 /* ICONOS */
-.container > div .headerIcons:first-child {
-    right:102px;
-}
-.container > div .headerIcons:last-child {
-    right:3px !important;
-}
 .container > div ul {
     right:60px;
 }
-.headerIcons li:last-child a.iconReloj {
-    right: -13px;
-    left: auto;
-    top: -2px;
+header{
+  position: fixed;
+  width: 100%;
+}
+.headerIcons {
+    float: right;
+    top: 6px;
+    position: relative;
+}
+
+.headerIcons li {
+    float:left;
+    width:40px;
+}
+.headerIcons li a{
+  margin:0;
+  display:inline-block;
+}
+
+header a.back {
+    position:absolute;
+    left:7px;
+    top:10px;
+}
+
+.headerIcons li a.menu
+{
+  margin-top:8px;
+}
+
+header h1 {
+    position:absolute;
+    top:0;
+    left:0;
 }
 .container > div ul:first-child {
     top:7px;
@@ -156,13 +180,6 @@ a[class*="icon"] {
     color:#fff;
     font-size:1.3em; 
 }
-.headerIcons a{
-    position:relative;
-    z-index:9;
-}
-.headerIcons li:last-child a{
-    left:0;
-}
 .listIcons{
     display:inline-block;
     z-index:2;
@@ -170,12 +187,6 @@ a[class*="icon"] {
 .listIcons li{
     margin-left: 14px;
     float:left;    
-}
-.headerIcons {
-    position:fixed;
-    top: 10px;
-    right: 57px;
-    z-index: 2;
 }
 .iconDOWN:before { content: "\25BC" }
 .iconSTOP:before { content: "\25FC" }
@@ -200,10 +211,7 @@ a[class*="icon"] {
     font-size:2.1em !important;
 }
 .iconOK:after { content: "\2713" }
-.headerIcons li:last-child a.iconReloj {
-    right: -17px;
-    left:auto;
-}
+
 .iconReloj {
     position: fixed;
     z-index: 2;
@@ -219,13 +227,8 @@ a[class*="icon"] {
 .iconReloj:before { content: "\23f1" }
 .iconDELETE { color:red !important; }
 .iconDELETE:after { content: "\2717" }
-.iconHeader {
-    position:absolute;
-    top:11px;
-}
-.iconHeader.left { left:15px; }
-.iconHeader.right { right:15px; }
 .iconEdit:after { content: "\270D"; }
+
 .back:before { content: "\2770"; }
 .menu {
     font-weight:bold;

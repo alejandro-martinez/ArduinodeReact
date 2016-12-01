@@ -10,49 +10,41 @@ import { SelectDispositivos } from './Dispositivos';
 export class Tareas extends Component {
 	constructor( props ) {
 		super( props );
-		['generateRow','onUpdate','onNew','onSetActiva','onSetAccion','onRemove'].forEach((m)=>{
+		['generateRow','onNew','onSetActiva','onSetAccion','onRemove'].forEach((m)=>{
 			this[m] = this[m].bind( this );
 		});
-
-		this.props.route.root.setTitlePage("Tareas");
-		this.state = { tareas: [], edit:false, changed: false };
+		props.route.root.setTitlePage("Tareas");
+		props.route.root.setState({ dbActual: "Tarea"});
+		this.state = { edit:false, changed: false };
 		
 		Socket.listen('DBTareasUpdated', ( db ) => {
-    		this.setState({ tareas: db });
+    		props.route.root.setState({ tareas: db });
     	});
 
-		this.Tarea = new Tarea();		
+		this.Tarea = new Tarea();
 		this.Tarea.get();
 	}
 	onSetActiva(tarea, e) {
 		tarea.activa = (tarea.activa) ? 0 : 1;
-		this.setState({ changed: true });
+		this.props.route.root.setState({edit: true});
 	}
 	onSetAccion(tarea, e) {
 		tarea.accion = (tarea.accion) ? 0 : 1;
-		this.setState({ changed: true });
+		this.props.route.root.setState({edit: true});
 	}
 	onNew() {
 		var tareas = this.state.tareas;
 		tareas.push( Tarea.newModel() );
-		this.setState({ tareas: tareas });
-	}
-	onUpdate() {
-		this.Tarea.update( this.state.tareas );
-		this.setState({ changed: false });
+		this.props.route.root.setState({ edit: true, tareas: tareas });
 	}
 	onRemove( tarea, e ) {
-		var tareas = this.state.tareas;
-		var i = tareas.indexOf( tarea );
-		tareas.splice(i, 1);
-		this.setState({ changed: true, tareas: tareas });
+		var i = this.props.route.root.state.tareas.indexOf( tarea );
+		this.setState({ tareas: this.props.route.root.state.tareas.splice(i , 1), edit: true});
 	}
 	generateRow( item ) {
 		return ( 
 			<HTML.EditContainer edit={this.state.edit || item.descripcion.length === 0}>
-				<HTML.EditRow root={ this.root }
-							   onUpdate={ this.onUpdate }
-							   edit={ false }
+				<HTML.EditRow  root={ this.props.route.root }
 							   inputKey='descripcion'
 							   model={ item } />
 				<td>								  
@@ -68,13 +60,10 @@ export class Tareas extends Component {
 		);
 	}
 	render() {
-		var rows = this.state.tareas.map( this.generateRow );
+		var rows = this.props.route.root.state.tareas.map( this.generateRow );
 		
 		return ( 
 			<div>
-				<ul className="listIcons headerIcons">
-					<li><a onClick={ this.onUpdate } className={'iconOK show' + this.state.changed}></a></li>
-				</ul>
 				<HTML.Table class="tareas"> { rows } </HTML.Table>
 				<button onClick={ this.onNew }>Nueva</button>
 			</div>
@@ -90,10 +79,10 @@ export class Subtareas extends Tareas {
 	}
 	onNew() {
 		this.tarea[0].subtareas.push( Tarea.newSubtareaModel() );
-		this.forceUpdate();
+		this.props.route.root.setState({edit: true});
 	}
 	componentDidMount(){
-		this.setState({ changed: false });
+		this.props.route.root.setState({edit: false});
 		this.props.route.root.setTitlePage("Horarios");
 	}
 	generateRow( item ) {
@@ -138,7 +127,7 @@ export class Subtareas extends Tareas {
 	}
 	onChange ( item, e ) {
 		item[e.target.name] = e.target.value;
-		this.setState({ changed: true });
+		this.props.route.root.setState({edit: true});
 	}
 	render() {
 		this.tarea = this.state.tareas.filter((t) => {
@@ -174,7 +163,7 @@ export class TareaDispositivos extends Tareas {
 	onRemove( dispositivo, e ) {
 		var i = this.tarea.dispositivos.indexOf( dispositivo );
 		this.tarea.dispositivos.splice(i, 1);
-		this.setState({ changed: true });
+		this.root.setState({edit: true});
 	}
 	generateRow( item ) {
 		var descripcion = ( item.salidadescripcion )
@@ -188,11 +177,11 @@ export class TareaDispositivos extends Tareas {
 		);
 	}
 	componentDidMount(){
-		this.setState({ changed: false  });
+		this.root.setState({edit: false});
 	}
 	onChange ( item, e ) {
 		item[e.target.name] = e.target.value;
-		this.setState({ changed: true });
+		this.root.setState({edit: true});
 	}
 	onNew( dispositivo, salida ) {
 		var salidaParsed = salida.split("-"),
@@ -204,7 +193,7 @@ export class TareaDispositivos extends Tareas {
 			};
 		
 		this.tarea.dispositivos.push( newDispositivo );		
-		this.setState({ changed:true });
+		this.root.setState({edit: true});
 	}
 	render() {
 		if ( this.state.tareas.length ) {
@@ -215,9 +204,6 @@ export class TareaDispositivos extends Tareas {
 			this.dispositivos = this.tarea.dispositivos.map( this.generateRow, this );
 			return (
 				<div>
-					<ul className="listIcons headerIcons">
-						<li><a onClick={ this.onUpdate } className={'iconOK show' + this.state.changed}></a></li>
-					</ul>
 					<HTML.Popup launchIcon="iconMAS" class="dispositivos" root={ this }>
 						<SelectDispositivos added={ this.tarea.dispositivos } 
 											onAdd={ this.onNew }
