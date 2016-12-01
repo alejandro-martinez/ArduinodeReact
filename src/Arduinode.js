@@ -131,6 +131,9 @@ export class Tarea extends DB {
 }
 
 class Home extends Component {
+	componentDidMount() { 
+		this.props.route.root.setState({ page: "Home", showAddIcon: false });		
+	}
 	render() { return ( <HTML.ListaLinks items={ menu } /> ); }
 };
 
