@@ -3,18 +3,23 @@ import { Link } from 'react-router';
 import Loading from 'react-loading';
 import Socket from './Socket';
 import { Dispositivo, Validator } from './Arduinode';
+import Utils from './Utils';
 
 export class Header extends Component {
 	constructor( props ) {
 		super( props );
 		this.onUpdate = this.onUpdate.bind( this );
-		document.addEventListener("loadingEvent",( e ) => {
+		this.onAddNew = this.onAddNew.bind( this );
+		document.addEventListener("loading",( e ) => {
 			this.setState({ loading: e.detail }) 
 		});
 		this.state = { loading: false };
 	}
 	refresh() {
 		Socket.emit('getDispositivosDB');
+	}
+	onAddNew() {
+		Utils.fireEvent("onAddNew");
 	}
 	onUpdate() {
 		this.props.root.updateDB();
@@ -33,6 +38,9 @@ export class Header extends Component {
 				<h1 onClick={ this.refresh }>{ this.props.root.state.page }</h1>
 				
 				<ul className="headerIcons">
+					<li className={'show' + this.props.root.state.showAddIcon}>
+						<a onClick={ this.onAddNew } className='iconMAS'></a>
+					</li>
 					<li className={'show' + this.props.root.state.edit}>
 						<a onClick={ this.onUpdate } className={'iconOK'}></a>
 					</li>

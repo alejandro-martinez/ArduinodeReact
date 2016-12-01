@@ -83,11 +83,20 @@ export class Dispositivos extends Component {
 	constructor( props ) {
 		super( props );
 		this.root = props.route.root;
-		this.root.setTitlePage("Dispositivos");
-		this.root.setState({ dbActual: "Dispositivo"});
-		this.onUpdate = this.onUpdate.bind( this );
-		this.onNew = this.onNew.bind( this );
-		this.state = { edit: false };
+		this.root.setState({ 
+			dbActual: "Dispositivo", 
+			page: "Dispositivos",
+			showAddIcon: true
+		});
+		this.onUpdate 	= this.onUpdate.bind( this );
+		this.onAddNew 	= this.onAddNew.bind( this );
+		this.state 		= { edit: false };
+	}
+	componentDidMount() {
+		document.addEventListener("onAddNew", this.onAddNew);
+	}
+	componentWillUnmount() {
+		document.removeEventListener("onAddNew", this.onAddNew);
 	}
 	generateRow( item ) {
 		return ( 
@@ -121,7 +130,7 @@ export class Dispositivos extends Component {
 		});
 		return true;
 	}
-	onNew() {
+	onAddNew() {
 		var dispositivos = this.root.state.dispositivos;
 		dispositivos.push( Dispositivo.newModel() );
 		this.root.setState({ dispositivos: dispositivos, edit: true });
@@ -135,11 +144,6 @@ export class Dispositivos extends Component {
 	render() {
 		var rows = this.root.state.dispositivos.map( this.generateRow, this );
 		
-		return ( 
-			<div>
-				<HTML.Table class="dispositivos"> { rows } </HTML.Table>
-				<button onClick={ this.onNew }>Nuevo</button>
-			</div>
-		);
+		return (<HTML.Table class="dispositivos"> { rows } </HTML.Table>);
 	}
 };

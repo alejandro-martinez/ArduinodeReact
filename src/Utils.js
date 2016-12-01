@@ -1,5 +1,8 @@
 
 class Utils {
+	static fireEvent(name, data) {
+		document.dispatchEvent( new CustomEvent( name, { detail: data}) );
+	}
 	static randomID() {
 		return Math.random().toString(36).slice(18);
 	}

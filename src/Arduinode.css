@@ -163,6 +163,8 @@ header a.back {
     top:10px;
 }
 
+header .iconMAS { margin-top:5px !important; }
+
 .headerIcons li a.menu
 {
   margin-top:8px;
@@ -205,7 +207,6 @@ a[class*="icon"] {
 .iconMAS:before { content: "\271A" }
 .iconMAS {
     font-size: 1.5em!important;
-    top: 2px;
 }
 .iconOK{
     font-size:2.1em !important;

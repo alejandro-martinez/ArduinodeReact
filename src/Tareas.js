@@ -10,11 +10,14 @@ import { SelectDispositivos } from './Dispositivos';
 export class Tareas extends Component {
 	constructor( props ) {
 		super( props );
-		['generateRow','onNew','onSetActiva','onSetAccion','onRemove'].forEach((m)=>{
+		['generateRow','onAddNew','onSetActiva','onSetAccion','onRemove'].forEach((m)=>{
 			this[m] = this[m].bind( this );
 		});
-		props.route.root.setTitlePage("Tareas");
-		props.route.root.setState({ dbActual: "Tarea"});
+		props.route.root.setState({ 
+			dbActual: "Tarea", 
+			page: "Tareas",
+			showAddIcon: true
+		});
 		this.state = { edit:false, changed: false };
 		
 		Socket.listen('DBTareasUpdated', ( db ) => {
@@ -32,14 +35,21 @@ export class Tareas extends Component {
 		tarea.accion = (tarea.accion) ? 0 : 1;
 		this.props.route.root.setState({edit: true});
 	}
-	onNew() {
-		var tareas = this.state.tareas;
-		tareas.push( Tarea.newModel() );
+	onAddNew() {
+		var tareas = this.props.route.root.state.tareas;
+		this.newModel = Tarea.newModel();
+		tareas.push( this.newModel );
 		this.props.route.root.setState({ edit: true, tareas: tareas });
 	}
 	onRemove( tarea, e ) {
 		var i = this.props.route.root.state.tareas.indexOf( tarea );
 		this.setState({ tareas: this.props.route.root.state.tareas.splice(i , 1), edit: true});
+	}
+	componentDidMount() {
+		document.addEventListener("onAddNew", this.onAddNew);
+	}
+	componentWillUnmount() {
+		document.removeEventListener("onAddNew", this.onAddNew);
 	}
 	generateRow( item ) {
 		return ( 
@@ -61,29 +71,31 @@ export class Tareas extends Component {
 	}
 	render() {
 		var rows = this.props.route.root.state.tareas.map( this.generateRow );
-		
-		return ( 
-			<div>
-				<HTML.Table class="tareas"> { rows } </HTML.Table>
-				<button onClick={ this.onNew }>Nueva</button>
-			</div>
-		);
+		return (<HTML.Table class="tareas"> { rows } </HTML.Table>);
 	}
 }
 
 export class Subtareas extends Tareas {
 	constructor( props ) {
 		super( props );
-		this.onNew = this.onNew.bind( this );
+		this.onAddNew = this.onAddNew.bind( this );
 		this.onChange = this.onChange.bind(this);
 	}
-	onNew() {
-		this.tarea[0].subtareas.push( Tarea.newSubtareaModel() );
+	onAddNew() {
+		this.newModel = Tarea.newSubtareaModel();
+		this.tarea[0].subtareas.push( this.newModel );
 		this.props.route.root.setState({edit: true});
 	}
-	componentDidMount(){
-		this.props.route.root.setState({edit: false});
-		this.props.route.root.setTitlePage("Horarios");
+	componentDidMount() {
+		document.addEventListener("onAddNew", this.onAddNew);
+
+		this.tarea = this.props.route.root.state.tareas.filter((t) => {
+			return this.props.routeParams.id == t.id;
+		});
+		this.props.route.root.setState({edit: false, page: "Horarios"});
+	}
+	componentWillUnmount() {
+		document.removeEventListener("onAddNew", this.onAddNew);
 	}
 	generateRow( item ) {
 		var diasSemana = Utils.getDiasSemana();
@@ -127,24 +139,22 @@ export class Subtareas extends Tareas {
 	}
 	onChange ( item, e ) {
 		item[e.target.name] = e.target.value;
-		this.props.route.root.setState({edit: true});
+
+		//Validacion de horarios
+		if ( this.newModel ) {
+			if ( this.Tarea.isValidSubtarea( this.tarea[0].subtareas ) ) {
+				this.props.route.root.setState({edit: true});
+			}
+		}
+		else {
+			this.props.route.root.setState({edit: true});
+		}
 	}
 	render() {
-		this.tarea = this.state.tareas.filter((t) => {
-			return this.props.routeParams.id == t.id;
-		});
 
-		if ( this.tarea.length ) {
+		if ( this.tarea ) {
 			var subtareas = this.tarea[0].subtareas.map( this.generateRow, this );
-			return ( 
-				<div> 
-					<ul className="listIcons headerIcons">
-						<li><a onClick={ this.onNew } className='iconMAS'></a></li>
-						<li><a onClick={ this.onUpdate } className={'iconOK show' + this.state.changed}></a></li>
-					</ul>						
-					{ subtareas }
-				</div>
-			);
+			return ( <div> { subtareas } </div> );
 		}
 		else {
 			return null;
@@ -155,10 +165,11 @@ export class Subtareas extends Tareas {
 export class TareaDispositivos extends Tareas {
 	constructor( props ) {
 		super( props );
-		this.root 			= props.route.root;
-		['onRemove','onNew','onChange'].forEach((m)=>{
+		this.root = props.route.root;
+		['onRemove','onHidePopup', 'onAddNew','onChange'].forEach((m)=>{
 			this[m] = this[m].bind(this);
 		});
+		this.state = { edit: false };
 	}
 	onRemove( dispositivo, e ) {
 		var i = this.tarea.dispositivos.indexOf( dispositivo );
@@ -176,39 +187,56 @@ export class TareaDispositivos extends Tareas {
 			</tr>
 		);
 	}
-	componentDidMount(){
-		this.root.setState({edit: false});
+	componentDidMount() {
+		document.addEventListener("onAddNew", this.onAddNew);
+	}
+	componentWillUnmount() {
+		document.removeEventListener("onAddNew", this.onAddNew);
 	}
 	onChange ( item, e ) {
 		item[e.target.name] = e.target.value;
-		this.root.setState({edit: true});
+		this.root.setState({ edit: true });
 	}
-	onNew( dispositivo, salida ) {
-		var salidaParsed = salida.split("-"),
+	onHidePopup() {
+		this.setState({ edit: false });	
+	}
+	onAddNew( dispositivo, salida ) {
+		if ( dispositivo && salida ) { 
+			var salidaParsed = salida.split("-"),
 			newDispositivo = { 
 				ip 				 : dispositivo.ip, 
 				descripcion		 : dispositivo.descripcion,
 				nro				 : salidaParsed[0],
 				salidadescripcion: salidaParsed[1]
 			};
-		
-		this.tarea.dispositivos.push( newDispositivo );		
-		this.root.setState({edit: true});
+			
+			this.tarea.dispositivos.push( newDispositivo );		
+			
+			this.root.setState({edit: true});
+		}
+		else {
+			this.setState({ edit: true });
+		}
 	}
+
 	render() {
-		if ( this.state.tareas.length ) {
-			var tarea = this.state.tareas.filter((t) => {
+		if ( this.root.state.tareas.length ) {
+			var tarea = this.root.state.tareas.filter((t) => {
 				return this.props.routeParams.id == t.id;
 			});
 			this.tarea = tarea[0];
 			this.dispositivos = this.tarea.dispositivos.map( this.generateRow, this );
 			return (
 				<div>
-					<HTML.Popup launchIcon="iconMAS" class="dispositivos" root={ this }>
+					<div>
+						<div className={'dispositivos center popup show' + this.state.edit}>
 						<SelectDispositivos added={ this.tarea.dispositivos } 
-											onAdd={ this.onNew }
+											onAdd={ this.onAddNew }
 											root={ this.root } />
-					</HTML.Popup>
+						<input type="button" onClick={ this.onHidePopup } value="Aceptar" />
+						</div>
+					</div>
+					
 					<HTML.Table> { this.dispositivos } </HTML.Table>
 				</div>
 			);

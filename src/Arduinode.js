@@ -87,6 +87,46 @@ export class Tarea extends DB {
 	        "horafin": "00:00"
 		};
 	}
+	static validSubtarea(subtarea, subtareas) {
+		console.log(subtareas)
+		var valid = true;
+
+		for ( var s in subtareas ) {
+			var _s = subtareas[s];
+			if ( _s.id != subtarea.id ) {
+				/*   3  6
+				*
+				*  1      7 	-> invalida
+				*/
+				if (subtarea.mesinicio <= _s.mesinicio 
+					&& _s.mesfin <= subtarea.mesfin ) {
+					valid = false;
+					break;
+				}
+				/* 3     6
+				*
+				*     4    7 	-> invalida
+				*/
+				if (subtarea.mesinicio > _s.mesinicio 
+				 && subtarea.mesinicio < _s.mesfin ) {
+					valid = false;
+					break;
+				}
+				
+				/*    3     6
+				*
+				*  1     5 		-> invalida
+				*/
+				if (subtarea.mesinicio < _s.mesinicio 
+				 && subtarea.mesfin > _s.mesinicio) {
+					valid = false;
+					break;
+				}
+			}
+		}
+		return valid;
+		
+	}
 	static isValidDESCRIPCION = Validator.isValidDESCRIPCION;
 }
 
@@ -98,7 +138,15 @@ class Arduinode extends Component {
 	constructor( props ) {
 		super( props );
 		
-		this.state = { dbActual: "Dispositivo", page: "Home", edit: false, tareas: [], dispositivos: [] };
+		this.state = { 
+			dbActual: "Dispositivo", 
+			page: "Home", 
+			edit: false,
+			showAddIcon: false,
+			tareas: [], 
+			dispositivos: [] 
+		};
+
 		this.updateDB = this.updateDB.bind(this);
 		this.Dispositivo = new Dispositivo();
 		this.Tarea = new Tarea();
@@ -111,9 +159,6 @@ class Arduinode extends Component {
 		var db = this.state.dbActual;
 		this[db].update( this.state[ db.concat("s").toLowerCase() ] );
 		this.setState({ edit: false });
-	}
-	setTitlePage( title ) {
-		this.setState({ page: title })
 	}
 	render() {
 		const This = this;

@@ -169,7 +169,10 @@ export class SalidasActivas extends Component {
 		super( props );
 		this.root = props.route.root;
 		this.state = this.root.state;
-		this.root.setTitlePage("Luces encendidas");
+		this.root.setState({
+			page: "Luces encendidas",
+			showAddIcon: false
+		});
 	}
 	render() {		
 		var salidasActivas = [];
@@ -195,7 +198,10 @@ export class SalidasDispositivo extends Component {
 		this.disp = this.state.dispositivos.filter(( disp ) => {
 			return disp.ip == this.props.params.ip;
 		})[0];
-		this.root.setTitlePage("Salidas de " + this.disp.descripcion);
+		this.root.setState({ 
+			page: "Salidas de " + this.disp.descripcion,
+			showAddIcon: false
+		});
 		this.setState({ salidas: this.disp.salidas });
 	}
 	render() {

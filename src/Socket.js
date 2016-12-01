@@ -1,22 +1,18 @@
 /*jshint esversion: 6 */
 import io from 'socket.io-client'
+import Utils from './Utils';
 
 // Inicializacion de socket para la comunicacion con el servidor
 window.socket = io.connect( window.location.origin );
 
-// Evento para mostrar / ocultar componente Loading
-var showLoading = ( show ) => {
-	document.dispatchEvent( new CustomEvent( "loadingEvent", { detail: show}) );
-};
-
 class SocketIO {
 	emit( param, data ) {
-		showLoading( true );
+		Utils.fireEvent("loading", true);
 		window.socket.emit( param, data );
 	}
 	listen( param, callback) {
 		var onResponse = function( data ) {
-			showLoading( false );
+			Utils.fireEvent("loading", false);
 			callback( data );
 		};
 		window.socket.removeListener( param ).on( param, onResponse);
