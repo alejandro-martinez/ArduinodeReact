@@ -86,7 +86,8 @@ export class Dispositivos extends Component {
 		this.root.setState({ 
 			dbActual: "Dispositivo", 
 			page: "Dispositivos",
-			showAddIcon: true
+			showAddIcon: true,
+			showTimerIcon: false
 		});
 		this.onUpdate 	= this.onUpdate.bind( this );
 		this.onAddNew 	= this.onAddNew.bind( this );

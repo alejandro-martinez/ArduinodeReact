@@ -15,15 +15,10 @@ export class Header extends Component {
 		});
 		this.state = { loading: false };
 	}
-	refresh() {
-		Socket.emit('getDispositivosDB');
-	}
-	onAddNew() {
-		Utils.fireEvent("onAddNew");
-	}
-	onUpdate() {
-		this.props.root.updateDB();
-	}
+	refresh() { Socket.emit('getDispositivosDB'); }
+	onAddNew() { Utils.fireEvent("onAddNew"); }
+	onTimerClick() { Utils.fireEvent("onTimerClick"); }
+	onUpdate() { this.props.root.updateDB(); }
 	render() {
 		return (
 			<header>
@@ -38,6 +33,11 @@ export class Header extends Component {
 				<h1 onClick={ this.refresh }>{ this.props.root.state.page }</h1>
 				
 				<ul className="headerIcons">
+					<li className={'iconReloj show' + this.props.root.state.showTimerIcon}>
+						<a onClick={ this.onTimerClick }>
+							<span>{ this.props.root.state.temporizacion }</span>
+						</a>
+					</li>
 					<li className={'show' + this.props.root.state.showAddIcon}>
 						<a onClick={ this.onAddNew } className='iconMAS'></a>
 					</li>

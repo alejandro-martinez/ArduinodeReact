@@ -12,8 +12,7 @@ class Toggle extends React.Component {
     this.switch = this.switch.bind( this );
   }
   switch() {
-  	this.props.on = !this.props.on;
-  	
+  	this.props.on = !this.props.on;  	
   	// Accion asociada al switch, se implementa en el componente que haga uso de Toggle
   	this.props.onSwitch( this.props.model );
   }
@@ -21,7 +20,6 @@ class Toggle extends React.Component {
   render() {
   	
   	let estaTemporizada = ((this.props.model.temporizada !== 0 && this.props.model.temporizada != "00:00") && this.props.on);
-
     return (
 		<div className={ 'switchContainer temporizada' + estaTemporizada}>
 			<span> { Utils.min_a_horario(this.props.model.temporizada) } </span>
@@ -74,7 +72,7 @@ class Luz extends Component {
 	}
 	onSwitch( salida ) {
 		salida.estado = (salida.estado === 0) ? 1 : 0;
-		salida.temporizada = Utils.horario_a_min( this.props.salidasState.popupData );
+		salida.temporizada = Utils.horario_a_min( this.root.state.temporizacion );
 		Socket.emit('switchSalida', salida );
 	}
 	render() {
@@ -103,21 +101,24 @@ class SalidasTable extends Component {
 	constructor( props ) {
 		super( props );
 		this.root = props.root;
-		this.state = { 
-			popupVisible: false, 
-			popupData: "00:00"
-		};
-		['onTemporizacion','onAceptar'].forEach((m)=>{
+		['onTemporizacion','onShowPopup','onHidePopup'].forEach((m)=>{
 			this[m] = this[m].bind( this );
 		});
+		this.root.setState({ showTimerIcon: true});
+		this.state = { visible: false }
+	}
+	componentDidMount() {
+		document.addEventListener("onTimerClick", this.onShowPopup);
+	}
+	componentWillUnmount() {
+		document.removeEventListener("onTimerClick", this.onShowPopup);
 	}
 	onTemporizacion ( e ) {
 		e.preventDefault();
-		this.setState({ popupData: e.target.value == "" ? null : e.target.value });
+		this.root.setState({ temporizacion: e.target.value == "" ? null : e.target.value });
 	}
-	onAceptar() {
-		this.setState({ popupVisible: false });
-	}
+	onShowPopup() { this.setState({ visible: true }); }
+	onHidePopup() { this.setState({ visible: false }); }
 	render() {
 		const This = this;
 		var tableItems = [];
@@ -128,7 +129,7 @@ class SalidasTable extends Component {
 
 			var salida = null;
 
-			if (item.tipo == 'L') {
+			if ( item.tipo == 'L' ) {
 				salida = <Luz key={ item.nro.toString() } item={ item }
 					 salidasState={ This.state } 
 					 online={ this.props.online }
@@ -149,13 +150,12 @@ class SalidasTable extends Component {
 
 		return (
 			<div>
-				<HTML.Popup launchIcon="iconReloj" 
-							class="temporizacion" 
-							onLaunchPopup={ this.onLaunchPopup }
-							root={ This }>
+				<div className={'temporizacion center popup show' + this.state.visible}>
 					<input type="time" onChange={ this.onTemporizacion } 
-									   value={ this.state.popupData } />
-				</HTML.Popup>
+									   value={ this.root.state.temporizacion } />
+					<input type="button" onClick={ this.onHidePopup } value="Aceptar" />
+				</div>
+				
 				<HTML.Table class="salidas">
 					{ tableItems }					
 				</HTML.Table>
@@ -198,10 +198,7 @@ export class SalidasDispositivo extends Component {
 		this.disp = this.state.dispositivos.filter(( disp ) => {
 			return disp.ip == this.props.params.ip;
 		})[0];
-		this.root.setState({ 
-			page: "Salidas de " + this.disp.descripcion,
-			showAddIcon: false
-		});
+		this.root.setState({ page: "Salidas de " + this.disp.descripcion, showAddIcon: false});
 		this.setState({ salidas: this.disp.salidas });
 	}
 	render() {

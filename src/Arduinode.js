@@ -132,7 +132,11 @@ export class Tarea extends DB {
 
 class Home extends Component {
 	componentDidMount() { 
-		this.props.route.root.setState({ page: "Home", showAddIcon: false });		
+		this.props.route.root.setState({ 
+			page: "Home", 
+			showAddIcon: false,
+			showTimerIcon: false
+		});
 	}
 	render() { return ( <HTML.ListaLinks items={ menu } /> ); }
 };
@@ -146,7 +150,9 @@ class Arduinode extends Component {
 			page: "Home", 
 			edit: false,
 			showAddIcon: false,
+			showTimerIcon: false,
 			tareas: [], 
+			temporizacion: "00:00",
 			dispositivos: [] 
 		};
 
@@ -158,7 +164,6 @@ class Arduinode extends Component {
     	});
 	}
 	updateDB() {
-		console.log("Actualizando" + this.state.dbActual)
 		var db = this.state.dbActual;
 		this[db].update( this.state[ db.concat("s").toLowerCase() ] );
 		this.setState({ edit: false });

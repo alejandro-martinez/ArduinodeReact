@@ -162,7 +162,12 @@ header a.back {
     left:7px;
     top:10px;
 }
-
+header li.iconReloj {
+    width:95px;
+}
+header li.iconReloj a {
+     font-size: 1.8em !important;
+}
 header .iconMAS { margin-top:5px !important; }
 
 .headerIcons li a.menu
@@ -178,7 +183,7 @@ header h1 {
 .container > div ul:first-child {
     top:7px;
 }
-a[class*="icon"] {
+a[class*="icon"], li[class*="icon"] a {
     color:#fff;
     font-size:1.3em; 
 }
@@ -213,19 +218,10 @@ a[class*="icon"] {
 }
 .iconOK:after { content: "\2713" }
 
-.iconReloj {
-    position: fixed;
-    z-index: 2;
-    font-size: 1.9em!important;
-    color: #fff;
+li.iconReloj a span {
+    font-size: .7em!important;
 }
-.iconReloj span {
-    font-size: .5em!important;
-    position: absolute;
-    right: -44px;
-    top: 13px;
-}
-.iconReloj:before { content: "\23f1" }
+li.iconReloj a:before { content: "\23f1" }
 .iconDELETE { color:red !important; }
 .iconDELETE:after { content: "\2717" }
 .iconEdit:after { content: "\270D"; }
@@ -478,7 +474,7 @@ table.tareas tr td:last-child a {
 table.tareas tr div {
     width:96%;
 }
-table .iconReloj {
+table td ul li.iconReloj a {
     position:relative;
     color:#03ae74;
     left:0;
