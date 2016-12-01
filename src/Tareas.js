@@ -84,6 +84,9 @@ export class Subtareas extends Tareas {
 	}
 	onAddNew() {
 		this.newModel = Tarea.newSubtareaModel();
+		this.tarea = this.props.route.root.state.tareas.filter((t) => {
+			return this.props.routeParams.id == t.id;
+		});
 		this.tarea[0].subtareas.push( this.newModel );
 		this.props.route.root.setState({edit: true});
 	}
@@ -140,16 +143,7 @@ export class Subtareas extends Tareas {
 	}
 	onChange ( item, e ) {
 		item[e.target.name] = e.target.value;
-
-		//Validacion de horarios
-		if ( this.newModel ) {
-			if ( this.Tarea.isValidSubtarea( this.tarea[0].subtareas ) ) {
-				this.props.route.root.setState({edit: true});
-			}
-		}
-		else {
-			this.props.route.root.setState({edit: true});
-		}
+		this.props.route.root.setState({edit: true});
 	}
 	render() {
 

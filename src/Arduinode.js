@@ -31,6 +31,7 @@ export class DB {
 	    Socket.emit('get' + this.filename + 'DB');
 	}
 	update( db ) {
+		console.log("update DB")
 		Socket.emit('update'+ this.filename +'DB', db );
 	}
 }
@@ -58,6 +59,15 @@ export class Dispositivo extends DB {
 
 		return model;
 	}
+	update(db, callback) {
+		if (Dispositivo.isValid( db )) {
+			super.update(db);
+			callback();
+		}
+	}
+	static isValid() {
+		return true;
+	}
 	static isValidDESCRIPCION = Validator.isValiddescripcion;
 	static isValidIP = Validator.isValidIP;
 }
@@ -65,6 +75,7 @@ export class Dispositivo extends DB {
 export class Tarea extends DB {
 	constructor() {
 		super('Tareas');
+		this.errors = null;
 	}
 	static newModel() {
 		return {
@@ -87,43 +98,53 @@ export class Tarea extends DB {
 	        "horafin": "00:00"
 		};
 	}
-	static validSubtarea(subtarea, subtareas) {
-		console.log(subtareas)
+	update(db, callback) {
+		if (Tarea.isValid( db )) {
+			callback();
+			super.update(db);
+		}
+	}
+	//Chequea validez de subtareas
+	static isValid( db ) {
 		var valid = true;
 
-		for ( var s in subtareas ) {
-			var _s = subtareas[s];
-			if ( _s.id != subtarea.id ) {
-				/*   3  6
-				*
-				*  1      7 	-> invalida
-				*/
-				if (subtarea.mesinicio <= _s.mesinicio 
-					&& _s.mesfin <= subtarea.mesfin ) {
-					valid = false;
-					break;
-				}
-				/* 3     6
-				*
-				*     4    7 	-> invalida
-				*/
-				if (subtarea.mesinicio > _s.mesinicio 
-				 && subtarea.mesinicio < _s.mesfin ) {
-					valid = false;
-					break;
-				}
-				
-				/*    3     6
-				*
-				*  1     5 		-> invalida
-				*/
-				if (subtarea.mesinicio < _s.mesinicio 
-				 && subtarea.mesfin > _s.mesinicio) {
-					valid = false;
-					break;
-				}
+		db.forEach( ( tarea ) => {
+			console.log("Tarea",tarea)
+			if (tarea.subtareas.length) { 
+				tarea.subtareas.reduce((prev, current, i, _this) => {
+					if (prev && valid) {
+						/*   3  6
+						*
+						*  1      7 	-> invalida
+						**/
+						if ( current.fechainicio <= prev.fechainicio 
+							&& current.fechafin <= current.fechafin ) {
+							valid = false;
+							this.errors = "error if1";
+						}
+						/* 3     6
+						*
+						*     4    7 	-> invalida
+						*/
+						if ( current.fechainicio > prev.fechainicio 
+						 && current.fechafin < prev.fechafin ) {
+							valid = false;
+							this.errors = "error if2";
+						}
+						
+						/*    3     6
+						*
+						*  1     5 		-> invalida
+						*/
+						if ( current.fechainicio < prev.fechainicio 
+						 && current.fechafin > prev.fechainicio) {
+							valid = false;
+							this.errors = "error if3";
+						}
+					}
+				});
 			}
-		}
+		});
 		return valid;
 		
 	}
@@ -159,14 +180,18 @@ class Arduinode extends Component {
 		this.updateDB = this.updateDB.bind(this);
 		this.Dispositivo = new Dispositivo();
 		this.Tarea = new Tarea();
+
 		Socket.listen('DBDispositivosUpdated', ( db ) => {
     		this.setState({ dispositivos: db });
     	});
 	}
 	updateDB() {
 		var db = this.state.dbActual;
-		this[db].update( this.state[ db.concat("s").toLowerCase() ] );
-		this.setState({ edit: false });
+		var dataModel = this.state[ db.concat("s").toLowerCase() ];
+		
+		if ( this[db].update( dataModel, ()=> {
+			this.setState({ edit: false, dbErrors: this[db].errors });
+		}));
 	}
 	render() {
 		const This = this;
