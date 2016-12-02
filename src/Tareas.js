@@ -194,9 +194,11 @@ export class TareaDispositivos extends Tareas {
 		this.state = { edit: false };
 	}
 	onRemove( dispositivo, e ) {
-		var i = this.tarea.dispositivos.indexOf( dispositivo );
-		this.tarea.dispositivos.splice(i, 1);
-		this.root.setState({edit: true});
+		if (confirm("Seguro que deseas quitar " + dispositivo.descripcion + "?")) {
+			var i = this.tarea.dispositivos.indexOf( dispositivo );
+			this.tarea.dispositivos.splice(i, 1);
+			this.root.setState({edit: true});
+		}
 	}
 	generateRow( item ) {
 		var descripcion = ( item.salidadescripcion )
