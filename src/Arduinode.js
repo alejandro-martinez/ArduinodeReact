@@ -95,7 +95,7 @@ export class Tarea extends DB {
 		}
 		else {
 			var horafin = "12:00", 
-				fechafin = "14:00";
+				fechafin = Utils.getDate();
 		}
 
 		return { 
@@ -104,8 +104,8 @@ export class Tarea extends DB {
 	        "fechainicio": fechafin,
 	        "fechafin": fechafin,
 	        "horainicio": horafin,
-	        "horafin": horafin,
-	        "duracion": "01:00"
+	        "horafin": null,
+	        "duracion": null
 		};
 	}
 	update(db, callback) {
@@ -114,34 +114,51 @@ export class Tarea extends DB {
 			super.update(db);
 		}
 	}
-	//Chequea validez de subtareas
+	// Chequeo de superposicion de fechas de las subtareas
 	static isValid( db ) {
 		var valid = true;
 
 		db.forEach( ( tarea ) => {
-			if (tarea.subtareas.length) { 
-				tarea.subtareas.reduce((prev, current, i, _this) => {
-					if (prev && valid) {
-						if ( current.fechainicio <= prev.fechainicio 
-							&& prev.fechafin <= current.fechafin ) {
-							valid = false;
-							alert("Error de fechas")
+			if (tarea.subtareas.length > 1) { 
+				var overlap = (id, fechainicio, fechafin) => {
+					valid = true;
+					tarea.subtareas.every((s, index) => {
+						if ( s.id != id ) {
+							var sub_inicio = Utils.parseDate(s.fechainicio).getTime();
+							var sub_fin = Utils.parseDate(s.fechafin).getTime();
+
+							if ( fechafin == sub_fin && fechainicio == sub_inicio) {
+								valid = false;
+							}
+
+							if ( fechafin > sub_inicio && fechainicio < sub_inicio) {
+								valid = false;
+							}
+
+							if (fechainicio < sub_fin && fechafin > sub_inicio ) {
+								valid = false;
+							}
+
+							if (fechainicio < sub_inicio &&	fechafin > sub_fin) {
+								valid = false;
+							}
 						}
-						if ( current.fechainicio > prev.fechainicio 
-						 && current.fechafin < prev.fechafin ) {
-							valid = false;
-							alert("Error de fechas")
-						}
-						
-						if ( current.fechainicio < prev.fechainicio 
-						 && current.fechafin > prev.fechainicio) {
-							valid = false;
-							alert("Error de fechas")
-						}
-					}
-				});
+					});
+					return valid;
+				}
+				
+				for (var t in tarea.subtareas) {
+					var s = tarea.subtareas[t];
+					var sinicio = Utils.parseDate(s.fechainicio).getTime();
+					var sfin = Utils.parseDate(s.fechafin).getTime();	
+					valid = overlap(s.id, sinicio, sfin );
+				};
 			}
 		});
+
+		if (!valid) {
+			alert( "Error: Las fechas de las subtareas se superponen");
+		}
 		return valid;
 		
 	}

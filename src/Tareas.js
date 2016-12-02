@@ -4,7 +4,7 @@ import { Router,Link, Route, hashHistory } from 'react-router';
 import * as HTML from './HTML';
 import Socket from './Socket';
 import Utils from './Utils';
-import { Tarea } from './Arduinode';
+import { Tarea, Validator } from './Arduinode';
 import { SelectDispositivos } from './Dispositivos';
 
 export class Tareas extends Component {
@@ -102,26 +102,30 @@ export class Subtareas extends Tareas {
 		document.removeEventListener("onAddNew", this.onAddNew);
 	}
 	generateRow( item ) {
-		console.log("thstarea",this.tarea)
+		
 		var diasSemana = Utils.getDiasSemana();
 		var meses = Utils.getMeses();
 		return ( 
+			<form>
 			<HTML.Table class="subtareas" key={ item.id }>
 				<tr className="col2">
 					<td>Inicio: <input type="date" 
 						   onChange={ this.onChange.bind(this, item) } 
 						   name="fechainicio" 
+						   required
 						   value={ item.fechainicio } />
 					</td>
 					<td>Fin: <input type="date"
 						   name="fechafin" 
+						   required
 						   onChange={ this.onChange.bind(this, item) } 
 						   value={ item.fechafin } /></td>
 				</tr>
 				<tr className="col3 titulos">
 					<td>Inicio
 						<input type="time"
-						   name="horainicio" 
+						   name="horainicio"
+						   required
 						   onChange={ this.onChange.bind(this, item) } 
 						   value={ item.horainicio } />
 					</td>
@@ -134,32 +138,44 @@ export class Subtareas extends Tareas {
 					</td>
 					<td className={"show"+ (this.getCurrentTarea().accion === 0)}>Fin
 						<input type="time"
-						   name="horafin" 
+						   name="horafin"
 						   onChange={ this.onChange.bind(this, item) } 
 						   readOnly
 						   value={ item.horafin } />
 					</td>
 				</tr>
 			</HTML.Table>
+			</form>
 		);
 	}
 	onChange ( item, e ) {
-		console.log(item.horainicio)
 		item[e.target.name] = e.target.value;
 		if (this.getCurrentTarea().accion === 0) {
+			console.log( Utils.sumarHoras( item.horainicio, item.duracion))
 			item.horafin = Utils.sumarHoras( item.horainicio, item.duracion);
 		}
-		this.props.route.root.setState({edit: true});
+		
+		this.props.route.root.setState({ edit: true });
 	}
 	render() {
 
-		if ( this.tarea ) {
-			var subtareas = this.tarea[0].subtareas.map( this.generateRow, this );
-			return ( <div> { subtareas } </div> );
-		}
-		else {
-			return null;
-		}
+		if (!this.tarea ) return null;
+
+		// Ordena subtareas por fecha de inicio
+		this.tarea[0].subtareas.sort(function(a, b){ 
+			if (b) {
+				var f1 = a.fechainicio;
+				var f2 = b.fechainicio;
+				
+				return parseInt(f1.slice(5,7) + f1.slice(8,10) ) - 
+					   parseInt(f2.slice(5,7) + f2.slice(8,10) );
+
+			}
+		});
+
+		var subtareas = this.tarea[0].subtareas.map( this.generateRow, this );
+
+		return ( <div> { subtareas } </div> );		
 	}
 }
 

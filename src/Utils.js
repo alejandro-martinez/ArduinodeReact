@@ -56,20 +56,22 @@ class Utils {
 		}
 	}
 	static getDate() {
-		return new Date().toString().slice(16,21);
+		var fecha = new Date().toISOString().slice(0,10);
+		return fecha;
 	}
-	static parseDate( dia, mes ) {
+	static parseDate( fecha ) {
 		var d = new Date();
-		return new Date(d.getFullYear(), dia, mes).toISOString().slice(0,10);
+		var mes = parseInt(fecha.slice(5,7)) - 1; 
+		return new Date(d.getFullYear(), mes, fecha.slice(8,10));
 	}
 	static getDiasSemana() {
 		return ['Domingo','Lunes', 'Martes', 'Miercoles',
-					 'Jueves','Viernes','Sabado'];		
+				'Jueves','Viernes','Sabado'];		
 	}
 	static getMeses() {
 		return ['Enero', 'Febrero', 'Marzo', 'Abril',
-					'Mayo', 'Junio', 'Julio','Agosto',
-					'Septiembre','Octubre', 'Noviembre', 'Diciembre'];
+				'Mayo', 'Junio', 'Julio','Agosto',
+				'Septiembre','Octubre', 'Noviembre', 'Diciembre'];
 	}
 }
 
