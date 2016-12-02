@@ -84,7 +84,7 @@ Dispositivo.prototype = {
 						});
 					}
 					else {
-						log(salida.descripcion + " ya está en: " + estadoDeseado.trim());
+						log(salida.descripcion + " ya tiene el estado: " + estadoDeseado.trim());
 						callback();
 					}
 				}
