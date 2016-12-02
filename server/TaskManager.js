@@ -65,8 +65,10 @@ class Subtarea extends Tarea {
 		return DateConvert.horaActualValida( this.raw_horainicio, this.raw_duracion);
 	}
 	isValid() {
-		//Si la tarea deberia estar ejecutandose, retorna el tiempo restante
-		if ( this.tarea.activa && ( this.isFechaValida() && this.isHorarioValido() )) {
+		if (this.tarea.accion == 1) return true;
+
+		//Si la tarea deberia estar ejecutandose y es de Encendido
+		if ( this.tarea.activa && this.isFechaValida() ) {
 			if ( this.getTiempoRestante() > 0 ) return this.getTiempoRestante();
 		}
 		return false;
@@ -169,7 +171,6 @@ const Programador = class {
 
 			this.tareas.push( tarea );
 			if ( reloadJobs ) {
-				log("-- Cargando tareas al Scheduler");
 				tarea.subtareas.map( this.createJob );
 			}
 		}
