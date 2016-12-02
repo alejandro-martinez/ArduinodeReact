@@ -43,8 +43,11 @@ export class Tareas extends Component {
 		this.props.route.root.setState({ edit: true, tareas: tareas });
 	}
 	onRemove( tarea, e ) {
-		var i = this.props.route.root.state.tareas.indexOf( tarea );
-		this.setState({ tareas: this.props.route.root.state.tareas.splice(i , 1), edit: true});
+		if (confirm("Seguro que deseas eliminar la tarea?")) {
+			var i = this.props.route.root.state.tareas.indexOf( tarea );
+			this.setState({ tareas: this.props.route.root.state.tareas.splice(i , 1)});
+			this.props.route.root.setState({ edit: true});
+		}		
 	}
 	componentDidMount() {
 		document.addEventListener("onAddNew", this.onAddNew);
@@ -58,7 +61,8 @@ export class Tareas extends Component {
 				<HTML.EditRow  root={ this.props.route.root }
 							   inputKey='descripcion'
 							   model={ item } />
-				<td>								  
+				<tr className="icons">
+					<td>								  
 					<ul className="listIcons tareasIcons">
 						<li><Link className={'iconLAMP' + item.accion} onClick={ this.onSetAccion.bind(this, item) }></Link></li>
 						<li><Link className={'iconACTIVA' + item.activa } onClick={ this.onSetActiva.bind(this, item) }></Link></li>
@@ -66,7 +70,8 @@ export class Tareas extends Component {
 						<li><Link to={'Tareas/' + item.id + '/dispositivos'}>&#9854;</Link></li>
 						<li><Link className="iconDELETE" onClick={ this.onRemove.bind(this,item) }></Link></li>
 					</ul>
-				</td>
+					</td>
+				</tr>
 			</HTML.EditContainer>
 		);
 	}
@@ -254,7 +259,7 @@ export class TareaDispositivos extends Tareas {
 						</div>
 					</div>
 					
-					<HTML.Table> { this.dispositivos } </HTML.Table>
+					<HTML.Table class="tareaDispositivos"> { this.dispositivos } </HTML.Table>
 				</div>
 			);
 		}

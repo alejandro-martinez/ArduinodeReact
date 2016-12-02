@@ -56,6 +56,9 @@ table td {
     display:inline-block;
     text-align: left;
 }
+table tr td h4 {
+    margin: 12px;
+}
 td.editRowtrue a {
     float:right;
     color:green;
@@ -64,9 +67,6 @@ td.editRowtrue a {
 }
 td.editRowfalse a {
     display: none;
-}
-table td:last-child {
-    float: right;
 }
 
 label {
@@ -107,14 +107,12 @@ table {
 }
 table tr {
     display: inline-block;
-    width: 100%;
     border: 1px solid #8EA69E;
     margin-bottom: -1px;
     padding: 10px;
 }
 table td:last-child {
     display:inline-block;
-    margin-right:15px;
 }
 
 td.middle {
@@ -124,12 +122,16 @@ td.middle + td{
     text-align:right;
 }
 .container {
-    padding:15px 10px 10px 10px    
+    padding:15px 7px;
 }
 
 /* ICONOS */
 .container > div ul {
     right:60px;
+}
+
+.container > div ul:first-child {
+    top:7px;
 }
 header{
   position: fixed;
@@ -143,7 +145,7 @@ header{
 
 .headerIcons li {
     float:left;
-    width:40px;
+    width:70px;
 }
 .headerIcons li:last-child {
     width:30px;
@@ -176,9 +178,6 @@ header h1 {
     top:0;
     left:0;
 }
-.container > div ul:first-child {
-    top:7px;
-}
 a[class*="icon"], li[class*="icon"] a {
     color:#fff;
     font-size:1.3em; 
@@ -186,9 +185,11 @@ a[class*="icon"], li[class*="icon"] a {
 .listIcons{
     display:inline-block;
     z-index:2;
+    padding: 20px 21px 16px 21px;
+    width: 100%;
 }
 .listIcons li{
-    margin-left: 14px;
+    width: 20%;
     float:left;    
 }
 .iconDOWN:before { content: "\25BC" }
@@ -197,9 +198,12 @@ a[class*="icon"], li[class*="icon"] a {
 .iconLAMP0:before { content:"\2600" }
 .iconLAMP1 {
     margin-right:8px;
-    font-size:1.6em !important;
+    font-size:2em !important;
 }
-.iconLAMP0 { color:#c1c100 !important; }
+.iconLAMP0 { 
+    color:#c1c100 !important; 
+    font-size: 1.3em !important;
+}
 .iconLAMP1:before { content:"\25CF"; }
 .iconLAMP1:before{ color:grey !important; }
 .iconACTIVA0 { color:grey !important; }
@@ -215,7 +219,7 @@ a[class*="icon"], li[class*="icon"] a {
 .iconOK:after { content: "\2713" }
 
 li.iconReloj a span {
-    font-size: .7em!important;
+    font-size: .6em!important;
 }
 li.iconReloj a:before { content: "\23f1" }
 .iconDELETE { color:red !important; }
@@ -323,13 +327,16 @@ table.dispositivos ul li a {
     color:#03ae74;
 }
 table.dispositivos tr td div {
-    width:80%;
+    width:60%;
 }
 
 table.dispositivos td {
     padding:6px 5px 0px 5px;
 }
 
+table.dispositivos td:last-child {
+    float: right;
+}
 table tr td div{
     width:50%;
     position:relative;
@@ -345,6 +352,7 @@ td.editRowtrue a {
 table.dispositivos tr {
     position: relative;
     height: 67px;
+    width: 100%;
     padding: 1px;
 }
 table.dispositivos tr .iconEdit{
@@ -358,6 +366,9 @@ table.dispositivos tr td {
     height:22%;
     font-size:.8em;
 }
+table.dispositivos tr td h4 {
+    margin:0;
+}
 table.dispositivos tr td div input{
     float:left;
     width:100%;
@@ -368,11 +379,19 @@ table.dispositivos tr td:first-child {
 table.dispositivos tr td:last-child {
     margin: -57px 0;
 }
+
+table.dispositivos .listIcons li{
+    margin-left:30px;
+}
+table.dispositivos .listIcons {
+    padding-top: 5px;
+}
 .iconEdit {
     font-size:2em !important;
 }
 /*SALIDAS*/
 table.salidas tr {
+    width: 100%;
     height:42px;
     padding:0 0 2px 5px;
 }
@@ -387,7 +406,7 @@ table.salidas td{
 }
 
 table.salidas td h4 {
-    padding: 15px 0 0 0;
+    padding: 0;
     float:left;
 }
 table.salidas > tr td div{
@@ -467,8 +486,15 @@ table.tareas tr td:last-child a {
     font-size:2.1em;
     color:#03ae74;
 }
+table.tareas tr {
+    padding: 0;
+    width: 100%;
+}
 table.tareas tr div {
-    width:96%;
+    width:100%;
+}
+table tr.icons td {
+    width:100%;
 }
 table td ul li.iconReloj a {
     position:relative;
@@ -480,7 +506,6 @@ table td ul li.iconReloj a {
     width:32%;
 }
 /*SUBTAREAS*/
-
 table.subtareas .col3 td input {
     margin:0;
     display:block;
@@ -490,4 +515,19 @@ table.subtareas .col3 td.middle input{
 }
 table.subtareas .col3 td:last-child {
     width:70px;
+}
+table.subtareas tr.col2 td{
+    margin:0 5px 22px 0;
+}
+/*Tarea dispositivos*/
+table.tareaDispositivos td:last-child, table tr {
+    display: block;
+}
+table.dispositivos .listIcons li{
+    margin-left:30px;
+}
+table.tareaDispositivos tr td:last-child{
+    width:40px;
+    font-size:1.3em;
+    float:right;
 }
