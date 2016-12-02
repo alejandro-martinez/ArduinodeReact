@@ -145,6 +145,9 @@ header{
     float:left;
     width:40px;
 }
+.headerIcons li:last-child {
+    width:30px;
+}
 .headerIcons li a{
   margin:0;
   display:inline-block;

@@ -137,10 +137,12 @@ export class Dispositivos extends Component {
 		this.root.setState({ dispositivos: dispositivos, edit: true });
 	}
 	onRemove(item, e) {
-		var dispositivos = this.root.state.dispositivos;
-		var i = dispositivos.indexOf( item );
-		dispositivos.splice(i, 1);
-		this.root.setState({ edit: true, dispositivos: dispositivos });
+		if (confirm("Seguro que desea quitar el dispositivo?")) {
+			var dispositivos = this.root.state.dispositivos;
+			var i = dispositivos.indexOf( item );
+			dispositivos.splice(i, 1);
+			this.root.setState({ edit: true, dispositivos: dispositivos });
+		}
 	}
 	render() {
 		var rows = this.root.state.dispositivos.map( this.generateRow, this );
