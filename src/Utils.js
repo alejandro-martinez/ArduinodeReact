@@ -6,6 +6,19 @@ class Utils {
 	static randomID() {
 		return Math.random().toString(36).slice(18);
 	}
+	static sumarHoras(time1, time2) {
+		var date = new Date();
+		date.setHours( time1.slice(0,2) );
+		date.setMinutes( time1.slice(-2) );
+
+		var addHoras = date.getHours() + parseInt(time2.slice(0,2));
+		var addMinutes = date.getMinutes() + parseInt(time2.slice(-2));
+
+		date.setHours( addHoras );
+		date.setMinutes( addMinutes );
+		
+		return date.toString().slice(16,21);
+	}	
 	static min_a_horario( min ) {
 		if (min && min.length > 1) {
 			return min;
@@ -43,7 +56,7 @@ class Utils {
 		}
 	}
 	static getDate() {
-		return new Date().toISOString().slice(0,10);
+		return new Date().toString().slice(16,21);
 	}
 	static parseDate( dia, mes ) {
 		var d = new Date();

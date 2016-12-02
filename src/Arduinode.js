@@ -31,7 +31,6 @@ export class DB {
 	    Socket.emit('get' + this.filename + 'DB');
 	}
 	update( db ) {
-		console.log("update DB")
 		Socket.emit('update'+ this.filename +'DB', db );
 	}
 }
@@ -48,7 +47,6 @@ export class Validator {
 export class Dispositivo extends DB {
 	constructor() {
 		super('Dispositivos');
-		this.errors = null;
 	}
 	static newModel() {
 		var model = { 
@@ -75,7 +73,6 @@ export class Dispositivo extends DB {
 export class Tarea extends DB {
 	constructor() {
 		super('Tareas');
-		this.errors = null;
 	}
 	static newModel() {
 		return {
@@ -87,15 +84,28 @@ export class Tarea extends DB {
 		    "activa": 1	    
 		}
 	}
-	static newSubtareaModel() {
+	static newSubtareaModel( subtareas ) {
+		
+		if ( subtareas.length ) {
+			var subtarea = subtareas.reduce(function(prev, current) {
+			    return (prev.fechafin > current.fechafin) ? prev : current
+			});
+			var horafin = subtarea.horafin, 
+				fechafin = subtarea.fechafin;
+		}
+		else {
+			var horafin = "12:00", 
+				fechafin = "14:00";
+		}
+
 		return { 
 			"id": Utils.randomID(),
 	        "diasejecucion": "1,2,3,4,5",
-	        "fechainicio": Utils.getDate(),
-	        "fechafin": Utils.getDate(),
-	        "duracion": "01:00",
-	        "horainicio": "00:00",
-	        "horafin": "00:00"
+	        "fechainicio": fechafin,
+	        "fechafin": fechafin,
+	        "horainicio": horafin,
+	        "horafin": horafin,
+	        "duracion": "01:00"
 		};
 	}
 	update(db, callback) {
@@ -109,37 +119,24 @@ export class Tarea extends DB {
 		var valid = true;
 
 		db.forEach( ( tarea ) => {
-			console.log("Tarea",tarea)
 			if (tarea.subtareas.length) { 
 				tarea.subtareas.reduce((prev, current, i, _this) => {
 					if (prev && valid) {
-						/*   3  6
-						*
-						*  1      7 	-> invalida
-						**/
 						if ( current.fechainicio <= prev.fechainicio 
-							&& current.fechafin <= current.fechafin ) {
+							&& prev.fechafin <= current.fechafin ) {
 							valid = false;
-							this.errors = "error if1";
+							alert("Error de fechas")
 						}
-						/* 3     6
-						*
-						*     4    7 	-> invalida
-						*/
 						if ( current.fechainicio > prev.fechainicio 
 						 && current.fechafin < prev.fechafin ) {
 							valid = false;
-							this.errors = "error if2";
+							alert("Error de fechas")
 						}
 						
-						/*    3     6
-						*
-						*  1     5 		-> invalida
-						*/
 						if ( current.fechainicio < prev.fechainicio 
 						 && current.fechafin > prev.fechainicio) {
 							valid = false;
-							this.errors = "error if3";
+							alert("Error de fechas")
 						}
 					}
 				});
@@ -190,7 +187,7 @@ class Arduinode extends Component {
 		var dataModel = this.state[ db.concat("s").toLowerCase() ];
 		
 		if ( this[db].update( dataModel, ()=> {
-			this.setState({ edit: false, dbErrors: this[db].errors });
+			this.setState({ edit: false});
 		}));
 	}
 	render() {

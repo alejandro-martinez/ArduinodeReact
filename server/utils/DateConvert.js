@@ -2,7 +2,7 @@
 module.exports = function()
 {
 	var DateConvert =
-	{
+	{		
 		getTime: function() {
 			return new Date().toString().slice(16,21);
 		},

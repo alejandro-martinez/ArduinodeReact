@@ -82,30 +82,31 @@ export class Subtareas extends Tareas {
 		this.onAddNew = this.onAddNew.bind( this );
 		this.onChange = this.onChange.bind(this);
 	}
-	onAddNew() {
-		this.newModel = Tarea.newSubtareaModel();
+	getCurrentTarea() {
 		this.tarea = this.props.route.root.state.tareas.filter((t) => {
 			return this.props.routeParams.id == t.id;
 		});
-		this.tarea[0].subtareas.push( this.newModel );
+		return this.tarea[0];
+	}
+	onAddNew() {
+		this.newModel = Tarea.newSubtareaModel( this.getCurrentTarea().subtareas);
+		this.getCurrentTarea().subtareas.push( this.newModel );
 		this.props.route.root.setState({edit: true});
 	}
 	componentDidMount() {
 		document.addEventListener("onAddNew", this.onAddNew);
-
-		this.tarea = this.props.route.root.state.tareas.filter((t) => {
-			return this.props.routeParams.id == t.id;
-		});
+		this.getCurrentTarea();
 		this.props.route.root.setState({edit: false, page: "Horarios"});
 	}
 	componentWillUnmount() {
 		document.removeEventListener("onAddNew", this.onAddNew);
 	}
 	generateRow( item ) {
+		console.log("thstarea",this.tarea)
 		var diasSemana = Utils.getDiasSemana();
 		var meses = Utils.getMeses();
 		return ( 
-			<HTML.Table class="subtareas">
+			<HTML.Table class="subtareas" key={ item.id }>
 				<tr className="col2">
 					<td>Inicio: <input type="date" 
 						   onChange={ this.onChange.bind(this, item) } 
@@ -124,17 +125,18 @@ export class Subtareas extends Tareas {
 						   onChange={ this.onChange.bind(this, item) } 
 						   value={ item.horainicio } />
 					</td>
-					<td className="middle">
+					<td className={"middle show"+ (this.getCurrentTarea().accion === 0)}>
 						Duración
-						<input type="time" 
-						   name="duracion" 
+						<input type="time"
+						   name="duracion"
 						   onChange={ this.onChange.bind(this, item) } 
 						   value={ item.duracion } />
 					</td>
-					<td>Fin
+					<td className={"show"+ (this.getCurrentTarea().accion === 0)}>Fin
 						<input type="time"
 						   name="horafin" 
 						   onChange={ this.onChange.bind(this, item) } 
+						   readOnly
 						   value={ item.horafin } />
 					</td>
 				</tr>
@@ -142,7 +144,11 @@ export class Subtareas extends Tareas {
 		);
 	}
 	onChange ( item, e ) {
+		console.log(item.horainicio)
 		item[e.target.name] = e.target.value;
+		if (this.getCurrentTarea().accion === 0) {
+			item.horafin = Utils.sumarHoras( item.horainicio, item.duracion);
+		}
 		this.props.route.root.setState({edit: true});
 	}
 	render() {
