@@ -262,10 +262,17 @@ a[class*="icon"], li[class*="icon"] a {
 li.iconReloj a span {
     font-size: .6em!important;
 }
-li .iconAdmin:before {
+li .iconLogin:before {
     content: "\2699";
 }
-li .iconAdmin {
+li .iconLogin {
+    font-size:1.8em;
+    padding-top:2px;
+}
+li .iconLogout:before {
+    content: "\2B05";
+}
+li .iconLogout {
     font-size:1.8em;
     padding-top:2px;
 }

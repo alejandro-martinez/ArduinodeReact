@@ -8,7 +8,7 @@ import Utils from './Utils';
 export class Header extends Component {
 	constructor( props ) {
 		super( props );
-		this.onLogin = this.onLogin.bind( this );
+		this.onAdminModeChange = this.onAdminModeChange.bind( this );
 
 		document.addEventListener("loading",( e ) => {
 			this.setState({ loading: e.detail }) 
@@ -16,13 +16,16 @@ export class Header extends Component {
 		this.state = { loading: false };
 	}
 	refresh() { Socket.emit('getDispositivosDB'); }
-	onLogin() {
-		var clave = prompt("Ingrese clave", "");
-
-		if (clave == '9') this.props.root.setState({ adminMode: true });
+	onAdminModeChange() {
+		var clave = (this.props.root.state.adminMode) 
+					? false 
+					: (prompt("Ingrese clave", ""));
+		
+		this.props.root.setState({ adminMode: (clave && clave == 9)});
 	}
 	render() {
 		var isAdmin = this.props.root.state.adminMode;
+		var adminClass = (isAdmin) ? 'Logout' : 'Login';
 		return (
 			<header>
 				
@@ -36,9 +39,7 @@ export class Header extends Component {
 				<h1 onClick={ this.refresh }>{ this.props.root.state.page }</h1>
 				
 				<ul className="headerIcons">
-					<li className={ 'show' + !this.props.root.state.adminMode }>
-						<a onClick={this.onLogin} className='iconAdmin'></a>
-					</li>
+					<li> <a onClick={this.onAdminModeChange} className={'icon' + adminClass}></a> </li>
 					<li> <a href='/#/' className='menu iconHeader right'></a> </li>
 				</ul>
 
