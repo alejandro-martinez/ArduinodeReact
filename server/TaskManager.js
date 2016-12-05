@@ -96,7 +96,7 @@ const Programador = class {
 	execute ( subtarea, accion, callback ) {
 		var executed = 0;
 		Arrays.asyncLoop( subtarea.tarea.dispositivos, ( d, report ) => {
-				
+			if (d) {
 				d.temporizada = (accion) ? 0 : subtarea.temporizada;
 				d.estado 	  = (accion) ? accion : subtarea.tarea.accion;
 
@@ -104,6 +104,7 @@ const Programador = class {
 					if (typeof response != 'undefined') executed++;
 					report();
 				});
+			}
 		},() => { 
 			log("Ejecución de tarea: " +
 				 subtarea.tarea.descripcion + 

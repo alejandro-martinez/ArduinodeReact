@@ -176,9 +176,6 @@ header a.back {
     left:7px;
     top:10px;
 }
-header li.iconReloj {
-    width:95px;
-}
 header li.iconReloj a {
      font-size: 1.8em !important;
 }
@@ -212,7 +209,7 @@ header, .footer {
     padding-top:10px;
 }
 .footer .listIcons .iconReloj {
-    width:70px;
+    width:95px;
 }
 header h1 {
     position:absolute;
@@ -259,8 +256,12 @@ a[class*="icon"], li[class*="icon"] a {
 }
 .iconOK:after { content: "\2713" }
 
+li.iconReloj a  {
+    font-size: 1.8em!important;
+}
 li.iconReloj a span {
-    font-size: .6em!important;
+    margin-left:4px;
+    font-size: .7em!important;
 }
 li .iconLogin:before {
     content: "\2699";
