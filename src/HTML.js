@@ -111,7 +111,7 @@ export class EditRow extends Component {
 			if (this.state.edit) {
 				this.setState({ edit: false });
 			}
-		},1500);
+		},3000);
 	}
 	onChange(e) {
 		var model = this.state.model;
