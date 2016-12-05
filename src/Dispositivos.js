@@ -101,23 +101,26 @@ export class Dispositivos extends Component {
 	}
 	generateRow( item ) {
 		return ( 
-				<HTML.EditContainer edit={this.state.edit}>
-					<HTML.EditRow root={ this.root }
-								   onUpdate={ this.onUpdate }
-								   inputKey='descripcion'
-								   model={ item } />
-					<td>{ item.version }</td>
-					<HTML.EditRow root={ this.root }
-								   onUpdate={ this.onUpdate }
-								   inputKey='ip'
-								   model={ item } />
-					<td>
-						<ul className="listIcons">
-							<li><Link to={'Dispositivos/salidas/' + item.ip}>&#9854;</Link></li>
-							<li><a onClick={ this.onRemove.bind( this, item )} className="iconDELETE"></a></li>
-						</ul>
-					</td>
-				</HTML.EditContainer>
+			<HTML.EditContainer edit={this.state.edit}>
+				<HTML.EditRow root={ this.root }
+							   onUpdate={ this.onUpdate }
+							   inputKey='descripcion'
+							   model={ item } />
+				<td>{ item.version }</td>
+				<HTML.EditRow root={ this.root }
+							   onUpdate={ this.onUpdate }
+							   inputKey='ip'
+							   model={ item } />
+				<td>
+					<ul className="listIcons">
+						<li><Link to={'Dispositivos/salidas/' + item.ip}>&#9854;</Link></li>
+						<li className={'show' + this.root.state.adminMode}>
+							<a onClick={ this.onRemove.bind( this, item )} 
+							   className={"iconDELETE show" + this.root.state.adminMode}></a>
+						</li>
+					</ul>
+				</td>
+			</HTML.EditContainer>
 		);
 	}
 	onUpdate( model ) {

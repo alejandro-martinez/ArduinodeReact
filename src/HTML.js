@@ -8,18 +8,21 @@ import Utils from './Utils';
 export class Header extends Component {
 	constructor( props ) {
 		super( props );
-		this.onUpdate = this.onUpdate.bind( this );
-		this.onAddNew = this.onAddNew.bind( this );
+		this.onLogin = this.onLogin.bind( this );
+
 		document.addEventListener("loading",( e ) => {
 			this.setState({ loading: e.detail }) 
 		});
 		this.state = { loading: false };
 	}
 	refresh() { Socket.emit('getDispositivosDB'); }
-	onAddNew() { Utils.fireEvent("onAddNew"); }
-	onTimerClick() { Utils.fireEvent("onTimerClick"); }
-	onUpdate() { this.props.root.updateDB(); }
+	onLogin() {
+		var clave = prompt("Ingrese clave", "");
+
+		if (clave == '9') this.props.root.setState({ adminMode: true });
+	}
 	render() {
+		var isAdmin = this.props.root.state.adminMode;
 		return (
 			<header>
 				
@@ -33,16 +36,8 @@ export class Header extends Component {
 				<h1 onClick={ this.refresh }>{ this.props.root.state.page }</h1>
 				
 				<ul className="headerIcons">
-					<li className={'iconReloj show' + this.props.root.state.showTimerIcon}>
-						<a onClick={ this.onTimerClick }>
-							<span>{ this.props.root.state.temporizacion }</span>
-						</a>
-					</li>
-					<li className={'show' + this.props.root.state.showAddIcon}>
-						<a onClick={ this.onAddNew } className='iconMAS'></a>
-					</li>
-					<li className={'show' + this.props.root.state.edit}>
-						<a onClick={ this.onUpdate } className={'iconOK'}></a>
+					<li className={ 'show' + !this.props.root.state.adminMode }>
+						<a onClick={this.onLogin} className='iconAdmin'></a>
 					</li>
 					<li> <a href='/#/' className='menu iconHeader right'></a> </li>
 				</ul>
@@ -111,6 +106,11 @@ export class EditRow extends Component {
 	onClick() {
 		this.root.setState({ edit: true });
 		this.setState({ edit: true });
+		setTimeout(()=>{
+			if (this.state.edit) {
+				this.setState({ edit: false });
+			}
+		},1500);
 	}
 	onChange(e) {
 		var model = this.state.model;
@@ -134,6 +134,9 @@ export class EditRow extends Component {
 		}
 		else {
 			itemEdit = <h4 onClick={ this.onClick }>{ this.state.model[this.props.inputKey] }</h4>;
+		}
+		if (!this.root.state.adminMode) {
+			itemEdit = <h4>{ this.state.model[this.props.inputKey] }</h4>;
 		}
 		return (
 			<td className={ 'editRow' + this.state.edit}>

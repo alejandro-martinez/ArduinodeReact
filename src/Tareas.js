@@ -242,7 +242,6 @@ export class TareaDispositivos extends Tareas {
 			this.setState({ edit: true });
 		}
 	}
-
 	render() {
 		if ( this.root.state.tareas.length ) {
 			var tarea = this.root.state.tareas.filter((t) => {

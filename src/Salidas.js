@@ -198,7 +198,7 @@ export class SalidasDispositivo extends Component {
 		this.disp = this.state.dispositivos.filter(( disp ) => {
 			return disp.ip == this.props.params.ip;
 		})[0];
-		this.root.setState({ page: "Salidas de " + this.disp.descripcion, showAddIcon: false});
+		this.root.setState({ page: this.disp.descripcion, showAddIcon: false});
 		this.setState({ salidas: this.disp.salidas });
 	}
 	render() {

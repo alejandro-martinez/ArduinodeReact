@@ -176,6 +176,38 @@ class Home extends Component {
 	render() { return ( <HTML.ListaLinks items={ menu } /> ); }
 };
 
+class Footer extends Component {
+	constructor(props) {
+		super(props);
+		['onAddNew','onTimerClick','onUpdate'].forEach((m)=>{
+			this[m] = this[m].bind( this );
+		});
+	}
+	onUpdate() { this.props.root.updateDB(); }
+	onAddNew() { Utils.fireEvent("onAddNew"); }
+	onTimerClick() { Utils.fireEvent("onTimerClick"); }
+	render() {
+		return (
+			<div className="footer">
+				<ul className="listIcons">
+					<li className={ 'show' + (this.props.root.state.showAddIcon && this.props.root.state.adminMode)}>
+						<a onClick={ this.onAddNew } className='iconMAS'></a>
+					</li>
+					<li className={'iconReloj show' + this.props.root.state.showTimerIcon}>
+						<a onClick={ this.onTimerClick }>
+							<span>{ this.props.root.state.temporizacion }</span>
+						</a>
+					</li>
+					<li className={'show' + (this.props.root.state.edit && this.props.root.state.adminMode)}>
+						<a onClick={ this.onUpdate } className='iconOK'></a>
+					</li>
+				</ul>
+			</div>
+		);
+	}
+	
+}
+
 class Arduinode extends Component {
 	constructor( props ) {
 		super( props );
@@ -187,6 +219,7 @@ class Arduinode extends Component {
 			showAddIcon: false,
 			showTimerIcon: false,
 			tareas: [], 
+			adminMode: false,
 			temporizacion: "00:00",
 			dispositivos: [] 
 		};
@@ -225,6 +258,7 @@ class Arduinode extends Component {
 						<Route root={This} path="Dispositivos/salidas/:ip" component={ SalidasDispositivo } />
 					</Router>
 				</div>
+				<Footer root={This}></Footer>
 	  		</div>
 		);
 	}
