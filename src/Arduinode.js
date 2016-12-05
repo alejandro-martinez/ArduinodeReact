@@ -239,6 +239,9 @@ class Arduinode extends Component {
 		Socket.listen('DBDispositivosUpdated', ( db ) => {
     		this.setState({ dispositivos: db });
     	});
+    	Socket.listen('claveApp', ( clave ) => {
+    		this.setState({ clave: clave });
+    	});
 	}
 	updateDB() {
 		var db = this.state.dbActual;

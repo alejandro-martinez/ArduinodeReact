@@ -19,7 +19,7 @@ var serverConf = {}, configPath = './config/config.json';
 // Busca o crea el archivo de config
 
 if ( !fs.existsSync( configPath )) {
-	var config = '{"ip":"localhost","port":9999, "tiempoEscaneoTareas":300000, "socketTimeout":500}';
+	var config = '{"ip":"localhost","port":9999,"clave":"9","tiempoEscaneoTareas":300000, "socketTimeout":500}';
 	fs.writeFileSync( configPath, config );
 }
 
@@ -39,6 +39,8 @@ http.listen( serverConf.port, serverConf.ip, () => {
 
 	// Conexión de un cliente
 	io.on('connection', ( sCliente ) => {
+
+		sCliente.emit('claveApp', serverConf.claveApp);
 
 		sCliente.emit('DBDispositivosUpdated', Arduinode.dispositivos.lista);		
 		
