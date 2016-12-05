@@ -101,7 +101,7 @@ export class Dispositivos extends Component {
 	}
 	generateRow( item ) {
 		return ( 
-			<HTML.EditContainer edit={this.state.edit}>
+			<HTML.EditContainer disabled={item.offline} edit={this.state.edit}>
 				<HTML.EditRow root={ this.root }
 							   onUpdate={ this.onUpdate }
 							   inputKey='descripcion'

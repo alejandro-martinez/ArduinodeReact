@@ -89,7 +89,11 @@ export class Popup extends Component {
 
 
 export function EditContainer(props) {
-	return ( <tr className={ 'editRow' +  props.edit }> { props.children } </tr> );
+	return ( 
+		<tr className={ 'disabled' + props.disabled + ' editRow' +  props.edit }> 
+			{ props.children } 
+		</tr> 
+	);
 }
 
 export class EditRow extends Component {

@@ -134,6 +134,9 @@ table.adminfalse tr td:last-child {
 table.adminfalse tr {
     height:45px;
 }
+.disabledtrue {
+    color:grey;
+}
 /* ICONOS */
 .container > div ul {
     right:60px;
