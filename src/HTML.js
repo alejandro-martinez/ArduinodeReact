@@ -15,7 +15,12 @@ export class Header extends Component {
 					? false 
 					: (prompt("Ingrese clave", ""));
 		
-		this.props.root.setState({ adminMode: (clave && clave == this.props.root.state.clave)});
+		if (this.props.root.state.clave.length) {
+			if (clave && clave == this.props.root.state.clave) {
+				this.props.root.setState({ adminMode: true });	
+			}
+		}
+		
 	}
 	render() {
 		var isAdmin = this.props.root.state.adminMode;
