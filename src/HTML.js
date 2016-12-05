@@ -96,6 +96,7 @@ export class EditRow extends Component {
 	constructor( props ) {
 		super( props );
 		this.typingTimer 		= null;
+		this.noChangesTimer		= null;
 		this.doneTypingInterval = 2000,
 		this.root 				= props.root;
 		this.state 				= { model: props.model, edit: false };
@@ -106,7 +107,7 @@ export class EditRow extends Component {
 	onClick() {
 		this.root.setState({ edit: true });
 		this.setState({ edit: true });
-		setTimeout(()=>{
+		this.noChangesTimer = setTimeout(()=>{
 			if (this.state.edit) {
 				this.setState({ edit: false });
 			}
@@ -115,6 +116,7 @@ export class EditRow extends Component {
 	onChange(e) {
 		var model = this.state.model;
 		clearTimeout( this.typingTimer );
+		clearTimeout( this.noChangesTimer );		
 
 		var validator = 'isValid' + this.props.inputKey.toUpperCase();
 
