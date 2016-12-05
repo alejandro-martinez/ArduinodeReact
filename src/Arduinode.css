@@ -57,7 +57,7 @@ table td {
     text-align: left;
 }
 table tr td h4 {
-    margin: 12px;
+    margin: 12px 8px;
 }
 td.editRowtrue a {
     float:right;
@@ -124,7 +124,16 @@ td.middle + td{
 .container {
     padding:15px 7px;
 }
-
+table.adminfalse tr td {
+    display:none;
+}
+table.adminfalse tr td:first-child, 
+table.adminfalse tr td:last-child {
+    display:block;
+}
+table.adminfalse tr {
+    height:45px;
+}
 /* ICONOS */
 .container > div ul {
     right:60px;
@@ -150,6 +159,9 @@ header{
 }
 .headerIcons li:last-child {
     width:30px;
+}
+.footer .listIcons li:last-child {
+    margin-top:-5px;
 }
 .headerIcons li a{
   margin:0;
@@ -350,6 +362,20 @@ button,
     margin-bottom:30px;
 }
 /*DISPOSITIVOS*/
+table.dispositivos.adminfalse tr {
+    height:45px;
+}
+table.dispositivos.adminfalse tr td{
+    display:none;
+}
+table.dispositivos.adminfalse tr td:first-child,
+table.dispositivos.adminfalse tr td:last-child
+{
+    display:block;
+}
+table.adminfalse.dispositivos tr td:last-child {
+    margin-top:-22px;
+}
 .popup.dispositivos {
     width: 300px;
     height: 254px;
@@ -384,7 +410,7 @@ td.editRowtrue a {
 
 table.dispositivos tr {
     position: relative;
-    height: 67px;
+    height: 84px;
     width: 100%;
     padding: 1px;
 }
@@ -534,6 +560,26 @@ table td ul li.iconReloj a {
     color:#03ae74;
     left:0;
     top: -3px;
+}
+table.tareas.adminfalse .tareasIcons li {
+    display:none;
+}
+table.tareas.adminfalse .tareasIcons li.iconReloj,
+table.tareas.adminfalse .tareasIcons li.iconReloj + li {
+    display:block;
+}
+table.tareas.adminfalse tr {
+    position:relative;
+}
+table.tareas.adminfalse tr.icons {
+    position:absolute;
+    border:0;
+    width:100px;
+    right:0;
+    top:-12px;
+}
+table.tareas.adminfalse tr.icons ul li {
+    width:50px;
 }
 .icons .listIcons {
     text-align:center;

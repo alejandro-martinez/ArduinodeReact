@@ -108,9 +108,9 @@ export class Dispositivos extends Component {
 							   model={ item } />
 				<td>{ item.version }</td>
 				<HTML.EditRow root={ this.root }
-							   onUpdate={ this.onUpdate }
-							   inputKey='ip'
-							   model={ item } />
+							  onUpdate={ this.onUpdate }
+							  inputKey='ip'
+							  model={ item } />
 				<td>
 					<ul className="listIcons">
 						<li><Link to={'Dispositivos/salidas/' + item.ip}>&#9854;</Link></li>
@@ -150,6 +150,6 @@ export class Dispositivos extends Component {
 	render() {
 		var rows = this.root.state.dispositivos.map( this.generateRow, this );
 		
-		return (<HTML.Table class="dispositivos"> { rows } </HTML.Table>);
+		return (<HTML.Table class={"dispositivos admin" + this.root.state.adminMode}> { rows } </HTML.Table>);
 	}
 };
