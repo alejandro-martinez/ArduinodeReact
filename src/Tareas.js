@@ -111,7 +111,7 @@ export class Subtareas extends Tareas {
 		var diasSemana = Utils.getDiasSemana();
 		var meses = Utils.getMeses();
 		return ( 
-			<form>
+			<form onChange={this.validForm}>
 			<HTML.Table class="subtareas" key={ item.id }>
 				<tr className="col2">
 					<td>Inicio: <input type="date" 
@@ -138,6 +138,7 @@ export class Subtareas extends Tareas {
 						Duración
 						<input type="time"
 						   name="duracion"
+						   required={ this.getCurrentTarea().accion == 0}
 						   onChange={ this.onChange.bind(this, item) } 
 						   value={ item.duracion } />
 					</td>
@@ -153,13 +154,16 @@ export class Subtareas extends Tareas {
 			</form>
 		);
 	}
+	validForm( form ) {
+
+		return (form.target.value.length >= 5);
+	}
 	onChange ( item, e ) {
 		item[e.target.name] = e.target.value;
 		if (this.getCurrentTarea().accion === 0) {
 			console.log( Utils.sumarHoras( item.horainicio, item.duracion))
 			item.horafin = Utils.sumarHoras( item.horainicio, item.duracion);
 		}
-		
 		this.props.route.root.setState({ edit: true });
 	}
 	render() {
