@@ -4,6 +4,7 @@ import { Router,Link, Route, hashHistory } from 'react-router';
 import * as HTML from './HTML';
 import Socket from './Socket';
 import Utils from './Utils';
+import Loading from 'react-loading';
 import { Dispositivos } from './Dispositivos';
 import { SalidasDispositivo, SalidasActivas } from './Salidas';
 import { Tareas, TareaDispositivos, Subtareas } from './Tareas';
@@ -182,6 +183,10 @@ class Footer extends Component {
 		['onAddNew','onTimerClick','onUpdate'].forEach((m)=>{
 			this[m] = this[m].bind( this );
 		});
+		document.addEventListener("loading",( e ) => {
+			this.setState({ loading: e.detail }) 
+		});
+		this.state = { loading: false };
 	}
 	onUpdate() { this.props.root.updateDB(); }
 	onAddNew() { Utils.fireEvent("onAddNew"); }
@@ -202,6 +207,9 @@ class Footer extends Component {
 						<a onClick={ this.onUpdate } className='iconOK'></a>
 					</li>
 				</ul>
+				<div id="loading" className={ 'show' + this.state.loading }>
+					<Loading type='cylon' color='#e3e3e3' />
+				</div> 
 			</div>
 		);
 	}

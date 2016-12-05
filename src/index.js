@@ -6,5 +6,3 @@ import './Arduinode.css';
 import '../node_modules/react-toggle-switch/dist/css/switch.min.css'
 
 ReactDOM.render( <Arduinode />, document.getElementById('root') );
-
-window.addEventListener("load", function() { window. scrollTo(0, 0); });

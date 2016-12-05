@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import Loading from 'react-loading';
 import Socket from './Socket';
 import { Dispositivo, Validator } from './Arduinode';
 import Utils from './Utils';
@@ -9,11 +8,6 @@ export class Header extends Component {
 	constructor( props ) {
 		super( props );
 		this.onAdminModeChange = this.onAdminModeChange.bind( this );
-
-		document.addEventListener("loading",( e ) => {
-			this.setState({ loading: e.detail }) 
-		});
-		this.state = { loading: false };
 	}
 	refresh() { Socket.emit('getDispositivosDB'); }
 	onAdminModeChange() {
@@ -28,14 +22,6 @@ export class Header extends Component {
 		var adminClass = (isAdmin) ? 'Logout' : 'Login';
 		return (
 			<header>
-				
-				<div id="loading" className={ 'show' + this.state.loading }>
-					<Loading type='cylon' color='#e3e3e3' />
-				</div>
-				
-				<a onClick={() => window.history.back()} 
-					   className='back iconHeader left'></a>
-				
 				<h1 onClick={ this.refresh }>{ this.props.root.state.page }</h1>
 				
 				<ul className="headerIcons">
