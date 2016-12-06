@@ -64,7 +64,7 @@ table tr td h4 {
 }
 td.editRowtrue a {
     float:right;
-    color:green;
+    color: #C4EDDE;
     font-size:2em;
     margin-left:10px;
 }
@@ -96,6 +96,7 @@ body {
     padding: 46px 0 !important;
 	font-size:18px;
     width: 100%;
+    color:#384259;
     margin: 0 auto;
 }
 ul {
@@ -107,7 +108,7 @@ table {
 }
 table tr {
     display: inline-block;
-    border: 1px solid #8EA69E;
+    border: 1px solid #7AC7C4;
     margin-bottom: -1px;
     padding: 10px;
 }
@@ -250,13 +251,13 @@ li.iconReloj a:before { content: "\23f1" }
 }
 .controlPersianas a[class*=icon] {
     font-size:2.2em;
-    color:#03ae74 !important;
+    color:#384259 !important;
 }
 /* ICONOS */
 /* FORM */
 input:valid,
 input[type='text'] {
-  border: 1px solid green;
+  border: 1px solid #C4EDDE;
 }
 input[type=text] {
     font-size:1em;
@@ -267,15 +268,6 @@ input.validfalse {
   border: 1px solid red;
 }
 /* MENU APLICACION*/
-header {
-    background-color: #03ae74;
-    text-align: left;
-    position: fixed;
-    z-index: 5;
-    top: 0;
-    left: 0;
-    width: 100%;
-}
 header h1 {
     display: block;
     color: #fff;
@@ -296,7 +288,7 @@ header li.iconReloj a {
 header .iconMAS, header .iconR { margin-top:5px !important; }
 
 header, .footer {
-    background-color: #03ae74;
+    background-color: #F73859;
     width: 100%;
     height: 54px;
     text-align: left;
@@ -312,6 +304,7 @@ header, .footer {
     bottom:0;
     top:auto;
     font-size: 1em;
+    background: #384259;
 }
 .footer h3 {
     position:absolute;
@@ -352,8 +345,8 @@ button,
 .button {
     font-size: 1em;
     background: #fff;
-    border:1px solid #001C13;
-    color:#001C13;
+    border:1px solid #384259;
+    color: #384259;
     display: block;
     border-radius: 3px;
     min-width:60px !important;
@@ -363,7 +356,9 @@ button,
 }
 .popup {
     box-shadow: 0px 0px 0px 1000px rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    border-radius: 6px;
     width:90%;
+    border:2px solid #384259;
     text-align:center;
     margin:20px auto;
     background:#fff;
@@ -410,8 +405,9 @@ table.adminfalse.dispositivos tr td:last-child {
 }
 
 table.dispositivos ul li a {
-    font-size:2.6em;
-    color:#03ae74;
+    font-size: 3em;
+    color: #384259;
+    font-weight: bold;
 }
 table.dispositivos tr td div {
     width:83%;
@@ -536,20 +532,16 @@ table.salidas td:last-child {
     position:absolute;
     top:4px;
     left:35px;
-    color:#fff;
+    content: "Apagada";
+    left:36px;
 }
 .switch.on:after {
     content: "Encendida";
     color: #fff;
     left: 13px;
 }
-.switch:after {
-    content: "Apagada";
-    color:#000;
-    left:36px;
-}
 .switch.on {
-    background: #03ae74 !important;
+    background: #F73859 !important;
     color:#fff;
 }
 .switch.on .switch-toggle {
@@ -568,7 +560,6 @@ table.salidas td:last-child {
 /* Tareas */
 table.tareas tr td:last-child a {
     font-size:2.1em;
-    color:#03ae74;
 }
 table.tareas tr {
     padding: 0;
@@ -582,7 +573,7 @@ table.tareas tr div, table tr.icons td {
 }
 table td ul li.iconReloj a {
     position: relative;
-    color: #03ae74;
+    color: #384259;
     right: 9px;
     top: -5px;
     font-size: 2.4em !important;
