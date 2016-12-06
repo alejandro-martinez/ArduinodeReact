@@ -185,7 +185,7 @@ class Footer extends Component {
 		this.state = { loading: false };
 
 		Socket.listen('horaServidor', ( hora ) => {
-    		this.setState({ horaServidor: new Date(hora).toString().slice(16,21) });
+    		this.setState({ horaServidor: new Date(hora).toString().slice(16,24) });
     	});
 	}
 	componentDidMount() {		

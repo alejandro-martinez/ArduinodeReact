@@ -81,8 +81,10 @@ http.listen( serverConf.port, serverConf.ip, () => {
 			Arduinode.dispositivos.switch( params, onAccion);
 		});
 
-		// Envia la hora del servidor en cada request Socket.IO
-		sCliente.on('*', () => sCliente.emit('horaServidor', new Date().getTime()));
+		setInterval( () => {
+			// Envia la hora del servidor en cada request Socket.IO
+			sCliente.emit('horaServidor', new Date().getTime());	
+		}, 1000);		
 	});
 	// Carga lista de dispositivos en memoria
 	Arduinode.dispositivos.load(function() {}, true);
