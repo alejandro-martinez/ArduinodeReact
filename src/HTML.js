@@ -11,16 +11,15 @@ export class Header extends Component {
 	}
 	refresh() { Socket.emit('getDispositivosDB'); }
 	onAdminModeChange() {
-		var clave = (this.props.root.state.adminMode) 
-					? false 
-					: (prompt("Ingrese clave", ""));
-		
-		if (this.props.root.state.clave.length) {
-			if (clave && clave == this.props.root.state.clave) {
-				this.props.root.setState({ adminMode: true });	
-			}
+		if ( this.props.root.state.adminMode ) {
+			this.props.root.setState({ adminMode: false });
 		}
-		
+		else if (this.props.root.state.clave.length) {
+			var clave = prompt("Ingrese clave", "");
+			if (clave && clave == this.props.root.state.clave) {
+				this.props.root.setState({ adminMode: true });
+			}
+		}		
 	}
 	render() {
 		var isAdmin = this.props.root.state.adminMode;
