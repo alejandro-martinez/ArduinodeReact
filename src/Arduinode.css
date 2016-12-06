@@ -326,6 +326,12 @@ header, .footer {
 .footer .listIcons .iconReloj {
     width:95px;
 }
+#loading {
+    bottom: 8px;
+    left: 50%;
+    margin-left: -20px;
+    position: absolute;
+}
 .footer #loading div {
     margin: -8px auto;
 }

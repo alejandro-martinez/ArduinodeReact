@@ -184,7 +184,7 @@ class Footer extends Component {
 			this[m] = this[m].bind( this );
 		});
 		document.addEventListener("loading",( e ) => {
-			this.setState({ loading: e.detail }) 
+			this.setState({ loading: e.detail });
 		});
 		this.state = { loading: false };
 	}
