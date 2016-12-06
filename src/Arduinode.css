@@ -651,3 +651,6 @@ table.tareaDispositivos tr td:last-child{
     font-size:1.3em;
     float:right;
 }
+.tareaDispositivos .col2 td {
+    width:90%;
+}
