@@ -167,9 +167,7 @@ class SalidasTable extends Component {
 export class SalidasActivas extends Component {
 	constructor( props ) {
 		super( props );
-		this.root = props.route.root;
-		this.state = this.root.state;
-		this.root.setState({
+		this.props.route.root.setState({
 			page: "Luces encendidas",
 			showAddIcon: false
 		});
@@ -183,28 +181,23 @@ export class SalidasActivas extends Component {
 				}
 			})
 		});
-		return ( <SalidasTable online={ true } root={ this.root } salidas={ salidasActivas } /> );
+		return ( <SalidasTable online={ true } root={ this.props.route.root } salidas={ salidasActivas } /> );
 	}
 };
 
 export class SalidasDispositivo extends Component {
 	constructor( props ) {
 		super( props );
-		this.root = props.route.root;
-		this.state = this.root.state;
-		this.disp = {};
 	}
-	componentWillMount() {
-		this.disp = this.state.dispositivos.filter(( disp ) => {
-			return disp.ip == this.props.params.ip;
-		})[0];
-		this.root.setState({ page: this.disp.descripcion, showAddIcon: false});
-		this.setState({ salidas: this.disp.salidas });
+	componentDidMount() {
+		var disp = this.props.route.root.getDispositivoByIP( this.props.params.ip );
+		this.props.route.root.setState({ page: disp.descripcion, showAddIcon: false});
 	}
 	render() {
-		return ( <SalidasTable root={ this.root }
-							   online={ !this.disp.offline }
-							   salidas={ this.state.salidas } /> );
+		var disp = this.props.route.root.getDispositivoByIP( this.props.params.ip );
+		return ( <SalidasTable root={ this.props.route.root }
+							   online={ !disp.offline }
+							   salidas={ disp.salidas } /> );
 	}
 };
 

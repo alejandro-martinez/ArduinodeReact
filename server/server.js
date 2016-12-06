@@ -53,7 +53,7 @@ http.listen( serverConf.port, serverConf.ip, () => {
 		sCliente.on('getDispositivosDB', () => { 
 			Arduinode.dispositivos.load( function() {
 				sCliente.emit('DBDispositivosUpdated', Arduinode.dispositivos.lista);
-			})
+			}, true)
 		});
 
 		sCliente.on('getTareasDB', () => { 
@@ -62,9 +62,9 @@ http.listen( serverConf.port, serverConf.ip, () => {
 
 		sCliente.on('updateDispositivosDB', ( db ) => { 
 			if ( Arduinode.dispositivos.update( db )) {
-				Arduinode.dispositivos.load();
+				Arduinode.dispositivos.load(function() {}, false);
 			}
-			io.sockets.emit('DBDispositivosUpdated', db);
+			sCliente.emit('DBDispositivosUpdated', db);
 		});
 
 		sCliente.on('updateTareasDB', ( db ) => { 
@@ -85,7 +85,7 @@ http.listen( serverConf.port, serverConf.ip, () => {
 		sCliente.on('*', () => sCliente.emit('horaServidor', new Date().getTime()));
 	});
 	// Carga lista de dispositivos en memoria
-	Arduinode.dispositivos.load();
+	Arduinode.dispositivos.load(function() {}, true);
 
 	taskManager.setConfig( serverConf );
 

@@ -118,11 +118,13 @@ export class Subtareas extends Tareas {
 						   onChange={ this.onChange.bind(this, item) } 
 						   name="fechainicio" 
 						   required
+						   disabled={ !this.props.route.root.state.adminMode }
 						   value={ item.fechainicio } />
 					</td>
 					<td>Fin: <input type="date"
 						   name="fechafin" 
 						   required
+						   disabled={ !this.props.route.root.state.adminMode }
 						   onChange={ this.onChange.bind(this, item) } 
 						   value={ item.fechafin } /></td>
 				</tr>
@@ -131,6 +133,7 @@ export class Subtareas extends Tareas {
 						<input type="time"
 						   name="horainicio"
 						   required
+						   disabled={ !this.props.route.root.state.adminMode }
 						   onChange={ this.onChange.bind(this, item) } 
 						   value={ item.horainicio } />
 					</td>
@@ -138,6 +141,7 @@ export class Subtareas extends Tareas {
 						Duración
 						<input type="time"
 						   name="duracion"
+						   disabled={ !this.props.route.root.state.adminMode }
 						   required={ this.getCurrentTarea().accion == 0}
 						   onChange={ this.onChange.bind(this, item) } 
 						   value={ item.duracion } />
@@ -145,6 +149,7 @@ export class Subtareas extends Tareas {
 					<td className={"show"+ (this.getCurrentTarea().accion === 0)}>Fin
 						<input type="time"
 						   name="horafin"
+						   disabled={ !this.props.route.root.state.adminMode }
 						   onChange={ this.onChange.bind(this, item) } 
 						   readOnly
 						   value={ item.horafin } />

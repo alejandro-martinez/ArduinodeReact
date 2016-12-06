@@ -171,7 +171,7 @@ function Arduinode() {
 * en atributo lista de esta clase
 * @method load
 */
-		load: function( callback ) {
+		load: function( callback, broadcast ) {
 			var This = this;
 			if (this.reloadDispositivos()) {
 				Arrays.asyncLoop( this.lista, ( disp, report ) => {
@@ -187,7 +187,8 @@ function Arduinode() {
 					Arduinode.getInstance().dispositivos.removeMemKeys( false, this.lista );
 
 					if (callback) callback();
-					if ( this.io && this.io.hasOwnProperty('sockets') ) {
+					if ( this.io && this.io.hasOwnProperty('sockets') 
+						&& broadcast ) {
 
 						this.io.sockets.emit('DBDispositivosUpdated', this.lista);
 					}

@@ -82,14 +82,12 @@ export class SelectDispositivos extends Component {
 export class Dispositivos extends Component {
 	constructor( props ) {
 		super( props );
-		this.root = props.route.root;
-		this.root.setState({ 
+		this.props.route.root.setState({ 
 			dbActual: "Dispositivo", 
 			page: "Dispositivos",
 			showAddIcon: true,
 			showTimerIcon: false
 		});
-		this.onUpdate 	= this.onUpdate.bind( this );
 		this.onAddNew 	= this.onAddNew.bind( this );
 		this.state 		= { edit: false };
 	}
@@ -100,56 +98,44 @@ export class Dispositivos extends Component {
 		document.removeEventListener("onAddNew", this.onAddNew);
 	}
 	generateRow( item ) {
+		var disp = this.props.route.root.getDispositivoByIP( item.ip );
 		return ( 
 			<HTML.EditContainer disabled={item.offline} edit={this.state.edit}>
-				<HTML.EditRow root={ this.root }
-							   onUpdate={ this.onUpdate }
+				<HTML.EditRow root={ this.props.route.root }
 							   inputKey='descripcion'
-							   model={ item } />
+							   model={ disp } />
 				<td>{ item.version }</td>
-				<HTML.EditRow root={ this.root }
-							  onUpdate={ this.onUpdate }
+				<HTML.EditRow root={ this.props.route.root }
 							  inputKey='ip'
-							  model={ item } />
+							  model={ disp } />
 				<td>
 					<ul className="listIcons">
 						<li><Link to={'Dispositivos/salidas/' + item.ip}>&#9854;</Link></li>
-						<li className={'show' + this.root.state.adminMode}>
+						<li className={'show' + this.props.route.root.state.adminMode}>
 							<a onClick={ this.onRemove.bind( this, item )} 
-							   className={"iconDELETE show" + this.root.state.adminMode}></a>
+							   className={"iconDELETE show" + this.props.route.root.state.adminMode}></a>
 						</li>
 					</ul>
 				</td>
 			</HTML.EditContainer>
 		);
 	}
-	onUpdate( model ) {
-		this.root.state.dispositivos = this.root.state.dispositivos.map(( disp ) => {
-			
-			if ( disp.ip == model.ip ) {
-				disp.descripcion = model.descripcion;
-				disp.ip = model.ip;
-			}
-			return disp;
-		});
-		return true;
-	}
 	onAddNew() {
-		var dispositivos = this.root.state.dispositivos;
+		var dispositivos = this.props.route.root.state.dispositivos;
 		dispositivos.push( Dispositivo.newModel() );
-		this.root.setState({ dispositivos: dispositivos, edit: true });
+		this.props.route.root.setState({ dispositivos: dispositivos, edit: true });
 	}
 	onRemove(item, e) {
 		if (confirm("Seguro que desea quitar el dispositivo?")) {
 			var dispositivos = this.root.state.dispositivos;
 			var i = dispositivos.indexOf( item );
 			dispositivos.splice(i, 1);
-			this.root.setState({ edit: true, dispositivos: dispositivos });
+			this.props.route.root.setState({ edit: true, dispositivos: dispositivos });
 		}
 	}
 	render() {
-		var rows = this.root.state.dispositivos.map( this.generateRow, this );
+		var rows = this.props.route.root.state.dispositivos.map( this.generateRow, this );
 		
-		return (<HTML.Table class={"dispositivos admin" + this.root.state.adminMode}> { rows } </HTML.Table>);
+		return (<HTML.Table class={"dispositivos admin" + this.props.route.root.state.adminMode}> { rows } </HTML.Table>);
 	}
 };

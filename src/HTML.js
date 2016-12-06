@@ -9,7 +9,9 @@ export class Header extends Component {
 		super( props );
 		this.onAdminModeChange = this.onAdminModeChange.bind( this );
 	}
-	refresh() { Socket.emit('getDispositivosDB'); }
+	refresh() { 
+		Socket.emit('getDispositivosDB'); 
+	}
 	onAdminModeChange() {
 		if ( this.props.root.state.adminMode ) {
 			this.props.root.setState({ adminMode: false });
@@ -109,13 +111,14 @@ export class EditRow extends Component {
 		},3000);
 	}
 	onChange(e) {
-		var model = this.state.model;
+		var model = this.props.model;
 		clearTimeout( this.typingTimer );
 		clearTimeout( this.noChangesTimer );		
 
 		var validator = 'isValid' + this.props.inputKey.toUpperCase();
 
 		if ( Validator[validator]( e.target.value ) ) {
+			console.log("valid",e.target.value)
 			model[this.props.inputKey] =  e.target.value;
 			this.typingTimer = setTimeout( this.doneTyping, this.doneTypingInterval );
 			this.setState({ model: model });

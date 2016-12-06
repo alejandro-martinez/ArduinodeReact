@@ -35,6 +35,7 @@ export class DB {
 		Socket.emit('update'+ this.filename +'DB', db );
 	}
 }
+
 export class Validator {
 	static isValidDESCRIPCION( descripcion ) { 
 		return descripcion && descripcion.length;
@@ -43,7 +44,6 @@ export class Validator {
 		return (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ip));
 	}
 }
-
 
 export class Dispositivo extends DB {
 	constructor() {
@@ -64,9 +64,7 @@ export class Dispositivo extends DB {
 			callback();
 		}
 	}
-	static isValid() {
-		return true;
-	}
+	static isValid() { return true; }
 	static isValidDESCRIPCION = Validator.isValiddescripcion;
 	static isValidIP = Validator.isValidIP;
 }
@@ -175,7 +173,7 @@ class Home extends Component {
 		});
 	}
 	render() { return ( <HTML.ListaLinks items={ menu } /> ); }
-};
+}
 
 class Footer extends Component {
 	constructor(props) {
@@ -183,16 +181,17 @@ class Footer extends Component {
 		['onAddNew','onTimerClick','onUpdate'].forEach((m)=>{
 			this[m] = this[m].bind( this );
 		});
-		
-		document.addEventListener("loading",( e ) => {
-			this.setState({ loading: e.detail });
-		});
 
 		this.state = { loading: false };
 
 		Socket.listen('horaServidor', ( hora ) => {
     		this.setState({ horaServidor: new Date(hora).toString().slice(16,21) });
     	});
+	}
+	componentDidMount() {		
+		document.addEventListener("loading",( e ) => {
+			this.setState({ loading: e.detail });
+		});
 	}
 	onUpdate() { this.props.root.updateDB(); }
 	onAddNew() { Utils.fireEvent("onAddNew"); }
@@ -250,6 +249,9 @@ class Arduinode extends Component {
     	Socket.listen('claveApp', ( clave ) => {
     		this.setState({ clave: clave });
     	});
+	}
+	getDispositivoByIP( ip ) {
+		return this.state.dispositivos.filter((d) => { return d.ip == ip; })[0];
 	}
 	updateDB() {
 		var db = this.state.dbActual;
