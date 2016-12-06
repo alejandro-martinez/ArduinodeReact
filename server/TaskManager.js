@@ -68,9 +68,11 @@ class Subtarea extends Tarea {
 		if (this.tarea.accion == 1) return true;
 
 		//Si la tarea deberia estar ejecutandose y es de Encendido
-		console.log("Fecha valida",this.isFechaValida())
+		console.log("Fecha valida",this.getTiempoRestante())
 		if ( this.tarea.activa && this.isFechaValida() ) {
-			if ( this.getTiempoRestante() > 0 ) return this.getTiempoRestante();
+			if ( this.isHorarioValido() ) {
+				if ( this.getTiempoRestante() > 0 ) return this.getTiempoRestante();
+			}
 		}
 		return false;
 	};
