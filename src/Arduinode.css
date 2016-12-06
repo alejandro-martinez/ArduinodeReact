@@ -191,7 +191,7 @@ a[class*="icon"], li[class*="icon"] a {
 }
 .iconLAMP0 { 
     color:#c1c100 !important; 
-    font-size: 1.3em !important;
+    font-size: 1.7em !important;
 }
 .iconLAMP1:before { content:"\25CF"; }
 .iconLAMP1:before{ color:grey !important; }
@@ -573,10 +573,11 @@ table.tareas tr div, table tr.icons td {
     width:100%;
 }
 table td ul li.iconReloj a {
-    position:relative;
-    color:#03ae74;
-    left:0;
-    top: -3px;
+    position: relative;
+    color: #03ae74;
+    right: 9px;
+    top: -5px;
+    font-size: 2.4em !important;
 }
 table.tareas.adminfalse .tareasIcons li {
     display:none;
