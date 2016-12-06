@@ -264,7 +264,7 @@ export class TareaDispositivos extends Tareas {
 						</div>
 					</div>
 					
-					<HTML.Table class="tareaDispositivos"> { this.dispositivos } </HTML.Table>
+					<HTML.Table class={"tareaDispositivos admin" + this.root.state.adminMode}> { this.dispositivos } </HTML.Table>
 				</div>
 			);
 		}

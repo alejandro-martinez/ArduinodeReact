@@ -645,3 +645,6 @@ table.tareaDispositivos tr td:last-child{
 .tareaDispositivos .col2 td {
     width:90%;
 }
+table.tareaDispositivos.adminfalse .iconDELETE {
+    display:none;
+}
