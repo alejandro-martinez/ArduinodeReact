@@ -313,6 +313,12 @@ header, .footer {
     top:auto;
     font-size: 1em;
 }
+.footer h3 {
+    position:absolute;
+    color:#fff;
+    right:12px;
+    top:22px;
+}
 .footer .listIcons {
     padding: 5px 13px;
 }

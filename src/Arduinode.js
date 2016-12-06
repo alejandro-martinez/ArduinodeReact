@@ -183,10 +183,16 @@ class Footer extends Component {
 		['onAddNew','onTimerClick','onUpdate'].forEach((m)=>{
 			this[m] = this[m].bind( this );
 		});
+		
 		document.addEventListener("loading",( e ) => {
 			this.setState({ loading: e.detail });
 		});
+
 		this.state = { loading: false };
+
+		Socket.listen('horaServidor', ( hora ) => {
+    		this.setState({ horaServidor: new Date(hora).toString().slice(16,21) });
+    	});
 	}
 	onUpdate() { this.props.root.updateDB(); }
 	onAddNew() { Utils.fireEvent("onAddNew"); }
@@ -207,6 +213,7 @@ class Footer extends Component {
 						<a onClick={ this.onUpdate } className='iconOK'></a>
 					</li>
 				</ul>
+				<h3>{ this.state.horaServidor }</h3>
 				<div id="loading" className={ 'show' + this.state.loading }>
 					<Loading type='cylon' color='#e3e3e3' />
 				</div> 
@@ -239,6 +246,7 @@ class Arduinode extends Component {
 		Socket.listen('DBDispositivosUpdated', ( db ) => {
     		this.setState({ dispositivos: db });
     	});
+
     	Socket.listen('claveApp', ( clave ) => {
     		this.setState({ clave: clave });
     	});
