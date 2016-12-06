@@ -101,7 +101,7 @@ export class Subtareas extends Tareas {
 	componentDidMount() {
 		document.addEventListener("onAddNew", this.onAddNew);
 		this.getCurrentTarea();
-		this.props.route.root.setState({edit: false, page: "Horarios"});
+		this.props.route.root.setState({edit: false, page: this.getCurrentTarea().descripcion});
 	}
 	componentWillUnmount() {
 		document.removeEventListener("onAddNew", this.onAddNew);
@@ -114,52 +114,40 @@ export class Subtareas extends Tareas {
 			<form onChange={this.validForm}>
 			<HTML.Table class="subtareas" key={ item.id }>
 				<tr className="col2">
-					<td>
-						<label>Inicio
-						<input type="date" 
+					<td>Inicio: <input type="date" 
 						   onChange={ this.onChange.bind(this, item) } 
 						   name="fechainicio" 
 						   required
 						   value={ item.fechainicio } />
-						</label>	   
 					</td>
-					<td>
-						<label>Fin 
-						<input type="date"
+					<td>Fin: <input type="date"
 						   name="fechafin" 
 						   required
 						   onChange={ this.onChange.bind(this, item) } 
-						   value={ item.fechafin } />
-						</label>   
-					</td>
+						   value={ item.fechafin } /></td>
 				</tr>
 				<tr className="col3 titulos">
-					<td>
-						<label> Inicio
+					<td>Inicio
 						<input type="time"
 						   name="horainicio"
 						   required
 						   onChange={ this.onChange.bind(this, item) } 
 						   value={ item.horainicio } />
-						</label>   
 					</td>
 					<td className={"middle show"+ (this.getCurrentTarea().accion === 0)}>
-						<label>Duración
+						Duración
 						<input type="time"
 						   name="duracion"
 						   required={ this.getCurrentTarea().accion == 0}
 						   onChange={ this.onChange.bind(this, item) } 
 						   value={ item.duracion } />
-						</label>   
 					</td>
-					<td className={"show"+ (this.getCurrentTarea().accion === 0)}>
-						<label>Fin
+					<td className={"show"+ (this.getCurrentTarea().accion === 0)}>Fin
 						<input type="time"
 						   name="horafin"
 						   onChange={ this.onChange.bind(this, item) } 
 						   readOnly
 						   value={ item.horafin } />
-						</label>   
 					</td>
 				</tr>
 			</HTML.Table>

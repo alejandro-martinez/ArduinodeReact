@@ -615,18 +615,29 @@ table.tareas.adminfalse tr.icons ul li {
     width:32%;
 }
 /*SUBTAREAS*/
+table.subtareas .col2 input {
+    width: 97px;
+}
 table.subtareas .col3 td input {
-    margin:0;
+    margin:8px 0;
     display:block;
+    width: 71px;
 }
 table.subtareas .col3 td.middle input{
-    margin:0 auto;
+    margin:8px auto;
+}
+table.subtareas tr.col2 td {
+    width: 50%;
+}
+.col2 td {
+    width:20%;
+}
+.col2 td:last-child {
+    text-align:right;
 }
 table.subtareas .col3 td:last-child {
-    width:70px;
-}
-table.subtareas tr.col2 td{
-    margin:0 5px 22px 0;
+    float:right;
+    width:77px;
 }
 /*Tarea dispositivos*/
 table.tareaDispositivos td:last-child, table tr {
