@@ -99,11 +99,11 @@ const Programador = class {
 	refreshScheduler() {
 		this.tareas.forEach( tarea => { tarea.subtareas.map( this.forceExecute ) });
 	}
-	addToRunningList( id ) {
+	registerRunningTasks( id, running ) {
 		var tarea = DataStore.tareas.filter((t)=>{
 			return t.id == id;
 		});
-		tarea[0].enEjecucion = true;
+		tarea[0].enEjecucion = running;
 		this.io.sockets.emit('DBTareasUpdated', DataStore.tareas);
 	}
 	execute ( subtarea, accion, callback ) {
@@ -113,7 +113,6 @@ const Programador = class {
 				d.temporizada = (accion) ? 0 : subtarea.temporizada;
 				d.estado 	  = (accion) ? accion : subtarea.tarea.accion;
 
-				this.addToRunningList( subtarea.tarea.id );
 				Arduinode.dispositivos.switch( d, (response) => { 
 					if (typeof response != 'undefined') executed++;
 					report();
@@ -123,6 +122,7 @@ const Programador = class {
 			log("Ejecución de tarea: " +
 				 subtarea.tarea.descripcion + 
 				 ". Se accionaron: " + executed + " salidas");
+
 			if (callback) callback();
 		});
 		
@@ -141,10 +141,13 @@ const Programador = class {
 		
 		// Se forza la ejecucion solo si es una tarea de encendido
 		if ( onTask && subtarea.isValid()) {
+			subtarea.tarea.enEjecucion = false;
 			subtarea.temporizada = subtarea.getTiempoRestante();
+			this.registerRunningTasks( subtarea.tarea.id, true);
 			this.execute( subtarea );
 		}
 		else {
+			this.registerRunningTasks( subtarea.tarea.id, false);
 			log("La tarea no es " + ((onTask) ? "válida" : " de encendido"));
 		}
 	}
