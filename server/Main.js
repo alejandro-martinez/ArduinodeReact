@@ -80,6 +80,9 @@ Dispositivo.prototype = {
 							response = parseInt( response.replace(/(?:\r\n|\r|\n)/g, ''));
 							salida.estado = response;
 							salida.temporizada = params.temporizada;
+
+							Arduinode.Arduinode.io.sockets.emit('DBDispositivosUpdated', Arduinode.Arduinode.dispositivos.lista);
+
 							callback( response);
 						});
 					}

@@ -129,6 +129,7 @@ const Programador = class {
 		
 		// Se forza la ejecucion solo si es una tarea de encendido
 		if ( onTask && subtarea.isValid()) {
+			console.log("tiempo restante de ",subtarea.tarea.descripcion, subtarea.getTiempoRestante())
 			subtarea.temporizada = subtarea.getTiempoRestante();
 			this.execute( subtarea );
 		}

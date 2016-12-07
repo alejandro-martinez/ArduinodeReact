@@ -115,7 +115,6 @@ function Arduinode() {
 		switch: function( params, callback ) {
 
 			this.getByIP( params.ip ).switchSalida(params,(response) => {
-				Arduinode.getInstance().io.sockets.emit('DBDispositivosUpdated', this.lista);
 				if (callback) {
 					callback( response );
 				}

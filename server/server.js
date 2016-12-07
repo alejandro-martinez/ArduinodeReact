@@ -75,10 +75,7 @@ http.listen( serverConf.port, serverConf.ip, () => {
 
 		// Accion sobre una salida (Persiana, Luz, Bomba)
 		sCliente.on('switchSalida',( params ) => {
-			var onAccion = () => {
-				io.sockets.emit('DBDispositivosUpdated', Arduinode.dispositivos.lista);
-			};
-			Arduinode.dispositivos.switch( params, onAccion);
+			Arduinode.dispositivos.switch( params, function(){});
 		});
 
 		setInterval( () => {
