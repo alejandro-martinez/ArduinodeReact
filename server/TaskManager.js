@@ -15,9 +15,11 @@ var Arduinode	= require('./Arduinode').Arduinode,
 class Tarea {
 	constructor( model ) {
 		if ( model ) { 
+			this.id 			= null;
 			this.dispositivos 	= [];
 			this.activa 		= null;
 			this.accion 		= null;
+			this.enEjecucion	= false;
 			this.descripcion 	= null;
 			this.parseData( model );
 		}		
@@ -81,6 +83,8 @@ class Subtarea extends Tarea {
 const Programador = class {
 	constructor() {
 		this.tareas	= [];
+		this.io = {};
+
 		['refreshScheduler','forceExecute','createJob','execute'].forEach((m)=>{
 			this[m] = this[m].bind(this);
 		})
@@ -95,6 +99,13 @@ const Programador = class {
 	refreshScheduler() {
 		this.tareas.forEach( tarea => { tarea.subtareas.map( this.forceExecute ) });
 	}
+	addToRunningList( id ) {
+		var tarea = DataStore.tareas.filter((t)=>{
+			return t.id == id;
+		});
+		tarea[0].enEjecucion = true;
+		this.io.sockets.emit('DBTareasUpdated', DataStore.tareas);
+	}
 	execute ( subtarea, accion, callback ) {
 		var executed = 0;
 		Arrays.asyncLoop( subtarea.tarea.dispositivos, ( d, report ) => {
@@ -102,6 +113,7 @@ const Programador = class {
 				d.temporizada = (accion) ? 0 : subtarea.temporizada;
 				d.estado 	  = (accion) ? accion : subtarea.tarea.accion;
 
+				this.addToRunningList( subtarea.tarea.id );
 				Arduinode.dispositivos.switch( d, (response) => { 
 					if (typeof response != 'undefined') executed++;
 					report();
@@ -129,7 +141,6 @@ const Programador = class {
 		
 		// Se forza la ejecucion solo si es una tarea de encendido
 		if ( onTask && subtarea.isValid()) {
-			console.log("tiempo restante de ",subtarea.tarea.descripcion, subtarea.getTiempoRestante())
 			subtarea.temporizada = subtarea.getTiempoRestante();
 			this.execute( subtarea );
 		}
@@ -150,6 +161,9 @@ const Programador = class {
 			});
 			subtarea.job = job;
 		}
+	}
+	getTareas() {
+		return this.tareas;
 	}
 /**
 * Importa listado de tareas desde archivo JSON y las carga en el scheduler.

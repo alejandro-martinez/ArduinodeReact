@@ -39,7 +39,7 @@ export class Header extends Component {
 	}
 };
 
-export function EditContainer(props) {
+export function EditContainer( props ) {
 	return ( 
 		<tr className={ 'disabled' + props.disabled + ' editRow' +  props.edit }> 
 			{ props.children } 

@@ -57,7 +57,8 @@ export class Tareas extends Component {
 	}
 	generateRow( item ) {
 		return ( 
-			<HTML.EditContainer edit={this.state.edit || item.descripcion.length === 0}>
+			<HTML.EditContainer disabled={ !item.enEjecucion }
+								edit={ this.state.edit || item.descripcion.length === 0 }>
 				<HTML.EditRow  root={ this.props.route.root }
 							   inputKey='descripcion'
 							   model={ item } />

@@ -36,7 +36,6 @@ var fs	= require('fs'),
 function DataStore() {
 	this.dispositivos = [];
 	this.tareas 	  = [];
-	this.tareasActivas= [];
 	this.getFile = function( file ) {
 		var filePath = './models/' + file + '.json';
 
