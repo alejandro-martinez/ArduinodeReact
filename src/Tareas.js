@@ -166,7 +166,6 @@ export class Subtareas extends Tareas {
 	onChange ( item, e ) {
 		item[e.target.name] = e.target.value;
 		if (this.getCurrentTarea().accion === 0) {
-			console.log( Utils.sumarHoras( item.horainicio, item.duracion))
 			item.horafin = Utils.sumarHoras( item.horainicio, item.duracion);
 		}
 		this.props.route.root.setState({ edit: true });

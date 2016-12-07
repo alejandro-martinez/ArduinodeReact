@@ -34,52 +34,10 @@ export class Header extends Component {
 					<li> <a onClick={this.onAdminModeChange} className={'icon' + adminClass}></a> </li>
 					<li> <a href='/#/' className='menu iconHeader right'></a> </li>
 				</ul>
-
 			</header>
 		);
 	}
 };
-
-export class Popup extends Component {
-	constructor( props ) {
-		super( props );
-		this.state = { visible: false };
-		this.toggle = this.toggle.bind( this );
-	}
-	toggle() {
-		if (this.state.visible && this.props.onLaunchPopup) {
-			this.props.onLaunchPopup();
-		}
-		this.setState({ visible: !this.state.visible});
-	}
-	render( props ) {
-		if ( this.state.visible ) {
-			return (
-				<div>
-					<div className={ this.props.class + ' center popup show' + this.state.visible}>
-					{
-						this.props.children
-					}
-					<input type="button" onClick={ this.toggle } value="Aceptar" />
-					</div>
-				</div>
-			);
-		}
-		else {
-			return (
-				<ul className="headerIcons">
-					<li><a className={ this.props.launchIcon } onClick={ this.toggle }>
-						<span className={'show' + (this.props.root.state.popupData != "00:00")}> 
-							{ this.props.root.state.popupData } 
-						</span>
-					</a></li>
-				</ul>
-			);
-		}
-		
-	}
-}
-
 
 export function EditContainer(props) {
 	return ( 
@@ -118,7 +76,6 @@ export class EditRow extends Component {
 		var validator = 'isValid' + this.props.inputKey.toUpperCase();
 
 		if ( Validator[validator]( e.target.value ) ) {
-			console.log("valid",e.target.value)
 			model[this.props.inputKey] =  e.target.value;
 			this.typingTimer = setTimeout( this.doneTyping, this.doneTypingInterval );
 			this.setState({ model: model });

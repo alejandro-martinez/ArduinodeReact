@@ -51,10 +51,7 @@ export class SelectDispositivos extends Component {
 		this.state = { selected: null};
 	}
 	onChange( e ) {
-		var selected = this.props.root.state.dispositivos.filter((d)=>{
-			return d.ip === e.target.value;
-		});
-		this.setState({ selected: selected[0] });
+		this.setState({ selected: this.props.root.getDispositivoByIP(e.target.value) });
 	}
 	componentDidMount() {
 		this.setState({ selected: this.props.root.state.dispositivos[0] });	

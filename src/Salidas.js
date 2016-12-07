@@ -156,9 +156,7 @@ class SalidasTable extends Component {
 					<input type="button" onClick={ this.onHidePopup } value="Aceptar" />
 				</div>
 				
-				<HTML.Table class="salidas">
-					{ tableItems }					
-				</HTML.Table>
+				<HTML.Table class="salidas">{ tableItems }</HTML.Table>
 			</div>
 		);
 	}
