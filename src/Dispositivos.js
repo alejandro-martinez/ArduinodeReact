@@ -97,7 +97,7 @@ export class Dispositivos extends Component {
 	generateRow( item ) {
 		var disp = this.props.route.root.getDispositivoByIP( item.ip );
 		return ( 
-			<HTML.EditContainer disabled={item.offline} edit={this.state.edit}>
+			<HTML.EditContainer key={item.ip} disabled={item.offline} edit={this.state.edit}>
 				<HTML.EditRow root={ this.props.route.root }
 							   inputKey='descripcion'
 							   model={ disp } />
@@ -124,7 +124,7 @@ export class Dispositivos extends Component {
 	}
 	onRemove(item, e) {
 		if (confirm("Seguro que desea quitar el dispositivo?")) {
-			var dispositivos = this.root.state.dispositivos;
+			var dispositivos = this.props.route.root.state.dispositivos;
 			var i = dispositivos.indexOf( item );
 			dispositivos.splice(i, 1);
 			this.props.route.root.setState({ edit: true, dispositivos: dispositivos });

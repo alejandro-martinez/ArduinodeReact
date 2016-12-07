@@ -46,7 +46,7 @@ http.listen( serverConf.port, serverConf.ip, () => {
 		
 		// Referencia al socket conectado
 		Arduinode.io = taskManager.io = io;
-		
+
 		// Crea socket que recibe eventos de los disp. Arduino
 		Arduinode.listenSwitchEvents( serverConf );
 
@@ -79,7 +79,6 @@ http.listen( serverConf.port, serverConf.ip, () => {
 		});
 
 		setInterval( () => {
-			// Envia la hora del servidor en cada request Socket.IO
 			sCliente.emit('horaServidor', new Date().getTime());	
 		}, 1000);		
 	});
