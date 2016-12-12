@@ -15,7 +15,7 @@ var	express 	= require('express'),
 	http 		= require('http').Server( app ),
 	taskManager	= require('./TaskManager'),
 	expressConf = require('./config/config').config( app, express ),
-	Arduinode	= require('./Arduinode').Arduinode;
+	Arduinode	= require('./Arduinode');
 	middleware 	= require('socketio-wildcard')(),
 	io 			= require('socket.io')( http);
 	log			= require('./utils/Log');
@@ -83,7 +83,7 @@ http.listen( serverConf.port, serverConf.ip, () => {
 		}, 1000);		
 	});
 	// Carga lista de dispositivos en memoria
-	Arduinode.dispositivos.load(function() {}, true);
+	Arduinode.dispositivos.load( function(){}, true );
 
 	taskManager.setConfig( serverConf );
 

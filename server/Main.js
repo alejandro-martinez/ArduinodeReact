@@ -81,7 +81,7 @@ Dispositivo.prototype = {
 							salida.estado = response;
 							salida.temporizada = params.temporizada;
 
-							Arduinode.Arduinode.io.sockets.emit('DBDispositivosUpdated', Arduinode.Arduinode.dispositivos.lista);
+							Arduinode.io.sockets.emit('DBDispositivosUpdated', Arduinode.dispositivos.lista);
 
 							callback( response);
 						});
@@ -134,7 +134,7 @@ Dispositivo.prototype = {
 					}
 					else {
 						newSalidas = true;
-						var dispositivos = Arduinode.Arduinode.dispositivos.lista;
+						var dispositivos = Arduinode.dispositivos.lista;
 						var dispositivo = _.findWhere(dispositivos,{ ip: params.ip });
 						
 						dispositivo.salidas.push({
@@ -158,7 +158,7 @@ Dispositivo.prototype = {
 
 			//Actualiza el JSON si se encontraron salidas nuevas
 			if ( newSalidas ) {
-				Arduinode.Arduinode.dispositivos.update();
+				Arduinode.dispositivos.update();
 			}
 			return parsed;
 		}

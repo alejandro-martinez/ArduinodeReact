@@ -36,15 +36,15 @@ var clases 		= require('./Main.js'),
 * @property dispositivos
 * @type JSON Object
 */
-function Arduinode() {
-	this.io = {};
-	this.socketTCP = null;
+Arduinode = {
+	io: {},
+	socketTCP: null,
 
 /**
 * Recibe un array de salidas con los estados actuales de un dispositivo,
 * y actualiza las salidas del dispositivo en memoria
 */
-	this.updateEstadoSalidas = function( salidas_raw ) {
+	updateEstadoSalidas: function( salidas_raw ) {
 		var This = this;
 		var salidas = [];
 		salidas_raw.forEach( function(v) {
@@ -74,7 +74,7 @@ function Arduinode() {
 * @param conf Configuracion para el socket (IP, puerto)
 * @return null
 */	
-	this.listenSwitchEvents = function( conf ) {
+	listenSwitchEvents: function( conf ) {
 		var This = this;
 		if ( !this.socketTCP ) {
 			
@@ -98,8 +98,8 @@ function Arduinode() {
 				log('Socket escuchando eventos en: '+ conf.ip  + ":" + "8889");
 			});
 		}
-	};
-	this.dispositivos = {
+	},
+	dispositivos: {
 		lista: [],
 		sCliente: null,
 		getByIP: function( ip ) { 
@@ -113,12 +113,14 @@ function Arduinode() {
 * @return Boolean
 */
 		switch: function( params, callback ) {
-
-			this.getByIP( params.ip ).switchSalida(params,(response) => {
-				if (callback) {
-					callback( response );
-				}
-			});
+			var dispositivo = this.getByIP( params.ip );
+			if (dispositivo) {
+				dispositivo.switchSalida(params,(response) => {
+					if (callback) {
+						callback( response );
+					}
+				});
+			}
 		},
 		removeMemKeys: ( remove, arr ) => {
 			var keys = ['offline','estado', 'accion','comando','ip','temporizada'];
@@ -151,8 +153,8 @@ function Arduinode() {
 			if ( DataStore.updateDB('dispositivos', dispositivos) ) {
 				this.reloadDispositivos();
 				
-				if ( Arduinode.getInstance().io ) {
-					Arduinode.getInstance().io.sockets.emit('DBDispositivosUpdated', this.lista);
+				if ( Arduinode.io ) {
+					Arduinode.io.sockets.emit('DBDispositivosUpdated', this.lista);
 				}
 				return true;
 			}
@@ -187,7 +189,7 @@ function Arduinode() {
 					}
 				},() => {
 					
-					Arduinode.getInstance().dispositivos.removeMemKeys( false, this.lista );
+					Arduinode.dispositivos.removeMemKeys( false, this.lista );
 
 					if (callback) callback();
 					if ( this.io && this.io.hasOwnProperty('sockets') 
@@ -200,13 +202,6 @@ function Arduinode() {
 
 			return this;
 		}
-	};
-}
-Arduinode.instance = null;
-Arduinode.getInstance = function() {
-    if( this.instance === null ){
-        this.instance = new Arduinode();
-    }
-    return this.instance;
+	}
 };
-exports.Arduinode = Arduinode.getInstance();
+module.exports = Arduinode;

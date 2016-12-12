@@ -5,7 +5,7 @@
  * @module Programador de Tareas
  */
 var DataStore	= require('./DataStore').DataStore;
-var Arduinode	= require('./Arduinode').Arduinode,
+var Arduinode	= require('./Arduinode'),
 	Arrays 		= require('./utils/Arrays')(),
 	DateConvert = require('./utils/DateConvert')(),
 	_ 			= require('underscore'),
@@ -104,7 +104,9 @@ const Programador = class {
 			return t.id == id;
 		});
 		tarea[0].enEjecucion = running;
-		this.io.sockets.emit('DBTareasUpdated', DataStore.tareas);
+		if (Arduinode.io.hasOwnProperty('sockets')) {
+			Arduinode.io.sockets.emit('DBTareasUpdated', DataStore.tareas);
+		}
 	}
 	execute ( subtarea, accion, callback ) {
 		var executed = 0;
