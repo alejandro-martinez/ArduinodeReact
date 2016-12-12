@@ -120,14 +120,21 @@ export class Dispositivos extends Component {
 	onAddNew() {
 		var dispositivos = this.props.route.root.state.dispositivos;
 		dispositivos.push( Dispositivo.newModel() );
-		this.props.route.root.setState({ dispositivos: dispositivos, edit: true });
+		this.updateDispositivos( dispositivos );
+	}
+	updateDispositivos( dispositivos ) {
+		this.props.route.root.setState({ 
+			edit: true, 
+			dispositivos: dispositivos,
+			listenBroadcastUpdate: false
+		});
 	}
 	onRemove(item, e) {
 		if (confirm("Seguro que desea quitar el dispositivo?")) {
 			var dispositivos = this.props.route.root.state.dispositivos;
 			var i = dispositivos.indexOf( item );
 			dispositivos.splice(i, 1);
-			this.props.route.root.setState({ edit: true, dispositivos: dispositivos });
+			this.updateDispositivos( dispositivos );
 		}
 	}
 	render() {

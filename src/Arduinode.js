@@ -117,40 +117,38 @@ export class Tarea extends DB {
 	static isValid( db ) {
 		var valid = true;
 
+		var overlap = (subtareas, subtarea) => {
+
+			var fechainicio = Utils.parseDate( subtarea.fechainicio ).getTime();
+			var fechafin = Utils.parseDate( subtarea.fechafin ).getTime();	
+			
+			subtareas.every((s, index) => {
+				if ( s.id != subtarea.id ) {
+					var sub_inicio = Utils.parseDate( s.fechainicio ).getTime();
+					var sub_fin = Utils.parseDate( s.fechafin ).getTime();
+
+					if ( fechafin == sub_fin && fechainicio == sub_inicio) {
+						valid = false;
+					}
+
+					if ( fechafin > sub_inicio && ( fechainicio < sub_inicio) 
+												|| ( fechainicio < sub_fin ) ) {
+						valid = false;
+					}
+
+					if (fechainicio < sub_inicio &&	fechafin > sub_fin) {
+						valid = false;
+					}
+				}
+			});
+			return valid;
+		}
+		/* Compara cada subtarea, con el total de subtareas
+		* y verifica si se superponen las fechas de inicio / fin */
 		db.forEach( ( tarea ) => {
 			if (tarea.subtareas.length > 1) { 
-				var overlap = (id, fechainicio, fechafin) => {
-					valid = true;
-					tarea.subtareas.every((s, index) => {
-						if ( s.id != id ) {
-							var sub_inicio = Utils.parseDate(s.fechainicio).getTime();
-							var sub_fin = Utils.parseDate(s.fechafin).getTime();
-
-							if ( fechafin == sub_fin && fechainicio == sub_inicio) {
-								valid = false;
-							}
-
-							if ( fechafin > sub_inicio && fechainicio < sub_inicio) {
-								valid = false;
-							}
-
-							if (fechainicio < sub_fin && fechafin > sub_inicio ) {
-								valid = false;
-							}
-
-							if (fechainicio < sub_inicio &&	fechafin > sub_fin) {
-								valid = false;
-							}
-						}
-					});
-					return valid;
-				}
-				
 				for (var t in tarea.subtareas) {
-					var s = tarea.subtareas[t];
-					var sinicio = Utils.parseDate(s.fechainicio).getTime();
-					var sfin = Utils.parseDate(s.fechafin).getTime();	
-					valid = overlap(s.id, sinicio, sfin );
+					valid = overlap( tarea.subtareas, tarea.subtareas[t] );
 				};
 			}
 		});
@@ -227,6 +225,7 @@ class Arduinode extends Component {
 		super( props );
 		
 		this.state = { 
+			listenBroadcastUpdate: true,
 			dbActual: "Dispositivo", 
 			page: "Home", 
 			edit: false,
@@ -235,7 +234,7 @@ class Arduinode extends Component {
 			tareas: [], 
 			adminMode: false,
 			temporizacion: "00:00",
-			dispositivos: [] 
+			dispositivos: []
 		};
 
 		this.updateDB = this.updateDB.bind(this);
@@ -243,7 +242,9 @@ class Arduinode extends Component {
 		this.Tarea = new Tarea();
 
 		Socket.listen('DBDispositivosUpdated', ( db ) => {
-    		this.setState({ dispositivos: db });
+			if ( this.state.listenBroadcastUpdate ) {
+				this.setState({ dispositivos: db });
+			}
     	});
 
     	Socket.listen('claveApp', ( clave ) => {
@@ -258,7 +259,7 @@ class Arduinode extends Component {
 		var dataModel = this.state[ db.concat("s").toLowerCase() ];
 		
 		if ( this[db].update( dataModel, ()=> {
-			this.setState({ edit: false});
+			this.setState({ edit: false, listenBroadcastUpdate: true});
 		}));
 	}
 	render() {

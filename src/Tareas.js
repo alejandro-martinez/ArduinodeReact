@@ -22,7 +22,9 @@ export class Tareas extends Component {
 		this.state = { edit:false, changed: false };
 		
 		Socket.listen('DBTareasUpdated', ( db ) => {
-    		props.route.root.setState({ tareas: db });
+			if ( props.route.root.state.listenBroadcastUpdate ) {
+				props.route.root.setState({ tareas: db });
+			}
     	});
 
 		this.Tarea = new Tarea();
@@ -161,7 +163,6 @@ export class Subtareas extends Tareas {
 		);
 	}
 	validForm( form ) {
-
 		return (form.target.value.length >= 5);
 	}
 	onChange ( item, e ) {
@@ -169,7 +170,7 @@ export class Subtareas extends Tareas {
 		if (this.getCurrentTarea().accion === 0) {
 			item.horafin = Utils.sumarHoras( item.horainicio, item.duracion);
 		}
-		this.props.route.root.setState({ edit: true });
+		this.props.route.root.setState({ edit: true, listenBroadcastUpdate: false });
 	}
 	render() {
 
@@ -206,7 +207,7 @@ export class TareaDispositivos extends Tareas {
 		if (confirm("Seguro que deseas quitar " + dispositivo.descripcion + "?")) {
 			var i = this.tarea.dispositivos.indexOf( dispositivo );
 			this.tarea.dispositivos.splice(i, 1);
-			this.root.setState({edit: true});
+			this.root.setState({ edit: true, listenBroadcastUpdate: false });
 		}
 	}
 	generateRow( item ) {
@@ -228,7 +229,7 @@ export class TareaDispositivos extends Tareas {
 	}
 	onChange ( item, e ) {
 		item[e.target.name] = e.target.value;
-		this.root.setState({ edit: true });
+		this.root.setState({ edit: true, listenBroadcastUpdate: false });
 	}
 	onHidePopup() {
 		this.setState({ edit: false });	
@@ -245,7 +246,7 @@ export class TareaDispositivos extends Tareas {
 			
 			this.tarea.dispositivos.push( newDispositivo );		
 			
-			this.root.setState({edit: true});
+			this.root.setState({edit: true, listenBroadcastUpdate: false });
 		}
 		else {
 			this.setState({ edit: true });
