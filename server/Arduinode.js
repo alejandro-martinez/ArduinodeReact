@@ -143,12 +143,17 @@ function Arduinode() {
 			return lista;
 		},
 		update: function( dispositivos ) {
+
 			if (!dispositivos) dispositivos = this.lista;
 
 			var dispositivos = this.removeMemKeys( true, dispositivos );
 			
 			if ( DataStore.updateDB('dispositivos', dispositivos) ) {
 				this.reloadDispositivos();
+				
+				if ( Arduinode.getInstance().io ) {
+					Arduinode.getInstance().io.sockets.emit('DBDispositivosUpdated', this.lista);
+				}
 				return true;
 			}
 			return false;
@@ -161,7 +166,6 @@ function Arduinode() {
 				_d.setSalidas( d.salidas );
 				this.lista.push(_d);
 			});
-
 			return true;
 		},
 /**
