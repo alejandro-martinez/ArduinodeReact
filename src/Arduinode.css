@@ -158,16 +158,16 @@ a[class*="icon"],li[class*="icon"] a {
 .iconUP:before {
     content: "\25B2";
 }
+.iconLAMP0 {
+    color: #c1c100 !important;
+    font-size: 1.7em !important;
+}
 .iconLAMP0:before {
     content: "\2600";
 }
 .iconLAMP1 {
     margin-right: 8px;
     font-size: 2em !important;
-}
-.iconLAMP0 {
-    color: #c1c100 !important;
-    font-size: 1.7em !important;
 }
 .iconLAMP1:before {
     content: "\25CF";
@@ -185,11 +185,11 @@ a[class*="icon"],li[class*="icon"] a {
 .iconACTIVA1 {
     color:#384259 !important;
 }
-.iconMAS:before {
-    content: "\271A";
-}
 .iconMAS {
     font-size: 1.5em!important;
+}
+.iconMAS:before {
+    content: "\271A";
 }
 .iconOK {
     font-size: 2.1em !important;
@@ -199,6 +199,9 @@ a[class*="icon"],li[class*="icon"] a {
 }
 li.iconReloj a {
     font-size: 1.8em!important;
+}
+li.iconReloj a:before {
+    content: "\23f1";
 }
 li.iconReloj a span {
     position: absolute;
@@ -215,9 +218,6 @@ li .iconLogin,li .iconLogout {
 }
 li .iconLogout:before {
     content: "\2B05";
-}
-li.iconReloj a:before {
-    content: "\23f1";
 }
 .iconDELETE {
     color: red !important;
@@ -253,8 +253,6 @@ li.iconReloj a:before {
     font-size: 2.2em;
     color: #384259 !important;
 }
-
-
 input:valid,input[type='text'] {
     border: 1px solid #C4EDDE;
 }
@@ -537,8 +535,6 @@ table.salidas td:last-child {
         width: 100% !important;
     }
 }
-
-
 table.tareas tr td:last-child a {
     font-size: 2.1em;
 }
