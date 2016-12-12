@@ -1,7 +1,16 @@
+var fs = require('fs');
+var serverConf = {}, configPath = './config/config.json';
+
+// Busca o crea el archivo de config
+
+if ( !fs.existsSync( configPath )) {
+	var config = '{"ip":"localhost","port":9999,"claveApp":"9","tiempoEscaneoTareas":300000, "socketTimeout":500}';
+	fs.writeFileSync( configPath, config );
+}
+
 //Dependencias
 var	express 	= require('express'),
 	app 		= express(),
-	fs			= require('fs'),
 	compress 	= require('compression'),
 	http 		= require('http').Server( app ),
 	taskManager	= require('./TaskManager'),
@@ -13,15 +22,6 @@ var	express 	= require('express'),
 	DataStore 	= require('./DataStore').DataStore;
 				  require('./controllers')( app );
 	app.use( compress() );
-
-var serverConf = {}, configPath = './config/config.json';
-
-// Busca o crea el archivo de config
-
-if ( !fs.existsSync( configPath )) {
-	var config = '{"ip":"localhost","port":9999,"claveApp":"9","tiempoEscaneoTareas":300000, "socketTimeout":500}';
-	fs.writeFileSync( configPath, config );
-}
 
 var serverConf = require( configPath );
 
