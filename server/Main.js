@@ -130,28 +130,27 @@ class Dispositivo {
 		
 		if (_data && _data.length > 0) {
 
-			var newSalidas = false;
-			var parsed = [];
+			var salidaExiste = false,
+				newSalidas = false,
+				parsed = [];
 			
 			_data.forEach((str) => {
 				if (str && str.length) {
-					var posGuion 	= str.indexOf("-"),
-						posDospuntos= str.indexOf(":"),
-						posPunto 	= str.indexOf(".");
-					
 					var temporizada = 0;
 
-					if (posPunto > -1) {
-						temporizada = DateConvert.min_a_horario(str.substr( posPunto + 1));
+					if (str.indexOf(".") > -1) {
+						temporizada = DateConvert.min_a_horario( str.substr( str.indexOf(".") + 1));
 					}
-					if (!newSalidas) {
-						newSalidas = this.getSalidaByNro( params.nro );
-					}
+					salidaExiste = this.getSalidaByNro( params.nro );
+					
+					if (!salidaExiste && !newSalidas) newSalidas = true;
 
 					params.temporizada = (temporizada === null) ? 0 : temporizada;
 					params.tipo = str[0];
-					params.estado = parseInt( str[posDospuntos+1] );
-					params.nro = parseInt(str[posGuion+1] + str[posGuion+2]);
+					params.estado = parseInt( str[ str.indexOf(":") + 1] );
+					params.nro = parseInt(str[ str.indexOf("-") + 1] 
+										+ str[ str.indexOf("-") + 2]);
+
 					parsed.push( this.updateEstadoSalida( params ) );
 				}
 			});
@@ -162,13 +161,10 @@ class Dispositivo {
 			return parsed;
 		}
 	}
-	getSalidasByEstado( _estado, _array ) {
-		var salidas = _.where(_array, {estado: _estado});
-	}
 	getSalidas( callback ) {
 		var params = { comando: 'G', ip: this.ip };
 		
-		//Asumo que el dispositivo no está disponible, sino, piso la versión
+		//Asume que el dispositivo no está disponible, sino, piso la versión
 		this.version = "V.XXX";
 		this.offline = true;
 

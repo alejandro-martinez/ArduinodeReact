@@ -104,13 +104,16 @@ Arduinode = {
 * Hace broadcast de lista de dispositivos con sus salidas y estados
 * @method broadcastDB
 */
-	broadcastDB: function() {
+	broadcastDB: function( db ) {
 		if ( this.io.hasOwnProperty('sockets') ) {
-			this.io.sockets.emit('DBDispositivosUpdated', this.dispositivos);
+			this.io.sockets.emit('DBDispositivosUpdated', db || this.dispositivos);
 		}
 	},
 	getDispositivoByIP: function( ip ) { 
 		return _.findWhere( this.dispositivos,{ ip: ip }); 
+	},
+	updateDispositivos: function() {
+		this.DataStore.updateDB('dispositivos', this.dispositivos);
 	},
 /**
 * Ejecuta un comando sobre una salida de un Dispositivo
@@ -130,58 +133,6 @@ Arduinode = {
 		}
 	},
 /**
-* Elimina/Agrega claves de objetos Dispositivo, no necesarias para guardar en el modelo JSON
-* @method removeMemKeys
-* @param remove Boolean Remover o agregar
-* @param arr Array sobre el cual actuar
-* @return Array de objetos
-*/
-	removeMemKeys: ( remove, arr ) => {
-		var keys = ['offline','estado', 'accion','comando','ip','temporizada'];
-		var lista = arr || this.dispositivos;
-		
-		lista.forEach( ( disp ) => {
-			disp.salidas.forEach( ( s, k, _this ) => {
-				keys.forEach((_k) => {
-					if (Object.keys( s ).indexOf(_k) > -1) {
-						if ( remove ) {
-							delete _this[k][_k];
-						}
-					}
-					else {
-						if (!remove) {
-							_this[k][_k] = null;
-						}
-					}
-				});
-			});
-		});
-		return lista;
-	},
-/**
-* Actualiza el modelo.JSON de dispositivos, y recarga el listado en memoria
-* @method updateDispositivos
-* @param dispositivos Array de dispositivos
-* @return Boolean resultado
-*/
-	updateDispositivos: function( dispositivos ) {
-
-		if (!dispositivos) dispositivos = this.dispositivos;
-
-		if ( this.DataStore.updateDB('dispositivos', dispositivos) ) {
-			this.dispositivos = [];
-			this.DataStore.reloadDispositivos(( disp )=> {
-				this.dispositivos.push( disp);
-			});
-			// Elimina claves JSON innecesarias
-			this.removeMemKeys( true, DataStore.dispositivos );
-
-			this.broadcastDB();
-			return true;
-		}
-		return false;
-	},
-/**
 * Registra dispositivos cargados en el modelo (dispositivos.json),
 * y los sincroniza con el estado de los dispositivos Arduino reales
 * en atributo lista de esta clase
@@ -189,10 +140,21 @@ Arduinode = {
 * @param broadcast Boolean Hacer broadcast o no a los clientes conectados
 * @method loadDispositivos
 */
-	loadDispositivos: function( callback, broadcast ) {
-		this.DataStore.reloadDispositivos(( disp )=> {
-			this.dispositivos.push( disp);
+	loadDispositivosDB: function() {
+		var newDispositivos = false;
+		
+		this.DataStore.getFile('dispositivos').forEach((d) => {
+			var _d = new Dispositivo( d.id_disp, d.ip, d.descripcion );
+			_d.setSalidas( d.salidas );
+			if (!newDispositivos) newDispositivos = (d.salidas.length === 0);
+			this.dispositivos.push(_d);
 		});
+		
+		if (newDispositivos) this.getEstadosDispositivos();
+
+		return this;
+	},
+	getEstadosDispositivos() {
 		Arrays.asyncLoop( this.dispositivos, ( disp, report ) => {
 			
 			if ( disp ) {
@@ -202,14 +164,8 @@ Arduinode = {
 				});
 			}
 		},() => {
-			
-			this.removeMemKeys( false, this.dispositivos );
-
-			if (callback) callback();
-			if ( broadcast ) this.broadcastDB();
+			this.broadcastDB();
 		});
-		
-		return this;
 	}
 };
 module.exports = Arduinode;

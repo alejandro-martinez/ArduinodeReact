@@ -52,9 +52,11 @@ function DataStore() {
 * Método para actualizar JSON
 * @method updateDB
 */
-	this.updateDB = function( filename, data ) {
+	this.updateDB = function( filename, data, removeMemoryData ) {
 		if ( data && Array.isArray( data )) {
-			
+			if (filename === 'dispositivos' && removeMemoryData) {
+				data = this.removeJSONKeys( data );
+			}
 			fs.writeFileSync('./models/' + filename + '.json', 
 									JSON.stringify(data, null, 2),
 									'utf8', 
@@ -67,14 +69,19 @@ function DataStore() {
 		}
 		return false;
 	};
-	this.reloadDispositivos = function( callback) {
-		this.getFile('dispositivos').forEach((d) => {
-			var _d = new Dispositivo( d.id_disp, d.ip, d.descripcion );
-			_d.setSalidas( d.salidas );
-			callback(_d);
+	this.removeMemoryData = function(data) {
+		var keys = ['offline','estado', 'accion','comando','ip','temporizada'];
+		data.forEach((d) => {
+			d.salidas.forEach( ( s, k, _this ) => {
+				keys.forEach((_k) => {
+					if (Object.keys( s ).indexOf(_k) > -1) {
+						delete _this[k][_k];
+					}
+				});
+			});
 		});
-		return true;
-	};
+		return data;
+	}
 };
 
 DataStore.instance = null;

@@ -51,9 +51,9 @@ http.listen( serverConf.port, serverConf.ip, () => {
 		Arduinode.listenSwitchEvents( serverConf );
 
 		sCliente.on('getDispositivosDB', () => { 
-			Arduinode.loadDispositivos( function() {
+			Arduinode.loadDispositivosDB( function() {
 				sCliente.emit('DBDispositivosUpdated', Arduinode.dispositivos);
-			}, true)
+			}, false)
 		});
 
 		sCliente.on('getTareasDB', () => { 
@@ -61,8 +61,16 @@ http.listen( serverConf.port, serverConf.ip, () => {
 		});
 
 		sCliente.on('updateDispositivosDB', ( db ) => { 
-			Arduinode.updateDispositivos( db );
-			sCliente.emit('DBDispositivosUpdated', db);
+			
+
+			// Actualizacion de archivo JSON, sin tocar los estados de las salidas
+			if (DataStore.updateDB('dispositivos', db, false)) {
+
+				//Si pido actualizar, actualiza los datos a los clientes conectados
+				Arduinode.broadcastDB( db );
+			}
+			//Recarga de modelos en memoria
+			Arduinode.loadDispositivosDB();
 		});
 
 		sCliente.on('updateTareasDB', ( db ) => { 
@@ -80,9 +88,13 @@ http.listen( serverConf.port, serverConf.ip, () => {
 			sCliente.emit('horaServidor', new Date().getTime());	
 		}, 1000);		
 	});
-	// Carga lista de dispositivos en memoria
+	
 	Arduinode.DataStore = DataStore;
-	Arduinode.loadDispositivos( function(){}, true );
+
+	// Carga lista de dispositivos en memoria
+	Arduinode.loadDispositivosDB(function() {
+		Arduinode.getEstadosDispositivos();
+	});
 
 	taskManager.setConfig( serverConf );
 
