@@ -11,6 +11,29 @@ var socket 		= require('./socket')(),
 	_ 			= require('underscore');
 var Arduinode = require('./Arduinode');
 
+/**
+* Representa un Dispositivo Arduino. Permite:
+* 1) accionar las salidas que posee, (Luces, Bombas, Persianas);
+* 2) Consultar lista de salidas y sus estados
+*
+* @class Dispositivo
+* @constructor
+*/
+/**
+* Dirección IP del dispositivo
+* @property ip
+* @type String
+*/
+/**
+* Descripción del dispositivo
+* @property descripcion
+* @type String
+*/
+/**
+* Lista de salidas (instancias de Salida) del dispositivo
+* @property salidas
+* @type Array
+*/
 class Dispositivo {
 	constructor(_id, _ip, _descripcion) {
 		this.id_disp 	 = _id 	 || null;
@@ -22,6 +45,13 @@ class Dispositivo {
 		var salida = _.findWhere(this.salidas, { nro: parseInt(nro) });
 		return salida;
 	}
+/**
+* Accion sobre una salida de un dispositivo. Antes de accionar se consulta el estado de 
+* la salida. Si es distinto al estado deseado, se envia la orden y se hace broadcast
+* a los clientes conectados
+* @param params 
+* @method switchSalida
+*/
 	switchSalida(params, callback) {
 		
 		var salida = this.getSalidaByNro( params.nro );
@@ -58,59 +88,75 @@ class Dispositivo {
 			});
 		}
 	}
-	parseSalida(params, _data ) {
-		const This = this;
+/**
+* Parse datos de salidas desde _data
+* @param params Ip del dispositivo
+* @param _data Array de salidas sin procesar
+* @method parseSalidas
+*/
+	updateEstadoSalida( params ) {
+		// Si la salida existe en el JSON
+		var salidaFound = this.getSalidaByNro( params.nro );
+		var salida;
+		if ( salidaFound ) {
+			salida = JSON.parse(JSON.stringify(salidaFound));
+			salida.estado = params.estado;
+			salida.temporizada = params.temporizada;
+		}
+		else {
+			salida = this.addNewSalida(params);
+		}
+		return salida;
+	}
+	addNewSalida( params ) {
+		this.salidas.push({
+			nro	 : params.nro,
+			tipo : params.tipo,
+			descripcion : "Salida " + params.nro
+		});
+
+		var salida = {
+			nro			: params.nro,
+			tipo		: params.tipo,
+			descripcion	: "Salida " + params.nro,
+			ip			: params.ip,
+			estado		: params.estado,
+			temporizada	: params.temporizada
+		};
+
+		return salida;
+	}
+	parseSalidas(params, _data ) {
+		
 		if (_data && _data.length > 0) {
 
 			var newSalidas = false;
 			var parsed = [];
 			
-			_data.forEach(function(str) {
+			_data.forEach((str) => {
 				if (str && str.length) {
 					var posGuion 	= str.indexOf("-"),
 						posDospuntos= str.indexOf(":"),
-						posPunto 	= str.indexOf("."),
-						nro 	= str[posGuion+1] + str[posGuion+2];
+						posPunto 	= str.indexOf(".");
 					
 					var temporizada = 0;
 
 					if (posPunto > -1) {
 						temporizada = DateConvert.min_a_horario(str.substr( posPunto + 1));
 					}
-					// Si la salida existe en el JSON
-					var salidaFound = This.getSalidaByNro(nro );
-
-					if (salidaFound) {
-						var salida = JSON.parse(JSON.stringify(salidaFound));
-						salida.estado = parseInt( str[posDospuntos+1] );
-						salida.temporizada = (temporizada === null) ? 0 : temporizada;
+					if (!newSalidas) {
+						newSalidas = this.getSalidaByNro( params.nro );
 					}
-					else {
-						newSalidas = true;
-						var dispositivos = Arduinode.dispositivos;
-						var dispositivo = _.findWhere(dispositivos,{ ip: params.ip });
-						
-						dispositivo.salidas.push({
-							nro	 : parseInt( nro ),
-							tipo : str[0],
-							descripcion : "Salida " + nro
-						});
 
-						var salida = {
-							nro			: parseInt(nro),
-							tipo		: str[0],
-							descripcion	: "Salida " + nro,
-							ip			: params.ip,
-							estado		: parseInt( str[posDospuntos+1] ),
-							temporizada	: temporizada
-						};
-					}
-					parsed.push(salida);
+					params.temporizada = (temporizada === null) ? 0 : temporizada;
+					params.tipo = str[0];
+					params.estado = parseInt( str[posDospuntos+1] );
+					params.nro = parseInt(str[posGuion+1] + str[posGuion+2]);
+					parsed.push( this.updateEstadoSalida( params ) );
 				}
 			});
-
-			//Actualiza el JSON si se encontraron salidas nuevas
-			if ( newSalidas ) {
+			
+			if (newSalidas) {
 				Arduinode.updateDispositivos();
 			}
 			return parsed;
@@ -133,7 +179,7 @@ class Dispositivo {
 				this.version = response[0];				
 				if (tieneVersion) response.shift();
 				this.offline = false;
-				callback( this.parseSalida( params, response ));
+				callback( this.parseSalidas( params, response ) );
 			}
 			else {
 				callback();

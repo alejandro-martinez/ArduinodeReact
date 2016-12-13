@@ -61,9 +61,7 @@ http.listen( serverConf.port, serverConf.ip, () => {
 		});
 
 		sCliente.on('updateDispositivosDB', ( db ) => { 
-			if ( Arduinode.updateDispositivos( db )) {
-				Arduinode.loadDispositivos(function() {}, false);
-			}
+			Arduinode.updateDispositivos( db );
 			sCliente.emit('DBDispositivosUpdated', db);
 		});
 

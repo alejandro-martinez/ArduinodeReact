@@ -243,6 +243,7 @@ class Arduinode extends Component {
 
 		Socket.listen('DBDispositivosUpdated', ( db ) => {
 			if ( this.state.listenBroadcastUpdate ) {
+				console.log(db)
 				this.setState({ dispositivos: db });
 			}
     	});
