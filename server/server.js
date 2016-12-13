@@ -32,7 +32,7 @@ http.listen( serverConf.port, serverConf.ip, () => {
 	log("Server iniciado en: " + serverConf.ip + ":" + serverConf.port);
 
 	// Captura excepciones para no detener el servidor 
-	process.on('uncaughtException', (err) => log("Ocurrió un error:" + err));
+//	process.on('uncaughtException', (err) => log("Ocurrió un error:" + err));
 
 	// Registra middleware para capturar requests de SocketIO 
 	io.use( middleware );
@@ -42,7 +42,7 @@ http.listen( serverConf.port, serverConf.ip, () => {
 
 		sCliente.emit('claveApp', serverConf.claveApp);
 
-		sCliente.emit('DBDispositivosUpdated', Arduinode.dispositivos.lista);		
+		sCliente.emit('DBDispositivosUpdated', Arduinode.dispositivos);		
 		
 		// Referencia al socket conectado
 		Arduinode.io = taskManager.io = io;
@@ -51,8 +51,8 @@ http.listen( serverConf.port, serverConf.ip, () => {
 		Arduinode.listenSwitchEvents( serverConf );
 
 		sCliente.on('getDispositivosDB', () => { 
-			Arduinode.dispositivos.load( function() {
-				sCliente.emit('DBDispositivosUpdated', Arduinode.dispositivos.lista);
+			Arduinode.loadDispositivos( function() {
+				sCliente.emit('DBDispositivosUpdated', Arduinode.dispositivos);
 			}, true)
 		});
 
@@ -61,8 +61,8 @@ http.listen( serverConf.port, serverConf.ip, () => {
 		});
 
 		sCliente.on('updateDispositivosDB', ( db ) => { 
-			if ( Arduinode.dispositivos.update( db )) {
-				Arduinode.dispositivos.load(function() {}, false);
+			if ( Arduinode.updateDispositivos( db )) {
+				Arduinode.loadDispositivos(function() {}, false);
 			}
 			sCliente.emit('DBDispositivosUpdated', db);
 		});
@@ -75,7 +75,7 @@ http.listen( serverConf.port, serverConf.ip, () => {
 
 		// Accion sobre una salida (Persiana, Luz, Bomba)
 		sCliente.on('switchSalida',( params ) => {
-			Arduinode.dispositivos.switch( params, function(){});
+			Arduinode.switchSalida( params, function(){});
 		});
 
 		setInterval( () => {
@@ -83,7 +83,8 @@ http.listen( serverConf.port, serverConf.ip, () => {
 		}, 1000);		
 	});
 	// Carga lista de dispositivos en memoria
-	Arduinode.dispositivos.load( function(){}, true );
+	Arduinode.DataStore = DataStore;
+	Arduinode.loadDispositivos( function(){}, true );
 
 	taskManager.setConfig( serverConf );
 

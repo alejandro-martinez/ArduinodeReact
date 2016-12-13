@@ -65,7 +65,7 @@ export class EditRow extends Component {
 			if (this.state.edit) {
 				this.setState({ edit: false });
 			}
-		},3000);
+		},4000);
 	}
 	onChange(e) {
 		var model = this.props.model;
@@ -73,7 +73,7 @@ export class EditRow extends Component {
 		clearTimeout( this.noChangesTimer );		
 
 		var validator = 'isValid' + this.props.inputKey.toUpperCase();
-		this.props.root.setState({ listenBroadcastUpdate: false });
+		this.props.root.setState({ listenBroadcastUpdate: false, edit: true });
 		if ( Validator[validator]( e.target.value ) ) {
 			model[this.props.inputKey] =  e.target.value;
 			this.typingTimer = setTimeout( this.doneTyping, this.doneTypingInterval );

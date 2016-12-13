@@ -41,7 +41,7 @@ export class Validator {
 		return descripcion && descripcion.length;
 	}
 	static isValidIP( ip ) {		
-		return (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ip));
+		return (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[1]?[0-9][0-9]?)$/.test(ip));
 	}
 }
 
@@ -51,7 +51,7 @@ export class Dispositivo extends DB {
 	}
 	static newModel() {
 		var model = { 
-			ip: "192.168.20.000", 
+			ip: "192.168.20.", 
 			descripcion: "Nuevo dispositivo",
 			salidas: []
 		};

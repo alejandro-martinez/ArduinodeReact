@@ -8,7 +8,8 @@
 
 var fs	= require('fs'),
 	log	= require('./utils/Log');
-	_	= require('underscore');
+	_	= require('underscore'),
+	Dispositivo = require('./Main').Dispositivo;
 
 /**
 * Clase (singleton) para trabajar con archivos JSON
@@ -65,6 +66,14 @@ function DataStore() {
 			log("No se pudo actualizar el archivo de " + filename, ". data No es un array");
 		}
 		return false;
+	};
+	this.reloadDispositivos = function( callback) {
+		this.getFile('dispositivos').forEach((d) => {
+			var _d = new Dispositivo( d.id_disp, d.ip, d.descripcion );
+			_d.setSalidas( d.salidas );
+			callback(_d);
+		});
+		return true;
 	};
 };
 

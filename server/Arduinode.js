@@ -4,19 +4,15 @@
  * @module Arduinode
  */
 
-var clases 		= require('./Main.js'),
-	socket 		= require('./socket')(),
+var	socket 		= require('./socket')(),
 	DateConvert = require('./utils/DateConvert')(),
 	Arrays 		= require('./utils/Arrays')(),
 	_ 			= require('underscore'),
 	serverConfig= require('./config/config.json'),
-	DataStore 	= require('./DataStore').DataStore,
 	log			= require('./utils/Log');
 	net 		= require('net');
-	Dispositivo = clases.Dispositivo;
 	const 	 ON = 0, 
 			OFF = 1;
-
 /**
 * Clase (Singleton, Facade) principal de la aplicación
 * - Interactua con Dispositivo y Socket;
@@ -38,8 +34,10 @@ var clases 		= require('./Main.js'),
 */
 Arduinode = {
 	io: {},
+	DataStore: {},
 	socketTCP: null,
-
+	sCliente: null,
+	dispositivos: [],
 /**
 * Recibe un array de salidas con los estados actuales de un dispositivo,
 * y actualiza las salidas del dispositivo en memoria
@@ -55,16 +53,15 @@ Arduinode = {
 				ip: This.ip
 			});
 		});
+		var dispositivo = this.getDispositivoByIP( This.ip );
 		
-		var dispositivo = this.dispositivos.getByIP( This.ip );
-
 		salidas.map((t) => {
 			var index = dispositivo.salidas.findIndex((s) => { 
 				return s.nro == t.nro;
 			});
 			dispositivo.salidas[index].estado = t.estado;
 		});
-		this.io.sockets.emit('DBDispositivosUpdated', this.dispositivos.lista);
+		this.broadcastDB();
 	},
 /**
 * Registra un socket para escuchar eventos de los dispositivos Arduino reales.
@@ -99,12 +96,14 @@ Arduinode = {
 			});
 		}
 	},
-	dispositivos: {
-		lista: [],
-		sCliente: null,
-		getByIP: function( ip ) { 
-			return _.findWhere( this.lista,{ ip: ip }); 
-		},
+	broadcastDB: function() {
+		if ( this.io.hasOwnProperty('sockets') ) {
+			this.io.sockets.emit('DBDispositivosUpdated', this.dispositivos);
+		}
+	},
+	getDispositivoByIP: function( ip ) { 
+		return _.findWhere( this.dispositivos,{ ip: ip }); 
+	},
 /**
 * Ejecuta un comando sobre una salida de un Dispositivo
 * @method switch
@@ -112,96 +111,81 @@ Arduinode = {
 * @param callback Funcion callback que se ejecuta cuando se completa la operaciòn
 * @return Boolean
 */
-		switch: function( params, callback ) {
-			var dispositivo = this.getByIP( params.ip );
-			if (dispositivo) {
-				dispositivo.switchSalida(params,(response) => {
-					if (callback) {
-						callback( response );
+	switchSalida: function( params, callback ) {
+		var dispositivo = this.getDispositivoByIP( params.ip );
+		if (dispositivo) {
+			dispositivo.switchSalida(params,(response) => {
+				if (callback) {
+					callback( response );
+				}
+			});
+		}
+	},
+	removeMemKeys: ( remove, arr ) => {
+		var keys = ['offline','estado', 'accion','comando','ip','temporizada'];
+		var lista = arr || this.dispositivos;
+		
+		lista.forEach( ( disp ) => {
+			disp.salidas.forEach( ( s, k, _this ) => {
+				keys.forEach((_k) => {
+					if (Object.keys( s ).indexOf(_k) > -1) {
+						if ( remove ) {
+							delete _this[k][_k];
+						}
+					}
+					else {
+						if (!remove) {
+							_this[k][_k] = null;
+						}
 					}
 				});
-			}
-		},
-		removeMemKeys: ( remove, arr ) => {
-			var keys = ['offline','estado', 'accion','comando','ip','temporizada'];
-			var lista = arr || this.lista;
-			
-			lista.forEach( ( disp ) => {
-				disp.salidas.forEach( ( s, k, _this ) => {
-					keys.forEach((_k) => {
-						if (Object.keys( s ).indexOf(_k) > -1) {
-							if ( remove ) {
-								delete _this[k][_k];
-							}
-						}
-						else {
-							if (!remove) {
-								_this[k][_k] = null;
-							}
-						}
-					});
-				});
 			});
-			return lista;
-		},
-		update: function( dispositivos ) {
+		});
+		return lista;
+	},
+	updateDispositivos: function( dispositivos ) {
 
-			if (!dispositivos) dispositivos = this.lista;
+		if (!dispositivos) dispositivos = this.dispositivos;
 
-			var dispositivos = this.removeMemKeys( true, dispositivos );
-			
-			if ( DataStore.updateDB('dispositivos', dispositivos) ) {
-				this.reloadDispositivos();
-				
-				if ( Arduinode.io ) {
-					Arduinode.io.sockets.emit('DBDispositivosUpdated', this.lista);
-				}
-				return true;
-			}
-			return false;
-		},
-		reloadDispositivos: function() {
-			this.lista = [];
-
-			DataStore.getFile('dispositivos').forEach((d) => {
-				var _d = new Dispositivo( d.id_disp, d.ip, d.descripcion );
-				_d.setSalidas( d.salidas );
-				this.lista.push(_d);
+		var dispositivos = this.removeMemKeys( true, dispositivos );
+		
+		if ( this.DataStore.updateDB('dispositivos', dispositivos) ) {
+			this.dispositivos = [];
+			this.DataStore.reloadDispositivos(( disp )=> {
+				this.dispositivos.push( disp);
 			});
+			this.broadcastDB();
 			return true;
-		},
+		}
+		return false;
+	},
 /**
 * Registra dispositivos cargados en el modelo (dispositivos.json),
 * y los sincroniza con el estado de los dispositivos Arduino reales
 * en atributo lista de esta clase
 * @method load
 */
-		load: function( callback, broadcast ) {
-			var This = this;
-			if (this.reloadDispositivos()) {
-				Arrays.asyncLoop( this.lista, ( disp, report ) => {
-					
-					if ( disp ) {
-						disp.getSalidas( (estados) => {
-							if ( estados ) disp.setSalidas( estados );
-							report();
-						});
-					}
-				},() => {
-					
-					Arduinode.dispositivos.removeMemKeys( false, this.lista );
-
-					if (callback) callback();
-					if ( this.io && this.io.hasOwnProperty('sockets') 
-						&& broadcast ) {
-
-						this.io.sockets.emit('DBDispositivosUpdated', this.lista);
-					}
+	loadDispositivos: function( callback, broadcast ) {
+		this.DataStore.reloadDispositivos(( disp )=> {
+			this.dispositivos.push( disp);
+		});
+		Arrays.asyncLoop( this.dispositivos, ( disp, report ) => {
+			
+			if ( disp ) {
+				disp.getSalidas( (estados) => {
+					if ( estados ) disp.setSalidas( estados );
+					report();
 				});
 			}
+		},() => {
+			
+			this.removeMemKeys( false, this.dispositivos );
 
-			return this;
-		}
+			if (callback) callback();
+			if ( broadcast ) this.broadcastDB();
+		});
+		
+		return this;
 	}
 };
 module.exports = Arduinode;

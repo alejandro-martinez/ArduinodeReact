@@ -115,7 +115,7 @@ const Programador = class {
 				d.temporizada = (accion) ? 0 : subtarea.temporizada;
 				d.estado 	  = (accion) ? accion : subtarea.tarea.accion;
 
-				Arduinode.dispositivos.switch( d, (response) => { 
+				Arduinode.switchSalida( d, (response) => { 
 					if (typeof response != 'undefined') executed++;
 					report();
 				});
