@@ -44,27 +44,12 @@ Arduinode = {
 @params salidas_raw Array de salidas
 */
 	updateEstadoSalidas: function( salidas_raw ) {
-		var This = this;
 		var salidas = [];
-		salidas_raw.forEach( function(v) {
-			salidas.push({ 
-				nro: parseInt( v.slice(1,-1) ), 
-				estado: parseInt( v.slice(-1)), 
-				temporizada: 0,
-				ip: This.ip
-			});
+		salidas_raw.forEach((v) => {
+			salidas.push({ nro: parseInt( v.slice(1,-1) ), estado: parseInt( v.slice(-1)) });
 		});
-		var dispositivo = this.getDispositivoByIP( This.ip );
-		salidas.map( (t) => {
-			dispositivo.updateEstadoSalida( t );
-		})
-		/*
-		salidas.map((t) => {
-			var index = dispositivo.salidas.findIndex((s) => { 
-				return s.nro == t.nro;
-			});
-			dispositivo.salidas[index].estado = t.estado;
-		});*/
+		salidas.forEach((s) => { this.getDispositivoByIP( this.ip ).updateEstadoSalida(s) });
+
 		this.broadcastDB();
 	},
 /**

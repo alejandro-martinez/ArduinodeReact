@@ -99,9 +99,8 @@ class Dispositivo {
 		var salidaFound = this.getSalidaByNro( params.nro );
 		var salida;
 		if ( salidaFound ) {
-			salida = JSON.parse(JSON.stringify(salidaFound));
-			salida.estado = params.estado;
-			salida.temporizada = params.temporizada;
+			salidaFound.estado = params.estado;
+			salidaFound.temporizada = params.temporizada || 0;
 		}
 		else {
 			salida = this.addNewSalida(params);
