@@ -24,8 +24,9 @@ export class Header extends Component {
 		}		
 	}
 	render() {
-		var isAdmin = this.props.root.state.adminMode;
-		var adminClass = (isAdmin) ? 'Logout' : 'Login';
+		var isAdmin = this.props.root.state.adminMode,
+			adminClass = ( isAdmin ) ? 'Logout' : 'Login';
+			
 		return (
 			<header>
 				<h1 onClick={ this.refresh }>{ this.props.root.state.page }</h1>

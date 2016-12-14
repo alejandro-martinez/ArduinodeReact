@@ -322,14 +322,19 @@ header,.footer {
 .footer .listIcons .iconReloj {
     width: 95px;
 }
+.listIcons .iconDELETE {
+    padding-top:5px !important;
+    color:#fff !important;
+    font-size:1.7em;
+}
+.footer #loading div {
+    margin: -8px auto;
+}
 #loading {
     bottom: 8px;
     left: 50%;
     margin-left: -20px;
     position: absolute;
-}
-.footer #loading div {
-    margin: -8px auto;
 }
 .menuList li {
     margin: 15px 5px;

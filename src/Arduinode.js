@@ -176,7 +176,7 @@ class Home extends Component {
 class Footer extends Component {
 	constructor(props) {
 		super(props);
-		['onAddNew','onTimerClick','onUpdate'].forEach((m)=>{
+		['onAddNew','onTimerClick','onUpdate','onTimerReset'].forEach((m)=>{
 			this[m] = this[m].bind( this );
 		});
 
@@ -194,6 +194,7 @@ class Footer extends Component {
 	onUpdate() { this.props.root.updateDB(); }
 	onAddNew() { Utils.fireEvent("onAddNew"); }
 	onTimerClick() { Utils.fireEvent("onTimerClick"); }
+	onTimerReset() { this.props.root.setState({ temporizacion: '00:00'})}
 	render() {
 		return (
 			<div className="footer">
@@ -205,6 +206,9 @@ class Footer extends Component {
 						<a onClick={ this.onTimerClick }>
 							<span>{ this.props.root.state.temporizacion }</span>
 						</a>
+					</li>
+					<li className={'show' + (this.props.root.state.temporizacion != '00:00')}>
+						<a className="iconDELETE" onClick={ this.onTimerReset }></a>
 					</li>
 					<li className={'show' + (this.props.root.state.edit && this.props.root.state.adminMode)}>
 						<a onClick={ this.onUpdate } className='iconOK'></a>

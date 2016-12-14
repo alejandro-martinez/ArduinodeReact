@@ -71,7 +71,13 @@ class Luz extends Component {
 		this.state = { edit: false };
 	}
 	onSwitch( salida ) {
-		salida.estado = (salida.estado === 0) ? 1 : 0;
+		if ( this.root.state.temporizacion != '00:00' && 
+			 this.root.state.page === 'Luces encendidas') {
+			salida.estado = 0;
+		}
+		else {
+			salida.estado = (salida.estado === 0) ? 1 : 0;	
+		}
 		salida.temporizada = Utils.horario_a_min( this.root.state.temporizacion );
 		Socket.emit('switchSalida', salida );
 	}
