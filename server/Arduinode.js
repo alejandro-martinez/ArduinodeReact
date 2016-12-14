@@ -139,9 +139,8 @@ Arduinode = {
 
 		return this;
 	},
-	getEstadosDispositivos() {
+	getEstadosDispositivos( callback ) {
 		Arrays.asyncLoop( this.dispositivos, ( disp, report ) => {
-			
 			if ( disp ) {
 				disp.getSalidas( (estados) => {
 					if ( estados ) disp.setSalidas( estados );

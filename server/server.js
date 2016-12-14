@@ -53,7 +53,7 @@ http.listen( serverConf.port, serverConf.ip, () => {
 		sCliente.on('getDispositivosDB', () => { 
 			Arduinode.loadDispositivosDB( function() {
 				sCliente.emit('DBDispositivosUpdated', Arduinode.dispositivos);
-			}, false)
+			})
 		});
 
 		sCliente.on('getTareasDB', () => { 
@@ -92,9 +92,8 @@ http.listen( serverConf.port, serverConf.ip, () => {
 	Arduinode.DataStore = DataStore;
 
 	// Carga lista de dispositivos en memoria
-	Arduinode.loadDispositivosDB(function() {
-		Arduinode.getEstadosDispositivos();
-	});
+	Arduinode.loadDispositivosDB();
+	Arduinode.getEstadosDispositivos();
 
 	taskManager.setConfig( serverConf );
 

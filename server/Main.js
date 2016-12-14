@@ -96,14 +96,13 @@ class Dispositivo {
 */
 	updateEstadoSalida( params ) {
 		// Si la salida existe en el JSON
-		var salidaFound = this.getSalidaByNro( params.nro );
-		var salida;
-		if ( salidaFound ) {
-			salidaFound.estado = params.estado;
-			salidaFound.temporizada = params.temporizada || 0;
+		var salida = this.getSalidaByNro( params.nro );
+		if ( salida ) {
+			salida.estado = params.estado;
+			salida.temporizada = params.temporizada || 0;
 		}
 		else {
-			salida = this.addNewSalida(params);
+			salida = this.addNewSalida( params );
 		}
 		return salida;
 	}
@@ -162,7 +161,7 @@ class Dispositivo {
 	}
 	getSalidas( callback ) {
 		var params = { comando: 'G', ip: this.ip };
-		
+
 		//Asume que el dispositivo no está disponible, sino, piso la versión
 		this.version = "V.XXX";
 		this.offline = true;
@@ -189,21 +188,25 @@ class Dispositivo {
 
 		if ( salidas && salidas.length > 1) {
 			salidas.forEach( (s) => {
-				var salida = SalidaFactory.create( s.nro, s.tipo, s.descripcion, this.ip );
+				
+				if (s ) {
+					var salida = SalidaFactory.create( s.nro, s.tipo, s.descripcion, this.ip );
 
-				// Actualiza estado si viene en el array
-				if ( s.temporizada && salida.temporizada !== null ) {
-					salida.temporizada = s.temporizada;
+					// Actualiza estado si viene en el array
+					if ( s.temporizada && salida.temporizada !== null ) {
+						salida.temporizada = s.temporizada;
+					}
+					salida.estado = s.estado;
+					salida.ip = this.ip;
+					this.salidas.push( salida);
 				}
-				salida.estado = s.estado;
-				salida.ip = this.ip;
-				this.salidas.push( salida);
 			});
+			if (this.salidas.length) {
+				this.salidas = _.uniq(this.salidas, function (item, key, a) {
+		            return item.ip && item.nro;
+		        });
+			}
 		}
-
-		this.salidas = _.uniq(this.salidas, function (item, key, a) {
-            return item.ip && item.nro;
-        });
 	}
 };
 
