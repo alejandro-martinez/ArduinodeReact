@@ -464,6 +464,11 @@ table.salidas td {
     display: inline-block;
     border: none !important;
 }
+@media screen and (max-width:370px){
+    table.salidas td h4 {
+        max-width:170px;
+    }
+}
 table.salidas td h4 {
     padding: 0;
     float: left;
