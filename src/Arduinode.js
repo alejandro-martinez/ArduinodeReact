@@ -8,6 +8,7 @@ import Loading from 'react-loading';
 import { Dispositivos } from './Dispositivos';
 import { SalidasDispositivo, SalidasActivas } from './Salidas';
 import { Tareas, TareaDispositivos, Subtareas } from './Tareas';
+import { Configuracion } from './Configuracion';
 
 var menu = [
   {
@@ -21,6 +22,10 @@ var menu = [
   {
     "text": "Tareas programadas",
     "url": "/Tareas"
+  },
+  {
+    "text": "Configuración",
+    "url": "/Configuracion"
   }
 ];
 
@@ -282,6 +287,7 @@ class Arduinode extends Component {
 						<Route root={This} path="Dispositivos" component={ Dispositivos } />
 						<Route root={this} path="Dispositivos/salidasOn" component={ SalidasActivas } />
 						<Route root={This} path="Dispositivos/salidas/:ip" component={ SalidasDispositivo } />
+						<Route root={This} path="Configuracion" component={ Configuracion } />
 					</Router>
 				</div>
 				<Footer root={This}></Footer>
