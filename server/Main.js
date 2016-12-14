@@ -171,8 +171,11 @@ class Dispositivo {
 			if ( response ) {
 				response = response.split("\n");
 				var tieneVersion = (response[0].slice(0,1).trim() === "V");
-				this.version = response[0];				
-				if (tieneVersion) response.shift();
+				
+				if (tieneVersion) {
+					this.version = response[0];
+					response.shift();
+				}
 				this.offline = false;
 				callback( this.parseSalidas( params, response ) );
 			}
