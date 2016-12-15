@@ -75,7 +75,7 @@ export class EditRow extends Component {
 
 		var validator = 'isValid' + this.props.inputKey.toUpperCase();
 		this.props.root.setState({ listenBroadcastUpdate: false, edit: true });
-		if ( Validator[validator]( e.target.value ) ) {
+		if (!Validator[validator] || Validator[validator]( e.target.value )) {
 			model[this.props.inputKey] =  e.target.value;
 			this.typingTimer = setTimeout( this.doneTyping, this.doneTypingInterval );
 			this.setState({ model: model });

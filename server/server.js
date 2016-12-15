@@ -22,7 +22,8 @@ var	express 	= require('express'),
 	DataStore 	= require('./DataStore').DataStore;
 				  require('./controllers')( app );	
 	app.use( compress() );
-	var exec = require('child_process').exec;
+	var child_process = require('child_process');
+
 
 var serverConf = require( configPath );
 // Server HTTP
@@ -100,11 +101,18 @@ http.listen( serverConf.port, serverConf.ip, () => {
 			});
 			
 		});
-
-		sCliente.on('resetServer', () => {
-			process.exit();
-		});
 		
+		sCliente.on('resetServer', () => {
+			process.on('SIGINT', function() {
+				log('Reseteando server...');
+				child_process.fork(__filename);
+				process.exit(0);
+			});
+			
+			setTimeout(function(){}, 1000000);
+			child_process.exec('kill -2 ' + process.pid);			
+		});
+
 		setInterval( () => {
 			sCliente.emit('horaServidor', new Date().getTime());	
 		}, 1000 * 60);

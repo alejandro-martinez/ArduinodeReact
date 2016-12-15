@@ -710,3 +710,13 @@ div.Arduinode.adminModetrue .footer {
 div.Arduinode.adminModetrue .switch.on{
     background:#268074 !important;
 }
+.ajustes {
+    padding:0 10px;
+}
+.ajustes label {
+    font-weight:100;
+}
+.ajustes label td{
+    padding:10px 0;
+    min-width:100px;
+}

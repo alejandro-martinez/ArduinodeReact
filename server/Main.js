@@ -9,7 +9,7 @@ var socket 		= require('./socket')(),
 	events 		= require("events"),
 	log			= require('./utils/Log');
 	_ 			= require('underscore');
-var Arduinode = require('./Arduinode');
+var Arduinode 	= require('./Arduinode');
 
 /**
 * Representa un Dispositivo Arduino. Permite:
