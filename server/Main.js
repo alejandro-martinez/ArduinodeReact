@@ -141,7 +141,9 @@ class Dispositivo {
 					}
 					salidaExiste = this.getSalidaByNro( params.nro );
 					
-					if (!salidaExiste && !newSalidas) newSalidas = true;
+					if (!salidaExiste && newSalidas === false) {
+						newSalidas = true;
+					}
 
 					params.temporizada = (temporizada === null) ? 0 : temporizada;
 					params.tipo = str[0];
@@ -153,9 +155,8 @@ class Dispositivo {
 				}
 			});
 			
-			if (newSalidas) {
-				Arduinode.updateDispositivos();
-			}
+			if (newSalidas) Arduinode.updateDispositivos();
+			
 			return parsed;
 		}
 	}

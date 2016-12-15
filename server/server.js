@@ -41,7 +41,9 @@ http.listen( serverConf.port, serverConf.ip, () => {
 
 		sCliente.emit('configUpdated', serverConf);
 
-		sCliente.emit('DBDispositivosUpdated', Arduinode.dispositivos);		
+		sCliente.emit('DBDispositivosUpdated', Arduinode.dispositivos);
+
+		sCliente.emit('DBZonasUpdated', DataStore.zonas);
 		
 		// Referencia al socket conectado
 		Arduinode.io = taskManager.io = io;
@@ -49,10 +51,16 @@ http.listen( serverConf.port, serverConf.ip, () => {
 		// Crea socket que recibe eventos de los disp. Arduino
 		Arduinode.listenSwitchEvents( serverConf );
 
+		sCliente.on('getZonasDB', () => { 
+			Arduinode.loadDispositivosDB( function() {
+				sCliente.emit('DBZonasUpdated', DataStore.zonas);
+			});
+		});
+
 		sCliente.on('getDispositivosDB', () => { 
-			Arduinode.loadDispositivosDB();
-			Arduinode.getEstadosDispositivos( sCliente );
-			sCliente.emit('DBDispositivosUpdated', Arduinode.dispositivos);
+			Arduinode.getEstadosDispositivos( false, function() {
+				sCliente.emit('DBDispositivosUpdated', Arduinode.dispositivos);
+			});
 		});
 
 		sCliente.on('getTareasDB', () => { 
@@ -60,16 +68,18 @@ http.listen( serverConf.port, serverConf.ip, () => {
 		});
 
 		sCliente.on('updateDispositivosDB', ( db ) => { 
-			
-
 			// Actualizacion de archivo JSON, sin tocar los estados de las salidas
 			if (DataStore.updateDB('dispositivos', db, false)) {
-
 				//Si pido actualizar, actualiza los datos a los clientes conectados
 				Arduinode.broadcastDB( db );
 			}
 			//Recarga de modelos en memoria
 			Arduinode.loadDispositivosDB();
+		});
+		
+		sCliente.on('updateZonasDB', ( db ) => { 
+			DataStore.updateDB('zonas', db);
+			io.sockets.emit('DBZonasUpdated', db);
 		});
 
 		sCliente.on('updateTareasDB', ( db ) => { 
@@ -92,14 +102,14 @@ http.listen( serverConf.port, serverConf.ip, () => {
 
 		setInterval( () => {
 			sCliente.emit('horaServidor', new Date().getTime());	
-		}, 1000);		
+		}, 1000 * 60);		
 	});
 	
 	Arduinode.DataStore = DataStore;
 
 	// Carga lista de dispositivos en memoria
 	Arduinode.loadDispositivosDB();
-	Arduinode.getEstadosDispositivos();
+	Arduinode.getEstadosDispositivos(true);
 
 	taskManager.setConfig( serverConf );
 
