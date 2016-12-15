@@ -8,6 +8,7 @@ import Loading from 'react-loading';
 import { Dispositivos } from './Dispositivos';
 import { SalidasDispositivo, SalidasActivas } from './Salidas';
 import { Tareas, TareaDispositivos, Subtareas } from './Tareas';
+import { Zonas, ZonasSalidas } from './Zonas';
 
 var menu = [
   {
@@ -21,6 +22,10 @@ var menu = [
   {
     "text": "Tareas programadas",
     "url": "/Tareas"
+  },
+  {
+    "text": "Zonas",
+    "url": "/Zonas"
   }
 ];
 
@@ -43,6 +48,26 @@ export class Validator {
 	static isValidIP( ip ) {		
 		return (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[1]?[0-9][0-9]?)$/.test(ip));
 	}
+}
+export class Zona extends DB {
+	constructor() {
+		super('Zonas');
+	}
+	static newModel() {
+		var model = { 
+			id: Utils.randomID(),
+			descripcion: "Nueva zona",
+			salidas: []
+		};
+
+		return model;
+	}
+	update(db, callback) {
+		super.update(db);
+		callback();
+	}
+	static isValidDESCRIPCION = Validator.isValiddescripcion;
+	static isValidIP = Validator.isValidIP;
 }
 
 export class Dispositivo extends DB {
@@ -183,7 +208,7 @@ class Footer extends Component {
 		this.state = { loading: false };
 
 		Socket.listen('horaServidor', ( hora ) => {
-    		this.setState({ horaServidor: new Date(hora).toString().slice(16,24) });
+    		this.setState({ horaServidor: new Date(hora).toString().slice(16,21) });
     	});
 	}
 	componentDidMount() {		
@@ -238,7 +263,8 @@ class Arduinode extends Component {
 			tareas: [], 
 			adminMode: false,
 			temporizacion: "00:00",
-			dispositivos: []
+			dispositivos: [],
+			zonas:[]
 		};
 
 		this.updateDB = this.updateDB.bind(this);
@@ -250,7 +276,11 @@ class Arduinode extends Component {
 				this.setState({ dispositivos: db });
 			}
     	});
-
+    	Socket.listen('DBZonasUpdated', ( db ) => {
+			if ( this.state.listenBroadcastUpdate ) {
+				this.setState({ zonas: db });
+			}
+    	});
     	Socket.listen('claveApp', ( clave ) => {
     		this.setState({ clave: clave });
     	});
@@ -279,6 +309,8 @@ class Arduinode extends Component {
 						<Route root={This} path="Tareas" component={ Tareas } />
 						<Route root={This} path="Tareas/subtareas/:id" component={ Subtareas } />
 						<Route root={This} path="Tareas/:id/dispositivos" component={ TareaDispositivos } />
+						<Route root={This} path="Zonas" component={ Zonas } />
+						<Route root={This} path="Zonas/:id/salidas" component={ ZonasSalidas } />
 						<Route root={This} path="Dispositivos" component={ Dispositivos } />
 						<Route root={this} path="Dispositivos/salidasOn" component={ SalidasActivas } />
 						<Route root={This} path="Dispositivos/salidas/:ip" component={ SalidasDispositivo } />

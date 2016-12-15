@@ -35,8 +35,8 @@ var fs	= require('fs'),
 * @type Array
 */
 function DataStore() {
-	this.dispositivos = [];
-	this.tareas 	  = [];
+	this.dispositivos 	= [];
+	this.tareas 	  	= [];
 	this.getFile = function( file ) {
 		var filePath = './models/' + file + '.json';
 
@@ -48,6 +48,7 @@ function DataStore() {
 		this[file] = content;
 		return content;
 	};
+	this.zonas = this.getFile('zonas');
 /**
 * Método para actualizar JSON
 * @method updateDB

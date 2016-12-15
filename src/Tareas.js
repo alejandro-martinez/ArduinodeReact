@@ -68,10 +68,10 @@ export class Tareas extends Component {
 					<td>								  
 					<ul className="listIcons tareasIcons">
 						<li><Link className={'iconLAMP' + item.accion} onClick={ this.onSetAccion.bind(this, item) }></Link></li>
-						<li><Link className={'iconACTIVA' + item.activa } onClick={ this.onSetActiva.bind(this, item) }></Link></li>
+						<li className={'iconACTIVA' + item.activa }><Link onClick={ this.onSetActiva.bind(this, item) }></Link></li>
 						<li><Link className="iconDELETE" onClick={ this.onRemove.bind(this,item) }></Link></li>
 						<li className="iconReloj"><Link to={'Tareas/subtareas/' + item.id}></Link></li>
-						<li><Link to={'Tareas/' + item.id + '/dispositivos'}>&#9854;</Link></li>
+						<li className="iconDispositivos"><Link to={'Tareas/' + item.id + '/dispositivos'}>&#9854;</Link></li>
 					</ul>
 					</td>
 				</tr>
