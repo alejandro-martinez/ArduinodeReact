@@ -75,6 +75,7 @@ http.listen( serverConf.port, serverConf.ip, () => {
 				//Si pido actualizar, actualiza los datos a los clientes conectados
 				Arduinode.broadcastDB( db );
 			}
+
 			//Recarga de modelos en memoria
 			Arduinode.loadDispositivosDB();
 		});
@@ -117,6 +118,8 @@ http.listen( serverConf.port, serverConf.ip, () => {
 			setTimeout(function(){}, 1000000);
 			child_process.exec('kill -2 ' + process.pid);			
 		});
+		
+		sCliente.emit('horaServidor', new Date().getTime());	
 
 		setInterval( () => {
 			sCliente.emit('horaServidor', new Date().getTime());	
