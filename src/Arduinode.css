@@ -653,7 +653,27 @@ table.tareaDispositivos.adminfalse .iconDELETE {
 .zonas tr{
     overflow:hidden;
 }
-.zonas td.icons {
-    margin-top:12px;
+table.zonas tr td.icons{
+    margin-top:-37px;
     float:right;
+    display: inline-block !important;
+}
+table.zonas.admintrue tr td > div {
+    width:auto;
+}
+table.zonas.admintrue tr td.icons{
+    margin-top:4px;
+}
+.adminfalse .zonasIcons li {
+    display:none;
+}
+.adminfalse .zonasIcons li:last-child {
+    display:block;
+}
+.zonasIcons li:last-child .switch:after{
+    left:11px;
+}
+
+.adminfalse .zonasIcons li:last-child .switchContainer{
+    display:block;
 }

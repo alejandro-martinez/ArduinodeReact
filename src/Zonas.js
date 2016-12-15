@@ -23,8 +23,15 @@ export class Zonas extends Component {
 		this.state = { edit: false };
 	}
 	onSwitch(zona, e) {
-		console.log("zona",zona,e)
-		this.props.route.root.setState({edit: true});
+		zona.estado = !zona.estado;
+		zona.dispositivos.forEach((salida) => {
+			Object.assign(salida, {
+				estado: salida.estado ? 0 : 1,
+				temporizada: 0
+			});
+			Socket.emit('switchSalida', salida);
+
+		});
 	}
 	onAddNew() {
 		var zonas = this.props.route.root.state.zonas;
@@ -58,7 +65,7 @@ export class Zonas extends Component {
 						<li>
 							<Toggle model={ item } 
 									onSwitch={ this.onSwitch } 
-									on={true}
+									on={ item.estado == 0 }
 									switchClass='showtrue temporizadafalse'
 							/>
 						</li>						

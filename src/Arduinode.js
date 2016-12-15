@@ -274,17 +274,49 @@ class Arduinode extends Component {
 
 		Socket.listen('DBDispositivosUpdated', ( db ) => {
 			if ( this.state.listenBroadcastUpdate ) {
-				this.setState({ dispositivos: db });
+				this.setState({ dispositivos: db },() => this.updateEstadosZonas());
 			}
     	});
     	Socket.listen('DBZonasUpdated', ( db ) => {
 			if ( this.state.listenBroadcastUpdate ) {
-				this.setState({ zonas: db });
+				this.setState({ zonas: db }, () => this.updateEstadosZonas());
 			}
     	});
     	Socket.listen('claveApp', ( clave ) => {
     		this.setState({ clave: clave });
     	});
+	}
+	getEstadoSalida( params ) {
+		var disp = this.getDispositivoByIP( params.ip );
+		
+		if (!disp.offline) {
+			var found = disp.salidas.filter(function(s, k, _this) { 
+				return s.nro == params.nro;
+			});
+			if (found.length) return found[0].estado;	
+		}
+
+		return 1;
+	}
+	updateEstadosZonas() {
+		if (this.state.zonas.length) {
+			var encendidas = 0;
+
+			this.state.zonas.forEach((z, k, _this) => {
+				
+				z.dispositivos.forEach((s) => {
+					s.estado = this.getEstadoSalida( s );
+					if (s.estado == 0) encendidas++;
+				});
+				if (encendidas === z.dispositivos.length) {
+					_this[k].estado = 0;
+				}
+				else {
+					_this[k].estado = 1;
+					this.forceUpdate();
+				}
+			});
+		}
 	}
 	getDispositivoByIP( ip ) {
 		return this.state.dispositivos.filter((d) => { return d.ip == ip; })[0];
