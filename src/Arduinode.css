@@ -634,9 +634,6 @@ table.tareaDispositivos.adminfalse .iconDELETE {
     display: none;
 }
 /* Zonas */
-.zonas td:first-child {
-    width:50%;
-}
 .zonasIcons {
     text-align:right;    
 }
@@ -657,6 +654,6 @@ table.tareaDispositivos.adminfalse .iconDELETE {
     overflow:hidden;
 }
 .zonas td.icons {
-    margin-top:-50px;
+    margin-top:12px;
     float:right;
 }

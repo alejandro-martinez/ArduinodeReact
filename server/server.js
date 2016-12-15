@@ -80,6 +80,11 @@ http.listen( serverConf.port, serverConf.ip, () => {
 			//Recarga de modelos en memoria
 			Arduinode.loadDispositivosDB();
 		});
+		
+		sCliente.on('updateZonasDB', ( db ) => { 
+			DataStore.updateDB('zonas', db);
+			io.sockets.emit('DBZonasUpdated', db);
+		});
 
 		sCliente.on('updateTareasDB', ( db ) => { 
 			DataStore.updateDB('tareas', db);

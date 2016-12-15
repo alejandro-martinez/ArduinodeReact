@@ -5,7 +5,7 @@ import * as HTML from './HTML';
 import Socket from './Socket';
 import Utils from './Utils';
 import { Tarea, Validator } from './Arduinode';
-import { SelectDispositivos } from './Dispositivos';
+import { SelectsDispositivos } from './Dispositivos';
 
 export class Tareas extends Component {
 	constructor( props ) {
@@ -194,88 +194,8 @@ export class Subtareas extends Tareas {
 	}
 }
 
-export class TareaDispositivos extends Tareas {
+export class TareaDispositivos extends SelectsDispositivos {
 	constructor( props ) {
-		super( props );
-		this.root = props.route.root;
-		['onRemove','onHidePopup', 'onAddNew','onChange'].forEach((m)=>{
-			this[m] = this[m].bind(this);
-		});
-		this.state = { edit: false };
-	}
-	onRemove( dispositivo, e ) {
-		if (confirm("Seguro que deseas quitar " + dispositivo.descripcion + "?")) {
-			var i = this.tarea.dispositivos.indexOf( dispositivo );
-			this.tarea.dispositivos.splice(i, 1);
-			this.root.setState({ edit: true, listenBroadcastUpdate: false });
-		}
-	}
-	generateRow( item ) {
-		var descripcion = ( item.salidadescripcion )
-						  ? item.salidadescripcion 
-						  : "Salida " + item.nro;
-		return ( 
-			<tr className="col2">
-				<td>{ item.descripcion + ' - ' + descripcion }</td>
-				<td><a onClick={ this.onRemove.bind( this, item )} className={"show "+ this.root.state.adminMode + " iconDELETE"}></a></td>
-			</tr>
-		);
-	}
-	componentDidMount() {
-		document.addEventListener("onAddNew", this.onAddNew);
-	}
-	componentWillUnmount() {
-		document.removeEventListener("onAddNew", this.onAddNew);
-	}
-	onChange ( item, e ) {
-		item[e.target.name] = e.target.value;
-		this.root.setState({ edit: true, listenBroadcastUpdate: false });
-	}
-	onHidePopup() {
-		this.setState({ edit: false });	
-	}
-	onAddNew( dispositivo, salida ) {
-		if ( dispositivo && salida ) { 
-			var salidaParsed = salida.split("-"),
-			newDispositivo = { 
-				ip 				 : dispositivo.ip, 
-				descripcion		 : dispositivo.descripcion,
-				nro				 : salidaParsed[0],
-				salidadescripcion: salidaParsed[1]
-			};
-			
-			this.tarea.dispositivos.push( newDispositivo );		
-			
-			this.root.setState({edit: true, listenBroadcastUpdate: false });
-		}
-		else {
-			this.setState({ edit: true });
-		}
-	}
-	render() {
-		if ( this.root.state.tareas.length ) {
-			var tarea = this.root.state.tareas.filter((t) => {
-				return this.props.routeParams.id == t.id;
-			});
-			this.tarea = tarea[0];
-			this.dispositivos = this.tarea.dispositivos.map( this.generateRow, this );
-			return (
-				<div>
-					<div>
-						<div className={'dispositivos center popup show' + this.state.edit}>
-						<SelectDispositivos added={ this.tarea.dispositivos } 
-											onAdd={ this.onAddNew }
-											root={ this.root } />
-						<input type="button" onClick={ this.onHidePopup } value="Aceptar" />
-						</div>
-					</div>
-					
-					<HTML.Table class={"tareaDispositivos admin" + this.root.state.adminMode}> { this.dispositivos } </HTML.Table>
-				</div>
-			);
-		}
-		else {
-			return null;
-		}
-	}
+		super( props, 'tareas');		
+	}	
 }

@@ -8,7 +8,7 @@ import Loading from 'react-loading';
 import { Dispositivos } from './Dispositivos';
 import { SalidasDispositivo, SalidasActivas } from './Salidas';
 import { Tareas, TareaDispositivos, Subtareas } from './Tareas';
-import { Zonas, ZonasSalidas } from './Zonas';
+import { Zonas, ZonasDispositivos } from './Zonas';
 
 var menu = [
   {
@@ -57,7 +57,7 @@ export class Zona extends DB {
 		var model = { 
 			id: Utils.randomID(),
 			descripcion: "Nueva zona",
-			salidas: []
+			dispositivos: []
 		};
 
 		return model;
@@ -270,6 +270,7 @@ class Arduinode extends Component {
 		this.updateDB = this.updateDB.bind(this);
 		this.Dispositivo = new Dispositivo();
 		this.Tarea = new Tarea();
+		this.Zona = new Zona();
 
 		Socket.listen('DBDispositivosUpdated', ( db ) => {
 			if ( this.state.listenBroadcastUpdate ) {
@@ -310,7 +311,7 @@ class Arduinode extends Component {
 						<Route root={This} path="Tareas/subtareas/:id" component={ Subtareas } />
 						<Route root={This} path="Tareas/:id/dispositivos" component={ TareaDispositivos } />
 						<Route root={This} path="Zonas" component={ Zonas } />
-						<Route root={This} path="Zonas/:id/salidas" component={ ZonasSalidas } />
+						<Route root={This} path="Zonas/:id/dispositivos" component={ ZonasDispositivos } />
 						<Route root={This} path="Dispositivos" component={ Dispositivos } />
 						<Route root={this} path="Dispositivos/salidasOn" component={ SalidasActivas } />
 						<Route root={This} path="Dispositivos/salidas/:ip" component={ SalidasDispositivo } />
