@@ -173,16 +173,16 @@ a[class*="icon"],li[class*="icon"] a {
     content: "\25CF";
     color: grey !important;
 }
-.iconACTIVA0 {
+li.iconACTIVA0 a{
     color: grey !important;
 }
-.iconACTIVA0:before {
+li.iconACTIVA0 a:before {
     content: "\2610";
 }
-.iconACTIVA1:before {
+li.iconACTIVA1 a:before {
     content: "\2611";
 }
-.iconACTIVA1 {
+li.iconACTIVA1 a{
     color:#384259 !important;
 }
 .iconMAS {
@@ -196,6 +196,14 @@ a[class*="icon"],li[class*="icon"] a {
 }
 .iconOK:after {
     content: "\2713";
+}
+.iconDELETE {
+    padding-top:5px !important;
+    font-size:1.7em !important;
+}
+li.iconDispositivos a {
+    color:#384259;
+    font-size: 2.1em;
 }
 li.iconReloj a {
     font-size: 1.8em!important;
@@ -322,10 +330,8 @@ header,.footer {
 .footer .listIcons .iconReloj {
     width: 95px;
 }
-.listIcons .iconDELETE {
-    padding-top:5px !important;
+.footer .listIcons .iconDELETE {
     color:#fff !important;
-    font-size:1.7em;
 }
 .footer #loading div {
     margin: -8px auto;
@@ -492,6 +498,7 @@ table.salidas td:last-child {
 .switchContainer {
     position: relative;
     width: 122px !important;
+    display: block;
 }
 .switchContainer span {
     position: absolute;
@@ -540,9 +547,6 @@ table.salidas td:last-child {
     table.salidas td input {
         width: 100% !important;
     }
-}
-table.tareas tr td:last-child a {
-    font-size: 2.1em;
 }
 table.tareas tr {
     padding: 0;
@@ -628,4 +632,48 @@ table.tareaDispositivos tr td:last-child {
 }
 table.tareaDispositivos.adminfalse .iconDELETE {
     display: none;
+}
+/* Zonas */
+.zonasIcons {
+    text-align:right;    
+}
+.zonasIcons td ul, .zonasIcons td div {
+    display: inline-block;
+} 
+.zonasIcons li{
+    margin-right:40px;
+    display: inline-block;
+}
+.zonasIcons li:last-child{
+    margin-right:0px;
+}
+.zonasIcons .switch.on .switch-toggle {
+    left:0px !important;
+}
+.zonas tr{
+    overflow:hidden;
+}
+table.zonas tr td.icons{
+    margin-top:-37px;
+    float:right;
+    display: inline-block !important;
+}
+table.zonas.admintrue tr td > div {
+    width:auto;
+}
+table.zonas.admintrue tr td.icons{
+    margin-top:4px;
+}
+.adminfalse .zonasIcons li {
+    display:none;
+}
+.adminfalse .zonasIcons li:last-child {
+    display:block;
+}
+.zonasIcons li:last-child .switch:after{
+    left:11px;
+}
+
+.adminfalse .zonasIcons li:last-child .switchContainer{
+    display:block;
 }

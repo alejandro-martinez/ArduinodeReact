@@ -8,6 +8,7 @@ import Loading from 'react-loading';
 import { Dispositivos } from './Dispositivos';
 import { SalidasDispositivo, SalidasActivas } from './Salidas';
 import { Tareas, TareaDispositivos, Subtareas } from './Tareas';
+import { Zonas, ZonasDispositivos } from './Zonas';
 
 var menu = [
   {
@@ -21,6 +22,10 @@ var menu = [
   {
     "text": "Tareas programadas",
     "url": "/Tareas"
+  },
+  {
+    "text": "Zonas",
+    "url": "/Zonas"
   }
 ];
 
@@ -43,6 +48,26 @@ export class Validator {
 	static isValidIP( ip ) {		
 		return (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[1]?[0-9][0-9]?)$/.test(ip));
 	}
+}
+export class Zona extends DB {
+	constructor() {
+		super('Zonas');
+	}
+	static newModel() {
+		var model = { 
+			id: Utils.randomID(),
+			descripcion: "Nueva zona",
+			dispositivos: []
+		};
+
+		return model;
+	}
+	update(db, callback) {
+		super.update(db);
+		callback();
+	}
+	static isValidDESCRIPCION = Validator.isValiddescripcion;
+	static isValidIP = Validator.isValidIP;
 }
 
 export class Dispositivo extends DB {
@@ -183,7 +208,7 @@ class Footer extends Component {
 		this.state = { loading: false };
 
 		Socket.listen('horaServidor', ( hora ) => {
-    		this.setState({ horaServidor: new Date(hora).toString().slice(16,24) });
+    		this.setState({ horaServidor: new Date(hora).toString().slice(16,21) });
     	});
 	}
 	componentDidMount() {		
@@ -238,22 +263,60 @@ class Arduinode extends Component {
 			tareas: [], 
 			adminMode: false,
 			temporizacion: "00:00",
-			dispositivos: []
+			dispositivos: [],
+			zonas:[]
 		};
 
 		this.updateDB = this.updateDB.bind(this);
 		this.Dispositivo = new Dispositivo();
 		this.Tarea = new Tarea();
+		this.Zona = new Zona();
 
 		Socket.listen('DBDispositivosUpdated', ( db ) => {
 			if ( this.state.listenBroadcastUpdate ) {
-				this.setState({ dispositivos: db });
+				this.setState({ dispositivos: db },() => this.updateEstadosZonas());
 			}
     	});
-
+    	Socket.listen('DBZonasUpdated', ( db ) => {
+			if ( this.state.listenBroadcastUpdate ) {
+				this.setState({ zonas: db }, () => this.updateEstadosZonas());
+			}
+    	});
     	Socket.listen('claveApp', ( clave ) => {
     		this.setState({ clave: clave });
     	});
+	}
+	getEstadoSalida( params ) {
+		var disp = this.getDispositivoByIP( params.ip );
+		
+		if (!disp.offline) {
+			var found = disp.salidas.filter(function(s, k, _this) { 
+				return s.nro == params.nro;
+			});
+			if (found.length) return found[0].estado;	
+		}
+
+		return 1;
+	}
+	updateEstadosZonas() {
+		if (this.state.zonas.length) {
+			var encendidas = 0;
+
+			this.state.zonas.forEach((z, k, _this) => {
+				
+				z.dispositivos.forEach((s) => {
+					s.estado = this.getEstadoSalida( s );
+					if (s.estado == 0) encendidas++;
+				});
+				if (encendidas === z.dispositivos.length) {
+					_this[k].estado = 0;
+				}
+				else {
+					_this[k].estado = 1;
+					this.forceUpdate();
+				}
+			});
+		}
 	}
 	getDispositivoByIP( ip ) {
 		return this.state.dispositivos.filter((d) => { return d.ip == ip; })[0];
@@ -279,6 +342,8 @@ class Arduinode extends Component {
 						<Route root={This} path="Tareas" component={ Tareas } />
 						<Route root={This} path="Tareas/subtareas/:id" component={ Subtareas } />
 						<Route root={This} path="Tareas/:id/dispositivos" component={ TareaDispositivos } />
+						<Route root={This} path="Zonas" component={ Zonas } />
+						<Route root={This} path="Zonas/:id/dispositivos" component={ ZonasDispositivos } />
 						<Route root={This} path="Dispositivos" component={ Dispositivos } />
 						<Route root={this} path="Dispositivos/salidasOn" component={ SalidasActivas } />
 						<Route root={This} path="Dispositivos/salidas/:ip" component={ SalidasDispositivo } />

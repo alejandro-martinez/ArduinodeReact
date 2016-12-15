@@ -6,7 +6,7 @@ import Socket from './Socket';
 import Utils from './Utils';
 import { Dispositivos, DispositivosModel, DispositivoEdit } from './Dispositivos';
 
-class Toggle extends React.Component {
+export class Toggle extends React.Component {
   constructor( props ) {
     super( props );
     this.switch = this.switch.bind( this );
@@ -19,7 +19,9 @@ class Toggle extends React.Component {
 
   render() {
   	
-  	let estaTemporizada = ((this.props.model.temporizada !== 0 && this.props.model.temporizada != "00:00") && this.props.on);
+  	let estaTemporizada = ((this.props.model.temporizada !== 0 
+  						 && this.props.model.hasOwnProperty('temporizada')
+  						 && this.props.model.temporizada != "00:00") && this.props.on);
     return (
 		<div className={ 'switchContainer temporizada' + estaTemporizada}>
 			<span> { Utils.min_a_horario(this.props.model.temporizada) } </span>

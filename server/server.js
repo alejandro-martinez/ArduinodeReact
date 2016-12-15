@@ -42,13 +42,21 @@ http.listen( serverConf.port, serverConf.ip, () => {
 
 		sCliente.emit('claveApp', serverConf.claveApp);
 
-		sCliente.emit('DBDispositivosUpdated', Arduinode.dispositivos);		
+		sCliente.emit('DBDispositivosUpdated', Arduinode.dispositivos);
+
+		sCliente.emit('DBZonasUpdated', DataStore.zonas);
 		
 		// Referencia al socket conectado
 		Arduinode.io = taskManager.io = io;
 
 		// Crea socket que recibe eventos de los disp. Arduino
 		Arduinode.listenSwitchEvents( serverConf );
+
+		sCliente.on('getZonasDB', () => { 
+			Arduinode.loadDispositivosDB( function() {
+				sCliente.emit('DBDispositivosUpdated', Arduinode.dispositivos);
+			})
+		});
 
 		sCliente.on('getDispositivosDB', () => { 
 			Arduinode.loadDispositivosDB( function() {
@@ -72,6 +80,11 @@ http.listen( serverConf.port, serverConf.ip, () => {
 			//Recarga de modelos en memoria
 			Arduinode.loadDispositivosDB();
 		});
+		
+		sCliente.on('updateZonasDB', ( db ) => { 
+			DataStore.updateDB('zonas', db);
+			io.sockets.emit('DBZonasUpdated', db);
+		});
 
 		sCliente.on('updateTareasDB', ( db ) => { 
 			DataStore.updateDB('tareas', db);
@@ -86,7 +99,7 @@ http.listen( serverConf.port, serverConf.ip, () => {
 
 		setInterval( () => {
 			sCliente.emit('horaServidor', new Date().getTime());	
-		}, 1000);		
+		}, 1000 * 60);		
 	});
 	
 	Arduinode.DataStore = DataStore;

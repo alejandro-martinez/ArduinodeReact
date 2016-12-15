@@ -143,3 +143,90 @@ export class Dispositivos extends Component {
 		return (<HTML.Table class={"dispositivos admin" + this.props.route.root.state.adminMode}> { rows } </HTML.Table>);
 	}
 };
+
+export class SelectsDispositivos extends Component{
+	constructor( props, model ) {
+		super( props );
+		this.model = model;
+		this.root = props.route.root;
+		['onRemove','onHidePopup', 'onAddNew','onChange'].forEach((m)=>{
+			this[m] = this[m].bind(this);
+		});
+		this.state = { edit: false };
+	}
+	onRemove( dispositivo, e ) {
+		if (confirm("Seguro que deseas quitar " + dispositivo.descripcion + "?")) {
+			var i = this.model.dispositivos.indexOf( dispositivo );
+			this.model.dispositivos.splice(i, 1);
+			this.root.setState({ edit: true, listenBroadcastUpdate: false });
+		}
+	}
+	generateRow( item ) {
+		var descripcion = ( item.salidadescripcion )
+						  ? item.salidadescripcion 
+						  : "Salida " + item.nro;
+		return ( 
+			<tr className="col2">
+				<td>{ item.descripcion + ' - ' + descripcion }</td>
+				<td><a onClick={ this.onRemove.bind( this, item )} className={"show "+ this.root.state.adminMode + " iconDELETE"}></a></td>
+			</tr>
+		);
+	}
+	componentDidMount() {
+		document.addEventListener("onAddNew", this.onAddNew);
+	}
+	componentWillUnmount() {
+		document.removeEventListener("onAddNew", this.onAddNew);
+	}
+	onChange ( item, e ) {
+		item[e.target.name] = e.target.value;
+		this.root.setState({ edit: true, listenBroadcastUpdate: false });
+	}
+	onHidePopup() {
+		this.setState({ edit: false });	
+	}
+	onAddNew( dispositivo, salida ) {
+		if ( dispositivo && salida ) { 
+			var salidaParsed = salida.split("-"),
+			newDispositivo = { 
+				ip 				 : dispositivo.ip, 
+				descripcion		 : dispositivo.descripcion,
+				nro				 : salidaParsed[0],
+				salidadescripcion: salidaParsed[1]
+			};
+			
+			this.model.dispositivos.push( newDispositivo );		
+			
+			this.root.setState({edit: true, listenBroadcastUpdate: false });
+		}
+		else {
+			this.setState({ edit: true });
+		}
+	}
+	render() {
+		if ( this.root.state[  this.root.state.page.toLowerCase() ].length ) {
+			var model = this.root.state[ this.root.state.page.toLowerCase() ].filter((t) => {
+				return this.props.routeParams.id == t.id;
+			});
+			this.model = model[0];
+			this.dispositivos = this.model.dispositivos.map( this.generateRow, this );
+			return (
+				<div>
+					<div>
+						<div className={'dispositivos center popup show' + this.state.edit}>
+						<SelectDispositivos added={ this.model.dispositivos } 
+											onAdd={ this.onAddNew }
+											root={ this.root } />
+						<input type="button" onClick={ this.onHidePopup } value="Aceptar" />
+						</div>
+					</div>
+					
+					<HTML.Table class={"tareaDispositivos admin" + this.root.state.adminMode}> { this.dispositivos } </HTML.Table>
+				</div>
+			);
+		}
+		else {
+			return null;
+		}
+	}
+}
