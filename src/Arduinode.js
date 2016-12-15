@@ -278,7 +278,7 @@ class Arduinode extends Component {
 		this.Zona = new Zona();
 
 		Socket.listen('configUpdated', ( config ) => {
-			this.setState({ config: config });
+			this.setState({ config: config, edit: false });
     	});
 
 		Socket.listen('DBDispositivosUpdated', ( db ) => {
@@ -329,11 +329,16 @@ class Arduinode extends Component {
 	}
 	updateDB() {
 		var db = this.state.dbActual;
-		var dataModel = this.state[ db.concat("s").toLowerCase() ];
-		
-		if ( this[db].update( dataModel, ()=> {
-			this.setState({ edit: false, listenBroadcastUpdate: true});
-		}));
+		if (db != 'config') {
+			var dataModel = this.state[ db.concat("s").toLowerCase() ];
+			
+			if ( this[db].update( dataModel, ()=> {
+				this.setState({ edit: false, listenBroadcastUpdate: true});
+			}));
+		}
+		else {
+			Socket.emit('updateConfigDB', this.state.config);
+		}
 	}
 	render() {
 		const This = this;

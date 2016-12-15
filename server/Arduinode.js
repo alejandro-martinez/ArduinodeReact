@@ -98,7 +98,7 @@ Arduinode = {
 		return _.findWhere( this.dispositivos,{ ip: ip }); 
 	},
 	updateDispositivos: function() {
-		this.DataStore.updateDB('dispositivos', this.dispositivos);
+		this.DataStore.updateDB('./models/dispositivos', this.dispositivos);
 	},
 /**
 * Ejecuta un comando sobre una salida de un Dispositivo

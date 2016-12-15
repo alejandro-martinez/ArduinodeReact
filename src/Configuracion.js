@@ -15,10 +15,10 @@ export class Configuracion extends Component {
 		});
 		this.resetServer = this.resetServer.bind(this);
 		this.items = [
-		  {
+		/*  {
 		    "text": "Log sistema",
 		    "url": "/Configuracion/log"
-		  },
+		  },*/
 		  {
 		    "text": "Ajustes servidor",
 		    "url": "/Configuracion/ajustes"
@@ -71,6 +71,7 @@ export class Ajustes extends Component {
 	constructor( props ) {
 		super( props );
 		props.route.root.setState({ 
+			dbActual: "config",
 			page: "Ajustes servidor",
 			showAddIcon: false,
 			showTimerIcon: false

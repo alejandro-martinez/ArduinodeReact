@@ -48,17 +48,20 @@ function DataStore() {
 		this[file] = content;
 		return content;
 	};
+	this.updateFile = function(filename, content) {
+
+	}
 	this.zonas = this.getFile('zonas');
 /**
 * Método para actualizar JSON
 * @method updateDB
 */
 	this.updateDB = function( filename, data, removeMemoryData ) {
-		if ( data && Array.isArray( data )) {
+		if ( data ) {
 			if (filename === 'dispositivos' && removeMemoryData) {
 				data = this.removeJSONKeys( data );
 			}
-			fs.writeFileSync('./models/' + filename + '.json', 
+			fs.writeFileSync(filename + '.json', 
 									JSON.stringify(data, null, 2),
 									'utf8', 
 									{ spaces: 2 });

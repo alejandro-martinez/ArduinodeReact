@@ -71,7 +71,7 @@ http.listen( serverConf.port, serverConf.ip, () => {
 
 		sCliente.on('updateDispositivosDB', ( db ) => { 
 			// Actualizacion de archivo JSON, sin tocar los estados de las salidas
-			if (DataStore.updateDB('dispositivos', db, false)) {
+			if (DataStore.updateDB('./models/dispositivos', db, false)) {
 				//Si pido actualizar, actualiza los datos a los clientes conectados
 				Arduinode.broadcastDB( db );
 			}
@@ -79,13 +79,18 @@ http.listen( serverConf.port, serverConf.ip, () => {
 			Arduinode.loadDispositivosDB();
 		});
 		
+		sCliente.on('updateConfigDB', ( config ) => { 
+			DataStore.updateDB('./config/config',config,false);
+			io.sockets.emit('configUpdated', config);
+		});
+
 		sCliente.on('updateZonasDB', ( db ) => { 
-			DataStore.updateDB('zonas', db);
+			DataStore.updateDB('./models/zonas', db);
 			io.sockets.emit('DBZonasUpdated', db);
 		});
 
 		sCliente.on('updateTareasDB', ( db ) => { 
-			DataStore.updateDB('tareas', db);
+			DataStore.updateDB('./models/tareas', db);
 			taskManager.loadScheduler( true );
 			io.sockets.emit('DBTareasUpdated', db);
 		});
