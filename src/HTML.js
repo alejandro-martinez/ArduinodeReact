@@ -16,9 +16,9 @@ export class Header extends Component {
 		if ( this.props.root.state.adminMode ) {
 			this.props.root.setState({ adminMode: false });
 		}
-		else if (this.props.root.state.clave.length) {
+		else if (this.props.root.state.config.claveApp) {
 			var clave = prompt("Ingrese clave", "");
-			if (clave && clave == this.props.root.state.clave) {
+			if (clave && clave == this.props.root.state.config.claveApp) {
 				this.props.root.setState({ adminMode: true });
 			}
 		}		
@@ -26,7 +26,7 @@ export class Header extends Component {
 	render() {
 		var isAdmin = this.props.root.state.adminMode,
 			adminClass = ( isAdmin ) ? 'Logout' : 'Login';
-			
+
 		return (
 			<header>
 				<h1 onClick={ this.refresh }>{ this.props.root.state.page }</h1>
@@ -113,10 +113,10 @@ export class Table extends Component {
 
 export class ListaLinks extends Component {
   generateItem( item ) {
-    return (<li> <Link to={item.url} className={'button'}>{ item.text }</Link> </li>);
+    return (<li className={item.text.substr(0,6)}> <Link to={item.url} className={'button'}>{ item.text }</Link> </li>);
   }
   render() {
     var items = this.props.items.map( this.generateItem );
-    return ( <ul className="menuList"> {items} </ul> );
+    return ( <ul className={"menuList admin" + this.props.root.state.adminMode}> {items} </ul> );
   }
 };

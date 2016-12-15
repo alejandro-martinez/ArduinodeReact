@@ -8,7 +8,7 @@ import Loading from 'react-loading';
 import { Dispositivos } from './Dispositivos';
 import { SalidasDispositivo, SalidasActivas } from './Salidas';
 import { Tareas, TareaDispositivos, Subtareas } from './Tareas';
-import { Configuracion } from './Configuracion';
+import { Configuracion, Log, Ajustes } from './Configuracion';
 
 var menu = [
   {
@@ -175,7 +175,7 @@ class Home extends Component {
 			showTimerIcon: false
 		});
 	}
-	render() { return ( <HTML.ListaLinks items={ menu } /> ); }
+	render() { return ( <HTML.ListaLinks root={ this.props.route.root } items={ menu } /> ); }
 }
 
 class Footer extends Component {
@@ -250,14 +250,14 @@ class Arduinode extends Component {
 		this.Dispositivo = new Dispositivo();
 		this.Tarea = new Tarea();
 
+		Socket.listen('configUpdated', ( config ) => {
+			this.setState({ config: config });
+    	});
+
 		Socket.listen('DBDispositivosUpdated', ( db ) => {
 			if ( this.state.listenBroadcastUpdate ) {
 				this.setState({ dispositivos: db });
 			}
-    	});
-
-    	Socket.listen('claveApp', ( clave ) => {
-    		this.setState({ clave: clave });
     	});
 	}
 	getDispositivoByIP( ip ) {
@@ -288,6 +288,8 @@ class Arduinode extends Component {
 						<Route root={this} path="Dispositivos/salidasOn" component={ SalidasActivas } />
 						<Route root={This} path="Dispositivos/salidas/:ip" component={ SalidasDispositivo } />
 						<Route root={This} path="Configuracion" component={ Configuracion } />
+						<Route root={This} path="Configuracion/Log" component={ Log } />
+						<Route root={This} path="Configuracion/Ajustes" component={ Ajustes } />
 					</Router>
 				</div>
 				<Footer root={This}></Footer>

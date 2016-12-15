@@ -4,7 +4,7 @@ var serverConf = {}, configPath = './config/config.json';
 // Busca o crea el archivo de config
 
 if ( !fs.existsSync( configPath )) {
-	var config = '{"ip":"localhost","port":9999,"claveApp":"9","tiempoEscaneoTareas":300000, "socketTimeout":500}';
+	var config = '{"ip":"localhost","logFilePath":"/",port":9999,"claveApp":"9","tiempoEscaneoTareas":300000, "socketTimeout":500}';
 	fs.writeFileSync( configPath, config );
 }
 
@@ -20,11 +20,10 @@ var	express 	= require('express'),
 	io 			= require('socket.io')( http);
 	log			= require('./utils/Log');
 	DataStore 	= require('./DataStore').DataStore;
-				  require('./controllers')( app );
+				  require('./controllers')( app );	
 	app.use( compress() );
 
 var serverConf = require( configPath );
-
 // Server HTTP
 
 http.listen( serverConf.port, serverConf.ip, () => {
@@ -40,7 +39,7 @@ http.listen( serverConf.port, serverConf.ip, () => {
 	// Conexión de un cliente
 	io.on('connection', ( sCliente ) => {
 
-		sCliente.emit('claveApp', serverConf.claveApp);
+		sCliente.emit('configUpdated', serverConf);
 
 		sCliente.emit('DBDispositivosUpdated', Arduinode.dispositivos);		
 		
@@ -51,9 +50,9 @@ http.listen( serverConf.port, serverConf.ip, () => {
 		Arduinode.listenSwitchEvents( serverConf );
 
 		sCliente.on('getDispositivosDB', () => { 
-			Arduinode.loadDispositivosDB( function() {
-				sCliente.emit('DBDispositivosUpdated', Arduinode.dispositivos);
-			})
+			Arduinode.loadDispositivosDB();
+			Arduinode.getEstadosDispositivos( sCliente );
+			sCliente.emit('DBDispositivosUpdated', Arduinode.dispositivos);
 		});
 
 		sCliente.on('getTareasDB', () => { 
@@ -82,6 +81,13 @@ http.listen( serverConf.port, serverConf.ip, () => {
 		// Accion sobre una salida (Persiana, Luz, Bomba)
 		sCliente.on('switchSalida',( params ) => {
 			Arduinode.switchSalida( params, function(){});
+		});
+
+		sCliente.on('getLog', ( log ) => { 
+			fs.readFile(serverConf.logFilePath + '/arduinodereact.log',( content, data ) => {
+				sCliente.emit('logUpdated', data.toString().split("\n"));
+			});
+			
 		});
 
 		setInterval( () => {
