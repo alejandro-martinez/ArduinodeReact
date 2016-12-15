@@ -195,13 +195,19 @@ export class SalidasDispositivo extends Component {
 	}
 	componentDidMount() {
 		var disp = this.props.route.root.getDispositivoByIP( this.props.params.ip );
-		this.props.route.root.setState({ page: disp.descripcion, showAddIcon: false});
+		if (disp) {
+			this.props.route.root.setState({ page: disp.descripcion, showAddIcon: false});
+		}
 	}
 	render() {
 		var disp = this.props.route.root.getDispositivoByIP( this.props.params.ip );
-		return ( <SalidasTable root={ this.props.route.root }
-							   online={ !disp.offline }
-							   salidas={ disp.salidas } /> );
+		
+		if (disp) {
+			return ( <SalidasTable root={ this.props.route.root }
+								   online={ !disp.offline }
+								   salidas={ disp.salidas } /> );
+		}
+		return null;
 	}
 };
 
