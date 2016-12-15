@@ -338,7 +338,7 @@ class Arduinode extends Component {
 	render() {
 		const This = this;
 		return (
-			<div className="Arduinode">
+			<div className={"Arduinode adminMode" + This.state.adminMode}>
 				
 				<HTML.Header root={This} />
 

@@ -700,5 +700,13 @@ table.zonas.admintrue tr td.icons{
 
 .adminfalse .zonasIcons li:last-child .switchContainer{
     display:block;
->>>>>>> master
+}
+div.Arduinode.adminModetrue header {
+    background:#24695f;
+}
+div.Arduinode.adminModetrue .footer {
+    background:#268074;
+}
+div.Arduinode.adminModetrue .switch.on{
+    background:#268074 !important;
 }
