@@ -289,7 +289,7 @@ class Arduinode extends Component {
 	getEstadoSalida( params ) {
 		var disp = this.getDispositivoByIP( params.ip );
 		
-		if (!disp.offline) {
+		if (disp && !disp.offline) {
 			var found = disp.salidas.filter(function(s, k, _this) { 
 				return s.nro == params.nro;
 			});
