@@ -13,6 +13,7 @@ export class Configuracion extends Component {
 			showAddIcon: false,
 			showTimerIcon: false
 		});
+		this.resetServer = this.resetServer.bind(this);
 		this.items = [
 		  {
 		    "text": "Log sistema",
@@ -23,6 +24,15 @@ export class Configuracion extends Component {
 		    "url": "/Configuracion/ajustes"
 		  }
 		];
+		this.items.push({
+			"text": "Resetear servidor",
+			"onClick": this.resetServer,
+			"url": "javascript:void(0)"
+		});
+	}
+	resetServer(e) {
+		e.preventDefault();
+		Socket.emit('resetServer');
 	}
 	render() { return ( <HTML.ListaLinks root={ this.props.route.root } items={ this.items } /> ); }
 }
@@ -65,31 +75,35 @@ export class Ajustes extends Component {
 			showAddIcon: false,
 			showTimerIcon: false
 		});
+		this.state = { edit: false };
 	}
 	render() { 
-		return ( 
-			<div className="ajustes">
-				<HTML.EditContainer edit={ this.state.edit }>
-					<HTML.EditRow edit={ false }
-							 root={ this.props.route.root }
-							 inputKey='claveApp'
-							 model={ this.props.route.root.state.config.claveApp }>
-					</HTML.EditRow>
+		if ( this.props.route.root.state.config ) {
+			return ( 
+				<div className="ajustes">
+					<HTML.EditContainer edit={ this.state.edit }>
+						<HTML.EditRow edit={ false }
+								 root={ this.props.route.root }
+								 inputKey='claveApp'
+								 model={ this.props.route.root.state.config.claveApp }>
+						</HTML.EditRow>
 
-					<HTML.EditRow edit={ false }
-							 root={ this.props.route.root }
-							 inputKey='socketTimeout'
-							 model={ this.props.route.root.state.config.socketTimeout }>
-					</HTML.EditRow>
+						<HTML.EditRow edit={ false }
+								 root={ this.props.route.root }
+								 inputKey='socketTimeout'
+								 model={ this.props.route.root.state.config.socketTimeout }>
+						</HTML.EditRow>
 
-					<HTML.EditRow edit={ false }
-							 root={ this.props.route.root }
-							 inputKey='tiempoEscaneoTareas'
-							 model={ this.props.route.root.state.config.tiempoEscaneoTareas }>
-					</HTML.EditRow>
-				</HTML.EditContainer>
-			</div>
-		);
+						<HTML.EditRow edit={ false }
+								 root={ this.props.route.root }
+								 inputKey='tiempoEscaneoTareas'
+								 model={ this.props.route.root.state.config.tiempoEscaneoTareas }>
+						</HTML.EditRow>
+					</HTML.EditContainer>
+				</div>
+			);
+		}
+		return null;
 	}
 	
 }

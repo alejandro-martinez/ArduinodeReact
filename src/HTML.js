@@ -113,7 +113,12 @@ export class Table extends Component {
 
 export class ListaLinks extends Component {
   generateItem( item ) {
-    return (<li className={item.text.substr(0,6)}> <Link to={item.url} className={'button'}>{ item.text }</Link> </li>);
+  	var onClick = item.hasOwnProperty('onClick') ? item.onClick : null;
+    return (
+    	<li className={item.text.substr(0,6)}> 
+    		<Link to={item.url} onClick={onClick} className={'button'}>{ item.text }</Link> 
+    	</li>
+	);
   }
   render() {
     var items = this.props.items.map( this.generateItem );

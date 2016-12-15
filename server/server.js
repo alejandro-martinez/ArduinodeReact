@@ -22,6 +22,7 @@ var	express 	= require('express'),
 	DataStore 	= require('./DataStore').DataStore;
 				  require('./controllers')( app );	
 	app.use( compress() );
+	var exec = require('child_process').exec;
 
 var serverConf = require( configPath );
 // Server HTTP
@@ -100,9 +101,13 @@ http.listen( serverConf.port, serverConf.ip, () => {
 			
 		});
 
+		sCliente.on('resetServer', () => {
+			process.exit();
+		});
+		
 		setInterval( () => {
 			sCliente.emit('horaServidor', new Date().getTime());	
-		}, 1000 * 60);		
+		}, 1000 * 60);
 	});
 	
 	Arduinode.DataStore = DataStore;
