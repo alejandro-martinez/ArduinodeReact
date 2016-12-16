@@ -13,12 +13,7 @@ export class Configuracion extends Component {
 			showAddIcon: false,
 			showTimerIcon: false
 		});
-		this.resetServer = this.resetServer.bind(this);
 		this.items = [
-		/*  {
-		    "text": "Log sistema",
-		    "url": "/Configuracion/log"
-		  },*/
 		  {
 		    "text": "Ajustes servidor",
 		    "url": "/Configuracion/ajustes"

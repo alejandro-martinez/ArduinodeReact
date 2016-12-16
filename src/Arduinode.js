@@ -48,7 +48,7 @@ export class DB {
 
 export class Validator {
 	static isValidDESCRIPCION( descripcion ) { 
-		return descripcion && descripcion.length;
+		return true;
 	}
 	static isValidIP( ip ) {		
 		return (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[1]?[0-9][0-9]?)$/.test(ip));
