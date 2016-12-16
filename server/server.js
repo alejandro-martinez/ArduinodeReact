@@ -119,12 +119,12 @@ http.listen( serverConf.port, serverConf.ip, () => {
 				sCliente.emit('logUpdated', data.toString().split("\n"));
 			});
 		});
-		
-		sCliente.emit('horaServidor', new Date().getTime());	
-
+		sCliente.emit('horaServidor', new Date().getTime());
 		setInterval( () => {
-			sCliente.emit('horaServidor', new Date().getTime());	
-		}, 1000 * 60);
+			if ( new Date().toISOString().slice(17,19) === '00' ) {
+				sCliente.emit('horaServidor', new Date().getTime());
+			}
+		}, 900);
 	});
 	
 	Arduinode.DataStore = DataStore;
