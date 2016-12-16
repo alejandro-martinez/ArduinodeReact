@@ -68,11 +68,12 @@ class Dispositivo {
 					
 					if ( estadoActual.trim() !=  estadoDeseado.trim() ) {
 						salida.switch( params , ( response ) => {
-							response = parseInt( response.replace(/(?:\r\n|\r|\n)/g, ''));
-							salida.estado = response;
-							salida.temporizada = params.temporizada;
-							Arduinode.broadcastDB();
-
+							if (response) {
+								response = parseInt( response.replace(/(?:\r\n|\r|\n)/g, ''));
+								salida.estado = response;
+								salida.temporizada = params.temporizada;
+								Arduinode.broadcastDB();
+							}
 							callback( response);
 						});
 					}

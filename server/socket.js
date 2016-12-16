@@ -41,10 +41,10 @@ module.exports = function()
 				this.connect(params.ip, function(response, socket) {
 					
 					if (response) {
-
 						socket.write(params.comando);
 					
-						socket.on('data',function( _data ) {							
+						socket.on('data',function( _data ) {
+
 							This.data+= _data.toString();
 						});
 

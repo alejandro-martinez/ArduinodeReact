@@ -17,12 +17,12 @@ var	express 	= require('express'),
 	expressConf = require('./config/config').config( app, express ),
 	Arduinode	= require('./Arduinode');
 	middleware 	= require('socketio-wildcard')(),
+	Arrays 		= require('./utils/Arrays')(),
 	io 			= require('socket.io')( http);
 	log			= require('./utils/Log');
 	DataStore 	= require('./DataStore').DataStore;
 				  require('./controllers')( app );	
 	app.use( compress() );
-	var child_process = require('child_process');
 
 
 var serverConf = require( configPath );
@@ -96,6 +96,19 @@ http.listen( serverConf.port, serverConf.ip, () => {
 			io.sockets.emit('DBTareasUpdated', db);
 		});
 
+		// Accion sobre una zona
+		sCliente.on('switchZona',( zona ) => {
+			Arrays.asyncLoop( zona.dispositivos, ( salida, report ) => {
+				salida.estado = (zona.estado) ? 1 : 0;
+				salida.temporizada = 0;
+				Arduinode.switchSalida( salida, function(){
+					report();
+				});	
+			},() => {
+				Arduinode.broadcastDB();
+			});
+		});
+
 		// Accion sobre una salida (Persiana, Luz, Bomba)
 		sCliente.on('switchSalida',( params ) => {
 			Arduinode.switchSalida( params, function(){});
@@ -105,18 +118,6 @@ http.listen( serverConf.port, serverConf.ip, () => {
 			fs.readFile(serverConf.logFilePath + '/arduinodereact.log',( content, data ) => {
 				sCliente.emit('logUpdated', data.toString().split("\n"));
 			});
-			
-		});
-		
-		sCliente.on('resetServer', () => {
-			process.on('SIGINT', function() {
-				log('Reseteando server...');
-				child_process.fork(__filename);
-				process.exit(0);
-			});
-			
-			setTimeout(function(){}, 1000000);
-			child_process.exec('kill -2 ' + process.pid);			
 		});
 		
 		sCliente.emit('horaServidor', new Date().getTime());	

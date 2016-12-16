@@ -387,6 +387,12 @@ table.dispositivos.adminfalse tr {
     height: 65px;
     padding: 5px 0;
 }
+.dispositivos .iconDELETE {;
+    font-size:2.5em !important;
+}
+table.dispositivos.admintrue li:last-child {
+    margin-top:.2em;
+}
 table.dispositivos.admintrue .listIcons {
     margin-top: -19px;
 }

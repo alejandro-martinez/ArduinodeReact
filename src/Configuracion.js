@@ -24,15 +24,6 @@ export class Configuracion extends Component {
 		    "url": "/Configuracion/ajustes"
 		  }
 		];
-		this.items.push({
-			"text": "Resetear servidor",
-			"onClick": this.resetServer,
-			"url": "javascript:void(0)"
-		});
-	}
-	resetServer(e) {
-		e.preventDefault();
-		Socket.emit('resetServer');
 	}
 	render() { return ( <HTML.ListaLinks root={ this.props.route.root } items={ this.items } /> ); }
 }
@@ -110,8 +101,7 @@ export class Ajustes extends Component {
 			);
 		}
 		return null;
-	}
-	
+	}	
 }
 
 
