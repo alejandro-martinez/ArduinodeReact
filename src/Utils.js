@@ -10,13 +10,13 @@ class Utils {
 		var date = new Date();
 		date.setHours( time1.slice(0,2) );
 		date.setMinutes( time1.slice(-2) );
+		if (time2) {
+			var addHoras = date.getHours() + parseInt(time2.slice(0,2));
+			var addMinutes = date.getMinutes() + parseInt(time2.slice(-2));
 
-		var addHoras = date.getHours() + parseInt(time2.slice(0,2));
-		var addMinutes = date.getMinutes() + parseInt(time2.slice(-2));
-
-		date.setHours( addHoras );
-		date.setMinutes( addMinutes );
-		
+			date.setHours( addHoras );
+			date.setMinutes( addMinutes );
+		}
 		return date.toString().slice(16,21);
 	}	
 	static min_a_horario( min ) {

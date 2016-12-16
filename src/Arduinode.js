@@ -222,14 +222,20 @@ class Footer extends Component {
 		});
 	}
 	onUpdate() { this.props.root.updateDB(); }
-	onAddNew() { Utils.fireEvent("onAddNew"); }
+	onAddNew() { 
+		this.props.root.setState({listenBroadcastUpdate: false});
+		Utils.fireEvent("onAddNew"); 
+	}
 	onTimerClick() { Utils.fireEvent("onTimerClick"); }
 	onTimerReset() { this.props.root.setState({ temporizacion: '00:00'})}
 	render() {
+		var showAddIcon = (this.props.root.state.showAddIcon && 
+						   this.props.root.state.adminMode && 
+						   !this.props.root.state.edit)
 		return (
 			<div className="footer">
 				<ul className="listIcons">
-					<li className={ 'show' + (this.props.root.state.showAddIcon && this.props.root.state.adminMode)}>
+					<li className={ 'show' + showAddIcon}>
 						<a onClick={ this.onAddNew } className='iconMAS'></a>
 					</li>
 					<li className={'iconReloj show' + this.props.root.state.showTimerIcon}>
