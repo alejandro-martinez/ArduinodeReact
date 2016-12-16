@@ -89,6 +89,7 @@ export class Subtareas extends Tareas {
 		super( props );
 		this.onAddNew = this.onAddNew.bind( this );
 		this.onChange = this.onChange.bind(this);
+		this.tarea = [];
 	}
 	getCurrentTarea() {
 		this.tarea = this.props.route.root.state.tareas.filter((t) => {
@@ -103,8 +104,10 @@ export class Subtareas extends Tareas {
 	}
 	componentDidMount() {
 		document.addEventListener("onAddNew", this.onAddNew);
-		this.getCurrentTarea();
-		this.props.route.root.setState({edit: false, page: this.getCurrentTarea().descripcion});
+		if (this.getCurrentTarea()) {
+			this.getCurrentTarea();
+			this.props.route.root.setState({edit: false, page: this.getCurrentTarea().descripcion});
+		}
 	}
 	componentWillUnmount() {
 		document.removeEventListener("onAddNew", this.onAddNew);
@@ -173,24 +176,25 @@ export class Subtareas extends Tareas {
 		this.props.route.root.setState({ edit: true, listenBroadcastUpdate: false });
 	}
 	render() {
+		if (this.getCurrentTarea()) {
+		
+			// Ordena subtareas por fecha de inicio
+			this.getCurrentTarea().subtareas.sort(function(a, b){ 
+				if (b) {
+					var f1 = a.fechainicio;
+					var f2 = b.fechainicio;
+					
+					return parseInt(f1.slice(5,7) + f1.slice(8,10) ) - 
+						   parseInt(f2.slice(5,7) + f2.slice(8,10) );
 
-		if (!this.tarea ) return null;
+				}
+			});
 
-		// Ordena subtareas por fecha de inicio
-		this.tarea[0].subtareas.sort(function(a, b){ 
-			if (b) {
-				var f1 = a.fechainicio;
-				var f2 = b.fechainicio;
-				
-				return parseInt(f1.slice(5,7) + f1.slice(8,10) ) - 
-					   parseInt(f2.slice(5,7) + f2.slice(8,10) );
-
-			}
-		});
-
-		var subtareas = this.tarea[0].subtareas.map( this.generateRow, this );
-
-		return ( <div> { subtareas } </div> );		
+			var subtareas = this.getCurrentTarea().subtareas.map( this.generateRow, this );
+			return ( <div> { subtareas } </div> );
+		}
+		return null;
+		
 	}
 }
 
