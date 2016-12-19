@@ -206,7 +206,7 @@ class Home extends Component {
 class Footer extends Component {
 	constructor(props) {
 		super(props);
-		['onAddNew','onTimerClick','onUpdate','onTimerReset'].forEach((m)=>{
+		['onAddNew','onTemporizacion','onUpdate','onTimerReset'].forEach((m)=>{
 			this[m] = this[m].bind( this );
 		});
 
@@ -226,7 +226,9 @@ class Footer extends Component {
 		this.props.root.setState({listenBroadcastUpdate: false});
 		Utils.fireEvent("onAddNew"); 
 	}
-	onTimerClick() { Utils.fireEvent("onTimerClick"); }
+	onTemporizacion(e) { 
+		this.props.root.setState({temporizacion: e.target.value});
+	}
 	onTimerReset() { this.props.root.setState({ temporizacion: '00:00'})}
 	render() {
 		var showAddIcon = (this.props.root.state.showAddIcon && 
@@ -239,9 +241,10 @@ class Footer extends Component {
 						<a onClick={ this.onAddNew } className='iconMAS'></a>
 					</li>
 					<li className={'iconReloj show' + this.props.root.state.showTimerIcon}>
-						<a onClick={ this.onTimerClick }>
-							<span>{ this.props.root.state.temporizacion }</span>
-						</a>
+				
+					<input type="time" onChange={ this.onTemporizacion } 
+									   value={ this.props.root.state.temporizacion } />
+				
 					</li>
 					<li className={'show' + (this.props.root.state.temporizacion != '00:00')}>
 						<a className="iconDELETE" onClick={ this.onTimerReset }></a>

@@ -109,24 +109,9 @@ class SalidasTable extends Component {
 	constructor( props ) {
 		super( props );
 		this.root = props.root;
-		['onTemporizacion','onShowPopup','onHidePopup'].forEach((m)=>{
-			this[m] = this[m].bind( this );
-		});
 		this.root.setState({ showTimerIcon: true});
 		this.state = { visible: false }
 	}
-	componentDidMount() {
-		document.addEventListener("onTimerClick", this.onShowPopup);
-	}
-	componentWillUnmount() {
-		document.removeEventListener("onTimerClick", this.onShowPopup);
-	}
-	onTemporizacion ( e ) {
-		e.preventDefault();
-		this.root.setState({ temporizacion: e.target.value == "" ? null : e.target.value });
-	}
-	onShowPopup() { this.setState({ visible: true }); }
-	onHidePopup() { this.setState({ visible: false }); }
 	render() {
 		const This = this;
 		var tableItems = [];
@@ -158,12 +143,6 @@ class SalidasTable extends Component {
 
 		return (
 			<div>
-				<div className={'temporizacion center popup show' + this.state.visible}>
-					<input type="time" onChange={ this.onTemporizacion } 
-									   value={ this.root.state.temporizacion } />
-					<input type="button" onClick={ this.onHidePopup } value="Aceptar" />
-				</div>
-				
 				<HTML.Table class="salidas">{ tableItems }</HTML.Table>
 			</div>
 		);

@@ -271,6 +271,15 @@ input[type=text] {
     font-size: 1em;
     box-shadow: 5px 5px 5px #888888;
 }
+.footer input[type="time"] {
+    width:90px;
+    background:none;
+    color:#fff;
+    border:0;
+    padding:.2em;
+    font-weight:bold;
+    font-size:.9em;
+}
 input:invalid,input.validfalse {
     border: 1px solid red;
 }
@@ -503,9 +512,6 @@ table.salidas td:last-child {
     padding: 12px;
     width: 120px;
 }
-.popup.temporizacion {
-    height: 170px;
-}
 .switchContainer {
     position: relative;
     width: 122px !important;
@@ -606,7 +612,7 @@ table.tareas tr.disabledfalse {
 }
 
 table.subtareas .col2 input {
-    width: 97px;
+    width: 91px;
 }
 table.subtareas .col3 td input {
     margin: 8px 0;
