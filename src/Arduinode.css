@@ -106,9 +106,12 @@ table.adminfalse tr {
     height: 45px;
 }
 .disabledtrue {
-    color: grey;
+    background:#f73859;
+    color:#fff;
 }
-
+.disabledtrue ul li a {
+    color:#fff !important;
+}
 .container > div ul {
     right: 60px;
 }
