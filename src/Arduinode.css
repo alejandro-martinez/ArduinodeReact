@@ -99,17 +99,18 @@ td.middle + td {
 .container {
     padding: 36px 7px;
 }
-table.adminfalse tr td:first-child,table.adminfalse tr td:last-child {
+table.adminfalse tr td:first-child,
+table.adminfalse tr td:last-child {
     display: block !important;
 }
 table.adminfalse tr {
     height: 45px;
 }
-.disabledtrue {
+.dispositivos .disabledtrue {
     background:#f73859;
     color:#fff;
 }
-.disabledtrue ul li a {
+.dispositivos .disabledtrue ul li a {
     color:#fff !important;
 }
 .container > div ul {
@@ -418,7 +419,8 @@ table.dispositivos.admintrue .listIcons {
 table.dispositivos.admintrue .listIcons li {
     margin-left: 40px;
 }
-table.dispositivos.adminfalse tr td:first-child,table.dispositivos.adminfalse tr td:last-child {
+table.dispositivos.adminfalse tr td:first-child,
+table.dispositivos.adminfalse tr td:last-child {
     display: block !important;
 }
 table.tareaDispositivos tr {
@@ -631,7 +633,7 @@ table.tareas tr.disabledfalse {
     width: 32%;
 }
 
-table.subtareas .col2 input {
+table.subtareas .col3:first-child input {
     width: 85px;
 }
 table.subtareas .col3 td input {
@@ -642,8 +644,8 @@ table.subtareas .col3 td input {
 table.subtareas .col3 td.middle input {
     margin: 8px auto;
 }
-table.subtareas tr.col2 td {
-    width: 50%;
+.subtareas .col3 td:nth-child(2) {
+    text-align:center;
 }
 .col2 td {
     width: 20%;
@@ -653,9 +655,15 @@ table.subtareas tr.col2 td {
 }
 table.subtareas .col3 td:last-child {
     float: right;
-    width: 77px;
+    text-align: right;
+    width: 122px;
 }
-
+table.subtareas .titulos td:last-child {
+    width:92px;
+}
+table.subtareas .col3:first-child input {
+    margin-right: 20px;
+}
 table.tareaDispositivos td:last-child,table tr {
     display: block;
 }
@@ -776,5 +784,5 @@ input[type=time] {
     height: 20px;
     letter-spacing: .3em;
     width: 78px !important;
-    padding:7px 0 4px 3px;
+    padding: 7px 0 4px 12px;
 }

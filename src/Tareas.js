@@ -87,8 +87,9 @@ export class Tareas extends Component {
 export class Subtareas extends Tareas {
 	constructor( props ) {
 		super( props );
-		this.onAddNew = this.onAddNew.bind( this );
-		this.onChange = this.onChange.bind(this);
+		['onRemove','onChange','onAddNew'].forEach((m)=>{
+			this[m] = this[m].bind( this );
+		});
 		this.tarea = [];
 	}
 	getCurrentTarea() {
@@ -112,6 +113,13 @@ export class Subtareas extends Tareas {
 	componentWillUnmount() {
 		document.removeEventListener("onAddNew", this.onAddNew);
 	}
+	onRemove( subtarea, e ) {
+		if (confirm("Seguro que deseas quitar la subtarea?")) {
+			var i = this.getCurrentTarea().subtareas.indexOf( subtarea );
+			this.getCurrentTarea().subtareas.splice(i, 1);
+			this.props.route.root.setState({ edit: true, listenBroadcastUpdate: false });
+		}
+	}
 	generateRow( item ) {
 		
 		var diasSemana = Utils.getDiasSemana();
@@ -119,13 +127,16 @@ export class Subtareas extends Tareas {
 		return ( 
 			<form onChange={this.validForm}>
 			<HTML.Table class="subtareas" key={ item.id }>
-				<tr className="col2">
+				<tr className="col3">
 					<td>Inicio: <input type="date" 
 						   onChange={ this.onChange.bind(this, item) } 
 						   name="fechainicio" 
 						   required
 						   disabled={ !this.props.route.root.state.adminMode }
 						   value={ item.fechainicio } />
+					</td>
+					<td className={"show" + this.props.route.root.state.adminMode}>
+						<a className="iconDELETE" onClick={ this.onRemove }></a>
 					</td>
 					<td>Fin: <input type="date"
 						   name="fechafin" 
