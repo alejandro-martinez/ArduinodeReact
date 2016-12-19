@@ -686,20 +686,6 @@ table.tareaDispositivos.adminfalse .iconDELETE {
 .container .ajustes label input {
     display:block;
 }
-/* Log */
-.logContainer {
-    position:relative;
-    background:#000;
-    line-height:1.2em;
-    overflow-y:scroll;
-    overflow-x:hidden;
-}
-.logContainer p{
-    color:lime;
-    font-size:.7em;
-    position:relative;
-    word-break:break-word;
-}
 /* Zonas */
 .zonasIcons {
     text-align:right;    

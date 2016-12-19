@@ -23,36 +23,6 @@ export class Configuracion extends Component {
 	render() { return ( <HTML.ListaLinks root={ this.props.route.root } items={ this.items } /> ); }
 }
 
-export class Log extends Component {
-	constructor( props ) {
-		super( props );
-		props.route.root.setState({ 
-			page: "Log sistema",
-			showAddIcon: false,
-			showTimerIcon: false
-		});
-		this.state = { logFile: null };
-		Socket.listen('logUpdated', ( data ) => {
-			this.setState({'logFile': data});
-		});
-	}
-	componentDidMount() {
-		Socket.emit('getLog');
-	}
-	generateLine( text ) {
-		return <p> { text }</p>;
-	}
-	render() { 
-		if ( this.state.logFile !== null) {
-			var lines = this.state.logFile.map( this.generateLine );
-
-			return ( <div className="logContainer"> { lines }</div> ); 
-		}
-		return null;
-	}
-	
-}
-
 export class Ajustes extends Component {
 	constructor( props ) {
 		super( props );

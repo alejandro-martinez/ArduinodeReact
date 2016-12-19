@@ -74,7 +74,7 @@ Arduinode = {
 				});
 
 				socket.on('end', function() {
-					log("Evento externo de: " + This.ip);
+					log(This.ip + " - Evento externo");
 					This.data = This.data.replace("\n","-").replace("+n"," ").slice(0, -1);
 					This.updateEstadoSalidas( This.data.slice(0,-1).split("+-") );
 				});

@@ -4,7 +4,7 @@ var serverConf = {}, configPath = './config/config.json';
 // Busca o crea el archivo de config
 
 if ( !fs.existsSync( configPath )) {
-	var config = '{"ip":"localhost","logFilePath":"/",port":9999,"claveApp":"9","tiempoEscaneoTareas":300000, "socketTimeout":500}';
+	var config = '{"ip":"localhost",port":9999,"claveApp":"9","tiempoEscaneoTareas":300000, "socketTimeout":500}';
 	fs.writeFileSync( configPath, config );
 }
 
@@ -113,13 +113,9 @@ http.listen( serverConf.port, serverConf.ip, () => {
 		sCliente.on('switchSalida',( params ) => {
 			Arduinode.switchSalida( params, function(){});
 		});
-
-		sCliente.on('getLog', ( log ) => { 
-			fs.readFile(serverConf.logFilePath + '/arduinodereact.log',( content, data ) => {
-				sCliente.emit('logUpdated', data.toString().split("\n"));
-			});
-		});
+		
 		sCliente.emit('horaServidor', new Date().getTime());
+
 		setInterval( () => {
 			if ( new Date().toISOString().slice(17,19) === '00' ) {
 				sCliente.emit('horaServidor', new Date().getTime());

@@ -8,7 +8,7 @@ import Loading from 'react-loading';
 import { Dispositivos } from './Dispositivos';
 import { SalidasDispositivo, SalidasActivas } from './Salidas';
 import { Tareas, TareaDispositivos, Subtareas } from './Tareas';
-import { Configuracion, Log, Ajustes } from './Configuracion';
+import { Configuracion, Ajustes } from './Configuracion';
 import { Zonas, ZonasDispositivos } from './Zonas';
 
 var menu = [
@@ -372,7 +372,6 @@ class Arduinode extends Component {
 						<Route root={this} path="Dispositivos/salidasOn" component={ SalidasActivas } />
 						<Route root={This} path="Dispositivos/salidas/:ip" component={ SalidasDispositivo } />
 						<Route root={This} path="Configuracion" component={ Configuracion } />
-						<Route root={This} path="Configuracion/Log" component={ Log } />
 						<Route root={This} path="Configuracion/Ajustes" component={ Ajustes } />
 					</Router>
 				</div>
