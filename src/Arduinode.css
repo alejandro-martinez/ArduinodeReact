@@ -330,7 +330,7 @@ header,.footer {
 .footer h3 {
     position: absolute;
     color: #fff;
-    right: 32px;
+    right: 10px;
     top: 22px;
 }
 .footer .listIcons {
