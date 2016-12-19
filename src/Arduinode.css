@@ -571,6 +571,14 @@ table.salidas td:last-child {
         width: 100% !important;
     }
 }
+@media screen and (min-width: 800px) {
+    table.subtareas input {
+        width: 170px !important;
+    }
+    table.subtareas input[type='time'] {
+        width: 80px !important;
+    }
+}
 table.tareas tr {
     padding: 0;
     width: 100%;
@@ -618,7 +626,7 @@ table.tareas tr.disabledfalse {
 }
 
 table.subtareas .col2 input {
-    width: 91px;
+    width: 85px;
 }
 table.subtareas .col3 td input {
     margin: 8px 0;
@@ -740,4 +748,27 @@ div.Arduinode.adminModetrue .switch.on{
 .ajustes label td{
     padding:10px 0;
     min-width:100px;
+}
+
+
+input[type=date], input[type=time] {
+    height: 35px;
+    margin: 0 auto;
+    width: 100%;
+    font-family: arial, sans-serif;
+    font-weight: bold;
+    text-transform: uppercase;
+    background-color: lighten(#2f2f2f,40%);
+    outline: none;
+    border: 0;
+    border-radius: 3px;
+    padding: 0 3px;
+    letter-spacing: .4em;
+    color: #384259;
+}
+input[type=time] {
+    height: 20px;
+    letter-spacing: .3em;
+    width: 78px !important;
+    padding:7px 0 4px 3px;
 }
