@@ -9,14 +9,7 @@ import { Dispositivos, DispositivosModel, DispositivoEdit } from './Dispositivos
 export class Toggle extends React.Component {
   constructor( props ) {
     super( props );
-    this.switch = this.switch.bind( this );
   }
-  switch() {
-  	this.props.on = !this.props.on;  	
-  	// Accion asociada al switch, se implementa en el componente que haga uso de Toggle
-  	this.props.onSwitch( this.props.model );
-  }
-
   render() {
   	
   	let estaTemporizada = ((this.props.model.temporizada !== 0 
@@ -26,7 +19,7 @@ export class Toggle extends React.Component {
 		<div className={ 'switchContainer temporizada' + estaTemporizada}>
 			<span> { Utils.min_a_horario(this.props.model.temporizada) } </span>
 			<Switch model={ this.props.model } on={ this.props.on } 
-					onClick={ this.switch }>
+					onClick={ this.props.onSwitch.bind(this, this.props.model) }>
 			</Switch>
 		</div>
     );
@@ -72,16 +65,23 @@ class Luz extends Component {
 		this.onSwitch = this.onSwitch.bind( this );
 		this.state = { edit: false };
 	}
-	onSwitch( salida ) {
-		if ( this.root.state.temporizacion != '00:00' && 
-			 this.root.state.page === 'Luces encendidas') {
-			salida.estado = 0;
+	onSwitch( salida, e ) {
+		var temporizacion = Utils.horario_a_min( this.root.state.temporizacion );
+		
+		// Si se seteó temporizacion
+		if ( temporizacion != 0 ) {
+			// Si la temporizacion es distinta a la temporizacion actual de la salida
+			if (temporizacion != salida.temporizada) {
+				salida.temporizada =  this.root.state.temporizacion;
+				salida.estado = 0;	
+				Socket.emit('switchSalida', salida );			
+			}
 		}
 		else {
-			salida.estado = (salida.estado === 0) ? 1 : 0;	
-		}
-		salida.temporizada = Utils.horario_a_min( this.root.state.temporizacion );
-		Socket.emit('switchSalida', salida );
+			salida.estado = (salida.estado === 0) ? 1 : 0;
+			salida.temporizada = 0;
+			Socket.emit('switchSalida', salida );
+		}		
 	}
 	render() {
 		let estaTemporizada = (this.props.item.temporizada !== 0 && this.props.item.temporizada != "00:00");

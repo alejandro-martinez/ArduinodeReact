@@ -548,6 +548,8 @@ table.salidas td:last-child {
     top: 4px;
     left: 35px;
     content: "Apagada";
+}
+.temporizadatrue .switch:after,.temporizadatrue span {
     left: 36px;
 }
 .switch.on:after {
@@ -555,14 +557,17 @@ table.salidas td:last-child {
     color: #fff;
     left: 13px;
 }
-.switch.on {
-    background: #F73859 !important;
+.temporizadatrue .switch, .switch.on {
+    background: #f73859!important;
     color: #fff;
+}
+.temporizadatrue .switch:after {
+    content:"";
 }
 .switch.on .switch-toggle {
     left: 99px !important;
 }
-.switch-toggle {
+.switch-toggle,.temporizadatrue .switch.on .switch-toggle {
     left: 0px !important;
 }
 
