@@ -276,6 +276,7 @@ input[type=text] {
 }
 .footer input[type="time"] {
     width:90px;
+    letter-spacing: 0;
     background:none;
     color:#fff;
     border:0;
