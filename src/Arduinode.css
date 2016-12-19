@@ -188,6 +188,9 @@ li.iconACTIVA1 a:before {
 li.iconACTIVA1 a{
     color:#384259 !important;
 }
+li[class*='iconACTIVA'] a {
+    font-size:1.7em !important;
+}
 .iconMAS {
     font-size: 1.5em!important;
 }

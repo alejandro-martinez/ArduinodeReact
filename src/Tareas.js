@@ -23,7 +23,8 @@ export class Tareas extends Component {
 		
 		Socket.listen('DBTareasUpdated', ( db ) => {
 			if ( props.route.root.state.listenBroadcastUpdate ) {
-				props.route.root.setState({ tareas: db });
+				console.log(db)
+				props.route.root.setState({ tareas: db, listenBroadcastUpdate: false });
 			}
     	});
 

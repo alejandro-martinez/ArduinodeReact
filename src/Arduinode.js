@@ -175,9 +175,13 @@ export class Tarea extends DB {
 		}
 		/* Compara cada subtarea, con el total de subtareas
 		* y verifica si se superponen las fechas de inicio / fin */
+
 		db.forEach( ( tarea ) => {
-			if (tarea.subtareas.length > 1) { 
+			if (tarea.subtareas.length) { 
 				for (var t in tarea.subtareas) {
+					if ( tarea.accion === 1) { 
+						tarea.subtareas[t].duracion = '00:00'
+					}
 					valid = overlap( tarea.subtareas, tarea.subtareas[t] );
 				};
 			}
