@@ -573,10 +573,13 @@ table.salidas td:last-child {
     left: 0px !important;
 }
 
-@media screen and (max-width: 350px) {
+@media screen and (max-width: 500px) {
 
     table.salidas td input {
         width: 100% !important;
+    }
+    .iconLogout {
+        margin-top:-6px !important;
     }
 }
 @media screen and (min-width: 800px) {
