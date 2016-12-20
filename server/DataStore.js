@@ -45,11 +45,28 @@ function DataStore() {
 		}
 
 		var content = JSON.parse( fs.readFileSync('./models/' + file + '.json', 'utf8'));
+		
 		this[file] = content;
+
 		return content;
 	};
-	this.updateFile = function(filename, content) {
+	this.sortFile = function( file ) {
 
+		var alfabeticSort = ( a, b) => {
+			var prev = a.descripcion.toUpperCase();
+			var current = b.descripcion.toUpperCase();
+			return current < prev ?  1
+		         : current > prev ? -1
+		         : 0;
+		}
+
+		// Ordenamiento de dispositivos
+		file.sort(alfabeticSort);
+
+		// Ordenamiento de salidas de dispositivo
+		file = file.forEach((disp, k, _this) => { _this[k].salidas.sort(alfabeticSort) });
+
+		return file;
 	}
 	this.zonas = this.getFile('zonas');
 /**
@@ -59,8 +76,13 @@ function DataStore() {
 	this.updateDB = function( filename, data, removeMemoryData ) {
 		if ( data ) {
 			if (filename === 'dispositivos' && removeMemoryData) {
+				// Elimina claves para uso en memoria
 				data = this.removeJSONKeys( data );
 			}
+
+			// Ordenamiento alfabetico
+			if ( this.sortFile( data )) data = this.sortFile( data );
+			
 			fs.writeFileSync(filename + '.json', 
 									JSON.stringify(data, null, 2),
 									'utf8', 

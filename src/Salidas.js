@@ -157,6 +157,13 @@ export class SalidasActivas extends Component {
 			showAddIcon: false
 		});
 	}
+	alfabeticSort( a, b) {
+		var prev = a.descripcion.toUpperCase();
+		var current = b.descripcion.toUpperCase();
+		return current < prev ?  1
+	         : current > prev ? -1
+	         : 0;
+	}
 	render() {		
 		var salidasActivas = [];
 		this.props.route.root.state.dispositivos.forEach(( disp ) => {
@@ -164,8 +171,9 @@ export class SalidasActivas extends Component {
 				if (salida.estado == 0 && salida.tipo === 'L') {
 					salidasActivas.push( salida );
 				}
-			})
+			});
 		});
+		salidasActivas.sort( this.alfabeticSort );
 		return ( <SalidasTable online={ true } root={ this.props.route.root } salidas={ salidasActivas } /> );
 	}
 };
