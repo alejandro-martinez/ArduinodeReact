@@ -106,13 +106,6 @@ table.adminfalse tr td:last-child {
 table.adminfalse tr {
     height: 45px;
 }
-.dispositivos .disabledtrue {
-    background:#f73859;
-    color:#fff;
-}
-.dispositivos .disabledtrue ul li a {
-    color:#fff !important;
-}
 .container > div ul {
     right: 60px;
 }
@@ -401,6 +394,19 @@ button,.button {
 }
 table.dispositivos tr td:nth-child(2) {
     padding-top:.7em;
+}
+@-webkit-keyframes blinker {  
+  from { opacity: 1.0; }
+  to { opacity: 0.5; }
+}
+
+table.dispositivos tr.disabledtrue td:nth-child(2):after {
+    content:" ------> Sin conexión";
+    color:red;
+    -webkit-animation-name: blinker;  
+    -webkit-animation-iteration-count: infinite;  
+    -webkit-animation-timing-function: cubic-bezier(.5, 0, 1, 1);
+    -webkit-animation-duration: 1s; 
 }
 table.dispositivos.adminfalse tr {
     box-sizing: border-box;

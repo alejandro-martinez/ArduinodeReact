@@ -284,7 +284,6 @@ class Arduinode extends Component {
 			dispositivos: [],
 			zonas:[]
 		};
-
 		this.updateDB = this.updateDB.bind(this);
 		this.Dispositivo = new Dispositivo();
 		this.Tarea = new Tarea();
