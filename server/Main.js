@@ -83,7 +83,7 @@ class Dispositivo {
 					}
 				}
 				else {
-					salida.estado = 1;
+					this.offline = true;
 					Arduinode.broadcastDB();
 					log("No se pudo conectar con: " + params.ip);
 					callback();
