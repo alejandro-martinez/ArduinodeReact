@@ -69,6 +69,9 @@ http.listen( serverConf.port, serverConf.ip, () => {
 			sCliente.emit('DBTareasUpdated', DataStore.tareas);
 		});
 
+		sCliente.on('voz', (voz) => {
+			console.log(voz.results)
+		})
 		sCliente.on('updateDispositivosDB', ( db ) => { 
 			// Actualizacion de archivo JSON, sin tocar los estados de las salidas
 			if (DataStore.updateDB('./models/dispositivos', db, false)) {

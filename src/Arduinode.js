@@ -6,7 +6,7 @@ import Socket from './Socket';
 import Utils from './Utils';
 import Loading from 'react-loading';
 import { Dispositivos } from './Dispositivos';
-import { SalidasDispositivo, SalidasActivas } from './Salidas';
+import { Luz, SalidasDispositivo, SalidasActivas } from './Salidas';
 import { Tareas, TareaDispositivos, Subtareas } from './Tareas';
 import { Configuracion, Ajustes } from './Configuracion';
 import { Zonas, ZonasDispositivos } from './Zonas';
@@ -207,6 +207,65 @@ class Home extends Component {
 	render() { return ( <HTML.ListaLinks root={ this.props.route.root } items={ menu } /> ); }
 }
 
+class Voice {
+	static listen( callback ) {
+		var webkitSpeechRecognition = window.webkitSpeechRecognition || {};
+		if ( window.hasOwnProperty('webkitSpeechRecognition') ) {
+			var recognition = new webkitSpeechRecognition();
+			recognition.lang = "es-ES";
+			
+			recognition.onresult = function(event) { 
+				recognition.onend = null;
+				if (event.results.length) {
+					callback( event.results[0][0].transcript.toLowerCase() );
+				}
+				else {
+					callback()
+				}
+			}
+
+
+			recognition.start();
+		}
+	}
+	static ask(text, callback) {
+	    Voice.speak(text, function () {
+	        Voice.listen(function( respuesta ) {
+	        	callback(respuesta)
+	        });
+	    });
+	}
+	static speak(text, callback) {
+	    var u = new SpeechSynthesisUtterance();
+	    u.text = text;
+	    u.lang = 'es-ES';
+
+	    u.onend = function () {	
+	        if (callback) {
+	            callback();
+	        }
+	    };
+	 
+	    u.onerror = function (e) {
+	        if (callback) {
+	            callback(e);
+	        }
+	    };
+	 
+	    speechSynthesis.speak(u);
+	}
+	static getOrden( comando ) {
+		var orden = comando.split(" ");
+
+
+		return {
+			orden: orden[0].toLowerCase(),
+			dispositivo: orden[2],
+			salida: orden[1]
+		};
+	}
+}
+
 class Footer extends Component {
 	constructor(props) {
 		super(props);
@@ -215,7 +274,6 @@ class Footer extends Component {
 		});
 
 		this.state = { loading: false };
-
 		Socket.listen('horaServidor', ( hora ) => {
     		this.setState({ horaServidor: new Date(hora).toString().slice(16,21) });
     	});
@@ -250,6 +308,9 @@ class Footer extends Component {
 									   value={ this.props.root.state.temporizacion } />
 				
 					</li>
+					<li className="iconMICROFONO">
+						<a onClick={ this.props.root.onVoiceCommand }>🎤</a>
+					</li>
 					<li className={'show' + (this.props.root.state.temporizacion != '00:00')}>
 						<a className="iconDELETE" onClick={ this.onTimerReset }></a>
 					</li>
@@ -282,9 +343,11 @@ class Arduinode extends Component {
 			adminMode: false,
 			temporizacion: "00:00",
 			dispositivos: [],
-			zonas:[]
+			zonas:[],
+			comandos: ['apagar zona', 'prender zona', 'apagar', 'prender']
 		};
 		this.updateDB = this.updateDB.bind(this);
+		this.onVoiceCommand = this.onVoiceCommand.bind(this);
 		this.Dispositivo = new Dispositivo();
 		this.Tarea = new Tarea();
 		this.Zona = new Zona();
@@ -303,6 +366,66 @@ class Arduinode extends Component {
 				this.setState({ zonas: db }, () => this.updateEstadosZonas());
 			}
     	});
+	}
+	apagarLuces() {
+		Voice.ask("¿Las que están temporizadas también?", function( respuesta ) {
+			if (respuesta.toLowerCase() == 'si') {
+				Voice.speak("Apagando todas las luces...");
+				Socket.emit('apagarLucesEncendidas', { temporizadas: true })
+			}
+			else {
+				Voice.speak("Apagando luces...");	
+				Socket.emit('apagarLucesEncendidas', { temporizadas: false })
+			}
+		});
+	}
+	accionarZona() {
+		Voice.speak("Querés accionar zona");	
+	}
+	accionarSalida() {
+		Voice.speak("Querés accionar salida");	
+	}
+	onVoiceCommand() {
+		Voice.listen(function( comando ) {
+			// Devuelve el comando formateado
+			var orden = Voice.getOrden( comando );
+			
+			switch( orden.dispositivo ) {
+				case 'encendidas':
+					alert("apagan luge")
+					Voice.ask("¿Las que están temporizadas también?", function( respuesta ) {
+						if (respuesta.toLowerCase() == 'si') {
+							Voice.speak("Apagando todas las luces...");
+						}
+						else {
+							Voice.speak("Apagando luces...");	
+						}
+					});
+					break;
+				default:
+					if ( orden.salida == 'zona' ) {
+						this.accionarZona( orden.dispositivo )
+					}
+					else {
+						this.accionarSalida( orden.salida )
+					}
+			}
+/*
+
+			if (this.comando..indexOf('apagar encendidas') >= 0) {
+				Voice.ask("¿Las que están temporizadas también?", function( respuesta ) {
+					if (respuesta.toLowerCase() == 'si') {
+						Voice.speak("Apagando todas las luces...");
+					}
+					else {
+						Voice.speak("Apagando luces...");	
+					}
+				});
+			}
+			else {
+				Voice.speak("¡No entendí nada!.¡Probá de nuevo!", function() {});
+			}*/
+		});
 	}
 	getEstadoSalida( params ) {
 		var disp = this.getDispositivoByIP( params.ip );
@@ -358,7 +481,6 @@ class Arduinode extends Component {
 			<div className={"Arduinode adminMode" + This.state.adminMode}>
 				
 				<HTML.Header root={This} />
-
 				<div className="container">
 					<Router history={ hashHistory }>
 						<Route root={This} path="/" component={ Home } />
@@ -377,6 +499,12 @@ class Arduinode extends Component {
 				<Footer root={This}></Footer>
 	  		</div>
 		);
+	}
+}
+
+class VoiceCommands {
+	onCommand( command ) {
+		console.log(command)
 	}
 }
 
