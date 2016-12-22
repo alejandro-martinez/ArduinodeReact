@@ -251,11 +251,12 @@ class Luz extends Salida {
 		this.comando = 'T';
 	}
 	switch( params, callback ) {
-		var comando = this.comando
-								+ this.nro
-								+ params.estado
-								+ "."
-								+ DateConvert.horario_a_min(params.temporizada);
+		console.log("PARAMS",params)
+		var comando = 'T'
+						+ this.nro
+						+ params.estado
+						+ "."
+						+ DateConvert.horario_a_min(params.temporizada);
 
 		super.switch({ comando: comando, ip: this.ip}, callback);
 	}

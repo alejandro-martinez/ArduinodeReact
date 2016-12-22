@@ -54,7 +54,7 @@ http.listen( serverConf.port, serverConf.ip, () => {
 		Arduinode.listenSwitchEvents( serverConf );
 
 		sCliente.on('getZonasDB', () => { 
-			Arduinode.loadDispositivosDB( function() {
+			Arduinode.loadZonasDB( function() {
 				sCliente.emit('DBZonasUpdated', DataStore.zonas);
 			});
 		});
@@ -69,9 +69,6 @@ http.listen( serverConf.port, serverConf.ip, () => {
 			sCliente.emit('DBTareasUpdated', DataStore.tareas);
 		});
 
-		sCliente.on('voz', (voz) => {
-			console.log(voz.results)
-		})
 		sCliente.on('updateDispositivosDB', ( db ) => { 
 			// Actualizacion de archivo JSON, sin tocar los estados de las salidas
 			if (DataStore.updateDB('./models/dispositivos', db, false)) {
@@ -114,9 +111,29 @@ http.listen( serverConf.port, serverConf.ip, () => {
 
 		// Accion sobre una salida (Persiana, Luz, Bomba)
 		sCliente.on('switchSalida',( params ) => {
+			
+			if (params.hasOwnProperty('voiceMsg')) {
+				
+				var dispositivo = Arduinode.getDispositivoByDescripcion(params.dispositivo);
+				
+				if ( dispositivo ) {
+
+					var salida = dispositivo.salidas.filter((s) => {
+						return s.descripcion.toLowerCase() == params.salida;
+					});
+
+					if (salida.length) {
+						var salida = salida[0];
+						delete salida.comando;
+						salida.estado = (params.orden == 'prender') ? 0 : 1;
+						var params = salida;
+						
+					}
+				}
+			}
 			Arduinode.switchSalida( params, function(){});
-		});
 		
+		});	
 		sCliente.emit('horaServidor', new Date().getTime());
 
 		setInterval( () => {

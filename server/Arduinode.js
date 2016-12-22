@@ -94,6 +94,14 @@ Arduinode = {
 			this.io.sockets.emit('DBDispositivosUpdated', db || this.dispositivos);
 		}
 	},
+	getDispositivoByDescripcion: function( descripcion ) { 
+		var disp = this.dispositivos.filter((d,k,_this) => {
+			if ( d.descripcion.toLowerCase() === descripcion ) {
+				return _this[k];
+			}
+		});
+		return disp[0];
+	},
 	getDispositivoByIP: function( ip ) { 
 		return _.findWhere( this.dispositivos,{ ip: ip }); 
 	},

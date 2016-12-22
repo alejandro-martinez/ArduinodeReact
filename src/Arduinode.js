@@ -254,14 +254,14 @@ class Voice {
 	 
 	    speechSynthesis.speak(u);
 	}
-	static getOrden( comando ) {
+	static getComando( comando ) {
 		var orden = comando.split(" ");
-
 
 		return {
 			orden: orden[0].toLowerCase(),
 			dispositivo: orden[2],
-			salida: orden[1]
+			salida: orden[1].toLowerCase(),
+			voiceMsg: (orden[0].toLowerCase() == 'apagar') ? 'Apagando' : 'Prendiendo'
 		};
 	}
 }
@@ -343,8 +343,7 @@ class Arduinode extends Component {
 			adminMode: false,
 			temporizacion: "00:00",
 			dispositivos: [],
-			zonas:[],
-			comandos: ['apagar zona', 'prender zona', 'apagar', 'prender']
+			zonas:[]
 		};
 		this.updateDB = this.updateDB.bind(this);
 		this.onVoiceCommand = this.onVoiceCommand.bind(this);
@@ -367,64 +366,30 @@ class Arduinode extends Component {
 			}
     	});
 	}
-	apagarLuces() {
-		Voice.ask("¿Las que están temporizadas también?", function( respuesta ) {
-			if (respuesta.toLowerCase() == 'si') {
-				Voice.speak("Apagando todas las luces...");
-				Socket.emit('apagarLucesEncendidas', { temporizadas: true })
-			}
-			else {
-				Voice.speak("Apagando luces...");	
-				Socket.emit('apagarLucesEncendidas', { temporizadas: false })
-			}
-		});
-	}
-	accionarZona() {
-		Voice.speak("Querés accionar zona");	
-	}
-	accionarSalida() {
-		Voice.speak("Querés accionar salida");	
-	}
 	onVoiceCommand() {
 		Voice.listen(function( comando ) {
 			// Devuelve el comando formateado
-			var orden = Voice.getOrden( comando );
+			var comando = Voice.getComando( comando );
 			
-			switch( orden.dispositivo ) {
+			switch( comando.dispositivo ) {
 				case 'encendidas':
-					alert("apagan luge")
 					Voice.ask("¿Las que están temporizadas también?", function( respuesta ) {
-						if (respuesta.toLowerCase() == 'si') {
-							Voice.speak("Apagando todas las luces...");
-						}
-						else {
-							Voice.speak("Apagando luces...");	
-						}
+						var todo = (respuesta.toLowerCase() == 'si');
+						
+						Voice.speak(comando.voiceMsg + ((todo) ? ' todas las ' : '') + " luces...");
+						Socket.emit('apagarLucesEncendidas', { temporizadas: todo });
 					});
 					break;
 				default:
-					if ( orden.salida == 'zona' ) {
-						this.accionarZona( orden.dispositivo )
+					if ( comando.salida === "zona" ) {
+						Voice.speak(comando.voiceMsg + " zona" + comando.dispositivo);
+						Socket.emit('switchZona',comando);
 					}
 					else {
-						this.accionarSalida( orden.salida )
+						Socket.emit('switchSalida',comando);
+						Voice.speak(comando.voiceMsg + comando.salida + " de " + comando.dispositivo);
 					}
 			}
-/*
-
-			if (this.comando..indexOf('apagar encendidas') >= 0) {
-				Voice.ask("¿Las que están temporizadas también?", function( respuesta ) {
-					if (respuesta.toLowerCase() == 'si') {
-						Voice.speak("Apagando todas las luces...");
-					}
-					else {
-						Voice.speak("Apagando luces...");	
-					}
-				});
-			}
-			else {
-				Voice.speak("¡No entendí nada!.¡Probá de nuevo!", function() {});
-			}*/
 		});
 	}
 	getEstadoSalida( params ) {
@@ -439,6 +404,14 @@ class Arduinode extends Component {
 
 		return 1;
 	}
+	findZonaByDescripcion( descripcion ) {
+		alert("buscando zona" + descripcion)
+		var zona = this.state.zonas.filter((z, k, _this) => {
+			return z.descripcion.toLowerCase() == descripcion;
+		});
+		alert("Zona" + zona[0].descripcion)
+		return zona[0] || [];
+	} 
 	updateEstadosZonas() {
 		if (this.state.zonas.length) {
 			var encendidas = 0;

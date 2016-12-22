@@ -42,7 +42,6 @@ module.exports = function()
 					
 					if (response) {
 						socket.write(params.comando);
-					
 						socket.on('data',function( _data ) {
 
 							This.data+= _data.toString();

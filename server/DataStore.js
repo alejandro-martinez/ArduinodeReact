@@ -43,14 +43,14 @@ function DataStore() {
 		if ( !fs.existsSync( filePath ) ) {
 			fs.writeFileSync(filePath, '[]');
 		}
-
+		
 		var content = JSON.parse( fs.readFileSync('./models/' + file + '.json', 'utf8'));
 		
 		this[file] = content;
 
 		return content;
 	};
-	this.sortFile = function( file ) {
+	this.sortFile = function( file, filename ) {
 
 		var alfabeticSort = ( a, b) => {
 			var prev = a.descripcion.toUpperCase();
@@ -60,11 +60,12 @@ function DataStore() {
 		         : 0;
 		}
 
-		// Ordenamiento de dispositivos
+		// Ordenamiento por descripcion
 		file.sort(alfabeticSort);
-
-		// Ordenamiento de salidas de dispositivo
-		file = file.forEach((disp, k, _this) => { _this[k].salidas.sort(alfabeticSort) });
+		if (filename == 'dispositivos') {
+			// Ordenamiento de salidas de dispositivo
+			file = file.forEach((disp, k, _this) => { _this[k].salidas.sort(alfabeticSort) });
+		}
 
 		return file;
 	}
@@ -81,7 +82,7 @@ function DataStore() {
 			}
 
 			// Ordenamiento alfabetico
-			if ( this.sortFile( data )) data = this.sortFile( data );
+			if ( this.sortFile( data, filename )) data = this.sortFile( data );
 			
 			fs.writeFileSync(filename + '.json', 
 									JSON.stringify(data, null, 2),
