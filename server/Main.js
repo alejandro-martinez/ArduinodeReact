@@ -251,7 +251,6 @@ class Luz extends Salida {
 		this.comando = 'T';
 	}
 	switch( params, callback ) {
-		console.log("PARAMS",params)
 		var comando = 'T'
 						+ this.nro
 						+ params.estado

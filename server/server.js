@@ -96,8 +96,54 @@ http.listen( serverConf.port, serverConf.ip, () => {
 			io.sockets.emit('DBTareasUpdated', db);
 		});
 
+		sCliente.on('apagarLucesEncendidas', (params) => {
+			var action = function( _salida, cb ) {
+				_salida.estado = 1;
+				_salida.temporizada = 0;
+				Arduinode.switchSalida( _salida, function(){
+					cb();
+				});	
+			}
+			Arrays.asyncLoop( Arduinode.dispositivos, ( dispositivo, report ) => {
+				Arrays.asyncLoop(dispositivo.salidas, ( salida, _report) => {
+					
+					if (!params.temporizadas) {
+
+						if (salida.temporizada === 0) {
+
+							salida.estado = 1;
+							salida.temporizada = 0;
+							action( salida, _report);
+						}
+						else {
+							_report();
+						}						
+					}
+					else {
+						salida.estado = 1;
+						salida.temporizada = 0;
+						action( salida, _report);
+					}
+				}, () => {
+					report();
+				});
+
+			},() => {
+				Arduinode.broadcastDB();
+			});
+		});
+
 		// Accion sobre una zona
-		sCliente.on('switchZona',( zona ) => {
+		sCliente.on('switchZona',( params ) => {
+			if (params.hasOwnProperty('voiceMsg')) {
+				var found = DataStore.zonas.filter((z,k, _this) => {
+					if (z.descripcion.toLowerCase() == params.dispositivo) {
+						return _this[k];
+					}
+				});
+				var zona = found[0];
+				zona.estado = (params.orden == 'prender') ? 0 : 1;
+			}
 			Arrays.asyncLoop( zona.dispositivos, ( salida, report ) => {
 				salida.estado = (zona.estado) ? 1 : 0;
 				salida.temporizada = 0;

@@ -373,10 +373,10 @@ class Arduinode extends Component {
 			
 			switch( comando.dispositivo ) {
 				case 'encendidas':
-					Voice.ask("¿Las que están temporizadas también?", function( respuesta ) {
-						var todo = (respuesta.toLowerCase() == 'si');
+					Voice.ask("Pregunto: ¿Las que están temporizadas también?", function( respuesta ) {
 						
-						Voice.speak(comando.voiceMsg + ((todo) ? ' todas las ' : '') + " luces...");
+						var todo = (respuesta.indexOf('s') >= 0);
+						Voice.speak(comando.voiceMsg + ( (todo) ? ' todas las ' : '' ) + " luces...");
 						Socket.emit('apagarLucesEncendidas', { temporizadas: todo });
 					});
 					break;
