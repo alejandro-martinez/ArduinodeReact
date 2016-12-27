@@ -136,6 +136,8 @@ Arduinode = {
 	loadDispositivosDB: function() {
 		var newDispositivos = false;
 		
+		this.dispositivos = [];
+
 		this.DataStore.getFile('dispositivos').forEach((d) => {
 			var _d = new Dispositivo( d.id_disp, d.ip, d.descripcion );
 			_d.setSalidas( d.salidas );
