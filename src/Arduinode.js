@@ -405,11 +405,9 @@ class Arduinode extends Component {
 		return 1;
 	}
 	findZonaByDescripcion( descripcion ) {
-		alert("buscando zona" + descripcion)
 		var zona = this.state.zonas.filter((z, k, _this) => {
 			return z.descripcion.toLowerCase() == descripcion;
 		});
-		alert("Zona" + zona[0].descripcion)
 		return zona[0] || [];
 	} 
 	updateEstadosZonas() {
@@ -472,12 +470,6 @@ class Arduinode extends Component {
 				<Footer root={This}></Footer>
 	  		</div>
 		);
-	}
-}
-
-class VoiceCommands {
-	onCommand( command ) {
-		console.log(command)
 	}
 }
 

@@ -135,17 +135,26 @@ http.listen( serverConf.port, serverConf.ip, () => {
 
 		// Accion sobre una zona
 		sCliente.on('switchZona',( params ) => {
-			if (params.hasOwnProperty('voiceMsg')) {
-				var found = DataStore.zonas.filter((z,k, _this) => {
-					if (z.descripcion.toLowerCase() == params.dispositivo) {
-						return _this[k];
-					}
-				});
-				var zona = found[0];
-				zona.estado = (params.orden == 'prender') ? 0 : 1;
+			
+			var getZona = function() {
+				if (params.hasOwnProperty('voiceMsg')) {
+					var found = DataStore.zonas.filter((z,k, _this) => {
+						if (z.descripcion.toLowerCase() == params.dispositivo) {
+							return _this[k];
+						}
+					});
+					var zona = found[0];
+					zona.estado = (params.orden == 'prender') ? 0 : 1;
+
+					return zona;
+				}	
+				return params;
 			}
+			
+			var zona = getZona();
+
 			Arrays.asyncLoop( zona.dispositivos, ( salida, report ) => {
-				salida.estado = (zona.estado) ? 1 : 0;
+				salida.estado = zona.estado;
 				salida.temporizada = 0;
 				Arduinode.switchSalida( salida, function(){
 					report();
