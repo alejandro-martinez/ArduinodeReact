@@ -14,7 +14,7 @@ export class Header extends Component {
 	}
 	onAdminModeChange() {
 		if ( this.props.root.state.adminMode ) {
-			this.props.root.setState({ adminMode: false });
+			this.props.root.setState({ adminMode: false, listenBroadcastUpdate: true });
 		}
 		else if (this.props.root.state.config.claveApp) {
 			var clave = prompt("Ingrese clave", "");

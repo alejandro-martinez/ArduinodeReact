@@ -67,12 +67,12 @@ class Dispositivo {
 					var estadoDeseado = String( params.estado ).concat( ".", params.temporizada || 0 );
 
 					if ( estadoActual.trim() !=  estadoDeseado.trim() ) {
-						console.log("estado actual",estadoActual)
 						salida.switch( params , ( response ) => {
 							if (response) {
 								response = parseInt( response.replace(/(?:\r\n|\r|\n)/g, ''));
 								salida.estado = response;
 								salida.temporizada = params.temporizada;
+								console.log("broadcastDB")
 								Arduinode.broadcastDB();
 							}
 							callback( response);

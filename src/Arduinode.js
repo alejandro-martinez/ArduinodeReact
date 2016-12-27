@@ -356,7 +356,7 @@ class Arduinode extends Component {
     	});
 
 		Socket.listen('DBDispositivosUpdated', ( db ) => {
-			if ( this.state.listenBroadcastUpdate ) {
+			if ( this.state.listenBroadcastUpdate || !this.state.adminMode) {
 				this.setState({ dispositivos: db },() => this.updateEstadosZonas());
 			}
     	});

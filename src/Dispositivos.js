@@ -209,7 +209,6 @@ export class SelectsDispositivos extends Component{
 				return this.props.routeParams.id == t.id;
 			});
 			this.model = model[0];
-			console.log( this.model )
 			this.dispositivos = this.model.dispositivos.map( this.generateRow, this );
 			return (
 				<div>

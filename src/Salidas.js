@@ -121,7 +121,7 @@ class SalidasTable extends Component {
 			let estaTemporizada = (item.temporizada !== 0 && item.temporizada != "00:00");
 
 			var salida = null;
-			var nro = (item.nro != null) ? item.nro.toString() : 0;
+			var nro = ((item.nro != null) ? item.nro.toString() : 0 ) + Utils.randomID();
 			if ( item.tipo == 'L' ) {
 				salida = <Luz key={ nro } item={ item }
 					 salidasState={ This.state } 
@@ -131,7 +131,7 @@ class SalidasTable extends Component {
 				/>;
 			}
 			else {
-				salida = <Persiana key={ nro } item={ item }
+				salida = <Persiana key={ nro  } item={ item }
 					 salidasState={ This.state } 
 					 online={ this.props.online }
 					 root={ This.root }
