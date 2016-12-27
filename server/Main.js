@@ -65,8 +65,9 @@ class Dispositivo {
 				if (typeof estadoActual != 'undefined') {
 					//Si la salida tiene distinto estado al que se quiere llevar
 					var estadoDeseado = String( params.estado ).concat( ".", params.temporizada || 0 );
-					
+
 					if ( estadoActual.trim() !=  estadoDeseado.trim() ) {
+						console.log("estado actual",estadoActual)
 						salida.switch( params , ( response ) => {
 							if (response) {
 								response = parseInt( response.replace(/(?:\r\n|\r|\n)/g, ''));

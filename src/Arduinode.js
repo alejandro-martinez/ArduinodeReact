@@ -386,8 +386,8 @@ class Arduinode extends Component {
 						Socket.emit('switchZona',comando);
 					}
 					else {
-						Socket.emit('switchSalida',comando);
 						Voice.speak(comando.voiceMsg + comando.salida + " de " + comando.dispositivo);
+						Socket.emit('switchSalida',comando);						
 					}
 			}
 		});
