@@ -41,8 +41,8 @@ export class Header extends Component {
 };
 
 export function EditContainer( props ) {
-	return ( 
-		<tr className={ 'disabled' + props.disabled + ' editRow' +  props.edit }> 
+	return ( 		
+		<tr className={ 'disabled' + props.disabled + ' editRow' + props.edit }> 
 			{ props.children } 
 		</tr> 
 	);
@@ -83,16 +83,13 @@ export class EditRow extends Component {
 	}
 	render() {
 		let itemEdit; 
-		if ( this.state.edit ) {
+		if ( this.props.root.state.adminMode ) {
 			itemEdit = <input type="text" 
 						  	  onChange={ this.onChange } 
 						  	  value={ this.state.model[this.props.inputKey] } />
 
 		}
 		else {
-			itemEdit = <h4 onClick={ this.onClick }>{ this.state.model[this.props.inputKey] }</h4>;
-		}
-		if (!this.root.state.adminMode) {
 			itemEdit = <h4>{ this.state.model[this.props.inputKey] }</h4>;
 		}
 		return (

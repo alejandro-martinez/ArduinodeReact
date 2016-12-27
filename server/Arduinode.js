@@ -94,13 +94,24 @@ Arduinode = {
 			this.io.sockets.emit('DBDispositivosUpdated', db || this.dispositivos);
 		}
 	},
-	getDispositivoByDescripcion: function( descripcion ) { 
-		var disp = this.dispositivos.filter((d,k,_this) => {
-			if ( d.descripcion.toLowerCase() === descripcion ) {
-				return _this[k];
-			}
+	getSalidaByDescripcion: function( descripcion ) { 
+		var found = null;
+
+		this.dispositivos.forEach((d,k,_this) => {
+
+			d.salidas.every((s, index) => {
+
+				console.log(s,descripcion)
+				if ( s.descripcion.toLowerCase() === descripcion ) {
+					found = d.salidas[index];
+					return false;
+				}
+
+				return true;
+			});
+			if (found) return found;
 		});
-		return disp[0];
+		return found;
 	},
 	getDispositivoByIP: function( ip ) { 
 		return _.findWhere( this.dispositivos,{ ip: ip }); 

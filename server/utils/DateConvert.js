@@ -116,7 +116,7 @@ module.exports = function()
 		},
 		horaActualValida: function(horaIni, duracion)
 		{
-
+			if (!duracion) duracion = 0;
 			//Tomo la Hora Actual
 			var horaActual = new Date();
 

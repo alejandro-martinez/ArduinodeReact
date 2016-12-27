@@ -86,44 +86,33 @@ http.listen( serverConf.port, serverConf.ip, () => {
 		});
 
 		sCliente.on('updateZonasDB', ( db ) => { 
-			DataStore.updateDB('./models/zonas', db);
+			if ( DataStore.updateDB('./models/zonas', db) ) {
+				DataStore.zonas = db;	
+			}			
 			io.sockets.emit('DBZonasUpdated', db);
 		});
 
 		sCliente.on('updateTareasDB', ( db ) => { 
-			DataStore.updateDB('./models/tareas', db);
+			if ( DataStore.updateDB('./models/tareas', db) ) {
+				DataStore.tareas = db;	
+			}			
 			taskManager.loadScheduler( true );
-			io.sockets.emit('DBTareasUpdated', db);
+			io.sockets.emit('DBTareasUpdated', DataStore.tareas);
 		});
 
 		sCliente.on('apagarLucesEncendidas', (params) => {
 			var action = function( _salida, cb ) {
 				_salida.estado = 1;
 				_salida.temporizada = 0;
-				Arduinode.switchSalida( _salida, function(){
-					cb();
-				});	
+				
 			}
 			Arrays.asyncLoop( Arduinode.dispositivos, ( dispositivo, report ) => {
 				Arrays.asyncLoop(dispositivo.salidas, ( salida, _report) => {
-					
-					if (!params.temporizadas) {
-
-						if (salida.temporizada === 0) {
-
-							salida.estado = 1;
-							salida.temporizada = 0;
-							action( salida, _report);
-						}
-						else {
-							_report();
-						}						
-					}
-					else {
-						salida.estado = 1;
-						salida.temporizada = 0;
-						action( salida, _report);
-					}
+					salida.estado = 1;
+					salida.temporizada = 0;
+					Arduinode.switchSalida( salida, function(){
+						_report();
+					});
 				}, () => {
 					report();
 				});
@@ -143,8 +132,13 @@ http.listen( serverConf.port, serverConf.ip, () => {
 							return _this[k];
 						}
 					});
-					var zona = found[0];
-					zona.estado = (params.orden == 'prender') ? 0 : 1;
+					if (found.length) {
+						var zona = found[0];
+						zona.estado = (params.orden == 'prender') ? 0 : 1;						
+					}
+					else {
+						sCliente.emit('failed');
+					}
 
 					return zona;
 				}	
@@ -152,38 +146,33 @@ http.listen( serverConf.port, serverConf.ip, () => {
 			}
 			
 			var zona = getZona();
-
-			Arrays.asyncLoop( zona.dispositivos, ( salida, report ) => {
-				salida.estado = zona.estado;
-				salida.temporizada = 0;
-				Arduinode.switchSalida( salida, function(){
-					report();
-				});	
-			},() => {
-				Arduinode.broadcastDB();
-			});
+			if (zona ) {
+				console.log(zona.dispositivos)
+				Arrays.asyncLoop( zona.dispositivos, ( salida, report ) => {
+					salida.estado = zona.estado;
+					salida.temporizada = 0;
+					Arduinode.switchSalida( salida, function(){
+						report();
+					});	
+				},() => {
+					Arduinode.broadcastDB();
+				});
+			}
 		});
 
 		// Accion sobre una salida (Persiana, Luz, Bomba)
 		sCliente.on('switchSalida',( params ) => {
-			
+			console.log(params)
 			if (params.hasOwnProperty('voiceMsg')) {
 				
-				var dispositivo = Arduinode.getDispositivoByDescripcion(params.dispositivo);
-				
-				if ( dispositivo ) {
-
-					var salida = dispositivo.salidas.filter((s) => {
-						return s.descripcion.toLowerCase() == params.salida;
-					});
-
-					if (salida.length) {
-						var salida = salida[0];
+				var salida = Arduinode.getSalidaByDescripcion( params.salida );
+				if ( salida ) {
 						delete salida.comando;
 						salida.estado = (params.orden == 'prender') ? 0 : 1;
 						var params = salida;
-						
-					}
+				}
+				else {
+					sCliente.emit('failed');
 				}
 			}
 			Arduinode.switchSalida( params, function(){});

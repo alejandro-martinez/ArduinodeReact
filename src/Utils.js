@@ -4,7 +4,7 @@ class Utils {
 		document.dispatchEvent( new CustomEvent( name, { detail: data}) );
 	}
 	static randomID() {
-		return Math.random().toString(36).slice(18);
+		return + new Date();
 	}
 	static sumarHoras(time1, time2) {
 		var date = new Date();

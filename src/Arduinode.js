@@ -106,7 +106,7 @@ export class Tarea extends DB {
 	static newModel() {
 		return {
 		    "descripcion": "Nueva tarea",
-		    "id": Utils.randomID(),
+		    "id": Math.random().toString(36).slice(18),
 		    "dispositivos": [],
 		    "subtareas": [],
 		    "accion": 0,
@@ -212,8 +212,16 @@ class Voice {
 		var webkitSpeechRecognition = window.webkitSpeechRecognition || {};
 		if ( window.hasOwnProperty('webkitSpeechRecognition') ) {
 			var recognition = new webkitSpeechRecognition();
+			var noVoiceHandler = null;
+			recognition.onspeechstart = function() {
+				noVoiceHandler = setTimeout(function() {
+					recognition.abort();
+				},2000);
+			}
+			recognition.onspeechstart = function() {
+				clearTimeout( noVoiceHandler );
+			}
 			recognition.lang = "es-ES";
-			
 			recognition.onresult = function(event) { 
 				recognition.onend = null;
 				if (event.results.length) {
@@ -365,30 +373,27 @@ class Arduinode extends Component {
 				this.setState({ zonas: db }, () => this.updateEstadosZonas());
 			}
     	});
+
+    	Socket.listen('failed', () => {
+    		Voice.speak("No se pudo realizar la acción", function () {});
+    	});
 	}
 	onVoiceCommand() {
 		Voice.listen(function( comando ) {
 			// Devuelve el comando formateado
 			var comando = Voice.getComando( comando );
 			
-			switch( comando.dispositivo ) {
-				case 'encendidas':
-					Voice.ask("Pregunto: ¿Las que están temporizadas también?", function( respuesta ) {
-						
-						var todo = (respuesta.indexOf('s') >= 0);
-						Voice.speak(comando.voiceMsg + ( (todo) ? ' todas las ' : '' ) + " luces...");
-						Socket.emit('apagarLucesEncendidas', { temporizadas: todo });
-					});
+			switch( comando.salida ) {
+				case "todo":
+					Socket.emit('apagarLucesEncendidas');
 					break;
-				default:
-					if ( comando.salida === "zona" ) {
-						Voice.speak(comando.voiceMsg + " zona" + comando.dispositivo);
-						Socket.emit('switchZona',comando);
-					}
-					else {
-						Voice.speak(comando.voiceMsg + comando.salida + " de " + comando.dispositivo);
-						Socket.emit('switchSalida',comando);						
-					}
+				case "zona":
+					Socket.emit('switchZona',comando);	
+					break;
+				default: 
+					Socket.emit('switchSalida',comando);
+					break;
+			
 			}
 		});
 	}
