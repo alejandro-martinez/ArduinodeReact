@@ -106,7 +106,7 @@ export class Tarea extends DB {
 	static newModel() {
 		return {
 		    "descripcion": "Nueva tarea",
-		    "id": Math.random().toString(36).slice(18),
+		    "id": Utils.randomID(),
 		    "dispositivos": [],
 		    "subtareas": [],
 		    "accion": 0,
@@ -213,15 +213,18 @@ class Voice {
 		if ( window.hasOwnProperty('webkitSpeechRecognition') ) {
 			var recognition = new webkitSpeechRecognition();
 			var noVoiceHandler = null;
+			recognition.lang = "es-ES";
+
 			recognition.onspeechstart = function() {
 				noVoiceHandler = setTimeout(function() {
 					recognition.abort();
 				},2000);
 			}
+
 			recognition.onspeechstart = function() {
 				clearTimeout( noVoiceHandler );
 			}
-			recognition.lang = "es-ES";
+			
 			recognition.onresult = function(event) { 
 				recognition.onend = null;
 				if (event.results.length) {
@@ -231,7 +234,6 @@ class Voice {
 					callback()
 				}
 			}
-
 
 			recognition.start();
 		}
