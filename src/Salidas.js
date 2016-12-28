@@ -167,11 +167,13 @@ export class SalidasActivas extends Component {
 	render() {		
 		var salidasActivas = [];
 		this.props.route.root.state.dispositivos.forEach(( disp ) => {
-			disp.salidas.forEach( (salida) => {
-				if (salida.estado == 0 && salida.tipo === 'L') {
-					salidasActivas.push( salida );
-				}
-			});
+			if ( !disp.offline ) {
+				disp.salidas.forEach( (salida) => {
+					if (salida.estado == 0 && salida.tipo === 'L') {
+						salidasActivas.push( salida );
+					}
+				});
+			}
 		});
 		salidasActivas.sort( this.alfabeticSort );
 		return ( <SalidasTable online={ true } root={ this.props.route.root } salidas={ salidasActivas } /> );
