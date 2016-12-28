@@ -63,6 +63,7 @@ export class EditRow extends Component {
 			if (!Validator.hasOwnProperty(validator) || Validator[validator]( data )) {
 				model[this.props.inputKey] =  data;
 				this.setState({ model: model });
+				this.root.setState({ edit: true });
 			}
 		}
 	}

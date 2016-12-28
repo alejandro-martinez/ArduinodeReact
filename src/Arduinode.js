@@ -377,6 +377,7 @@ class Arduinode extends Component {
     	});
 
     	Socket.listen('failed', () => {
+    		alert("Failed")
     		Voice.speak("No se pudo realizar la acción", function () {});
     	});
 	}

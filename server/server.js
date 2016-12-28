@@ -148,18 +148,19 @@ http.listen( serverConf.port, serverConf.ip, () => {
 			var zona = getZona();
 			if (zona ) {
 				Arrays.asyncLoop( zona.dispositivos, ( salida, report ) => {
+
 					if (salida) {
 						salida.estado = zona.estado;
 						salida.temporizada = 0;
-						Arduinode.switchSalida( salida, function(){
-							report();
+						Arduinode.switchSalida( salida, function( response){
+							if (!response && params.hasOwnProperty('voiceMsg')) {
+								sCliente.emit('failed');
+								return false;
+							}
+							else {
+								report();
+							}
 						});
-					}
-					else {
-						if (!failed) {
-							failed = true;
-							sCliente.emit('failed');
-						}
 					}
 				},() => {
 					Arduinode.broadcastDB();
@@ -169,7 +170,6 @@ http.listen( serverConf.port, serverConf.ip, () => {
 
 		// Accion sobre una salida (Persiana, Luz, Bomba)
 		sCliente.on('switchSalida',( params ) => {
-			console.log(params)
 			if (params.hasOwnProperty('voiceMsg')) {
 				
 				var salida = Arduinode.getSalidaByDescripcion( params.salida );
