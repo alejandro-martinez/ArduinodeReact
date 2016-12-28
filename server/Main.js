@@ -72,7 +72,6 @@ class Dispositivo {
 								response = parseInt( response.replace(/(?:\r\n|\r|\n)/g, ''));
 								salida.estado = response;
 								salida.temporizada = params.temporizada;
-								console.log("broadcastDB")
 								Arduinode.broadcastDB();
 							}
 							callback( response);

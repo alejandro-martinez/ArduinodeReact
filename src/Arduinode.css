@@ -665,7 +665,10 @@ table.subtareas .col3 td.middle input {
 table.subtareas .col3 td:last-child {
     float: right;
     text-align: right;
-    width: 122px;
+}
+table.subtareas .col3 td:last-child input{
+    position:absolute;
+    right:0;
 }
 table.subtareas .titulos td:last-child {
     width:92px;
@@ -769,7 +772,6 @@ div.Arduinode.adminModetrue .switch.on{
 
 
 input[type=date], input[type=time] {
-    height: 35px;
     margin: 0 auto;
     width: 100%;
     font-family: arial, sans-serif;
@@ -779,7 +781,7 @@ input[type=date], input[type=time] {
     outline: none;
     border: 0;
     border-radius: 3px;
-    padding: 0 3px;
+    padding:7px 0 4px 7px;
     letter-spacing: .4em;
     color: #384259;
 }
@@ -787,5 +789,4 @@ input[type=time] {
     height: 20px;
     letter-spacing: .3em;
     width: 78px !important;
-    padding: 7px 0 4px 12px;
 }
