@@ -268,9 +268,9 @@ class Voice {
 		var orden = comando.split(" ");
 
 		return {
-			orden: orden[0].toLowerCase(),
+			orden: orden[0].toLowerCase().trim(),
 			dispositivo: orden[2],
-			salida: orden[1].toLowerCase(),
+			salida: orden.slice(1).join(" ").toLowerCase().trim(),
 			voiceMsg: (orden[0].toLowerCase() == 'apagar') ? 'Apagando' : 'Prendiendo'
 		};
 	}

@@ -42,9 +42,7 @@ export class Header extends Component {
 
 export function EditContainer( props ) {
 	return ( 		
-		<tr className={ 'disabled' + props.disabled || false}> 
-			{ props.children } 
-		</tr> 
+		<tr> { props.children } </tr> 
 	);
 }
 
@@ -62,7 +60,8 @@ export class EditRow extends Component {
 			var data = prompt("Modificar", model[this.props.inputKey]);
 			console.log(data)
 			if (!Validator.hasOwnProperty(validator) || Validator[validator]( data )) {
-				if (data != null) {
+				if (data && data.length) {
+					model[this.props.inputKey] = data;
 					this.setState({ model: model });
 					this.root.setState({ edit: true });
 				}

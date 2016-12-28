@@ -99,7 +99,7 @@ table tr {
     margin-bottom: -1px;
     padding: 10px;
 }
-table.admintrue tr {
+table.tareas.admintrue tr {
     height:150px;
     margin-bottom:20px;
 }
@@ -114,10 +114,7 @@ td.middle + td {
 }
 .container {
     padding: 36px 7px;
-}
-table.adminfalse tr td:first-child,
-table.adminfalse tr td:last-child {
-    display: block !important;
+    margin: 0 6px 0 0;
 }
 .container > div ul {
     right: 60px;
@@ -201,6 +198,9 @@ li[class*='iconACTIVA'] a {
 .iconMAS {
     font-size: 1.5em!important;
 }
+.iconMICROFONO {
+    margin: 2px 0;
+}
 .iconMAS:before {
     content: "\271A";
 }
@@ -210,7 +210,7 @@ li[class*='iconACTIVA'] a {
 .iconOK:after {
     content: "\2713";
 }
-li.iconDELETE a{
+.iconDELETE a{
     padding-top:5px !important;
     font-size:1.7em !important;
 }
@@ -240,10 +240,10 @@ li .iconLogin,li .iconLogout {
 li .iconLogout:before {
     content: "\2B05";
 }
-li.iconDELETE a {
+.iconDELETE a {
     color: red !important;
 }
-li.iconDELETE a:after {
+.iconDELETE a:after {
     content: "\2717";
 }
 li.iconEdit a:after {
@@ -650,10 +650,14 @@ table.subtareas .col3 td.middle input {
 table.subtareas .col3 td:last-child {
     float: right;
     text-align: right;
+    padding: 0;
 }
 table.subtareas .col3 td:last-child input{
     position:absolute;
-    right:0;
+    right: -7px;
+}
+table.subtareas .col3 td:last-child input[type='time'] {
+    right: 12px;
 }
 table.subtareas .titulos td:last-child {
     width:92px;
@@ -678,7 +682,7 @@ input[type=date], input[type=time] {
 input[type=time] {
     height: 20px;
     letter-spacing: .3em;
-    width: 78px !important;
+    width: 80px !important;
 }
 /* ZONAS */
 table.zonas tr td:last-child {
