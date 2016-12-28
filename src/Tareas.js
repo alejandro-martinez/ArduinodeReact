@@ -64,16 +64,14 @@ export class Tareas extends Component {
 				<HTML.EditRow  root={ this.props.route.root }
 							   inputKey='descripcion'
 							   model={ item } />
-				<tr className="icons">
-					<td>								  
-					<ul className="listIcons tareasIcons">
-						<li><Link className={'iconLAMP' + item.accion} onClick={ this.onSetAccion.bind(this, item) }></Link></li>
-						<li className={'iconACTIVA' + item.activa }><Link onClick={ this.onSetActiva.bind(this, item) }></Link></li>
-						<li><Link className="iconDELETE" onClick={ this.onRemove.bind(this,item) }></Link></li>
+				<tr className={ "show" + this.props.route.root.state.adminMode }>
+					<ul className="listIcons">
+						<li className="iconDispositivos"><Link to={'Tareas/' + item.id + '/dispositivos'}>&#9854;</Link></li>						
 						<li className="iconReloj"><Link to={'Tareas/subtareas/' + item.id}></Link></li>
-						<li className="iconDispositivos"><Link to={'Tareas/' + item.id + '/dispositivos'}>&#9854;</Link></li>
+						<li className="onlyAdmin iconDELETE"><Link onClick={ this.onRemove.bind(this,item) }></Link></li>
+						<li className={'onlyAdmin iconACTIVA' + item.activa }><Link onClick={ this.onSetActiva.bind(this, item) }></Link></li>
+						<li className={'onlyAdmin iconLAMP' + item.accion}><Link onClick={ this.onSetAccion.bind(this, item) }></Link></li>
 					</ul>
-					</td>
 				</tr>
 			</HTML.EditContainer>
 		);
@@ -135,8 +133,8 @@ export class Subtareas extends Tareas {
 						   disabled={ !this.props.route.root.state.adminMode }
 						   value={ item.fechainicio } />
 					</td>
-					<td className={"show" + this.props.route.root.state.adminMode}>
-						<a className="iconDELETE" onClick={ this.onRemove }></a>
+					<td className={"iconDELETE show" + this.props.route.root.state.adminMode}>
+						<a onClick={ this.onRemove }></a>
 					</td>
 					<td>Fin: <input type="date"
 						   name="fechafin" 

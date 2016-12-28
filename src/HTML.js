@@ -42,7 +42,7 @@ export class Header extends Component {
 
 export function EditContainer( props ) {
 	return ( 		
-		<tr className={ 'disabled' + props.disabled + ' editRow' + props.edit }> 
+		<tr className={ 'disabled' + props.disabled || false}> 
 			{ props.children } 
 		</tr> 
 	);
@@ -90,12 +90,10 @@ export class EditRow extends Component {
 
 		}
 		else {
-			itemEdit = <h4>{ this.state.model[this.props.inputKey] }</h4>;
+			itemEdit = <Link to={this.props.link}>{ this.state.model[this.props.inputKey] }</Link>;
 		}
 		return (
-			<td className={ 'editRow' + this.state.edit}>
-				<div> { itemEdit } </div>
-			</td>
+			<td><div> { itemEdit } </div></td>
 		);
 	}
 };

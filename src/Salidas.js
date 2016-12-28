@@ -125,7 +125,7 @@ class SalidasTable extends Component {
 			if ( item.tipo == 'L' ) {
 				salida = <Luz key={ nro } item={ item }
 					 salidasState={ This.state } 
-					 online={ this.props.online }
+					 online={ this.props.online && !this.root.state.adminMode }
 					 root={ This.root } 
 					 switchClass= { ' temporizada' + estaTemporizada }
 				/>;
@@ -133,7 +133,7 @@ class SalidasTable extends Component {
 			else {
 				salida = <Persiana key={ nro  } item={ item }
 					 salidasState={ This.state } 
-					 online={ this.props.online }
+					 online={ this.props.online && !this.root.state.adminMode }
 					 root={ This.root }
 				/>
 			}
@@ -143,7 +143,7 @@ class SalidasTable extends Component {
 
 		return (
 			<div>
-				<HTML.Table class="salidas">{ tableItems }</HTML.Table>
+				<HTML.Table class={"salidas admin" + this.root.state.adminMode}>{ tableItems }</HTML.Table>
 			</div>
 		);
 	}

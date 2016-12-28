@@ -9,10 +9,22 @@ html,body,div,span,h1,h2,h3,h4,h5,h6,p,a,strike,center,ul,li,form,label,table,tb
 }
 a {
     cursor: pointer;
-    color: #000;
+    color: #384259;
+}
+.showfalse{
+    display: none !important;
 }
 div.Arduinode {
     overflow: hidden;
+}
+div.Arduinode.adminModetrue header {
+    background:#24695f;
+}
+div.Arduinode.adminModetrue .footer {
+    background:#268074;
+}
+div.Arduinode.adminModetrue .switch.on{
+    background:#268074 !important;
 }
 .center {
     margin: auto;
@@ -21,9 +33,6 @@ div.Arduinode {
     left: 0;
     bottom: 0;
     right: 0;
-}
-.showfalse,td.editRowfalse a{
-    display: none !important;
 }
 table {
     width: 100%;
@@ -35,7 +44,10 @@ table td {
     display: inline-block;
     text-align: left;
 }
-table tr td h4 {
+table tr {
+    position: relative;
+}
+table tr td a {
     margin: 12px 8px;
 }
 td.editRowtrue a {
@@ -103,9 +115,6 @@ table.adminfalse tr td:first-child,
 table.adminfalse tr td:last-child {
     display: block !important;
 }
-table.adminfalse tr {
-    height: 45px;
-}
 .container > div ul {
     right: 60px;
 }
@@ -144,7 +153,7 @@ a[class*="icon"],li[class*="icon"] a {
 }
 .listIcons li {
     width: 20%;
-    float: left;
+    float: right;
 }
 .iconDOWN:before {
     content: "\25BC";
@@ -155,18 +164,18 @@ a[class*="icon"],li[class*="icon"] a {
 .iconUP:before {
     content: "\25B2";
 }
-.iconLAMP0 {
+li.iconLAMP0 a {
     color: #c1c100 !important;
     font-size: 1.7em !important;
 }
-.iconLAMP0:before {
+li.iconLAMP0 a:before {
     content: "\2600";
 }
-.iconLAMP1 {
+li.iconLAMP1 a {
     margin-right: 8px;
     font-size: 2em !important;
 }
-.iconLAMP1:before {
+li.iconLAMP1 a:before {
     content: "\25CF";
     color: grey !important;
 }
@@ -197,7 +206,7 @@ li[class*='iconACTIVA'] a {
 .iconOK:after {
     content: "\2713";
 }
-.iconDELETE {
+li.iconDELETE a{
     padding-top:5px !important;
     font-size:1.7em !important;
 }
@@ -227,13 +236,13 @@ li .iconLogin,li .iconLogout {
 li .iconLogout:before {
     content: "\2B05";
 }
-.iconDELETE {
+li.iconDELETE a {
     color: red !important;
 }
-.iconDELETE:after {
+li.iconDELETE a:after {
     content: "\2717";
 }
-.iconEdit:after {
+li.iconEdit a:after {
     content: "\270D";
 }
 .back:before {
@@ -245,6 +254,9 @@ li .iconLogout:before {
 }
 .menu:after {
     content: "\2630";
+}
+table.salidas tr td:last-child {
+    width:122px;
 }
 .controlPersianas {
     width: 156px;
@@ -267,16 +279,6 @@ input:valid,input[type='text'] {
 input[type=text] {
     font-size: 1em;
     box-shadow: 5px 5px 5px #888888;
-}
-.footer input[type="time"] {
-    width:90px;
-    letter-spacing: 0;
-    background:none;
-    color:#fff;
-    border:0;
-    padding:.2em;
-    font-weight:bold;
-    font-size:.9em;
 }
 input:invalid,input.validfalse {
     border: 1px solid red;
@@ -340,11 +342,24 @@ header,.footer {
 .footer .listIcons .iconReloj {
     width: 95px;
 }
-.footer .listIcons .iconDELETE {
+.footer .listIcons .iconDELETE a {
     color:#fff !important;
 }
 .footer #loading div {
     margin: -8px auto;
+}
+.footer .listIcons {
+    width:170px;
+}
+.footer input[type="time"] {
+    width:90px;
+    letter-spacing: 0;
+    background:none;
+    color:#fff;
+    border:0;
+    padding:.2em;
+    font-weight:bold;
+    font-size:.9em;
 }
 #loading {
     bottom: 8px;
@@ -413,25 +428,12 @@ table.dispositivos.adminfalse tr {
     height:85px;
     padding: 5px 10px 10px 10px;
 }
-.dispositivos .iconDELETE {;
+.dispositivos li.iconDELETE a {;
     font-size:2.5em !important;
-}
-table.dispositivos.admintrue li:last-child {
-    margin-top:.2em;
-}
-table.dispositivos.admintrue .listIcons {
-    margin-top: -19px;
-}
-table.dispositivos.admintrue .listIcons li {
-    margin-left: 40px;
 }
 table.dispositivos.adminfalse tr td:first-child,
 table.dispositivos.adminfalse tr td:last-child {
     display: block !important;
-}
-table.tareaDispositivos tr {
-    height: 50px;
-    padding-top: 35px;
 }
 table.adminfalse.dispositivos tr td:last-child {
     margin-top: -75px;
@@ -454,11 +456,6 @@ table.dispositivos td {
 table.dispositivos td:last-child {
     float: right;
 }
-table tr td div {
-    width: 50%;
-    position: relative;
-    display: inline-block;
-}
 table.dispositivos tr {
     position: relative;
     height: 84px;
@@ -476,7 +473,7 @@ table.dispositivos tr td {
     height: 22%;
     font-size: .8em;
 }
-table.dispositivos tr td h4 {
+table.dispositivos tr td a {
     margin: 0;
 }
 table.dispositivos tr td div input {
@@ -486,46 +483,46 @@ table.dispositivos tr td div input {
 table.dispositivos tr td:first-child {
     font-size: 1em;
 }
-table.dispositivos tr td:last-child {
-    margin: -57px 0;
-}
 table.dispositivos .listIcons li {
     margin-left: 30px;
 }
 .iconEdit {
     font-size: 2em !important;
 }
-
-table.salidas tr {
+.admintrue tr td:last-child {
+  position: absolute;
+  top:3px;
+  right:22px;
+}
+table tr {
     width: 100%;
     height: 70px;
     padding: 21px 0 0px 5px;
 }
-table.salidas tr td:last-child {
+table tr td:last-child {
     float: right;
     padding: 8px 0 0 0;
     margin-right: 10px;
 }
-table.salidas td {
+table td {
     display: inline-block;
     border: none !important;
     width: 53%;
 }
-table.salidas td h4 {
+table.admintrue td {
+    width: 95%;
+}
+table td a {
     padding: 0;
     float: left;
 }
-table.salidas > tr td div {
-    width: 50%;
+table > tr td div {
     position: relative;
     display: inline-block;
-}
-table.salidas tr td > div {
     width: 100%;
 }
-table.salidas td:last-child {
+table td:last-child {
     padding: 12px;
-    width: 120px;
 }
 .switchContainer {
     position: relative;
@@ -541,7 +538,10 @@ table.salidas td:last-child {
     top: 5px;
     text-align: left;
 }
-.temporizadafalse span,.temporizadanull span {
+.temporizadafalse span,.temporizadanull span,
+.admintrue .switchContainer, 
+table.dispositivos.admintrue .listIcons,
+.adminfalse .onlyAdmin {
     display: none;
 }
 .temporizadatrue .on:after {
@@ -588,6 +588,28 @@ table.salidas td:last-child {
         margin-top:-6px !important;
     }
 }
+/* TAREAS */
+table.tareas ul li.iconReloj a {
+    position: relative;
+    color: #384259;
+    right: 9px;
+    top: -5px;
+    font-size: 2.4em !important;
+}
+table.tareas ul li {
+    text-align:center;
+}
+table.tareas tr tr {
+    box-shadow: -5px 5px 3px #888888;
+    padding:0;
+    height:auto;
+    background:#fff;
+    margin-top:15px;
+}
+
+table.tareas tr tr ul{
+    padding:12px 10px 2px 0;
+}
 @media screen and (min-width: 800px) {
     table.subtareas input {
         width: 170px !important;
@@ -596,48 +618,8 @@ table.salidas td:last-child {
         width: 80px !important;
     }
 }
-table.tareas tr {
-    padding: 0;
-    width: 100%;
-}
-table.tareas.adminfalse tr {
-    height: 67px;
-    position: relative;
-}
-table.tareas tr div,table tr.icons td {
-    width: 100%;
-}
-table td ul li.iconReloj a {
-    position: relative;
-    color: #384259;
-    right: 9px;
-    top: -5px;
-    font-size: 2.4em !important;
-}
-table.tareas.adminfalse .tareasIcons li {
-    display: none;
-}
-table.tareas.adminfalse .tareasIcons li.iconReloj,table.tareas.adminfalse .tareasIcons li.iconReloj + li {
-    display: block;
-}
-table.tareas.adminfalse tr.icons {
-    position: absolute;
-    border: 0;
-    width: 100px;
-    right: 0;
-    top: -12px;
-}
-table.tareas.adminfalse tr.icons ul li {
-    width: 50px;
-}
-table.tareas tr.disabledfalse {
-    border:green 1px solid;
-    box-shadow:0 8px 16px 0 green,0 6px 20px 0 rgba(10,10,10,.19);
-}
-.icons .listIcons {
-    text-align: center;
-    padding-top: 25px;
-}
+
+
 .col3 td {
     width: 32%;
 }
@@ -656,7 +638,7 @@ table.subtareas .col3 td.middle input {
 .subtareas .col3 td:nth-child(2) {
     text-align:center;
 }
-.col2 td {
+.subtareas .col2 td {
     width: 20%;
 }
 .col2 td:last-child {
@@ -676,101 +658,6 @@ table.subtareas .titulos td:last-child {
 table.subtareas .col3:first-child input {
     margin-right: 20px;
 }
-table.tareaDispositivos td:last-child,table tr {
-    display: block;
-}
-table.tareaDispositivos tr td:last-child {
-    width: 40px;
-    font-size: 1.3em;
-    float: right;
-}
-.tareaDispositivos .col2 td {
-    width: 90%;
-}
-table.tareaDispositivos.adminfalse .iconDELETE {
-    display: none;
-}
-/* Seccion configuracion*/
-.container .ajustes label  {
-    display:block;
-    margin-bottom:10px;
-}
-.container .ajustes label input {
-    display:block;
-}
-/* Zonas */
-.zonasIcons {
-    text-align:right;    
-}
-.zonasIcons td ul, .zonasIcons td div {
-    display: inline-block;
-} 
-.zonasIcons li{
-    margin-left:30px;
-    margin-right:0;
-    display: inline-block;
-}
-.zonas.admintrue .zonasIcons li:last-child {
-    display:none;
-}
-.zonasIcons li:last-child{
-    margin-right:0px;
-}
-.zonasIcons .switch.on .switch-toggle {
-    left:0px !important;
-}
-.zonas tr{
-    overflow:hidden;
-}
-
-table.zonas tr td.icons{
-    margin-top:-37px;
-    float:right;
-    display: inline-block !important;
-}
-table.zonas.admintrue tr td > div {
-    width:auto;
-}
-table.zonas.admintrue tr td>div input {
-    max-width:150px;
-}
-table.zonas.admintrue tr td.icons{
-    margin-top:4px;
-}
-.adminfalse .zonasIcons li {
-    display:none;
-}
-.adminfalse .zonasIcons li:last-child {
-    display:block;
-}
-.zonasIcons li:last-child .switch:after{
-    left:11px;
-}
-
-.adminfalse .zonasIcons li:last-child .switchContainer{
-    display:block;
-}
-div.Arduinode.adminModetrue header {
-    background:#24695f;
-}
-div.Arduinode.adminModetrue .footer {
-    background:#268074;
-}
-div.Arduinode.adminModetrue .switch.on{
-    background:#268074 !important;
-}
-.ajustes {
-    padding:0 10px;
-}
-.ajustes label {
-    font-weight:100;
-}
-.ajustes label td{
-    padding:10px 0;
-    min-width:100px;
-}
-
-
 input[type=date], input[type=time] {
     margin: 0 auto;
     width: 100%;
@@ -789,4 +676,32 @@ input[type=time] {
     height: 20px;
     letter-spacing: .3em;
     width: 78px !important;
+}
+/* ZONAS */
+table.zonas tr td:last-child {
+    width:120px;
+}
+table.zonas ul,table.tareaDispositivos tr td:last-child ul {
+    padding:0;
+}
+table.zonas tr td:last-child li.iconSWITCH {
+    float:left;
+}
+/*Configuracion*/
+.container .ajustes label  {
+    display:block;
+    margin-bottom:10px;
+}
+.container .ajustes label input {
+    display:block;
+}
+.ajustes {
+    padding:0 10px;
+}
+.ajustes label {
+    font-weight:100;
+}
+.ajustes label td{
+    padding:10px 0;
+    min-width:100px;
 }

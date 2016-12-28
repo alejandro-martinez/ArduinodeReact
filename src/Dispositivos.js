@@ -107,7 +107,7 @@ export class Dispositivos extends Component {
 							  model={ disp } />
 				<td>
 					<ul className="listIcons">
-						<li><Link to={'Dispositivos/salidas/' + item.ip}>&#9854;</Link></li>
+						<li className="iconDispositivos"><Link to={'Dispositivos/salidas/' + item.ip}>&#9854;</Link></li>
 						<li className={'show' + this.props.route.root.state.adminMode}>
 							<a onClick={ this.onRemove.bind( this, item )} 
 							   className={"iconDELETE show" + this.props.route.root.state.adminMode}></a>
@@ -167,8 +167,14 @@ export class SelectsDispositivos extends Component{
 						  : "Salida " + item.nro;
 		return ( 
 			<tr className="col2">
-				<td>{ item.descripcion + ' - ' + descripcion }</td>
-				<td><a onClick={ this.onRemove.bind( this, item )} className={"show "+ this.root.state.adminMode + " iconDELETE"}></a></td>
+				<td><a>{ item.descripcion + ' - ' + descripcion }</a></td>
+				<td className="icons">
+					<ul className="listIcons">
+						<li className="iconDELETE onlyAdmin">
+							<Link onClick={ this.onRemove.bind(this,item) }></Link>
+						</li>					
+					</ul>
+				</td>
 			</tr>
 		);
 	}
@@ -221,7 +227,7 @@ export class SelectsDispositivos extends Component{
 						</div>
 					</div>
 					
-					<HTML.Table class={"tareaDispositivos admin" + this.root.state.adminMode}> { this.dispositivos } </HTML.Table>
+					<HTML.Table class={"salidas tareaDispositivos admin" + this.root.state.adminMode}> { this.dispositivos } </HTML.Table>
 				</div>
 			);
 		}

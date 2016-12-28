@@ -48,14 +48,17 @@ export class Zonas extends Component {
 	generateRow( item ) {
 		return ( 
 			<HTML.EditContainer edit={ this.state.edit || item.descripcion.length === 0 }>
+
 				<HTML.EditRow  root={ this.props.route.root }
+							   link={'Zonas/' + item.id + '/dispositivos'}
 							   inputKey='descripcion'
 							   model={ item } />
 				<td className="icons">								  
-					<ul className="zonasIcons">
-						<li className="iconDispositivos"><Link to={'Zonas/' + item.id + '/dispositivos'}>&#9854;</Link></li>
-						<li><Link className="iconDELETE" onClick={ this.onRemove.bind(this,item) }></Link></li>
-						<li>
+					<ul className="listIcons">
+						<li className="iconDELETE onlyAdmin">
+							<Link onClick={ this.onRemove.bind(this,item) }></Link>
+						</li>
+						<li className="iconSWITCH">
 							<Toggle model={ item } 
 									onSwitch={ this.onSwitch } 
 									on={ item.estado == 0 }
@@ -69,7 +72,7 @@ export class Zonas extends Component {
 	}
 	render() {
 		var rows = this.props.route.root.state.zonas.map( this.generateRow );
-		return (<HTML.Table class={"zonas admin" + this.props.route.root.state.adminMode}> { rows } </HTML.Table>);
+		return (<HTML.Table class={"zonas salidas admin" + this.props.route.root.state.adminMode}> { rows } </HTML.Table>);
 	}
 }
 
