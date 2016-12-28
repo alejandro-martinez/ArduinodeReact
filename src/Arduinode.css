@@ -338,6 +338,7 @@ header,.footer {
 }
 .footer .listIcons li {
     width: 35px;
+    float: left;
     margin-right: 20px;
     padding-top: 10px;
 }
