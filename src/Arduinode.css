@@ -99,6 +99,10 @@ table tr {
     margin-bottom: -1px;
     padding: 10px;
 }
+table.admintrue tr {
+    height:150px;
+    margin-bottom:20px;
+}
 table td:last-child {
     display: inline-block;
 }
@@ -279,6 +283,7 @@ input:valid,input[type='text'] {
 input[type=text] {
     font-size: 1em;
     box-shadow: 5px 5px 5px #888888;
+    padding: 10px;
 }
 input:invalid,input.validfalse {
     border: 1px solid red;
@@ -508,9 +513,6 @@ table td {
     display: inline-block;
     border: none !important;
     width: 53%;
-}
-table.admintrue td {
-    width: 95%;
 }
 table td a {
     padding: 0;
