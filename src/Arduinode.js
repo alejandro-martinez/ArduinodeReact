@@ -318,7 +318,7 @@ class Footer extends Component {
 									   value={ this.props.root.state.temporizacion } />
 				
 					</li>
-					<li className="iconMICROFONO">
+					<li className={"iconMICROFONO show" + !this.props.root.state.adminMode}>
 						<a onClick={ this.props.root.onVoiceCommand }>🎤</a>
 					</li>
 					<li className={'show' + (this.props.root.state.temporizacion != '00:00')}>
