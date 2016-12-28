@@ -395,14 +395,12 @@ class Arduinode extends Component {
 				default: 
 					Socket.emit('switchSalida',comando);
 					break;
-			
 			}
 		});
 	}
 	getEstadoSalida( params ) {
 		var disp = this.getDispositivoByIP( params.ip );
-		
-		if (disp && !disp.offline) {
+		if (disp) {
 			var found = disp.salidas.filter(function(s, k, _this) { 
 				return s.nro == params.nro;
 			});
@@ -420,21 +418,21 @@ class Arduinode extends Component {
 	updateEstadosZonas() {
 		if (this.state.zonas.length) {
 			var encendidas = 0;
-
 			this.state.zonas.forEach((z, k, _this) => {
 				
 				z.dispositivos.forEach((s) => {
 					s.estado = this.getEstadoSalida( s );
 					if (s.estado == 0) encendidas++;
 				});
+				
 				if (encendidas === z.dispositivos.length) {
 					_this[k].estado = 0;
 				}
 				else {
 					_this[k].estado = 1;
-					this.forceUpdate();
 				}
 			});
+			this.forceUpdate();
 		}
 	}
 	getDispositivoByIP( ip ) {

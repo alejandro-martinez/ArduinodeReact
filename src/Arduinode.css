@@ -703,8 +703,12 @@ table.tareaDispositivos.adminfalse .iconDELETE {
     display: inline-block;
 } 
 .zonasIcons li{
-    margin-right:40px;
+    margin-left:30px;
+    margin-right:0;
     display: inline-block;
+}
+.zonas.admintrue .zonasIcons li:last-child {
+    display:none;
 }
 .zonasIcons li:last-child{
     margin-right:0px;
@@ -715,6 +719,7 @@ table.tareaDispositivos.adminfalse .iconDELETE {
 .zonas tr{
     overflow:hidden;
 }
+
 table.zonas tr td.icons{
     margin-top:-37px;
     float:right;
@@ -722,6 +727,9 @@ table.zonas tr td.icons{
 }
 table.zonas.admintrue tr td > div {
     width:auto;
+}
+table.zonas.admintrue tr td>div input {
+    max-width:150px;
 }
 table.zonas.admintrue tr td.icons{
     margin-top:4px;
