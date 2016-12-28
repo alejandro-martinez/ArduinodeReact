@@ -124,7 +124,7 @@ http.listen( serverConf.port, serverConf.ip, () => {
 
 		// Accion sobre una zona
 		sCliente.on('switchZona',( params ) => {
-			
+			var failed = false;
 			var getZona = function() {
 				if (params.hasOwnProperty('voiceMsg')) {
 					var found = DataStore.zonas.filter((z,k, _this) => {
@@ -147,13 +147,20 @@ http.listen( serverConf.port, serverConf.ip, () => {
 			
 			var zona = getZona();
 			if (zona ) {
-				console.log(zona.dispositivos)
 				Arrays.asyncLoop( zona.dispositivos, ( salida, report ) => {
-					salida.estado = zona.estado;
-					salida.temporizada = 0;
-					Arduinode.switchSalida( salida, function(){
-						report();
-					});	
+					if (salida) {
+						salida.estado = zona.estado;
+						salida.temporizada = 0;
+						Arduinode.switchSalida( salida, function(){
+							report();
+						});
+					}
+					else {
+						if (!failed) {
+							failed = true;
+							sCliente.emit('failed');
+						}
+					}
 				},() => {
 					Arduinode.broadcastDB();
 				});
