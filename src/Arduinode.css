@@ -45,20 +45,32 @@ div.Arduinode.adminModetrue .switch.on{
 .mic {
     margin:0 auto;
 }
+.mic h1,.mic p {
+    font-size:2em;
+    text-align:center;
+    max-width:230px;
+    margin:0 auto;
+    line-height:1.4em;
+}
 .mic p {
-    width:160px;
-    margin:0 0 0 100px;
-    line-height:2em;
+    max-width:250px;
+    font-size:1em;
 }
 .mic :before, .mic :after{
   content:'';
   position:absolute;
   background-color:#fff;
 }
-.googleNowMic { transition: all .2s ease-in-out; }
-.googleNowMic.speakingtrue { transform: scale(1.1); }
-.googleNowMic.speakingfalse { transition: all .2s ease-out-in; }
+.googleNowMic { transition: all .1s ease-in-out; }
 
+.googleNowMic.speakingtrue {
+    -webkit-transition: all ease-in-out .1s;
+    transition: all ease-in-out .1s;
+}
+.googleNowMic.speakingfalse {
+    -webkit-transition: all ease-out-out .1s;
+    transition: all ease-out-in .1s;
+}
 .googleNowMic:after{
   top:30%; left:43%;
   height:15%; width:14%;
@@ -132,14 +144,6 @@ input[type="text"],textarea,select {
     border-radius: 2px;
     padding: 3px;
 }
-h1 {
-    font-size: .84em;
-}
-div.left {
-    float: left;
-    width: 100%;
-    text-align: left;
-}
 html {
     height: 100%;
 }
@@ -153,6 +157,9 @@ body {
     color: #384259;
     background: #fff;
     margin: 0 auto;
+}
+h1 {
+    font-size:3em;
 }
 ul {
     list-style: none;
@@ -360,6 +367,7 @@ header h1 {
     margin-left: 12px;
     position: absolute;
     top: 0;
+    font-size:1em;
     left: 0;
 }
 header a.back {

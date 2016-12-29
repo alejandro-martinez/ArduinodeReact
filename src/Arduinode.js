@@ -216,7 +216,6 @@ class Voice {
 			recognition.lang = "es-ES";
 
 			noVoiceHandler = setTimeout(function() {
-				Utils.fireEvent("stopSpeaking");
 				recognition.abort();
 				callback();
 			},2000);
@@ -228,7 +227,6 @@ class Voice {
 			}
 			
 			recognition.onresult = function(event) {
-				Utils.fireEvent("stopSpeaking");
 				recognition.onend = null;
 				if (event.results.length) {
 					callback( event.results[0][0].transcript.toLowerCase() );
@@ -240,13 +238,6 @@ class Voice {
 
 			recognition.start();
 		}
-	}
-	static ask(text, callback) {
-	    Voice.speak(text, function () {
-	        Voice.listen(function( respuesta ) {
-	        	callback(respuesta)
-	        });
-	    });
 	}
 	static speak(text, callback) {
 	    var u = new SpeechSynthesisUtterance();
@@ -357,7 +348,8 @@ class Arduinode extends Component {
 			dispositivos: [],
 			zonas:[],
 			speaking: false,
-			listeningVoice: false
+			listeningVoice: false,
+			voiceCommand: ""
 		};
 		this.updateDB = this.updateDB.bind(this);
 		this.onVoiceCommand = this.onVoiceCommand.bind(this);
@@ -384,33 +376,25 @@ class Arduinode extends Component {
     		Voice.speak("No se pudo realizar la acción", function () {});
     	});
 	}
-	onStopSpeaking() {
-		this.setState({ speaking: false, listeningVoice: false });
-	}
-	onSpeaking() {
-		this.setState({ speaking: true });
-	}
 	componentDidMount() {
-		document.addEventListener("stopSpeaking", () => {
-			this.setState({ speaking: false, listeningVoice: false });
-			this.forceUpdate();
-		});
 		document.addEventListener("speaking", () => {
 			this.setState({ speaking: true, listeningVoice: true });
 			this.forceUpdate();
 		});
 	}
 	onVoiceCommand() {
-		setTimeout(() =>{
-			this.setState({ listeningVoice: false });
-		},2000);
 		this.setState({ listeningVoice: true });
 
-		Voice.listen(function( comando ) {
+		Voice.listen(( comando ) => {
+			this.setState({ voiceCommand: comando }, () => {
+				setTimeout(() =>{
+					this.setState({ listeningVoice: false, comando: "" });
+				},4000);
+			});
 
 			// Devuelve el comando formateado
 			var comando = Voice.getComando( comando );
-			alert(JSON.stringify(comando))
+			
 			switch( comando.salida ) {
 				case "todo":
 					Socket.emit('apagarTodo');
@@ -422,7 +406,6 @@ class Arduinode extends Component {
 					Socket.emit('switchSalida',comando);
 					break;
 			}
-			this.setState({ listeningVoice: false });
 		});
 	}
 	getEstadoSalida( params ) {
@@ -474,6 +457,9 @@ class Arduinode extends Component {
 	}
 	render() {
 		const This = this;
+
+		var showMic = ( (this.state.voiceCommand.length === 0) && this.state.listeningVoice);
+		var micText = '';
 		return (
 			<div className={"Arduinode adminMode" + This.state.adminMode}>
 				
@@ -482,10 +468,8 @@ class Arduinode extends Component {
 					<div className={"googleNowMic speaking" + this.state.speaking}>
 						<div className="mc"></div>
 					</div>
-					<p>Decí algo como: "Prender baño" 
-					  "Apagar zona Patio" o 
-					  "Apagar todo"
-					</p>
+					<p className={"show" + showMic}>Decí algo como: "Prender baño", "Apagar zona Patio" o "Apagar todo"</p>	
+					<h1>{ this.state.voiceCommand }</h1>
 				</div>
 				<div className={'container show' + !this.state.listeningVoice}>
 					<Router history={ hashHistory }>
