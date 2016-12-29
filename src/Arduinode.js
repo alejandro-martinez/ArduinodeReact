@@ -215,23 +215,26 @@ class Voice {
 			var noVoiceHandler = null;
 			recognition.lang = "es-ES";
 
-			recognition.onspeechstart = function() {
-				noVoiceHandler = setTimeout(function() {
-					recognition.abort();
-				},2000);
-			}
+			noVoiceHandler = setTimeout(function() {
+				Utils.fireEvent("stopSpeaking");
+				recognition.abort();
+				callback();
+			},2000);
 
 			recognition.onspeechstart = function() {
+				Utils.fireEvent("speaking");
+
 				clearTimeout( noVoiceHandler );
 			}
 			
-			recognition.onresult = function(event) { 
+			recognition.onresult = function(event) {
+				Utils.fireEvent("stopSpeaking");
 				recognition.onend = null;
 				if (event.results.length) {
 					callback( event.results[0][0].transcript.toLowerCase() );
 				}
 				else {
-					callback()
+					callback();
 				}
 			}
 
@@ -308,7 +311,7 @@ class Footer extends Component {
 						   this.props.root.state.adminMode && 
 						   !this.props.root.state.edit)
 		return (
-			<div className="footer">
+			<div className={"footer " + this.props.class}>
 				<ul className="listIcons">
 					<li className={ 'show' + showAddIcon}>
 						<a onClick={ this.onAddNew } className='iconMAS'></a>
@@ -352,7 +355,9 @@ class Arduinode extends Component {
 			adminMode: false,
 			temporizacion: "00:00",
 			dispositivos: [],
-			zonas:[]
+			zonas:[],
+			speaking: false,
+			listeningVoice: false
 		};
 		this.updateDB = this.updateDB.bind(this);
 		this.onVoiceCommand = this.onVoiceCommand.bind(this);
@@ -379,14 +384,36 @@ class Arduinode extends Component {
     		Voice.speak("No se pudo realizar la acción", function () {});
     	});
 	}
+	onStopSpeaking() {
+		this.setState({ speaking: false, listeningVoice: false });
+	}
+	onSpeaking() {
+		this.setState({ speaking: true });
+	}
+	componentDidMount() {
+		document.addEventListener("stopSpeaking", () => {
+			this.setState({ speaking: false, listeningVoice: false });
+			this.forceUpdate();
+		});
+		document.addEventListener("speaking", () => {
+			this.setState({ speaking: true, listeningVoice: true });
+			this.forceUpdate();
+		});
+	}
 	onVoiceCommand() {
+		setTimeout(() =>{
+			this.setState({ listeningVoice: false });
+		},2000);
+		this.setState({ listeningVoice: true });
+
 		Voice.listen(function( comando ) {
+
 			// Devuelve el comando formateado
 			var comando = Voice.getComando( comando );
-			
+			alert(JSON.stringify(comando))
 			switch( comando.salida ) {
 				case "todo":
-					Socket.emit('apagarLucesEncendidas');
+					Socket.emit('apagarTodo');
 					break;
 				case "zona":
 					Socket.emit('switchZona',comando);	
@@ -395,6 +422,7 @@ class Arduinode extends Component {
 					Socket.emit('switchSalida',comando);
 					break;
 			}
+			this.setState({ listeningVoice: false });
 		});
 	}
 	getEstadoSalida( params ) {
@@ -449,8 +477,17 @@ class Arduinode extends Component {
 		return (
 			<div className={"Arduinode adminMode" + This.state.adminMode}>
 				
-				<HTML.Header root={This} />
-				<div className="container">
+				<HTML.Header root={This} class={"show" + !this.state.listeningVoice} />
+				<div className={"mic show" + this.state.listeningVoice}>
+					<div className={"googleNowMic speaking" + this.state.speaking}>
+						<div className="mc"></div>
+					</div>
+					<p>Decí algo como: "Prender baño" 
+					  "Apagar zona Patio" o 
+					  "Apagar todo"
+					</p>
+				</div>
+				<div className={'container show' + !this.state.listeningVoice}>
 					<Router history={ hashHistory }>
 						<Route root={This} path="/" component={ Home } />
 						<Route root={This} path="Tareas" component={ Tareas } />
@@ -465,7 +502,7 @@ class Arduinode extends Component {
 						<Route root={This} path="Configuracion/Ajustes" component={ Ajustes } />
 					</Router>
 				</div>
-				<Footer root={This}></Footer>
+				<Footer root={This} class={"show" + !this.state.listeningVoice}></Footer>
 	  		</div>
 		);
 	}

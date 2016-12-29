@@ -100,7 +100,7 @@ http.listen( serverConf.port, serverConf.ip, () => {
 			io.sockets.emit('DBTareasUpdated', DataStore.tareas);
 		});
 
-		sCliente.on('apagarLucesEncendidas', (params) => {
+		sCliente.on('apagarTodo', (params) => {
 			var action = function( _salida, cb ) {
 				_salida.estado = 1;
 				_salida.temporizada = 0;

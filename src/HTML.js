@@ -28,7 +28,7 @@ export class Header extends Component {
 			adminClass = ( isAdmin ) ? 'Logout' : 'Login';
 
 		return (
-			<header>
+			<header className={ this.props.class }>
 				<h1 onClick={ this.refresh }>{ this.props.root.state.page }</h1>
 				
 				<ul className="headerIcons">

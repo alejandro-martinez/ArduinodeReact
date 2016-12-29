@@ -26,6 +26,70 @@ div.Arduinode.adminModetrue .footer {
 div.Arduinode.adminModetrue .switch.on{
     background:#268074 !important;
 }
+.container.listeningtrue {
+    position:absolute;
+    height:100%;
+    width:100%;
+    background: #fff;
+}
+.googleNowMic{
+    position:relative;
+    margin: 5% auto;
+    background-color:#FE2222;
+    border-radius:50%;
+    width:5em;
+    height:5em;
+    box-shadow: 5px 5px 5px #888888;
+    border:2em solid #F1F1F3;
+}
+.mic {
+    margin:0 auto;
+}
+.mic p {
+    width:160px;
+    margin:0 0 0 100px;
+    line-height:2em;
+}
+.mic :before, .mic :after{
+  content:'';
+  position:absolute;
+  background-color:#fff;
+}
+.googleNowMic { transition: all .2s ease-in-out; }
+.googleNowMic.speakingtrue { transform: scale(1.1); }
+.googleNowMic.speakingfalse { transition: all .2s ease-out-in; }
+
+.googleNowMic:after{
+  top:30%; left:43%;
+  height:15%; width:14%;
+  border-top-left-radius:50%;
+  border-top-right-radius:50%;
+}
+.googleNowMic:before{
+  top:40%; left:43%;
+  height:15%; width:14%;
+  border-bottom-left-radius:50%;
+  border-bottom-right-radius:50%;
+}
+.mc{
+  position:absolute;
+  top:50%; left:37%;
+  height:24%;
+  width:26.5%;
+  overflow:hidden;
+}
+.mc:before{
+  bottom:50%;
+  width:100%; height:100%;
+  box-sizing:border-box;
+  border-radius:50%;
+  border:0.5em solid #fff;
+  background:none;
+}
+.mc:after{
+  top:50%; left:40%;
+  width:20%; height:25%;
+}
 .center {
     margin: auto;
     position: absolute;
