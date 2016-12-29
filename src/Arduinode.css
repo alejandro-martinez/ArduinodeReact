@@ -763,6 +763,9 @@ input[type=time] {
     width: 80px !important;
 }
 /* ZONAS */
+.zonas .icons li{
+    margin-left:35px;
+}
 table.zonas tr td:last-child {
     width:120px;
 }

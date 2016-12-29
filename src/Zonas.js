@@ -55,6 +55,9 @@ export class Zonas extends Component {
 							   model={ item } />
 				<td className="icons">								  
 					<ul className="listIcons">
+						<li className="iconDispositivos onlyAdmin">
+							<Link to={'Zonas/' + item.id + '/dispositivos'}>&#9854;</Link>
+						</li>
 						<li className="iconDELETE onlyAdmin">
 							<Link onClick={ this.onRemove.bind(this,item) }></Link>
 						</li>

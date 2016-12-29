@@ -58,7 +58,7 @@ export class EditRow extends Component {
 			var model = this.props.model;
 			var validator = 'isValid' + this.props.inputKey.toUpperCase();
 			var data = prompt("Modificar", model[this.props.inputKey]);
-			console.log(data)
+
 			if (!Validator.hasOwnProperty(validator) || Validator[validator]( data )) {
 				if (data && data.length) {
 					model[this.props.inputKey] = data;
@@ -69,8 +69,9 @@ export class EditRow extends Component {
 		}
 	}
 	render() {
+		var link = this.props.link || 'javascript:void(0)';
 		return (
-			<td><a href="javascript:void(0)" onClick={this.onClick}>{ this.state.model[this.props.inputKey] }</a></td>
+			<td><Link to={link} onClick={this.onClick}>{ this.state.model[this.props.inputKey] }</Link></td>
 		);
 	}
 };
