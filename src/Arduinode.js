@@ -386,25 +386,32 @@ class Arduinode extends Component {
 		this.setState({ listeningVoice: true });
 
 		Voice.listen(( comando ) => {
-			this.setState({ voiceCommand: comando }, () => {
-				setTimeout(() =>{
-					this.setState({ listeningVoice: false, comando: "" });
-				},4000);
-			});
+			if (comando) {
 
-			// Devuelve el comando formateado
-			var comando = Voice.getComando( comando );
-			
-			switch( comando.salida ) {
-				case "todo":
-					Socket.emit('apagarTodo');
-					break;
-				case "zona":
-					Socket.emit('switchZona',comando);	
-					break;
-				default: 
-					Socket.emit('switchSalida',comando);
-					break;
+				this.setState({ voiceCommand: comando }, () => {
+					setTimeout(() =>{
+						this.setState({ listeningVoice: false, comando: "" });
+					},4000);
+				});
+
+				// Devuelve el comando formateado
+				var comando = Voice.getComando( comando );
+				
+				switch( comando.salida ) {
+					case "todo":
+						Socket.emit('apagarTodo');
+						break;
+					case "zona":
+						Socket.emit('switchZona',comando);	
+						break;
+					default: 
+						Socket.emit('switchSalida',comando);
+						break;
+				}
+			}
+			else {
+				Voice.speak("No escuché nada!!!!");
+				this.setState({ listeningVoice: false, comando: "" });
 			}
 		});
 	}
@@ -457,8 +464,7 @@ class Arduinode extends Component {
 	}
 	render() {
 		const This = this;
-
-		var showMic = ( (this.state.voiceCommand.length === 0) && this.state.listeningVoice);
+		var showMic = (this.state.voiceCommand && this.state.voiceCommand.length === 0);
 		var micText = '';
 		return (
 			<div className={"Arduinode adminMode" + This.state.adminMode}>
