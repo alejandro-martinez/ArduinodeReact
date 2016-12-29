@@ -100,7 +100,7 @@ table tr {
     padding: 10px;
 }
 table.tareas.admintrue tr {
-    height:150px;
+    height:57px;
     margin-bottom:20px;
 }
 table td:last-child {
@@ -629,7 +629,10 @@ table.tareas tr tr ul{
 .col3 td {
     width: 32%;
 }
-
+.subtareas .col3:first-child td:nth-child(2) {
+    position:absolute;
+    margin-left:25px;
+}
 table.subtareas .col3:first-child input {
     width: 85px;
 }

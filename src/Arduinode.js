@@ -423,13 +423,7 @@ class Arduinode extends Component {
 					s.estado = this.getEstadoSalida( s );
 					if (s.estado == 0) encendidas++;
 				});
-
-				if (encendidas === z.dispositivos.length) {
-					_this[k].estado = 0;
-				}
-				else {
-					_this[k].estado = 1;
-				}
+				_this[k].estado = (encendidas === z.dispositivos.length) ? 0 : 1;
 			});
 			this.forceUpdate();
 		}
