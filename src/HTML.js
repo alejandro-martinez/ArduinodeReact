@@ -42,7 +42,7 @@ export class Header extends Component {
 
 export function EditContainer( props ) {
 	return ( 		
-		<tr> { props.children } </tr> 
+		<tr className={props.class}> { props.children } </tr> 
 	);
 }
 

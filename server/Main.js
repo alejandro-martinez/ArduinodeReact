@@ -79,7 +79,7 @@ class Dispositivo {
 					}
 					else {
 						log(salida.descripcion + " ya tiene el estado: " + estadoDeseado.trim());
-						callback();
+						callback( -1 );
 					}
 				}
 				else {

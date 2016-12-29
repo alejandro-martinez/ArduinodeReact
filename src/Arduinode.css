@@ -429,6 +429,9 @@ table.dispositivos tr.disabledtrue td:nth-child(2):after {
     -webkit-animation-timing-function: cubic-bezier(.5, 0, 1, 1);
     -webkit-animation-duration: 1s; 
 }
+table tr.disabledtrue {
+    border-color: red;
+}
 table.dispositivos.adminfalse tr {
     box-sizing: border-box;
     height:85px;

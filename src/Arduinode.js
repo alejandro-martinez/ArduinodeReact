@@ -265,13 +265,14 @@ class Voice {
 	    speechSynthesis.speak(u);
 	}
 	static getComando( comando ) {
+		comando = comando.toLowerCase();
 		var orden = comando.split(" ");
-
+		var esComandoZona = (orden[1] === 'zona');
 		return {
-			orden: orden[0].toLowerCase().trim(),
-			dispositivo: orden[2],
-			salida: orden.slice(1).join(" ").toLowerCase().trim(),
-			voiceMsg: (orden[0].toLowerCase() == 'apagar') ? 'Apagando' : 'Prendiendo'
+			orden: orden[0].trim(),
+			dispositivo: orden.slice( (esComandoZona) ? 2 : 1 ).join(" ").trim(),
+			salida: (esComandoZona) ? 'zona' : orden.slice(1).join(" ").trim(),
+			voiceMsg: (orden[0] == 'apagar') ? 'Apagando' : 'Prendiendo'
 		};
 	}
 }
@@ -313,10 +314,8 @@ class Footer extends Component {
 						<a onClick={ this.onAddNew } className='iconMAS'></a>
 					</li>
 					<li className={'iconReloj show' + this.props.root.state.showTimerIcon}>
-				
-					<input type="time" onChange={ this.onTemporizacion } 
+						<input type="time" onChange={ this.onTemporizacion } 
 									   value={ this.props.root.state.temporizacion } />
-				
 					</li>
 					<li className={"iconMICROFONO show" + !this.props.root.state.adminMode}>
 						<a onClick={ this.props.root.onVoiceCommand }>🎤</a>

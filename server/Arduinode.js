@@ -100,8 +100,6 @@ Arduinode = {
 		this.dispositivos.forEach((d,k,_this) => {
 
 			d.salidas.every((s, index) => {
-
-				console.log(s,descripcion)
 				if ( s.descripcion.toLowerCase() === descripcion ) {
 					found = d.salidas[index];
 					return false;

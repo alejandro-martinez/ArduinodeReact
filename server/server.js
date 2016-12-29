@@ -152,8 +152,8 @@ http.listen( serverConf.port, serverConf.ip, () => {
 					if (salida) {
 						salida.estado = zona.estado;
 						salida.temporizada = 0;
-						Arduinode.switchSalida( salida, function( response){
-							if (!response && params.hasOwnProperty('voiceMsg')) {
+						Arduinode.switchSalida( salida, function( response) {
+							if (response === undefined && params.hasOwnProperty('voiceMsg')) {
 								sCliente.emit('failed');
 								return false;
 							}

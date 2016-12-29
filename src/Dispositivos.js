@@ -97,7 +97,7 @@ export class Dispositivos extends Component {
 	generateRow( item ) {
 		var disp = this.props.route.root.getDispositivoByIP( item.ip );
 		return ( 
-			<HTML.EditContainer key={item.ip} disabled={item.offline} edit={this.state.edit}>
+			<HTML.EditContainer key={item.ip} class={"disabled" + item.offline}>
 				<HTML.EditRow root={ this.props.route.root }
 							   inputKey='descripcion'
 							   model={ disp } />
