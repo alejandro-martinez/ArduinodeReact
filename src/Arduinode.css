@@ -218,7 +218,7 @@ a[class*="icon"],li[class*="icon"] a {
 .listIcons {
     display: inline-block;
     z-index: 2;
-    padding: 5px 0 0 0;
+    padding: 9px 0 0 0;
     width: 100%;
 }
 .listIcons li {
@@ -404,8 +404,7 @@ header,.footer {
 .footer h3 {
     position: absolute;
     color: #fff;
-    font-size: 1.2em;
-    right: 18px;
+    right: 10px;
     top: 22px;
 }
 .footer .listIcons {
@@ -433,7 +432,7 @@ header,.footer {
     padding-top: 2px;
 }
 .footer input[type="time"] {
-    width:90px;
+    width:95px !important;
     letter-spacing: 0;
     background:none;
     color:#fff;
@@ -766,7 +765,7 @@ input[type=date], input[type=time] {
 input[type=time] {
     height: 20px;
     letter-spacing: .3em;
-    width: 87px !important;
+    width: 80px !important;
 }
 /* ZONAS */
 .zonas.admintrue .icons li{
