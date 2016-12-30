@@ -195,8 +195,8 @@ td.middle + td {
 }
 .headerIcons {
     float: right;
-    top: 6px;
-    right: 7px;
+    top: 0px;
+    right: 27px;
     position: relative;
 }
 .headerIcons li {
@@ -208,10 +208,8 @@ td.middle + td {
 }
 .headerIcons li a {
     margin: 0;
+    padding: 15px;
     display: inline-block;
-}
-.headerIcons li a.menu {
-    margin-top: 8px;
 }
 a[class*="icon"],li[class*="icon"] a {
     color: #fff;
@@ -220,10 +218,11 @@ a[class*="icon"],li[class*="icon"] a {
 .listIcons {
     display: inline-block;
     z-index: 2;
-    padding: 20px 0 16px 0;
+    padding: 5px 0 0 0;
     width: 100%;
 }
 .listIcons li {
+    font-size: 1.4em;
     width: 20%;
     float: right;
 }
@@ -381,8 +380,8 @@ header a.back {
 header li.iconReloj a {
     font-size: 1.8em !important;
 }
-header .iconMAS,header .iconR {
-    margin-top: 5px !important;
+header .iconLogin{
+    margin-top: -5px !important;
 }
 header,.footer {
     background-color: #F73859;
@@ -405,7 +404,8 @@ header,.footer {
 .footer h3 {
     position: absolute;
     color: #fff;
-    right: 10px;
+    font-size: 1.2em;
+    right: 18px;
     top: 22px;
 }
 .footer .listIcons {
@@ -539,6 +539,7 @@ table.dispositivos td {
 }
 table.dispositivos td:last-child {
     float: right;
+    margin-right: 22px;
 }
 table.dispositivos tr {
     position: relative;
@@ -617,7 +618,6 @@ table > tr td div {
 }
 .temporizadafalse span,.temporizadanull span,
 .admintrue .switchContainer, 
-table.dispositivos.admintrue .listIcons,
 .adminfalse .onlyAdmin {
     display: none;
 }
@@ -677,7 +677,7 @@ table.tareas ul li.iconReloj a {
     position: relative;
     color: #384259;
     right: 9px;
-    top: -5px;
+    top: -11px;
     font-size: 2.4em !important;
 }
 table.tareas ul li {
@@ -766,7 +766,7 @@ input[type=date], input[type=time] {
 input[type=time] {
     height: 20px;
     letter-spacing: .3em;
-    width: 80px !important;
+    width: 87px !important;
 }
 /* ZONAS */
 .zonas.admintrue .icons li{

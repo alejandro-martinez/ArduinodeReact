@@ -107,10 +107,11 @@ export class Dispositivos extends Component {
 							  model={ disp } />
 				<td>
 					<ul className="listIcons">
-						<li className="iconDispositivos"><Link to={'Dispositivos/salidas/' + item.ip}>&#9854;</Link></li>
-						<li className={'show' + this.props.route.root.state.adminMode}>
-							<a onClick={ this.onRemove.bind( this, item )} 
-							   className={"iconDELETE show" + this.props.route.root.state.adminMode}></a>
+						<li className="iconDispositivos">
+							<Link to={'Dispositivos/salidas/' + item.ip}>&#9854;</Link>
+						</li>
+						<li className='iconDELETE onlyAdmin'>
+							<a onClick={ this.onRemove.bind( this, item )}></a>
 						</li>
 					</ul>
 				</td>
