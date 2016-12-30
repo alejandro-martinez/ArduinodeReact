@@ -771,17 +771,19 @@ input[type=time] {
     width: 80px !important;
 }
 /* ZONAS */
+
+.zonas.admintrue .listIcons {
+    width:117px;
+}
 .zonas.admintrue .icons li{
     margin-left:35px;
-}
-table.zonas tr td:last-child {
-    width:120px;
 }
 table.zonas ul,table.tareaDispositivos tr td:last-child ul {
     padding:0;
 }
 table.zonas tr td:last-child li.iconSWITCH {
     float:left;
+    font-size: 1em;
 }
 /*Configuracion*/
 .container .ajustes label  {
