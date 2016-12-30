@@ -44,13 +44,18 @@ Arduinode = {
 @params salidas_raw Array de salidas
 */
 	updateEstadoSalidas: function( salidas_raw ) {
+		var updated = [];
 		var salidas = [];
 		salidas_raw.forEach((v) => {
 			salidas.push({ nro: parseInt( v.slice(1,-1) ), estado: parseInt( v.slice(-1)) });
 		});
-		salidas.forEach((s) => { this.getDispositivoByIP( this.ip ).updateEstadoSalida(s) });
+		salidas.forEach((s) => { 
+			this.getDispositivoByIP( this.ip ).updateEstadoSalida(s); 
+			updated.push( s.descripcion );
+		});
 
 		this.broadcastDB();
+		return updated.join(" ");
 	},
 /**
 * Registra un socket para escuchar eventos de los dispositivos Arduino reales.
@@ -74,9 +79,12 @@ Arduinode = {
 				});
 
 				socket.on('end', function() {
-					log(This.ip + " - Evento externo");
+					
 					This.data = This.data.replace("\n","-").replace("+n"," ").slice(0, -1);
-					This.updateEstadoSalidas( This.data.slice(0,-1).split("+-") );
+					log(This.ip + 
+						" - Evento externo: " + 
+						This.updateEstadoSalidas( This.data.slice(0,-1).split("+-") ));
+
 				});
 			});
 				
