@@ -44,16 +44,18 @@ Arduinode = {
 @params salidas_raw Array de salidas
 */
 	updateEstadoSalidas: function( salidas_raw ) {
-		var salida = {};
-		var salidas = [];
+		var updated = [];
 		salidas_raw.forEach((v) => {
-			salidas.push({ nro: parseInt( v.slice(1,-1) ), estado: parseInt( v.slice(-1)) });
-		});
-		salidas.forEach((s) => { 
-			salida = this.getDispositivoByIP( this.ip ).updateEstadoSalida(s); 
+			var params = { nro: parseInt( v.slice(1,-1) ), estado: parseInt( v.slice(-1)) };
+			var disp = this.getDispositivoByIP( this.ip );
+			var salida = disp.getSalidaByNro( params.nro );
+
+			if (params.estado != salida.estado) {
+				updated.push ( disp.updateEstadoSalida( params ) );
+			}
 		});
 		this.broadcastDB();
-		return salida;
+		return updated;
 	},
 /**
 * Registra un socket para escuchar eventos de los dispositivos Arduino reales.
@@ -79,8 +81,11 @@ Arduinode = {
 				socket.on('end', function() {
 					
 					This.data = This.data.replace("\n","-").replace("+n"," ").slice(0, -1);
-					var salida = This.updateEstadoSalidas( This.data.slice(0,-1).split("+-") );
-					log(This.ip + " - Evento externo: Se " + ((salida.estado === 0) ? 'prendió ' : 'apagó ') + salida.descripcion);
+					var salidasUpdated = This.updateEstadoSalidas( This.data.slice(0,-1).split("+-") );
+					salidasUpdated.forEach((s) => {
+						log(This.ip + " - Evento externo: Se " + ((s.estado === 0) ? 'prendió ' : 'apagó ') + s.descripcion);
+					});
+					
 
 				});
 			});
