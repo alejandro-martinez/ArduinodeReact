@@ -294,6 +294,7 @@ class Footer extends Component {
 		Utils.fireEvent("onAddNew"); 
 	}
 	onTemporizacion(e) { 
+		if (!e.target.value) e.target.value = "00:00";
 		this.props.root.setState({temporizacion: e.target.value});
 	}
 	onTimerReset() { this.props.root.setState({ temporizacion: '00:00'})}
@@ -314,8 +315,8 @@ class Footer extends Component {
 					<li className={"iconMICROFONO show" + !this.props.root.state.adminMode}>
 						<a onClick={ this.props.root.onVoiceCommand }>🎤</a>
 					</li>
-					<li className={'show' + (this.props.root.state.temporizacion != '00:00')}>
-						<a className="iconDELETE" onClick={ this.onTimerReset }></a>
+					<li className={'iconDELETE show' + (this.props.root.state.temporizacion != '00:00')}>
+						<a onClick={ this.onTimerReset }></a>
 					</li>
 					<li className={'show' + (this.props.root.state.edit && this.props.root.state.adminMode)}>
 						<a onClick={ this.onUpdate } className='iconOK'></a>

@@ -144,7 +144,7 @@ const Programador = class {
 		}
 		else {
 			this.registerRunningTasks( subtarea.tarea.id, false);
-			log("La tarea no " + ((onTask) ? " es válida" : " se debe ejecutar"));
+			log("La tarea no" + ((onTask) ? " es válida" : " se debe ejecutar"));
 		}
 	}
 	createJob( subtarea ) {

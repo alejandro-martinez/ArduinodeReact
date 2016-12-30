@@ -334,17 +334,20 @@ table.salidas tr td:last-child {
     width:122px;
 }
 .controlPersianas {
-    width: 156px;
-    margin: -7px 0 0 0px;
+    width: 143px;
+    margin: 0 0 0 -23px;
+    border: 1px solid #ccc;
+    border-radius: 36px;
 }
 .controlPersianas li {
     display: inline-block;
-    width: 30%;
+    width: 52px;
 }
-.controlPersianas li:nth-child(2) {
-    width: 40px;
+.controlPersianas li {
+    width:47px;
 }
 .controlPersianas a[class*=icon] {
+    margin: 4px 7px;
     font-size: 2.2em;
     color: #384259 !important;
 }
@@ -418,7 +421,7 @@ header,.footer {
     margin-top: -5px;
 }
 .footer .listIcons .iconReloj {
-    width: 95px;
+    width: 60px;
 }
 .footer .listIcons .iconDELETE a {
     color:#fff !important;
@@ -427,7 +430,7 @@ header,.footer {
     margin: -8px auto;
 }
 .footer .listIcons {
-    width:170px;
+    padding-top: 2px;
 }
 .footer input[type="time"] {
     width:90px;
@@ -582,7 +585,6 @@ table tr {
 }
 table tr td:last-child {
     float: right;
-    padding: 8px 0 0 0;
     margin-right: 10px;
 }
 table td {
@@ -598,9 +600,6 @@ table > tr td div {
     position: relative;
     display: inline-block;
     width: 100%;
-}
-table td:last-child {
-    padding: 12px;
 }
 .switchContainer {
     position: relative;
@@ -628,11 +627,13 @@ table.dispositivos.admintrue .listIcons,
 .switch {
     position: relative;
     width: 126px !important;
+    height: 47px !important;
+    border-radius: 35px !important;
 }
 .switch:after {
     position: absolute;
-    top: 4px;
-    left: 35px;
+    top: 14px;
+    left: 50px;
     content: "Apagada";
 }
 .temporizadatrue .switch:after,.temporizadatrue span {
@@ -641,7 +642,7 @@ table.dispositivos.admintrue .listIcons,
 .switch.on:after {
     content: "Encendida";
     color: #fff;
-    left: 13px;
+    left: 9px;
 }
 .temporizadatrue .switch, .switch.on {
     background: #f73859!important;
@@ -650,8 +651,16 @@ table.dispositivos.admintrue .listIcons,
 .temporizadatrue .switch:after {
     content:"";
 }
+.switch-toggle {
+    width: 44px !important;
+    height: 45px !important;
+    border-radius: 36px !important;
+}
+.switch {
+    width: 141px !important
+}
 .switch.on .switch-toggle {
-    left: 99px !important;
+    left: 95px !important;
 }
 
 @media screen and (max-width: 500px) {
