@@ -60,8 +60,8 @@ http.listen( serverConf.port, serverConf.ip, () => {
 		});
 
 		sCliente.on('getDispositivosDB', () => { 
-			Arduinode.getEstadosDispositivos( false, function() {
-				sCliente.emit('DBDispositivosUpdated', Arduinode.dispositivos);
+			Arduinode.getEstadosDispositivos( false, function( dispositivos ) {
+				sCliente.emit('DBDispositivosUpdated', dispositivos);
 			});
 		});
 

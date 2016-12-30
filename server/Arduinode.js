@@ -168,7 +168,7 @@ Arduinode = {
 			}
 		},() => {
 			if ( broadcast ) this.broadcastDB();
-			if ( callback ) callback();
+			if ( callback ) callback( this.dispositivos );
 		});
 	}
 };

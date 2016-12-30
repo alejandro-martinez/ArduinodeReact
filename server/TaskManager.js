@@ -133,7 +133,7 @@ const Programador = class {
 */
 	forceExecute( subtarea ) {
 		var onTask = (subtarea.tarea.accion == 0);
-		log("Forzando ejecución de tarea: " + subtarea.tarea.descripcion);
+		log("Chequeando tarea: " + subtarea.tarea.descripcion);
 		
 		// Se forza la ejecucion solo si es una tarea de encendido
 		if ( onTask && subtarea.isValid()) {
@@ -144,7 +144,7 @@ const Programador = class {
 		}
 		else {
 			this.registerRunningTasks( subtarea.tarea.id, false);
-			log("La tarea no es " + ((onTask) ? "válida" : " de encendido"));
+			log("La tarea no " + ((onTask) ? " es válida" : " se debe ejecutar"));
 		}
 	}
 	createJob( subtarea ) {
