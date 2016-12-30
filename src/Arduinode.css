@@ -653,9 +653,6 @@ table.dispositivos.admintrue .listIcons,
 .switch.on .switch-toggle {
     left: 99px !important;
 }
-.switch-toggle,.temporizadatrue .switch.on .switch-toggle {
-    left: 0px !important;
-}
 
 @media screen and (max-width: 500px) {
 
