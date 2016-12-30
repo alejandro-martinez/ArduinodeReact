@@ -136,28 +136,31 @@ class Dispositivo {
 				parsed = [];
 			
 			_data.forEach((str) => {
-				if (str && str.length) {
+				
+				if (str !== undefined && str.length) {
 					var temporizada = 0;
 
 					if (str.indexOf(".") > -1) {
 						temporizada = DateConvert.min_a_horario( str.substr( str.indexOf(".") + 1));
 					}
-					salidaExiste = this.getSalidaByNro( params.nro );
 					
-					if (!salidaExiste && newSalidas === false) {
-						newSalidas = true;
-					}
-
 					params.temporizada = (temporizada === null) ? 0 : temporizada;
 					params.tipo = str[0];
 					params.estado = parseInt( str[ str.indexOf(":") + 1] );
 					params.nro = parseInt(str[ str.indexOf("-") + 1] 
 										+ str[ str.indexOf("-") + 2]);
 
+					salidaExiste = this.getSalidaByNro( params.nro );
+					
+					if (!salidaExiste && newSalidas === false) {
+						
+						newSalidas = true;
+					}
+
 					parsed.push( this.updateEstadoSalida( params ) );
 				}
 			});
-			
+	
 			if (newSalidas) Arduinode.updateDispositivos();
 			
 			return parsed;
@@ -173,8 +176,13 @@ class Dispositivo {
 		socket.send( params, ( response ) => {
 			if ( response ) {
 				response = response.split("\n");
+
+
 				var tieneVersion = (response[0].slice(0,1).trim() === "V");
 				
+				//Elimina el ultimo element porque es null
+				response.pop();
+
 				if (tieneVersion) {
 					this.version = response[0];
 					response.shift();
