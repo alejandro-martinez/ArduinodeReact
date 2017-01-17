@@ -110,7 +110,7 @@ export class Dispositivos extends Component {
 				<td>
 					<ul className="listIcons">
 						<li className="iconDispositivos">
-							<span>{ salidasActivas }</span> 
+							<span className="nro">{ salidasActivas }</span> 
 							<Link to={'Dispositivos/salidas/' + item.ip}>&#9854;</Link>
 						</li>
 						<li className='iconDELETE onlyAdmin'>

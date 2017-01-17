@@ -530,7 +530,7 @@ table.dispositivos.adminfalse tr {
 table.dispositivos li.iconDispositivos{
     position:relative
 }
-table.dispositivos li.iconDispositivos span{
+table.dispositivos li.iconDispositivos span.nro{
     position:absolute;
     font-weight:bold;
     font-size:.9em;
@@ -654,25 +654,10 @@ div.switchContainer * {
 .temporizadatrue .on:after {
     content: "" !important;
 }
-.switch {
-    position: relative;
-    width: 126px !important;
-    height: 47px !important;
-    border-radius: 35px !important;
-}
-.switch:after {
-    position: absolute;
-    top: 14px;
-    left: 50px;
-    content: "Apagada";
-}
-.temporizadatrue .switch:after,.temporizadatrue span {
-    left: 36px;
-}
-.switch.on:after {
-    content: "Encendida";
-    color: #fff;
-    left: 9px;
+.temporizadatrue .switch:after, .temporizadatrue span {
+    top:12px;
+    left:0;
+    font-size:1.2em;
 }
 .temporizadatrue .switch, .switch.on {
     background: #f73859!important;
@@ -681,13 +666,27 @@ div.switchContainer * {
 .temporizadatrue .switch:after {
     content:"";
 }
+
+.switch {
+    width: 141px !important;
+    height: 47px !important;
+    border-radius: 35px !important;
+}
+.switch:after {
+    position: absolute;
+    top: 14px;
+    left: 38px;
+    content: "Apagada";
+}
+.switch.on:after {
+    content: "Encendida";
+    color: #fff;
+    left: -12px;
+}
 .switch-toggle {
     width: 44px !important;
     height: 45px !important;
     border-radius: 36px !important;
-}
-.switch {
-    width: 141px !important
 }
 .switch.on .switch-toggle {
     left: 95px !important;
@@ -707,8 +706,8 @@ table.tareas ul li.iconReloj a {
     position: relative;
     color: #384259;
     right: 9px;
-    top: -11px;
-    font-size: 2.4em !important;
+    top: -4px;
+    font-size: 2.3em!important;
 }
 table.tareas ul li {
     text-align:center;
