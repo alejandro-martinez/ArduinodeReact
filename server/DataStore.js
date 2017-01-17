@@ -76,13 +76,18 @@ function DataStore() {
 */
 	this.updateDB = function( filename, data, removeMemoryData ) {
 		if ( data ) {
-			if (filename === 'dispositivos' && removeMemoryData) {
-				// Elimina claves para uso en memoria
-				data = this.removeJSONKeys( data );
-			}
+			if (filename === 'dispositivos') { 
+				
+				if (removeMemoryData) {
+					// Elimina claves para uso en memoria
+					data = this.removeJSONKeys( data );
+				}
 
-			// Ordenamiento alfabetico
-			if ( this.sortFile( data, filename )) data = this.sortFile( data );
+				// Ordenamiento alfabetico
+				if ( this.sortFile( data, filename ) ) {
+					data = this.sortFile( data );
+				}
+			}
 			
 			fs.writeFileSync(filename + '.json', 
 									JSON.stringify(data, null, 2),
