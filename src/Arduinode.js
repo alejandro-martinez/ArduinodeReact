@@ -218,6 +218,7 @@ class Voice {
 			noVoiceHandler = setTimeout(function() {
 				recognition.abort();
 				callback();
+				console.log("timeout")
 			},2000);
 
 			recognition.onspeechstart = function() {
@@ -410,8 +411,8 @@ class Arduinode extends Component {
 					}
 				}
 				else {
+					this.setState({ listeningVoice: false });
 					Voice.speak("No escuché nada!!!!");
-					this.setState({ listeningVoice: false, comando: "", voiceCommand: "" });
 				}
 			});
 		});
