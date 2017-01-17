@@ -390,7 +390,7 @@ class Arduinode extends Component {
 
 					this.setState({ voiceCommand: comando }, () => {
 						setTimeout(() =>{
-							this.setState({ listeningVoice: false, comando: "" });
+							this.setState({ listeningVoice: false, voiceCommand: "" });
 						},4000);
 					});
 
@@ -411,7 +411,7 @@ class Arduinode extends Component {
 				}
 				else {
 					Voice.speak("No escuché nada!!!!");
-					this.setState({ listeningVoice: false, comando: "" });
+					this.setState({ listeningVoice: false, comando: "", voiceCommand: "" });
 				}
 			});
 		});
@@ -465,7 +465,7 @@ class Arduinode extends Component {
 	}
 	render() {
 		const This = this;
-		var showMic = (this.state.voiceCommand && this.state.voiceCommand.length === 0);
+		var showMic = (this.state.listeningVoice && this.state.voiceCommand && this.state.voiceCommand.length === 0);
 		var micText = '';
 		return (
 			<div className={"Arduinode adminMode" + This.state.adminMode}>
