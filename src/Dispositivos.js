@@ -97,7 +97,7 @@ export class Dispositivos extends Component {
 	generateRow( item ) {
 		var disp = this.props.route.root.getDispositivoByIP( item.ip );
 		var salidasActivas = this.tieneLucesEncendidas( item.ip );
-		
+
 		return ( 
 			<HTML.EditContainer key={item.ip} class={"disabled" + item.offline + " tieneLucesEncendidas" + (salidasActivas > 0)}>
 				<HTML.EditRow root={ this.props.route.root }
@@ -110,7 +110,7 @@ export class Dispositivos extends Component {
 				<td>
 					<ul className="listIcons">
 						<li className="iconDispositivos">
-							<span className="nro">{ salidasActivas }</span> 
+							<span>{ salidasActivas }</span> 
 							<Link to={'Dispositivos/salidas/' + item.ip}>&#9854;</Link>
 						</li>
 						<li className='iconDELETE onlyAdmin'>

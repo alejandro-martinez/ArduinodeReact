@@ -526,11 +526,15 @@ table.dispositivos.adminfalse tr {
     height:85px;
     padding: 5px 10px 10px 10px;
 }
-li.iconDispositivos span {
+
+table.dispositivos li.iconDispositivos{
+    position:relative
+}
+table.dispositivos li.iconDispositivos span{
     position:absolute;
     font-weight:bold;
-    right:12px;
     font-size:.9em;
+    right:-24px;;
 }
 .dispositivos li.iconDELETE a {;
     font-size:2.5em !important;
