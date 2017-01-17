@@ -64,9 +64,9 @@ export class Tareas extends Component {
 				<HTML.EditRow  root={ this.props.route.root }
 							   inputKey='descripcion'
 							   model={ item } />
-				<tr className={ "show" + this.props.route.root.state.adminMode }>
+				<tr>
 					<ul className="listIcons">
-						<li className="iconDispositivos"><Link to={'Tareas/' + item.id + '/dispositivos'}>&#9854;</Link></li>						
+						<li className="iconDispositivos"><Link to={'Tareas/' + item.id + '/dispositivos'}>&#9854;</Link></li>
 						<li className="iconReloj"><Link to={'Tareas/subtareas/' + item.id}></Link></li>
 						<li className="onlyAdmin iconDELETE"><Link onClick={ this.onRemove.bind(this,item) }></Link></li>
 						<li className={'onlyAdmin iconACTIVA' + item.activa }><Link onClick={ this.onSetActiva.bind(this, item) }></Link></li>

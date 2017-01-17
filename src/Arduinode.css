@@ -177,6 +177,15 @@ table.tareas.admintrue tr {
     height:57px;
     margin-bottom:20px;
 }
+table.tareas.adminfalse tr tr {
+    float:right;
+    margin-top:-16px;
+    width:159px;
+}
+
+table.tareas.adminfalse tr tr ul li {
+    margin-right:29px;
+}
 table td:last-child {
     display: inline-block;
 }
