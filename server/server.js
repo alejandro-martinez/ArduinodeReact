@@ -33,7 +33,7 @@ http.listen( serverConf.port, serverConf.ip, () => {
 	log("Server iniciado en: " + serverConf.ip + ":" + serverConf.port);
 
 	// Captura excepciones para no detener el servidor 
-	//process.on('uncaughtException', (err) => log("Ocurrió un error:" + err));
+	process.on('uncaughtException', (err) => log("Ocurrió un error:" + err));
 
 	// Registra middleware para capturar requests de SocketIO 
 	io.use( middleware );
