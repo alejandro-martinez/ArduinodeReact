@@ -209,9 +209,11 @@ class Home extends Component {
 
 class Voice {
 	static listen( callback ) {
+
 		var webkitSpeechRecognition = window.webkitSpeechRecognition || {};
 		if ( window.hasOwnProperty('webkitSpeechRecognition') ) {
 			var recognition = new webkitSpeechRecognition();
+			recognition.abort();
 			var noVoiceHandler = null;
 			recognition.lang = "es-ES";
 
@@ -240,22 +242,13 @@ class Voice {
 			recognition.start();
 		}
 	}
-	static speak(text, callback) {
+	static speak(text, callback = function(){}) {
 	    var u = new SpeechSynthesisUtterance();
+	    speechSynthesis.cancel();
 	    u.text = text;
 	    u.lang = 'es-ES';
-
-	    u.onend = function () {	
-	        if (callback) {
-	            callback();
-	        }
-	    };
-	 
-	    u.onerror = function (e) {
-	        if (callback) {
-	            callback(e);
-	        }
-	    };
+	    u.onend = callback;
+	    u.onerror = callback;
 	 
 	    speechSynthesis.speak(u);
 	}
@@ -263,6 +256,7 @@ class Voice {
 		comando = comando.toLowerCase();
 		var orden = comando.split(" ");
 		var esComandoZona = (orden[1] === 'zona');
+
 		return {
 			orden: orden[0].trim(),
 			dispositivo: orden.slice( (esComandoZona) ? 2 : 1 ).join(" ").trim(),
@@ -385,36 +379,38 @@ class Arduinode extends Component {
 		});
 	}
 	onVoiceCommand() {
-		this.setState({ listeningVoice: true, voiceCommand: "" }, function() {
-			Voice.listen(( comando ) => {
-				if (comando) {
+		this.setState({ listeningVoice: true, voiceCommand: "" });
 
-					this.setState({ voiceCommand: comando }, () => {
-						setTimeout(() =>{
-							this.setState({ listeningVoice: false, voiceCommand: "" });
-						},4000);
-					});
+		Voice.listen(( comando ) => {
+			if (comando) {
+				this.setState({ voiceCommand: comando });
 
-					// Devuelve el comando formateado
-					var comando = Voice.getComando( comando );
-					
-					switch( comando.salida ) {
-						case "todo":
-							Socket.emit('apagarTodo');
-							break;
-						case "zona":
-							Socket.emit('switchZona',comando);	
-							break;
-						default: 
-							Socket.emit('switchSalida',comando);
-							break;
-					}
+				// Devuelve el comando formateado
+				var comando = Voice.getComando( comando );
+				
+				var This = this;
+				
+				setTimeout(()=>{
+					This.setState({ listeningVoice: false, voiceCommand: "" });
+				}, 1000);
+
+				switch( comando.salida ) {
+					case "todo":
+						Socket.emit('apagarTodo');
+						break;
+					case "zona":
+						Socket.emit('switchZona',comando);	
+						break;
+					default: 
+						Socket.emit('switchSalida',comando);
+						break;
 				}
-				else {
-					this.setState({ listeningVoice: false });
-					Voice.speak("No escuché nada!!!!");
-				}
-			});
+			}
+			else {
+				this.setState({ listeningVoice: false }, function() {
+					Voice.speak("No escuché nada");	
+				});
+			}
 		});
 	}
 	getEstadoSalida( params ) {
@@ -466,7 +462,7 @@ class Arduinode extends Component {
 	}
 	render() {
 		const This = this;
-		var showMic = (this.state.listeningVoice && this.state.voiceCommand && this.state.voiceCommand.length === 0);
+		var showMic = (this.state.voiceCommand && this.state.voiceCommand.length === 0);
 		var micText = '';
 		return (
 			<div className={"Arduinode adminMode" + This.state.adminMode}>
