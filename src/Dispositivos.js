@@ -97,7 +97,7 @@ export class Dispositivos extends Component {
 	generateRow( item ) {
 		var disp = this.props.route.root.getDispositivoByIP( item.ip );
 		return ( 
-			<HTML.EditContainer key={item.ip} class={"disabled" + item.offline}>
+			<HTML.EditContainer key={item.ip} class={"disabled" + item.offline + " tieneLucesEncendidas" + this.tieneLucesEncendidas( item.ip )}>
 				<HTML.EditRow root={ this.props.route.root }
 							   inputKey='descripcion'
 							   model={ disp } />
@@ -129,6 +129,19 @@ export class Dispositivos extends Component {
 			dispositivos: dispositivos,
 			listenBroadcastUpdate: false
 		});
+	}
+	tieneLucesEncendidas( ip ) {
+		var salidasActivas = [];
+		this.props.route.root.state.dispositivos.forEach(( disp ) => {
+			if ( !disp.offline ) {
+				disp.salidas.forEach( (salida) => {
+					if (salida.estado == 0 && salida.tipo === 'L') {
+						salidasActivas.push( salida );
+					}
+				});
+			}
+		});
+		return salidasActivas.length > 0;
 	}
 	onRemove(item, e) {
 		if (confirm("Seguro que desea quitar el dispositivo?")) {

@@ -180,6 +180,7 @@ table.tareas.admintrue tr {
 table.tareas.adminfalse tr tr {
     float:right;
     margin-top:-16px;
+    border:none !important;
     width:159px;
 }
 
@@ -506,7 +507,9 @@ table.dispositivos tr td:nth-child(2) {
   from { opacity: 1.0; }
   to { opacity: 0.5; }
 }
-
+table.dispositivos tr.tieneLucesEncendidastrue li.iconDispositivos a{
+    color: #dabb23;
+}
 table.dispositivos tr.disabledtrue td:nth-child(2):after {
     content:" ------> Sin conexión";
     color:red;
