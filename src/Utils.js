@@ -18,7 +18,14 @@ class Utils {
 			date.setMinutes( addMinutes );
 		}
 		return date.toString().slice(16,21);
-	}	
+	}
+	static alfabeticSort( a, b) {
+		var prev = a.descripcion.toUpperCase();
+		var current = b.descripcion.toUpperCase();
+		return current < prev ?  1
+	         : current > prev ? -1
+	         : 0;
+	}
 	static min_a_horario( min ) {
 		if (min && min.length > 1) {
 			return min;

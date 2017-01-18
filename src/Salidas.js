@@ -160,16 +160,10 @@ export class SalidasActivas extends Component {
 			showAddIcon: false
 		});
 	}
-	alfabeticSort( a, b) {
-		var prev = a.descripcion.toUpperCase();
-		var current = b.descripcion.toUpperCase();
-		return current < prev ?  1
-	         : current > prev ? -1
-	         : 0;
-	}
 	render() {		
 		var salidasActivas = this.props.route.root.getSalidasActivas();
-		salidasActivas.sort( this.alfabeticSort );
+		salidasActivas.sort( Utils.alfabeticSort );
+
 		return ( <SalidasTable online={ true } root={ this.props.route.root } salidas={ salidasActivas } /> );
 	}
 };
@@ -188,6 +182,8 @@ export class SalidasDispositivo extends Component {
 		var disp = this.props.route.root.getDispositivoByIP( this.props.params.ip );
 		
 		if (disp) {
+			disp.salidas.sort( Utils.alfabeticSort );
+			
 			return ( <SalidasTable root={ this.props.route.root }
 								   online={ !disp.offline }
 								   salidas={ disp.salidas } /> );

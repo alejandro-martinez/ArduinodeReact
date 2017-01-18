@@ -50,26 +50,6 @@ function DataStore() {
 
 		return content;
 	};
-	this.sortFile = function( file ) {
-
-		var alfabeticSort = ( a, b) => {
-			var prev = a.descripcion.toUpperCase();
-			var current = b.descripcion.toUpperCase();
-			return current < prev ?  1
-		         : current > prev ? -1
-		         : 0;
-		}
-
-		// Ordenamiento por descripcion de dispositivo
-		file = file.sort( alfabeticSort );
-		
-		// Ordenamiento por descripcion de salidas
-		file.forEach((disp, k, _this) => { 
-			_this[k].salidas.sort(alfabeticSort) 
-		});
-
-		return file;
-	}
 	this.zonas = this.getFile('zonas');
 /**
 * Método para actualizar JSON
@@ -77,13 +57,9 @@ function DataStore() {
 */
 	this.updateDB = function( filename, data, removeMemoryData ) {
 		if ( data ) {
+			// Elimina claves temporales
 			if (filename.indexOf('dispositivos') > -1) { 
-
-				// Elimina claves temporales
 				if (removeMemoryData) data = this.removeJSONKeys( data );
-				
-				// Ordenamiento alfabetico
-				data = this.sortFile( data );
 			}
 			
 			fs.writeFileSync(filename + '.json', JSON.stringify(data, null, 2),'utf8', { spaces: 2 });
