@@ -85,8 +85,6 @@ Arduinode = {
 					salidasUpdated.forEach((s) => {
 						log(This.ip + " - Evento externo: Se " + ((s.estado === 0) ? 'prendió ' : 'apagó ') + s.descripcion);
 					});
-					
-
 				});
 			});
 				
@@ -136,13 +134,7 @@ Arduinode = {
 */
 	switchSalida: function( params, callback ) {
 		var dispositivo = this.getDispositivoByIP( params.ip );
-		if (dispositivo) {
-			dispositivo.switchSalida(params,(response) => {
-				if (callback) {
-					callback( response );
-				}
-			});
-		}
+		if (dispositivo) dispositivo.switchSalida(params, callback);
 	},
 /**
 * Registra dispositivos cargados en el modelo (dispositivos.json),
