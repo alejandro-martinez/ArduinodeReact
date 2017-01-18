@@ -11,8 +11,6 @@ var	socket 		= require('./socket')(),
 	serverConfig= require('./config/config.json'),
 	log			= require('./utils/Log');
 	net 		= require('net');
-	const 	 ON = 0, 
-			OFF = 1;
 /**
 * Clase principal de la aplicación que simplifica la interaccion con Dispositivos Arduino
 * - Interactua con Dispositivo y Socket;
@@ -45,6 +43,7 @@ Arduinode = {
 */
 	updateEstadoSalidas: function( salidas_raw ) {
 		var updated = [];
+		
 		salidas_raw.forEach((v) => {
 			var params = { nro: parseInt( v.slice(1,-1) ), estado: parseInt( v.slice(-1)) };
 			var disp = this.getDispositivoByIP( this.ip );
@@ -54,7 +53,7 @@ Arduinode = {
 				updated.push ( disp.updateEstadoSalida( params ) );
 			}
 		});
-		this.broadcastDB();
+
 		return updated;
 	},
 /**
@@ -81,10 +80,14 @@ Arduinode = {
 				socket.on('end', function() {
 					
 					This.data = This.data.replace("\n","-").replace("+n"," ").slice(0, -1);
+					
 					var salidasUpdated = This.updateEstadoSalidas( This.data.slice(0,-1).split("+-") );
+					
 					salidasUpdated.forEach((s) => {
 						log(This.ip + " - Evento externo: Se " + ((s.estado === 0) ? 'prendió ' : 'apagó ') + s.descripcion);
 					});
+
+					This.broadcastDB();
 				});
 			});
 				
@@ -158,6 +161,10 @@ Arduinode = {
 
 		return this;
 	},
+/**
+* Consulta los estados de los dispositivos y los guarda en memoria
+* @method getEstadosDispositivos
+*/
 	getEstadosDispositivos( callback ) {
 		Arrays.asyncLoop( this.dispositivos, ( disp, report ) => {
 			if ( disp ) {
@@ -166,8 +173,8 @@ Arduinode = {
 					report();
 				});
 			}
-		},() => {
-			if ( callback ) callback( this.dispositivos );
+		},() => { 
+			callback( this.dispositivos ); 
 		});
 	}
 };
