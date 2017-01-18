@@ -50,7 +50,7 @@ function DataStore() {
 
 		return content;
 	};
-	this.sortFile = function( file, filename ) {
+	this.sortFile = function( file ) {
 
 		var alfabeticSort = ( a, b) => {
 			var prev = a.descripcion.toUpperCase();
@@ -60,13 +60,12 @@ function DataStore() {
 		         : 0;
 		}
 
-		// Ordenamiento por descripcion
-		file.sort(alfabeticSort);
-		if (filename == 'dispositivos') {
-			// Ordenamiento de salidas de dispositivo
-			file = file.forEach((disp, k, _this) => { _this[k].salidas.sort(alfabeticSort) });
-		}
-
+		// Ordenamiento por descripcion de dispositivo
+		file = file.sort( alfabeticSort );
+		
+		// Ordenamiento por descripcion de salidas
+		file = file.forEach((disp, k, _this) => { _this[k].salidas.sort(alfabeticSort) });
+		
 		return file;
 	}
 	this.zonas = this.getFile('zonas');
@@ -76,24 +75,20 @@ function DataStore() {
 */
 	this.updateDB = function( filename, data, removeMemoryData ) {
 		if ( data ) {
-			if (filename === 'dispositivos') { 
-				
-				if (removeMemoryData) {
-					// Elimina claves para uso en memoria
-					data = this.removeJSONKeys( data );
-				}
 
+			if (filename === 'dispositivos') { 
+
+				// Elimina claves temporales
+				if (removeMemoryData) data = this.removeJSONKeys( data );
+				
 				// Ordenamiento alfabetico
-				if ( this.sortFile( data, filename ) ) {
-					data = this.sortFile( data );
-				}
+				data = this.sortFile( data );
 			}
 			
-			fs.writeFileSync(filename + '.json', 
-									JSON.stringify(data, null, 2),
-									'utf8', 
-									{ spaces: 2 });
+			fs.writeFileSync(filename + '.json', JSON.stringify(data, null, 2),'utf8', { spaces: 2 });
+
 			log("Se actualizó el archivo de  " + filename);
+
 			return true;
 		}
 		else {
