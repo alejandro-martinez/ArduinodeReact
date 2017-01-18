@@ -140,8 +140,6 @@ Arduinode = {
 * Registra dispositivos cargados en el modelo (dispositivos.json),
 * y los sincroniza con el estado de los dispositivos Arduino reales
 * en atributo lista de esta clase
-* @param callback Opcional
-* @param broadcast Boolean Hacer broadcast o no a los clientes conectados
 * @method loadDispositivos
 */
 	loadDispositivosDB: function() {
@@ -150,10 +148,10 @@ Arduinode = {
 		this.dispositivos = [];
 
 		this.DataStore.getFile('dispositivos').forEach((d) => {
-			var _d = new Dispositivo( d.id_disp, d.ip, d.descripcion );
-			_d.setSalidas( d.salidas );
-			if (!newDispositivos) newDispositivos = (d.salidas.length === 0);
-			this.dispositivos.push(_d);
+			var dispositivo = new Dispositivo( d.id_disp, d.ip, d.descripcion );
+			if ( d.salidas.length === 0 ) newDispositivos = true;
+			dispositivo.setSalidas( d.salidas );			
+			this.dispositivos.push( dispositivo );
 		});
 		
 		if (newDispositivos) this.getEstadosDispositivos(() => { this.broadcastDB() });
