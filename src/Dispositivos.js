@@ -96,7 +96,7 @@ export class Dispositivos extends Component {
 	}
 	generateRow( item ) {
 		var disp = this.props.route.root.getDispositivoByIP( item.ip );
-		var salidasActivas = this.tieneLucesEncendidas( item.ip );
+		var salidasActivas = this.tieneLucesEncendidas( disp);
 
 		return ( 
 			<HTML.EditContainer key={item.ip} class={"disabled" + item.offline + " tieneLucesEncendidas" + (salidasActivas > 0)}>
@@ -109,9 +109,11 @@ export class Dispositivos extends Component {
 							  model={ disp } />
 				<td>
 					<ul className="listIcons">
-						<li className="iconDispositivos">
-							<span className="nro">{ salidasActivas }</span> 
-							<Link to={'Dispositivos/salidas/' + item.ip}>&#9854;</Link>
+						<li className="iconDispositivos"> 
+							<Link to={'Dispositivos/salidas/' + item.ip}>
+								<span className="nro">{ salidasActivas }</span>
+								&#9854;
+							</Link>
 						</li>
 						<li className='iconDELETE onlyAdmin'>
 							<a onClick={ this.onRemove.bind( this, item )}></a>
@@ -133,17 +135,15 @@ export class Dispositivos extends Component {
 			listenBroadcastUpdate: false
 		});
 	}
-	tieneLucesEncendidas( ip ) {
+	tieneLucesEncendidas( dispositivo ) {
 		var salidasActivas = [];
-		this.props.route.root.state.dispositivos.forEach(( disp ) => {
-			if ( !disp.offline ) {
-				disp.salidas.forEach( (salida) => {
-					if (salida.estado == 0 && salida.tipo === 'L') {
-						salidasActivas.push( salida );
-					}
-				});
-			}
-		});
+		if ( !dispositivo.offline ) {
+			dispositivo.salidas.forEach(( salida ) => {
+				if (salida.estado == 0 && salida.tipo === 'L') {
+					salidasActivas.push( salida );
+				}
+			});
+		}
 		return salidasActivas.length;
 	}
 	onRemove(item, e) {

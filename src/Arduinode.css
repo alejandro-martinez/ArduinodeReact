@@ -533,10 +533,12 @@ table.dispositivos li.iconDispositivos{
     position:relative
 }
 table.dispositivos li.iconDispositivos span.nro{
-    position:absolute;
-    font-weight:bold;
-    font-size:.9em;
-    right:-24px;;
+    position: absolute;
+    font-weight: 700;
+    font-size: .4em;
+    right: -33px;
+    top: -9px;
+    color: #384259;
 }
 .dispositivos li.iconDELETE a {;
     font-size:2.5em !important;
