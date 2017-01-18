@@ -119,21 +119,23 @@ class SalidasTable extends Component {
 		var rows = this.props.salidas.map( function( item ) {
 			
 			let estaTemporizada = (item.temporizada !== 0 && item.temporizada != "00:00");
-
+			let estaOnline = this.props.online && !this.root.state.adminMode;
 			var salida = null;
-			var nro = ((item.nro != null) ? item.nro.toString() : 0 ) + Utils.randomID();
+
+			var _key = Math.random().toString(36).substring(7);
+
 			if ( item.tipo == 'L' ) {
-				salida = <Luz key={ nro } item={ item }
+				salida = <Luz key={ _key } item={ item }
 					 salidasState={ This.state } 
-					 online={ this.props.online && !this.root.state.adminMode }
+					 online={ estaOnline }
 					 root={ This.root } 
 					 switchClass= { ' temporizada' + estaTemporizada }
 				/>;
 			}
 			else {
-				salida = <Persiana key={ nro  } item={ item }
+				salida = <Persiana key={ _key } item={ item }
 					 salidasState={ This.state } 
-					 online={ this.props.online && !this.root.state.adminMode }
+					 online={ estaOnline }
 					 root={ This.root }
 				/>
 			}
@@ -169,7 +171,7 @@ export class SalidasActivas extends Component {
 		this.props.route.root.state.dispositivos.forEach(( disp ) => {
 			if ( !disp.offline ) {
 				disp.salidas.forEach( (salida) => {
-					if (salida.estado == 0 && salida.tipo === 'L') {
+					if (salida.estado === 0 && salida.tipo === 'L') {
 						salidasActivas.push( salida );
 					}
 				});
