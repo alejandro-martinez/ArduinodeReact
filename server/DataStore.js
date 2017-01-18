@@ -64,8 +64,10 @@ function DataStore() {
 		file = file.sort( alfabeticSort );
 		
 		// Ordenamiento por descripcion de salidas
-		file = file.forEach((disp, k, _this) => { _this[k].salidas.sort(alfabeticSort) });
-		
+		file.forEach((disp, k, _this) => { 
+			_this[k].salidas.sort(alfabeticSort) 
+		});
+
 		return file;
 	}
 	this.zonas = this.getFile('zonas');
@@ -75,8 +77,7 @@ function DataStore() {
 */
 	this.updateDB = function( filename, data, removeMemoryData ) {
 		if ( data ) {
-
-			if (filename === 'dispositivos') { 
+			if (filename.indexOf('dispositivos') > -1) { 
 
 				// Elimina claves temporales
 				if (removeMemoryData) data = this.removeJSONKeys( data );
