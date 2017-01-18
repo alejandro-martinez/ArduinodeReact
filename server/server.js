@@ -30,6 +30,8 @@ var serverConf = require( configPath );
 
 http.listen( serverConf.port, serverConf.ip, () => {
 
+	var waitingBroadcast = false;
+
 	log("Server iniciado en: " + serverConf.ip + ":" + serverConf.port);
 
 	// Captura excepciones para no detener el servidor 
@@ -37,6 +39,12 @@ http.listen( serverConf.port, serverConf.ip, () => {
 
 	// Registra middleware para capturar requests de SocketIO 
 	io.use( middleware );
+
+	// Referencia al socket conectado
+	Arduinode.io = taskManager.io = io;
+
+	// Crea socket que recibe eventos de los disp. Arduino
+	Arduinode.listenSwitchEvents( serverConf );
 
 	// Conexión de un cliente
 	io.on('connection', ( sCliente ) => {
@@ -47,22 +55,20 @@ http.listen( serverConf.port, serverConf.ip, () => {
 
 		sCliente.emit('DBZonasUpdated', DataStore.zonas);
 		
-		// Referencia al socket conectado
-		Arduinode.io = taskManager.io = io;
-
-		// Crea socket que recibe eventos de los disp. Arduino
-		Arduinode.listenSwitchEvents( serverConf );
-
 		sCliente.on('getZonasDB', () => { 
 			Arduinode.loadZonasDB( function() {
 				sCliente.emit('DBZonasUpdated', DataStore.zonas);
 			});
 		});
 
-		sCliente.on('getDispositivosDB', () => { 
-			Arduinode.getEstadosDispositivos( function( dispositivos ) {
-				sCliente.emit('DBDispositivosUpdated', dispositivos);
-			});
+		sCliente.on('getDispositivosDB', () => {
+			if ( !waitingBroadcast ) {
+				waitingBroadcast = true;
+				Arduinode.getEstadosDispositivos( function( dispositivos ) {
+					waitingBroadcast = false;
+					sCliente.emit('DBDispositivosUpdated', dispositivos);
+				});
+			}
 		});
 
 		sCliente.on('getTareasDB', () => { 
