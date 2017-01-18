@@ -9,8 +9,8 @@ export class Header extends Component {
 		super( props );
 		this.onAdminModeChange = this.onAdminModeChange.bind( this );
 	}
-	refresh() { 
-		Socket.emit('getDispositivosDB'); 
+	refresh() {
+		if (!window.waitingBroadcast) Socket.emit('getDispositivosDB'); 
 	}
 	onAdminModeChange() {
 		if ( this.props.root.state.adminMode ) {

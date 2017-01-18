@@ -7,11 +7,13 @@ window.socket = io.connect( window.location.origin );
 
 class SocketIO {
 	emit( param, data ) {
+		window.waitingBroadcast = true;
 		Utils.fireEvent("loading", true);
 		window.socket.emit( param, data );
 	}
 	listen( param, callback) {
 		var onResponse = function( data ) {
+			window.waitingBroadcast = false;
 			Utils.fireEvent("loading", false);
 			callback( data );
 		};
