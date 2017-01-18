@@ -252,9 +252,12 @@ class Salida {
 }
 
 class Luz extends Salida {
-	constructor ( nro, _descripcion, _ip ) {
-		super(nro, _descripcion);
-		this.ip 	 = _ip;
+	constructor ( args ) {
+		// args[0] = Nro
+		// args[1] = Descripcion
+		// args[2] = IP
+		super(args[0], args[1], 'L');
+		this.ip 	 = args[2];
 		this.tipo 	 = 'L';
 		this.comando = 'T';
 	}
@@ -270,8 +273,12 @@ class Luz extends Salida {
 }
 
 class Persiana extends Salida {
-	constructor( nro, _descripcion ) {
-		super( nro, _descripcion );
+	constructor( args) {
+		// args[0] = Nro
+		// args[1] = Descripcion
+		// args[2] = IP
+		super(args[0], args[1], 'P');
+		this.ip 	 = args[2];
 		this.tipo = this.comando = 'P';
 	}
 	switch( params, callback ) {
@@ -284,16 +291,16 @@ class Persiana extends Salida {
 
 class SalidaFactory {
 	static create( nro, _tipo, _descripcion, _ip ) {
-		
+		var args = [nro, _descripcion, _ip];
 		switch (_tipo) {
 			case "P":
-				return new Persiana(nro, _descripcion, _ip);
+				return new Persiana(args);
 				break;
 			case "S":
-				return new Sensor(nro, _descripcion, _ip);
+				return new Sensor(args);
 				break;
 			default:
-				return new Luz(nro, _descripcion, _ip);
+				return new Luz(args);
 		}
 	}
 }

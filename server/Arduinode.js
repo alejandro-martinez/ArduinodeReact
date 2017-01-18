@@ -164,11 +164,11 @@ Arduinode = {
 			this.dispositivos.push(_d);
 		});
 		
-		if (newDispositivos) this.getEstadosDispositivos(true);
+		if (newDispositivos) this.getEstadosDispositivos(() => { this.broadcastDB() });
 
 		return this;
 	},
-	getEstadosDispositivos( broadcast, callback ) {
+	getEstadosDispositivos( callback ) {
 		Arrays.asyncLoop( this.dispositivos, ( disp, report ) => {
 			if ( disp ) {
 				disp.getSalidas( (estados) => {
@@ -177,7 +177,6 @@ Arduinode = {
 				});
 			}
 		},() => {
-			if ( broadcast ) this.broadcastDB();
 			if ( callback ) callback( this.dispositivos );
 		});
 	}
