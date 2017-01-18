@@ -137,6 +137,7 @@ export class Dispositivos extends Component {
 	}
 	tieneLucesEncendidas( dispositivo ) {
 		var salidasActivas = [];
+		
 		if ( !dispositivo.offline ) {
 			dispositivo.salidas.forEach(( salida ) => {
 				if (salida.estado == 0 && salida.tipo === 'L') {
@@ -144,6 +145,7 @@ export class Dispositivos extends Component {
 				}
 			});
 		}
+
 		return salidasActivas.length;
 	}
 	onRemove(item, e) {

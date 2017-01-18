@@ -88,11 +88,13 @@ class Luz extends Component {
 		
 		return (
 			<HTML.EditContainer edit={ this.state.edit }>
+				
 				<HTML.EditRow edit={ false }
 						 root={ this.root }
 						 inputKey='descripcion'
 						 model={ this.props.item }>
 				</HTML.EditRow>
+
 				<td className={ 'show' + this.props.online}>
 					<Toggle model={ this.props.item } 
 							onSwitch={ this.onSwitch } 
@@ -120,9 +122,8 @@ class SalidasTable extends Component {
 			
 			let estaTemporizada = (item.temporizada !== 0 && item.temporizada != "00:00");
 			let estaOnline = this.props.online && !this.root.state.adminMode;
+			let _key = item.descripcion.trim();
 			var salida = null;
-
-			var _key = Math.random().toString(36).substring(7);
 
 			if ( item.tipo == 'L' ) {
 				salida = <Luz key={ _key } item={ item }
@@ -167,16 +168,7 @@ export class SalidasActivas extends Component {
 	         : 0;
 	}
 	render() {		
-		var salidasActivas = [];
-		this.props.route.root.state.dispositivos.forEach(( disp ) => {
-			if ( !disp.offline ) {
-				disp.salidas.forEach( (salida) => {
-					if (salida.estado === 0 && salida.tipo === 'L') {
-						salidasActivas.push( salida );
-					}
-				});
-			}
-		});
+		var salidasActivas = this.props.route.root.getSalidasActivas();
 		salidasActivas.sort( this.alfabeticSort );
 		return ( <SalidasTable online={ true } root={ this.props.route.root } salidas={ salidasActivas } /> );
 	}

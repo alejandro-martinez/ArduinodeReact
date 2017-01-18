@@ -198,6 +198,9 @@ export class Tarea extends DB {
 }
 
 class Home extends Component {
+	constructor( props ) {
+		super( props );
+	}
 	componentDidMount() { 
 		this.props.route.root.setState({ 
 			page: "Home", 
@@ -205,7 +208,9 @@ class Home extends Component {
 			showTimerIcon: false
 		});
 	}
-	render() { return ( <HTML.ListaLinks root={ this.props.route.root } items={ menu } /> ); }
+	render() { 
+		return ( <HTML.ListaLinks root={ this.props.route.root } items={ this.props.route.root.state.menu } /> ); 
+	}
 }
 
 class Voice {
@@ -341,6 +346,7 @@ class Arduinode extends Component {
 			adminMode: false,
 			temporizacion: "00:00",
 			dispositivos: [],
+			menu: menu,
 			zonas:[],
 			speaking: false,
 			listeningVoice: false,
@@ -358,9 +364,19 @@ class Arduinode extends Component {
 
 		Socket.listen('DBDispositivosUpdated', ( db ) => {
 			if ( this.state.listenBroadcastUpdate || !this.state.adminMode) {
-				this.setState({ dispositivos: db },() => this.updateEstadosZonas());
+				
+				this.setState({ dispositivos: db },() => {
+					
+					// Actualizacion de num de salidas encendidas en home
+					var _menu = this.state.menu;
+					_menu[1].text = "Luces encendidas (" + this.getSalidasActivas().length + ")";
+					this.setState({ menu: _menu });
+
+					this.updateEstadosZonas();
+				});
 			}
     	});
+
     	Socket.listen('DBZonasUpdated', ( db ) => {
 			if ( this.state.listenBroadcastUpdate ) {
 				this.setState({ zonas: db }, () => this.updateEstadosZonas());
@@ -376,6 +392,21 @@ class Arduinode extends Component {
 			this.setState({ speaking: true, listeningVoice: true });
 			this.forceUpdate();
 		});
+	}
+	getSalidasActivas() {
+		var salidasActivas = [];
+		
+		this.state.dispositivos.forEach(( disp ) => {
+			if ( !disp.offline ) {
+				disp.salidas.forEach( (salida) => {
+					if (salida.estado === 0 && salida.tipo === 'L') {
+						salidasActivas.push( salida );
+					}
+				});
+			}
+		});
+
+		return salidasActivas;
 	}
 	onVoiceCommand() {
 		this.setState({ listeningVoice: true, voiceCommand: "" });
