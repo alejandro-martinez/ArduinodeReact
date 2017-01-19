@@ -259,8 +259,7 @@ class Voice {
 		return {
 			orden: orden[0].trim(),
 			dispositivo: orden.slice( (esComandoZona) ? 2 : 1 ).join(" ").trim(),
-			salida: (esComandoZona) ? 'zona' : orden.slice(1).join(" ").trim(),
-			voiceMsg: (orden[0] == 'apagar') ? 'Apagando' : 'Prendiendo'
+			salida: (esComandoZona) ? 'zona' : orden.slice(1).join(" ").trim()
 		};
 	}
 }

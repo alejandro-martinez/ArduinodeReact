@@ -133,7 +133,7 @@ http.listen( serverConf.port, serverConf.ip, () => {
 		sCliente.on('switchZona',( params ) => {
 			var failed = false;
 			var getZona = function() {
-				if (params.hasOwnProperty('voiceMsg')) {
+				if (params.hasOwnProperty('orden')) {
 					var found = DataStore.zonas.filter((z,k, _this) => {
 						if (z.descripcion.toLowerCase() == params.dispositivo) {
 							return _this[k];
@@ -160,7 +160,7 @@ http.listen( serverConf.port, serverConf.ip, () => {
 						salida.estado = zona.estado;
 						salida.temporizada = 0;
 						Arduinode.switchSalida( salida, function( response) {
-							if (response === undefined && params.hasOwnProperty('voiceMsg')) {
+							if (response === undefined && params.hasOwnProperty('orden')) {
 								sCliente.emit('failed');
 								return false;
 							}
@@ -177,7 +177,7 @@ http.listen( serverConf.port, serverConf.ip, () => {
 
 		// Accion sobre una salida (Persiana, Luz, Bomba)
 		sCliente.on('switchSalida',( params ) => {
-			if (params.hasOwnProperty('voiceMsg')) {
+			if (params.hasOwnProperty('orden')) {
 				
 				var salida = Arduinode.getSalidaByDescripcion( params.salida );
 				if ( salida ) {
