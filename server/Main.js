@@ -72,7 +72,6 @@ class Dispositivo {
 								response = parseInt( response.replace(/(?:\r\n|\r|\n)/g, ''));
 								salida.estado = response;
 								salida.temporizada = params.temporizada;
-								Arduinode.broadcastDB();
 							}
 							callback( response);
 						});
@@ -84,7 +83,6 @@ class Dispositivo {
 				}
 				else {
 					this.offline = true;
-					Arduinode.broadcastDB();
 					log("No se pudo conectar con: " + params.ip);
 					callback();
 				}

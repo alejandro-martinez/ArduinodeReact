@@ -137,7 +137,12 @@ Arduinode = {
 */
 	switchSalida: function( params, callback ) {
 		var dispositivo = this.getDispositivoByIP( params.ip );
-		if (dispositivo) dispositivo.switchSalida(params, callback);
+		if (dispositivo) {
+			dispositivo.switchSalida( params, ( response ) => {
+				if ( response != -1 ) this.broadcastDB();
+				callback();
+			});
+		}
 	},
 /**
 * Registra dispositivos cargados en el modelo (dispositivos.json),

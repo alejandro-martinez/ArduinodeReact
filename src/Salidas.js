@@ -170,15 +170,19 @@ export class SalidasActivas extends Component {
 
 export class SalidasDispositivo extends Component {
 	constructor( props ) {
-		super( props );
-		this.disp = this.props.route.root.getDispositivoByIP( props.params.ip );
+		super( props );	
+	}
+	getDispositivo() {
+		return this.props.route.root.getDispositivoByIP( this.props.params.ip );
 	}
 	componentDidMount() {
+		this.disp = this.getDispositivo();
 		if ( this.disp ) {
 			this.props.route.root.setState({ page: this.disp.descripcion, showAddIcon: false});
 		}
 	}
-	render() {		
+	render() {	
+		this.disp = this.getDispositivo();	
 		if (this.disp) {
 			this.disp.salidas.sort( Utils.alfabeticSort );
 			
