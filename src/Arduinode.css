@@ -649,13 +649,14 @@ div.switchContainer * {
     -o-transition: color 0 ease-in;
     transition: none;
 }
-.switchContainer span {
+.switchMainContainer span {
     position: absolute;
-    color: #fff;
+    color: #384259;
     z-index: 1;
     width: 49px;
-    left: 8px;
-    top: 5px;
+    font-weight: bold;
+    left: 13px;
+    top: 58px;
     text-align: left;
 }
 .temporizadafalse span,.temporizadanull span,
@@ -663,15 +664,12 @@ div.switchContainer * {
 .adminfalse .onlyAdmin {
     display: none;
 }
-.temporizadatrue .on:after {
-    content: "" !important;
-}
 .temporizadatrue .switch:after, .temporizadatrue span {
     top:12px;
     left:0;
     font-size:1.2em;
 }
-.temporizadatrue .switch, .switch.on {
+.switch.on {
     background: #f73859!important;
     color: #fff;
 }
@@ -683,17 +681,20 @@ div.switchContainer * {
     width: 141px !important;
     height: 47px !important;
     border-radius: 35px !important;
+    background: #fff !important;
+    color: #384259 !important;
 }
 .switch:after {
     position: absolute;
     top: 14px;
-    left: 38px;
-    content: "Apagada";
+    left: 38px !important;
+    content: "Apagada" !important;
+    color: #384259 !important;
 }
 .switch.on:after {
-    content: "Encendida";
-    color: #fff;
-    left: -12px;
+    content: "Encendida" !important;
+    color: #fff !important;
+    left: -12px !important;
 }
 .switch-toggle {
     width: 44px !important;
@@ -701,9 +702,11 @@ div.switchContainer * {
     border-radius: 36px !important;
 }
 .switch.on .switch-toggle {
-    left: 95px !important;
+    left: 97px !important;
 }
-
+.temporizadatrue .switch:after {
+    left:30px !important;
+}
 @media screen and (max-width: 500px) {
 
     table.salidas td input {
@@ -711,6 +714,20 @@ div.switchContainer * {
     }
     .iconLogout {
         margin-top:-6px !important;
+    }
+}
+
+@media screen and (max-width: 500px) {
+
+    .switchMainContainer span {
+        top:2px;
+        right:10px;
+        left:auto;
+    }
+    .temporizadatrue .switch:after{
+        font-size:1em;
+        top:14px !important;
+        left:-12px !important;
     }
 }
 /* TAREAS */

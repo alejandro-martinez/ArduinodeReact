@@ -16,11 +16,13 @@ export class Toggle extends React.Component {
   						 && this.props.model.hasOwnProperty('temporizada')
   						 && this.props.model.temporizada != "00:00") && this.props.on);
     return (
-		<div className={ 'switchContainer temporizada' + estaTemporizada}
-			onClick={ this.props.onSwitch.bind(this, this.props.model) }>
-			<span> { Utils.min_a_horario(this.props.model.temporizada) } </span>
-			<Switch model={ this.props.model } on={ this.props.on }>
-			</Switch>
+		<div className="switchMainContainer">
+	    	<span> { Utils.min_a_horario(this.props.model.temporizada) } </span>
+			<div className={ 'switchContainer temporizada' + estaTemporizada}
+				onClick={ this.props.onSwitch.bind(this, this.props.model) }>
+				<Switch model={ this.props.model } on={ this.props.on }>
+				</Switch>
+			</div>
 		</div>
     );
   }
