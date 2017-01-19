@@ -391,7 +391,9 @@ class Arduinode extends Component {
 	getSalidasActivas( dispositivo ) {
 		var salidasActivas = [];
 
-		var filterActivas = function( _dispositivo ) {
+		var filterActivas = ( _dispositivo ) => {
+			if (!_dispositivo.salidas) _dispositivo = this.getDispositivoByIP( _dispositivo.ip );
+
 			_dispositivo.salidas.forEach( (salida) => {
 				if (salida.estado === 0 && salida.tipo === 'L') {
 					salidasActivas.push( salida );
@@ -445,31 +447,15 @@ class Arduinode extends Component {
 			}
 		});
 	}
-	getEstadoSalida( params ) {
-		var disp = this.getDispositivoByIP( params.ip );
-		if (disp && !disp.offline) {
-			var found = disp.salidas.filter(function(s, k, _this) { 
-				return s.nro == params.nro;
-			});
-			if (found.length) return found[0].estado;	
-		}
-
-		return 1;
-	}
-	findZonaByDescripcion( descripcion ) {
-		var zona = this.state.zonas.filter((z, k, _this) => {
-			return z.descripcion.toLowerCase() == descripcion;
-		});
-		return zona[0] || [];
-	} 
 	updateEstadosZonas() {
 		if (this.state.zonas.length) {
 			var encendidas = 0;
 			this.state.zonas.forEach((z, k, _this) => {
 				
-				z.dispositivos.forEach((s) => {
-					s.estado = this.getEstadoSalida( s );
-					if (s.estado == 0) encendidas++;
+				z.dispositivos.forEach(( dispositivoZona ) => {
+					if ( this.getSalidasActivas( dispositivoZona ).length) {
+						encendidas++;
+					}
 				});
 				_this[k].estado = (encendidas === z.dispositivos.length) ? 0 : 1;
 			});
