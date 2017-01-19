@@ -4,7 +4,6 @@ import Socket from './Socket';
 import { Link } from 'react-router';
 import * as HTML from './HTML';
 import { Dispositivo } from './Arduinode';
-import Utils from './Utils';
 
 export class SelectSalida extends Component {
 	constructor( props ) {
@@ -159,7 +158,6 @@ export class Dispositivos extends Component {
 	}
 	render() {
 		var rows = this.props.route.root.state.dispositivos.map( this.generateRow, this );
-		rows = rows.sort( Utils.alfabeticSort);
 		return (<HTML.Table class={"dispositivos admin" + this.props.route.root.state.adminMode}> { rows } </HTML.Table>);
 	}
 };

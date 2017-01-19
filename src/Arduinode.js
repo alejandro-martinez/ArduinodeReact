@@ -364,6 +364,7 @@ class Arduinode extends Component {
 
 		Socket.listen('DBDispositivosUpdated', ( db ) => {
 			if ( this.state.listenBroadcastUpdate || !this.state.adminMode) {
+				db = db.sort( Utils.alfabeticSort);
 				
 				this.setState({ dispositivos: db },() => {
 					

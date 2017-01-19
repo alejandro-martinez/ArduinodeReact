@@ -170,7 +170,6 @@ ul {
 table tr {
     display: inline-block;
     border: 1px solid #7AC7C4;
-    margin-bottom: -1px;
     padding: 10px;
 }
 table.tareas.admintrue tr {
@@ -428,7 +427,7 @@ header,.footer {
 .footer .listIcons li {
     width: 35px;
     float: left;
-    margin-right: 20px;
+    margin-right: 60px;
     padding-top: 10px;
 }
 .footer .listIcons li:last-child {
@@ -521,7 +520,7 @@ table.dispositivos tr.disabledtrue td:nth-child(2):after {
     -webkit-animation-duration: 1s; 
 }
 table tr.disabledtrue {
-    border-color: red;
+    border: 1px solid red;
 }
 table.dispositivos.adminfalse tr {
     box-sizing: border-box;
