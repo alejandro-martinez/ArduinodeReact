@@ -4,7 +4,6 @@
 var socket 		= require('./socket')(),
 	DateConvert = require('./utils/DateConvert')(),
 	DataStore	= require('./DataStore').DataStore,
-	Promise 	= require('promise'),
 	fs			= require('fs'),
 	events 		= require("events"),
 	log			= require('./utils/Log');
@@ -119,12 +118,6 @@ class Dispositivo {
 
 		return salida;
 	}
-/**
-* Parse datos de salidas desde _data
-* @param params Ip del dispositivo
-* @param _data Array de salidas sin procesar
-* @method parseSalidas
-*/
 	parseSalidas(params, _data ) {
 		
 		if (_data && _data.length > 0) {
