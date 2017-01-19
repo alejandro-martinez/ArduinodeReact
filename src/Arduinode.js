@@ -447,13 +447,21 @@ class Arduinode extends Component {
 			}
 		});
 	}
+	getEstadoSalida( _salida ) {
+		var disp = this.getDispositivoByIP( _salida.ip );
+		var salida =  disp.salidas.filter(( s) => {
+			return s.nro == _salida.nro;
+		});
+		return salida[0].estado;
+	}
 	updateEstadosZonas() {
 		if (this.state.zonas.length) {
 			var encendidas = 0;
+
 			this.state.zonas.forEach((z, k, _this) => {
 				
-				z.dispositivos.forEach(( dispositivoZona ) => {
-					if ( this.getSalidasActivas( dispositivoZona ).length) {
+				z.dispositivos.forEach(( salida ) => {
+					if ( this.getEstadoSalida( salida ) === 0) {
 						encendidas++;
 					}
 				});
