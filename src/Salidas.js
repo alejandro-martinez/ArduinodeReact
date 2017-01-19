@@ -171,22 +171,20 @@ export class SalidasActivas extends Component {
 export class SalidasDispositivo extends Component {
 	constructor( props ) {
 		super( props );
+		this.disp = this.props.route.root.getDispositivoByIP( props.params.ip );
 	}
 	componentDidMount() {
-		var disp = this.props.route.root.getDispositivoByIP( this.props.params.ip );
-		if (disp) {
-			this.props.route.root.setState({ page: disp.descripcion, showAddIcon: false});
+		if ( this.disp ) {
+			this.props.route.root.setState({ page: this.disp.descripcion, showAddIcon: false});
 		}
 	}
-	render() {
-		var disp = this.props.route.root.getDispositivoByIP( this.props.params.ip );
-		
-		if (disp) {
-			disp.salidas.sort( Utils.alfabeticSort );
+	render() {		
+		if (this.disp) {
+			this.disp.salidas.sort( Utils.alfabeticSort );
 			
 			return ( <SalidasTable root={ this.props.route.root }
-								   online={ !disp.offline }
-								   salidas={ disp.salidas } /> );
+								   online={ !this.disp.offline }
+								   salidas={ this.disp.salidas } /> );
 		}
 		return null;
 	}
