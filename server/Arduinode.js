@@ -143,7 +143,7 @@ Arduinode = {
 		var dispositivo = this.getDispositivoByIP( params.ip );
 		if (dispositivo) {
 			dispositivo.switchSalida( params, ( response ) => {
-				if ( response != -1 ) this.broadcastDB();
+				this.broadcastDB();
 				callback();
 			});
 		}

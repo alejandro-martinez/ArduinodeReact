@@ -62,6 +62,7 @@ class Dispositivo {
 			salida.getEstado( params_aux,( estadoActual ) => {
 
 				if (typeof estadoActual != 'undefined') {
+
 					//Si la salida tiene distinto estado al que se quiere llevar
 					var estadoDeseado = String( params.estado ).concat( ".", params.temporizada || 0 );
 
@@ -76,6 +77,8 @@ class Dispositivo {
 						});
 					}
 					else {
+						salida.estado = estadoActual.substr(0,1);
+						salida.temporizada = estadoActual.slice(2);
 						log(salida.descripcion + " ya tiene el estado: " + estadoDeseado.trim());
 						callback( -1 );
 					}
