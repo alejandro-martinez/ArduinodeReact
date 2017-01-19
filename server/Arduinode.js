@@ -101,8 +101,17 @@ Arduinode = {
 * @method broadcastDB
 */
 	broadcastDB: function( db ) {
+		if (!pause) {
+			var pause = null;
+		}
+		else {
+			clearTimeout( pause );
+		}
+
 		if ( this.io.hasOwnProperty('sockets') ) {
-			this.io.sockets.emit('DBDispositivosUpdated', db || this.dispositivos);
+			pause = setTimeout(() => {
+				this.io.sockets.emit('DBDispositivosUpdated', db || this.dispositivos);
+			}, 3500);
 		}
 	},
 	getSalidaByDescripcion: function( descripcion ) { 
