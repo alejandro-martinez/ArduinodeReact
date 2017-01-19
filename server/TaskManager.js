@@ -84,17 +84,22 @@ const Programador = class {
 	constructor() {
 		this.tareas	= [];
 		this.io = {};
+		this.watcher = null;
 
 		['refreshScheduler','forceExecute','createJob','execute'].forEach((m)=>{
 			this[m] = this[m].bind(this);
 		})
 	}
-	setConfig( config ) { this.config = config }
+	setConfig( config ) { 
+		this.config = config;
+		clearInterval( this.watcher );
+		return this;
+	}
 	watchChanges() {
 		log("Observando las tareas cada " +
 					parseInt((this.config.tiempoEscaneoTareas / 1000) / 60) +
 					" minutos ...");
-		setInterval( this.refreshScheduler, this.config.tiempoEscaneoTareas );
+		this.watcher = setInterval( this.refreshScheduler, this.config.tiempoEscaneoTareas );
 	}
 	refreshScheduler() {
 		this.tareas.forEach( tarea => { tarea.subtareas.map( this.forceExecute ) });

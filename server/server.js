@@ -90,6 +90,7 @@ http.listen( serverConf.port, serverConf.ip, () => {
 		sCliente.on('updateConfigDB', ( config ) => { 
 			DataStore.updateDB('./config/config',config,false);
 			io.sockets.emit('configUpdated', config);
+			taskManager.setConfig( config ).watchChanges();
 		});
 
 		sCliente.on('updateZonasDB', ( db ) => { 
