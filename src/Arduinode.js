@@ -72,8 +72,6 @@ export class Zona extends DB {
 		super.update(db);
 		callback();
 	}
-	static isValidDESCRIPCION = Validator.isValiddescripcion;
-	static isValidIP = Validator.isValidIP;
 }
 
 export class Dispositivo extends DB {
@@ -96,8 +94,6 @@ export class Dispositivo extends DB {
 		}
 	}
 	static isValid() { return true; }
-	static isValidDESCRIPCION = Validator.isValiddescripcion;
-	static isValidIP = Validator.isValidIP;
 }
 
 export class Tarea extends DB {
@@ -194,7 +190,6 @@ export class Tarea extends DB {
 		return valid;
 		
 	}
-	static isValidDESCRIPCION = Validator.isValidDESCRIPCION;
 }
 
 class Home extends Component {
@@ -365,7 +360,7 @@ class Arduinode extends Component {
 		Socket.listen('DBDispositivosUpdated', ( db ) => {
 			if ( this.state.listenBroadcastUpdate || !this.state.adminMode) {
 				db = db.sort( Utils.alfabeticSort);
-				
+
 				this.setState({ dispositivos: db },() => {
 					
 					// Actualizacion de num de salidas encendidas en home
@@ -394,18 +389,25 @@ class Arduinode extends Component {
 			this.forceUpdate();
 		});
 	}
-	getSalidasActivas() {
+	getSalidasActivas( dispositivo ) {
 		var salidasActivas = [];
+
+		var filterActivas = function( _dispositivo ) {
+			_dispositivo.salidas.forEach( (salida) => {
+				if (salida.estado === 0 && salida.tipo === 'L') {
+					salidasActivas.push( salida );
+				}
+			});	
+		}
 		
-		this.state.dispositivos.forEach(( disp ) => {
-			if ( !disp.offline ) {
-				disp.salidas.forEach( (salida) => {
-					if (salida.estado === 0 && salida.tipo === 'L') {
-						salidasActivas.push( salida );
-					}
-				});
-			}
-		});
+		if ( dispositivo ) {
+			filterActivas( dispositivo );
+		}
+		else {
+			this.state.dispositivos.forEach(( disp ) => {
+				if ( !disp.offline ) filterActivas( disp );
+			});
+		}
 
 		return salidasActivas;
 	}

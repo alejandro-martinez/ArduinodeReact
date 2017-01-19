@@ -136,17 +136,7 @@ export class Dispositivos extends Component {
 		});
 	}
 	tieneLucesEncendidas( dispositivo ) {
-		var salidasActivas = [];
-		
-		if ( !dispositivo.offline ) {
-			dispositivo.salidas.forEach(( salida ) => {
-				if (salida.estado == 0 && salida.tipo === 'L') {
-					salidasActivas.push( salida );
-				}
-			});
-		}
-
-		return salidasActivas.length;
+		return this.props.route.root.getSalidasActivas( dispositivo ).length;
 	}
 	onRemove(item, e) {
 		if (confirm("Seguro que desea quitar el dispositivo?")) {
@@ -221,7 +211,7 @@ export class SelectsDispositivos extends Component{
 			
 			this.model.dispositivos.push( newDispositivo );		
 			
-			this.root.setState({edit: true, listenBroadcastUpdate: false });
+			this.root.setState({ edit: true, listenBroadcastUpdate: false });
 		}
 		else {
 			this.setState({ edit: true });
