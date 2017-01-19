@@ -16,16 +16,11 @@ export class SelectSalida extends Component {
 	generateRow( salida ) {
 		var row = <option value={ salida.nro + "-" + salida.descripcion }>{ salida.descripcion }</option>;
 
-		if ( this.props.added.length === 0) {
-			return row;
-		}
-
-		var duplicated = this.props.added.filter((d)=>{
+		var salidaYaAgregada = this.props.salidasSelected.filter((d)=>{
 			return d.ip === this.props.dispositivo.ip && d.nro == salida.nro;
 		});
 		
-		if ( duplicated.length ) return null;
-		else return row;
+		return ( salidaYaAgregada.length ) ? null : row;
 	}
 	render() {
 		if ( this.props.dispositivo ) {
@@ -69,7 +64,7 @@ export class SelectDispositivos extends Component {
 				</select>
 				<SelectSalida root={ this.props.root }
 							  onSelect={ this.props.onAdd }
-							  added={ this.props.added } 
+							  salidasSelected={ this.props.added } 
 							  dispositivo={ this.state.selected }/>
 			</div>
 		);
