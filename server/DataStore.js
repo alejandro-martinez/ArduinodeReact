@@ -37,6 +37,11 @@ var fs	= require('fs'),
 function DataStore() {
 	this.dispositivos 	= [];
 	this.tareas 	  	= [];
+/**
+* Lee un archivo JSON
+* @method getFile
+* @return JSON file
+*/
 	this.getFile = function( file ) {
 		var filePath = './models/' + file + '.json';
 
@@ -52,8 +57,9 @@ function DataStore() {
 	};
 	this.zonas = this.getFile('zonas');
 /**
-* Método para actualizar JSON
+* Actualizacion de archivos JSON
 * @method updateDB
+* @return Boolean Resultado de la actualizacoin
 */
 	this.updateDB = function( filename, data, removeMemoryData ) {
 		if ( data ) {
@@ -73,6 +79,10 @@ function DataStore() {
 		}
 		return false;
 	};
+/**
+* Elimina claves temporales en el modelo de datos que no tiene sentido guardar en los JSON
+* @method removeMemoryData
+*/
 	this.removeMemoryData = function(data) {
 		var keys = ['offline','estado', 'accion','comando','ip','temporizada'];
 		data.forEach((d) => {

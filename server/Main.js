@@ -89,12 +89,6 @@ class Dispositivo {
 			});
 		}
 	}
-/**
-* Parse datos de salidas desde _data
-* @param params Ip del dispositivo
-* @param _data Array de salidas sin procesar
-* @method parseSalidas
-*/
 	updateEstadoSalida( params ) {
 		// Si la salida existe en el JSON
 		var salida = this.getSalidaByNro( params.nro );
@@ -125,6 +119,12 @@ class Dispositivo {
 
 		return salida;
 	}
+/**
+* Parse datos de salidas desde _data
+* @param params Ip del dispositivo
+* @param _data Array de salidas sin procesar
+* @method parseSalidas
+*/
 	parseSalidas(params, _data ) {
 		
 		if (_data && _data.length > 0) {

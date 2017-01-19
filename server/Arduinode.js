@@ -125,6 +125,10 @@ Arduinode = {
 	getDispositivoByIP: function( ip ) { 
 		return _.findWhere( this.dispositivos,{ ip: ip }); 
 	},
+/**
+* Actualiza JSON de dispositivos
+* @method updateDispositivos
+*/	
 	updateDispositivos: function() {
 		this.DataStore.updateDB('./models/dispositivos', this.dispositivos);
 	},
