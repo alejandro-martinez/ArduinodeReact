@@ -77,8 +77,8 @@ class Dispositivo {
 						});
 					}
 					else {
-						salida.estado = estadoActual.substr(0,1);
-						salida.temporizada = estadoActual.slice(2);
+						salida.estado = parseInt( estadoActual.substr(0,1) );
+						salida.temporizada = parseInt( estadoActual.slice(2) );
 						log(salida.descripcion + " ya tiene el estado: " + estadoDeseado.trim());
 						callback( -1 );
 					}
