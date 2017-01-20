@@ -641,6 +641,7 @@ table > tr td div {
 .switchContainer {
     position: relative;
     width: 122px !important;
+    height: 40px;
     display: block;
 }
 div.switchContainer * {
@@ -660,25 +661,21 @@ div.switchContainer * {
 }
 .temporizadafalse span,.temporizadanull span,
 .admintrue .switchContainer, 
+.temporizadatrue .switch span,
 .adminfalse .onlyAdmin {
     display: none;
 }
-.temporizadatrue .on:after {
-    content: "" !important;
-}
-.temporizadatrue .switch:after, .temporizadatrue span {
+
+.temporizadatrue .switch:after, 
+.temporizadatrue span {
     top:12px;
-    left:0;
-    font-size:1.2em;
+    left:-83px;
+    font-size:1.1em;
 }
-.temporizadatrue .switch, .switch.on {
-    background: #f73859!important;
+.temporizadatrue .switch.on, .switch.on {
+    background: #f73859 !important;
     color: #fff;
 }
-.temporizadatrue .switch:after {
-    content:"";
-}
-
 .switch {
     width: 141px !important;
     height: 47px !important;
@@ -687,14 +684,22 @@ div.switchContainer * {
 .switch:after {
     position: absolute;
     top: 14px;
-    left: 38px;
-    content: "Apagada";
+    left: 38px !important;
+    font-size: 1em !important;
+    content: "Apagada" !important;
 }
 .switch.on:after {
-    content: "Encendida";
+    content: "Encendida" !important;
     color: #fff;
-    left: -12px;
+    left: -12px !important;
 }
+.temporizadatrue .switch.on span {
+    display: block !important;
+}
+.temporizadatrue .switch.on:after {
+    content: "" !important;
+}
+
 .switch-toggle {
     width: 44px !important;
     height: 45px !important;

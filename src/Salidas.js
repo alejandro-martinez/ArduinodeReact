@@ -18,8 +18,8 @@ export class Toggle extends React.Component {
     return (
 		<div className={ 'switchContainer temporizada' + estaTemporizada}
 			onClick={ this.props.onSwitch.bind(this, this.props.model) }>
-			<span> { Utils.min_a_horario(this.props.model.temporizada) } </span>
 			<Switch model={ this.props.model } on={ this.props.on }>
+				<span> { Utils.min_a_horario(this.props.model.temporizada) } </span>
 			</Switch>
 		</div>
     );
@@ -70,17 +70,20 @@ class Luz extends Component {
 		
 		// Si se seteó temporizacion
 		if ( temporizacion != 0 ) {
+			
 			// Si la temporizacion es distinta a la temporizacion actual de la salida
 			if (temporizacion != salida.temporizada) {
-				salida.temporizada =  this.root.state.temporizacion;
-				salida.estado = 0;	
-				Socket.emit('switchSalida', salida );			
+				
+				salida.temporizada = this.root.state.temporizacion;
+				salida.estado = 0;
+				this.forceUpdate();
+				Socket.emit('switchSalida', salida );
 			}
 		}
 		else {
 			salida.estado = (salida.estado === 0) ? 1 : 0;
 			salida.temporizada = 0;
-			Socket.emit('switchSalida', salida );
+			Socket.emit('switchSalida', salida );			
 		}		
 	}
 	render() {
