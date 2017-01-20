@@ -650,13 +650,14 @@ div.switchContainer * {
     -o-transition: color 0 ease-in;
     transition: none;
 }
-.switchContainer span {
+.switchMainContainer span {
     position: absolute;
-    color: #fff;
+    color: #384259;
     z-index: 1;
     width: 49px;
-    left: 8px;
-    top: 5px;
+    font-weight: bold;
+    left: 13px;
+    top: 58px;
     text-align: left;
 }
 .temporizadafalse span,.temporizadanull span,
@@ -665,13 +666,19 @@ div.switchContainer * {
 .adminfalse .onlyAdmin {
     display: none;
 }
-
 .temporizadatrue .switch:after, 
 .temporizadatrue span {
-    top:12px;
-    left:-83px;
+    position: absolute;
+    top:12px !important;
+    left:-83px !important;
     font-size:1.1em;
+    color: #fff;
 }
+
+.temporizadatrue .switch:after {
+    color:#384259 !important;
+}
+
 .temporizadatrue .switch.on, .switch.on {
     background: #f73859 !important;
     color: #fff;
@@ -680,6 +687,8 @@ div.switchContainer * {
     width: 141px !important;
     height: 47px !important;
     border-radius: 35px !important;
+    background: #fff !important;
+    color: #384259 !important;
 }
 .switch:after {
     position: absolute;
@@ -691,7 +700,7 @@ div.switchContainer * {
 .switch.on:after {
     content: "Encendida" !important;
     color: #fff;
-    left: -12px !important;
+    left:-12px !important;
 }
 .temporizadatrue .switch.on span {
     display: block !important;
@@ -706,9 +715,11 @@ div.switchContainer * {
     border-radius: 36px !important;
 }
 .switch.on .switch-toggle {
-    left: 95px !important;
+    left: 97px !important;
 }
-
+.temporizadatrue .switch:after {
+    left:38px !important;
+}
 @media screen and (max-width: 500px) {
 
     table.salidas td input {
@@ -718,6 +729,7 @@ div.switchContainer * {
         margin-top:-6px !important;
     }
 }
+
 /* TAREAS */
 table.tareas ul li.iconReloj a {
     position: relative;
