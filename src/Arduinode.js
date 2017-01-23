@@ -10,6 +10,7 @@ import { Luz, SalidasDispositivo, SalidasActivas } from './Salidas';
 import { Tareas, TareaDispositivos, Subtareas } from './Tareas';
 import { Configuracion, Ajustes } from './Configuracion';
 import { Zonas, ZonasDispositivos } from './Zonas';
+var audio = {};
 
 var menu = [
 	{
@@ -210,23 +211,21 @@ class Home extends Component {
 
 class Voice {
 	static listen( callback ) {
+		audio = require('simple-audio');
 
 		var webkitSpeechRecognition = window.webkitSpeechRecognition || {};
 		if ( window.hasOwnProperty('webkitSpeechRecognition') ) {
 			var recognition = new webkitSpeechRecognition();
-			recognition.abort();
-			var noVoiceHandler = null;
 			recognition.lang = "es-ES";
-
-			noVoiceHandler = setTimeout(function() {
-				recognition.abort();
-				callback();
-			},2000);
 
 			recognition.onspeechstart = function() {
 				Utils.fireEvent("speaking");
-				clearTimeout( noVoiceHandler );
 			}
+					
+			recognition.onend = function() {
+				Voice.speak("noSeReconoceElComando");
+				callback();
+			};
 			
 			recognition.onresult = function(event) {
 				recognition.onend = null;
@@ -241,15 +240,8 @@ class Voice {
 			recognition.start();
 		}
 	}
-	static speak(text, callback = function(){}) {
-	    var u = new SpeechSynthesisUtterance();
-	    speechSynthesis.cancel();
-	    u.text = text;
-	    u.lang = 'es-ES';
-	    u.onend = callback;
-	    u.onerror = callback;
-	 
-	    speechSynthesis.speak(u);
+	static speak( source ) {
+		audio.playSound( source );
 	}
 	static getComando( comando ) {
 		comando = comando.toLowerCase();
@@ -351,7 +343,7 @@ class Arduinode extends Component {
 		this.Dispositivo = new Dispositivo();
 		this.Tarea = new Tarea();
 		this.Zona = new Zona();
-
+		this.voiceMsgs = ["noSePudoRealizarLaAccion","noSeReconoceElComando"];
 		Socket.listen('configUpdated', ( config ) => {
 			this.setState({ config: config, edit: false });
     	});
@@ -379,7 +371,7 @@ class Arduinode extends Component {
     	});
 
     	Socket.listen('failed', () => {
-    		Voice.speak("No se pudo realizar la acción", function () {});
+    		Voice.speak("noSePudoRealizarLaAccion");
     	});
 	}
 	componentDidMount() {
@@ -416,17 +408,11 @@ class Arduinode extends Component {
 		this.setState({ listeningVoice: true, voiceCommand: "" });
 
 		Voice.listen(( comando ) => {
-			if (comando) {
+			if ( comando ) {
 				this.setState({ voiceCommand: comando });
 
 				// Devuelve el comando formateado
 				var comando = Voice.getComando( comando );
-				
-				var This = this;
-				
-				setTimeout(()=>{
-					This.setState({ listeningVoice: false, voiceCommand: "" });
-				}, 1000);
 
 				switch( comando.salida ) {
 					case "todo":
@@ -440,11 +426,9 @@ class Arduinode extends Component {
 						break;
 				}
 			}
-			else {
-				this.setState({ listeningVoice: false }, function() {
-					Voice.speak("No escuché nada");	
-				});
-			}
+			setTimeout(()=>{
+				this.setState({ listeningVoice: false });
+			}, 1000);
 		});
 	}
 	getEstadoSalida( _salida ) {
@@ -452,7 +436,7 @@ class Arduinode extends Component {
 		var salida =  disp.salidas.filter(( s) => {
 			return s.nro == _salida.nro;
 		});
-		return salida[0].estado;
+		return salida[0].estado || 1;
 	}
 	updateEstadosZonas() {
 		if (this.state.zonas.length) {
@@ -517,6 +501,12 @@ class Arduinode extends Component {
 					</Router>
 				</div>
 				<Footer root={This} class={"show" + !this.state.listeningVoice}></Footer>
+				<audio className="noSeReconoceElComando">
+					<source src="sounds/noSeReconoceElComando.mp3"></source>
+				</audio>
+				<audio className="noSePudoRealizarLaAccion">
+					<source src="sounds/noSePudoRealizarLaAccion.mp3"></source>
+				</audio>
 	  		</div>
 		);
 	}

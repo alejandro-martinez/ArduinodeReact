@@ -98,3 +98,14 @@ export class ListaLinks extends Component {
 		return ( <ul className={"menuList admin" + this.props.root.state.adminMode}> {items} </ul> );
 	}
 };
+
+
+export function AudioElement(props) {
+	return (
+		<audio className={ props.source }>
+			<source src={"sounds/"+ props.source + ".mp3"}></source>
+			<source src={"sounds/"+ props.source + ".wav"}></source>
+			<source src={"sounds/"+ props.source + ".ogg"}></source>
+		</audio>
+	);
+}
