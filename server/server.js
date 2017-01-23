@@ -4,7 +4,7 @@ var serverConf = {}, configPath = './config/config.json';
 // Busca o crea el archivo de config
 
 if ( !fs.existsSync( configPath )) {
-	var config = '{"ip":"localhost","broadcastTimeout": 3000, port":9999,"claveApp":"9","tiempoEscaneoTareas":300000, "socketTimeout":500}';
+	var config = '{"ip":"localhost","broadcastTimeout": 3000, "port":9999,"claveApp":"9","tiempoEscaneoTareas":300000, "socketTimeout":500, "msjsLog": {"tareas": true,"dispositivos": true,"errores": true,"eventos": true}}';
 	fs.writeFileSync( configPath, config );
 }
 
@@ -32,10 +32,10 @@ http.listen( serverConf.port, serverConf.ip, () => {
 
 	var waitingBroadcast = false;
 
-	log("Server iniciado en: " + serverConf.ip + ":" + serverConf.port);
+	log(3, "Server iniciado en: " + serverConf.ip + ":" + serverConf.port);
 
 	// Captura excepciones para no detener el servidor 
-	process.on('uncaughtException', (err) => log("Ocurrió un error:" + err));
+	process.on('uncaughtException', (err) => log(2, "Ocurrió un error:" + err));
 
 	// Registra middleware para capturar requests de SocketIO 
 	io.use( middleware );
@@ -131,6 +131,7 @@ http.listen( serverConf.port, serverConf.ip, () => {
 				});
 
 			},() => {
+				log(3,"Se ejecutó la acción apagar todo");
 				Arduinode.broadcastDB();
 			});
 		});
@@ -138,8 +139,9 @@ http.listen( serverConf.port, serverConf.ip, () => {
 		// Accion sobre una zona
 		sCliente.on('switchZona',( params ) => {
 			var failed = false;
+			var voiceCommand = (params.hasOwnProperty('orden'));
 			var getZona = function() {
-				if (params.hasOwnProperty('orden')) {
+				if ( voiceCommand ) {
 					var found = DataStore.zonas.filter((z,k, _this) => {
 						if (z.descripcion.toLowerCase() == params.dispositivo) {
 							return _this[k];
@@ -150,6 +152,7 @@ http.listen( serverConf.port, serverConf.ip, () => {
 						zona.estado = (params.orden == 'prender') ? 0 : 1;						
 					}
 					else {
+						log(3, "No se pudo realizar la accion: " + params.orden + " " + params.dispositivo);
 						sCliente.emit('failed');
 					}
 
@@ -176,6 +179,7 @@ http.listen( serverConf.port, serverConf.ip, () => {
 						});
 					}
 				},() => {
+					log(3, "Se ejecutó la acción: " + params.orden + " " + params.dispositivo);
 					Arduinode.broadcastDB();
 				});
 			}
@@ -183,7 +187,8 @@ http.listen( serverConf.port, serverConf.ip, () => {
 
 		// Accion sobre una salida (Persiana, Luz, Bomba)
 		sCliente.on('switchSalida',( params ) => {
-			if (params.hasOwnProperty('orden')) {
+			var voiceCommand = (params.hasOwnProperty('orden'));
+			if ( voiceCommand ) {
 				
 				var salida = Arduinode.getSalidaByDescripcion( params.salida );
 				if ( salida ) {
@@ -195,7 +200,12 @@ http.listen( serverConf.port, serverConf.ip, () => {
 					sCliente.emit('failed');
 				}
 			}
-			Arduinode.switchSalida( params, function(){});
+
+			Arduinode.switchSalida( params, function(){
+				if ( voiceCommand ) {
+					log(3, "Se ejecutó la acción: " + params.orden + " " + params.dispositivo);
+				}
+			});
 		
 		});	
 

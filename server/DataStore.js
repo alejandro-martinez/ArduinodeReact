@@ -70,12 +70,12 @@ function DataStore() {
 			
 			fs.writeFileSync(filename + '.json', JSON.stringify(data, null, 2),'utf8', { spaces: 2 });
 
-			log("Se actualizó el archivo de  " + filename);
+			log(3, "Se actualizó el archivo de  " + filename);
 
 			return true;
 		}
 		else {
-			log("No se pudo actualizar el archivo de " + filename, ". data No es un array");
+			log(2, "No se pudo actualizar el archivo de " + filename, ". data No es un array");
 		}
 		return false;
 	};

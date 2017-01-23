@@ -96,7 +96,7 @@ const Programador = class {
 		return this;
 	}
 	watchChanges() {
-		log("Observando las tareas cada " +
+		log(0, "Observando las tareas cada " +
 					parseInt((this.config.tiempoEscaneoTareas / 1000) / 60) +
 					" minutos ...");
 		this.watcher = setInterval( this.refreshScheduler, this.config.tiempoEscaneoTareas );
@@ -138,7 +138,7 @@ const Programador = class {
 */
 	forceExecute( subtarea ) {
 		var onTask = (subtarea.tarea.accion == 0);
-		log("Chequeando tarea: " + subtarea.tarea.descripcion);
+		log(0, "Chequeando tarea: " + subtarea.tarea.descripcion);
 		
 		// Se forza la ejecucion solo si es una tarea de encendido
 		if ( onTask && subtarea.isValid()) {
@@ -149,7 +149,7 @@ const Programador = class {
 		}
 		else {
 			this.registerRunningTasks( subtarea.tarea.id, false);
-			log("La tarea no" + ((onTask) ? " es válida" : " se debe ejecutar"));
+			log(0, "La tarea no" + ((onTask) ? " es válida" : " se debe ejecutar"));
 		}
 	}
 	createJob( subtarea ) {
@@ -159,7 +159,7 @@ const Programador = class {
 		if ( subtarea.reglasEjecucion ) {
 			var job = schedule.scheduleJob( subtarea.reglasEjecucion,() => { 
 				if ( subtarea.isValid() ) {
-					log("Ejecutando tarea" + subtarea.tarea.descripcion);
+					log(0, "Ejecutando tarea" + subtarea.tarea.descripcion);
 					this.execute( subtarea );	
 				}				
 			});
@@ -175,7 +175,7 @@ const Programador = class {
 */	
 	loadScheduler( reloadJobs ) {
 		this.tareas = [];
-		log("- Leyendo archivo de tareas");
+		log(0, "- Leyendo archivo de tareas");
 		var db = DataStore.getFile('tareas');
 
 		for (var _tarea in db) {
@@ -196,7 +196,7 @@ const Programador = class {
 				tarea.subtareas.map( this.createJob );
 			}
 		}
-		log("--- " + this.tareas.length + " tareas cargadas");
+		log(0, "--- " + this.tareas.length + " tareas cargadas");
 		return this;
 	};
 }

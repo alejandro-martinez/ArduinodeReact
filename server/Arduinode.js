@@ -84,7 +84,7 @@ Arduinode = {
 					var salidasUpdated = This.updateEstadoSalidas( This.data.slice(0,-1).split("+-") );
 					
 					salidasUpdated.forEach((s) => {
-						log(This.ip + " - Evento externo: Se " + ((s.estado === 0) ? 'prendió ' : 'apagó ') + s.descripcion);
+						log(1, This.ip + " - Evento externo: Se " + ((s.estado === 0) ? 'prendió ' : 'apagó ') + s.descripcion);
 					});
 
 					This.broadcastDB();
@@ -92,7 +92,7 @@ Arduinode = {
 			});
 				
 			this.socketTCP.listen({ host: conf.ip, port: 8889 }, function() {
-				log('Socket escuchando eventos en: '+ conf.ip  + ":" + "8889");
+				log(1,'Socket escuchando eventos en: '+ conf.ip  + ":" + "8889");
 			});
 		}
 	},

@@ -72,7 +72,7 @@ class Dispositivo {
 								response = parseInt( response.replace(/(?:\r\n|\r|\n)/g, ''));
 								salida.estado = response;
 								salida.temporizada = params.temporizada;
-								log("Se " + ((response) ? "apagó" : "prendió") + " " + salida.descripcion + " - " + params_aux.ip);
+								log(3, "Se " + ((response) ? "apagó" : "prendió") + " " + salida.descripcion + " - " + params_aux.ip);
 							}
 							callback( response);
 						});
@@ -80,13 +80,13 @@ class Dispositivo {
 					else {
 						salida.estado = parseInt( estadoActual.substr(0,1) );
 						salida.temporizada = parseInt( estadoActual.slice(2) );
-						log(salida.descripcion + " ya tiene el estado: " + estadoDeseado.trim());
+						log(1, salida.descripcion + " ya tiene el estado: " + estadoDeseado.trim());
 						callback( -1 );
 					}
 				}
 				else {
 					this.offline = true;
-					log("No se pudo conectar con: " + params.ip);
+					log(2, "No se pudo conectar con: " + params.ip);
 					callback();
 				}
 			});
