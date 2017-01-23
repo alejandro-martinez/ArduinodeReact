@@ -433,10 +433,12 @@ class Arduinode extends Component {
 	}
 	getEstadoSalida( _salida ) {
 		var disp = this.getDispositivoByIP( _salida.ip );
-		var salida =  disp.salidas.filter(( s) => {
-			return s.nro == _salida.nro;
-		});
-		return salida[0].estado || 1;
+		if (!disp.offline) {
+			var salida =  disp.salidas.filter(( s) => {
+				return s.nro == _salida.nro;
+			});
+			return (typeof salida !== 'undefined')	? salida[0].estado : 1;
+		}
 	}
 	updateEstadosZonas() {
 		if (this.state.zonas.length) {
@@ -451,7 +453,6 @@ class Arduinode extends Component {
 				});
 				_this[k].estado = (encendidas === z.dispositivos.length) ? 0 : 1;
 			});
-			this.forceUpdate();
 		}
 	}
 	getDispositivoByIP( ip ) {

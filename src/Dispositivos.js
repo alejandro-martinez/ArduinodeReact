@@ -131,6 +131,7 @@ export class Dispositivos extends Component {
 		});
 	}
 	tieneLucesEncendidas( dispositivo ) {
+		if (dispositivo.offline) return 0;
 		return this.props.route.root.getSalidasActivas( dispositivo ).length;
 	}
 	onRemove(item, e) {
