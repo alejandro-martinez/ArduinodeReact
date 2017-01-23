@@ -116,11 +116,16 @@ http.listen( serverConf.port, serverConf.ip, () => {
 			}
 			Arrays.asyncLoop( Arduinode.dispositivos, ( dispositivo, report ) => {
 				Arrays.asyncLoop(dispositivo.salidas, ( salida, _report) => {
-					salida.estado = 1;
-					salida.temporizada = 0;
-					Arduinode.switchSalida( salida, function(){
+					if ( salida.estado == 0 ) {
+						salida.estado = 1;
+						salida.temporizada = 0;
+						Arduinode.switchSalida( salida, function(){
+							_report();
+						});
+					}
+					else {
 						_report();
-					});
+					}
 				}, () => {
 					report();
 				});

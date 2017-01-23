@@ -6,6 +6,18 @@ module.exports = function()
 		getTime: function() {
 			return new Date().toString().slice(16,21);
 		},
+		getDate: function() {
+			var date = new Date();
+			var myDate;
+
+			date.setDate(date.getDate() + 20);
+
+			myDate = ('0' + date.getDate()).slice(-2) + '/' 
+				   + ('0' + (date.getMonth()+1)).slice(-2) 
+				   + '/' + date.getFullYear();
+
+			return myDate;
+		},
 		//Recibe 15, devuelve 00:15
 		min_a_horario: function(min)
 		{
