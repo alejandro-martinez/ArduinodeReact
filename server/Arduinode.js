@@ -111,7 +111,7 @@ Arduinode = {
 		if ( this.io.hasOwnProperty('sockets') ) {
 			pause = setTimeout(() => {
 				this.io.sockets.emit('DBDispositivosUpdated', db || this.dispositivos);
-			}, 1500);
+			}, serverConfig.broadcastTimeout);
 		}
 	},
 	getSalidaByDescripcion: function( descripcion ) { 
