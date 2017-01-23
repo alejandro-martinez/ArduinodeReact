@@ -74,6 +74,11 @@ class Subtarea extends Tarea {
 			if ( this.isHorarioValido() ) {
 				if ( this.getTiempoRestante() > 0 ) return this.getTiempoRestante();
 			}
+			else {
+				log(0, "Horario inválido");
+			}
+		} else {
+			log(0, (this.tarea.activa) ? "Fecha inválida" : "Tarea inactiva");
 		}
 		return false;
 	};
