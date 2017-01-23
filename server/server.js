@@ -109,10 +109,11 @@ http.listen( serverConf.port, serverConf.ip, () => {
 		});
 
 		sCliente.on('apagarTodo', (params) => {
+			log(3,"Se ejecuta la acción apagar todo");
+
 			var action = function( _salida, cb ) {
 				_salida.estado = 1;
 				_salida.temporizada = 0;
-				
 			}
 			Arrays.asyncLoop( Arduinode.dispositivos, ( dispositivo, report ) => {
 				Arrays.asyncLoop(dispositivo.salidas, ( salida, _report) => {
@@ -131,7 +132,6 @@ http.listen( serverConf.port, serverConf.ip, () => {
 				});
 
 			},() => {
-				log(3,"Se ejecutó la acción apagar todo");
 				Arduinode.broadcastDB();
 			});
 		});
@@ -142,6 +142,8 @@ http.listen( serverConf.port, serverConf.ip, () => {
 			var voiceCommand = (params.hasOwnProperty('orden'));
 			var getZona = function() {
 				if ( voiceCommand ) {
+					log(3, "Se ejecuta la acción: " + params.orden + " " + params.dispositivo);
+
 					var found = DataStore.zonas.filter((z,k, _this) => {
 						if (z.descripcion.toLowerCase() == params.dispositivo) {
 							return _this[k];
@@ -163,6 +165,7 @@ http.listen( serverConf.port, serverConf.ip, () => {
 			
 			var zona = getZona();
 			if (zona ) {
+
 				Arrays.asyncLoop( zona.dispositivos, ( salida, report ) => {
 
 					if (salida) {
@@ -179,7 +182,6 @@ http.listen( serverConf.port, serverConf.ip, () => {
 						});
 					}
 				},() => {
-					log(3, "Se ejecutó la acción: " + params.orden + " " + params.dispositivo);
 					Arduinode.broadcastDB();
 				});
 			}
@@ -187,6 +189,7 @@ http.listen( serverConf.port, serverConf.ip, () => {
 
 		// Accion sobre una salida (Persiana, Luz, Bomba)
 		sCliente.on('switchSalida',( params ) => {
+			log(3, "Se ejecutó la acción: " + params.orden + " " + params.dispositivo);
 			var voiceCommand = (params.hasOwnProperty('orden'));
 			if ( voiceCommand ) {
 				
@@ -201,11 +204,7 @@ http.listen( serverConf.port, serverConf.ip, () => {
 				}
 			}
 
-			Arduinode.switchSalida( params, function(){
-				if ( voiceCommand ) {
-					log(3, "Se ejecutó la acción: " + params.orden + " " + params.dispositivo);
-				}
-			});
+			Arduinode.switchSalida( params, function(){});
 		
 		});	
 
