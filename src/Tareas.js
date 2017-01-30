@@ -85,16 +85,35 @@ export class Tareas extends Component {
 export class Subtareas extends Tareas {
 	constructor( props ) {
 		super( props );
-		['onRemove','onChange','onAddNew'].forEach((m)=>{
+		['onRemove','onSetDiasEjecucion','onChange','onAddNew'].forEach((m)=>{
 			this[m] = this[m].bind( this );
 		});
 		this.tarea = [];
+		this.diasSemana = ['Domingo','Lunes', 'Martes', 'Miercoles', 'Jueves','Viernes','Sabado'];
 	}
 	getCurrentTarea() {
 		this.tarea = this.props.route.root.state.tareas.filter((t) => {
 			return this.props.routeParams.id == t.id;
 		});
 		return this.tarea[0];
+	}
+
+   // Control de checkbox de selección de dias de ejecución
+	onSetDiasEjecucion( key, subtarea, event ) {
+		if ( this.props.route.root.state.adminMode ) {
+			var valid = true;
+
+			key = String( key );
+
+			var dias = subtarea.diasejecucion.split(","),
+				idx = dias.indexOf( key );
+			
+			(idx > -1) ? dias.splice( idx, 1 ) : dias.push( key );
+			
+			subtarea.diasejecucion = dias.join(",");
+			valid = ( subtarea.diasejecucion.length > 0);
+			this.props.route.root.setState({ edit: valid, listenBroadcastUpdate: !valid });
+		}
 	}
 	onAddNew() {
 		this.newModel = Tarea.newSubtareaModel( this.getCurrentTarea().subtareas);
@@ -120,59 +139,80 @@ export class Subtareas extends Tareas {
 	}
 	generateRow( item ) {
 		
-		var diasSemana = Utils.getDiasSemana();
-		var meses = Utils.getMeses();
-		return ( 
-			<form onChange={this.validForm}>
-			<HTML.Table class="subtareas" key={ item.id }>
-				<tr className="col3">
-					<td>Inicio: <input type="date" 
-						   onChange={ this.onChange.bind(this, item) } 
-						   name="fechainicio" 
-						   required
-						   disabled={ !this.props.route.root.state.adminMode }
-						   value={ item.fechainicio } />
-					</td>
-					<td className={"iconDELETE show" + this.props.route.root.state.adminMode}>
-						<a onClick={ this.onRemove }></a>
-					</td>
-					<td>Fin: <input type="date"
-						   name="fechafin" 
-						   required
-						   disabled={ !this.props.route.root.state.adminMode }
-						   onChange={ this.onChange.bind(this, item) } 
-						   value={ item.fechafin } /></td>
-				</tr>
-				<tr className="col3 titulos">
-					<td>Inicio
-						<input type="time"
-						   name="horainicio"
-						   required
-						   disabled={ !this.props.route.root.state.adminMode }
-						   onChange={ this.onChange.bind(this, item) } 
-						   value={ item.horainicio } />
-					</td>
-					<td className={"middle show"+ (this.getCurrentTarea().accion === 0)}>
-						Duración
-						<input type="time"
-						   name="duracion"
-						   disabled={ !this.props.route.root.state.adminMode }
-						   required={ this.getCurrentTarea().accion == 0}
-						   onChange={ this.onChange.bind(this, item) } 
-						   value={ item.duracion } />
-					</td>
-					<td className={"show"+ (this.getCurrentTarea().accion === 0)}>Fin
-						<input type="time"
-						   name="horafin"
-						   disabled={ !this.props.route.root.state.adminMode }
-						   onChange={ this.onChange.bind(this, item) } 
-						   readOnly
-						   value={ item.horafin } />
-					</td>
-				</tr>
-			</HTML.Table>
-			</form>
-		);
+		if ( item ) {
+			var diasSemana = Utils.getDiasSemana();
+
+			var DiasSemana = diasSemana.map(( dia, key ) => {
+				return ( 
+					<label>	{ dia.slice(0, 2) }
+						<input
+							type="checkbox"
+							value="{ key }"
+							required
+							checked={ item.diasejecucion.split(",").indexOf( String(key)) > -1 }
+							onClick={ this.onSetDiasEjecucion.bind(this, key, item ) } 
+						/>
+					</label>
+				);
+			}, this);
+			var meses = Utils.getMeses();
+			return ( 
+				<form onChange={this.validForm}>
+				<HTML.Table class="subtareas" key={ item.id }>
+					<tr className="col3">
+						<td>Inicio: <input type="date" 
+							   onChange={ this.onChange.bind(this, item) } 
+							   name="fechainicio" 
+							   required
+							   disabled={ !this.props.route.root.state.adminMode }
+							   value={ item.fechainicio } />
+						</td>
+						<td className={"iconDELETE show" + this.props.route.root.state.adminMode}>
+							<a onClick={ this.onRemove }></a>
+						</td>
+						<td>Fin: <input type="date"
+							   name="fechafin" 
+							   required
+							   disabled={ !this.props.route.root.state.adminMode }
+							   onChange={ this.onChange.bind(this, item) } 
+							   value={ item.fechafin } /></td>
+					</tr>
+					<tr className="col3 titulos">
+						<td>Inicio
+							<input type="time"
+							   name="horainicio"
+							   required
+							   disabled={ !this.props.route.root.state.adminMode }
+							   onChange={ this.onChange.bind(this, item) } 
+							   value={ item.horainicio } />
+						</td>
+						<td className={"middle show"+ (this.getCurrentTarea().accion === 0)}>
+							Duración
+							<input type="time"
+							   name="duracion"
+							   disabled={ !this.props.route.root.state.adminMode }
+							   required={ this.getCurrentTarea().accion == 0}
+							   onChange={ this.onChange.bind(this, item) } 
+							   value={ item.duracion } />
+						</td>
+						<td className={"show"+ (this.getCurrentTarea().accion === 0)}>Fin
+							<input type="time"
+							   name="horafin"
+							   disabled={ !this.props.route.root.state.adminMode }
+							   onChange={ this.onChange.bind(this, item) } 
+							   readOnly
+							   value={ item.horafin } />
+						</td>
+					</tr>
+					<tr>
+						<div className="diasEjecucion">
+							{ DiasSemana }
+						</div>
+					</tr>
+				</HTML.Table>
+				</form>
+			);
+		}
 	}
 	validForm( form ) {
 		return (form.target.value.length >= 5);
@@ -182,7 +222,9 @@ export class Subtareas extends Tareas {
 		if (this.getCurrentTarea().accion === 0) {
 			item.horafin = Utils.sumarHoras( item.horainicio, item.duracion);
 		}
-		this.props.route.root.setState({ edit: true, listenBroadcastUpdate: false });
+		if ( item.diasejecucion.length > 0) {
+			this.props.route.root.setState({ edit: true, listenBroadcastUpdate: false });
+		}
 	}
 	render() {
 		if (this.getCurrentTarea()) {
