@@ -101,10 +101,12 @@ const Programador = class {
 		return this;
 	}
 	watchChanges() {
+		var retardo = this.config.intervaloEscaneoTareas * 1000 * 60;
+
 		log(0, "Observando las tareas cada " +
-					parseInt((this.config.tiempoEscaneoTareas / 1000) / 60) +
+					this.config.intervaloEscaneoTareas +
 					" minutos ...");
-		this.watcher = setInterval( this.refreshScheduler, this.config.tiempoEscaneoTareas );
+		this.watcher = setInterval( this.refreshScheduler, retardo );
 	}
 	refreshScheduler() {
 		this.tareas.forEach( tarea => { tarea.subtareas.map( this.forceExecute ) });

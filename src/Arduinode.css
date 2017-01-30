@@ -851,14 +851,14 @@ table.zonas tr td:last-child li.iconSWITCH {
     display:block;
     margin-bottom:10px;
 }
+.ajustes label a {
+    padding: 1.5em 1.5em 1.5em 0;
+}
 .container .ajustes label input {
     display:block;
 }
 .ajustes {
     padding:0 10px;
-}
-.ajustes label {
-    font-weight:100;
 }
 .ajustes label td{
     padding:10px 0;

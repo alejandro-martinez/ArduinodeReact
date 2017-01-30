@@ -4,7 +4,7 @@ var serverConf = {}, configPath = './config/config.json';
 // Busca o crea el archivo de config
 
 if ( !fs.existsSync( configPath )) {
-	var config = '{"ip":"localhost","broadcastTimeout": 3000, "port":9999,"claveApp":"9","tiempoEscaneoTareas":300000, "socketTimeout":500, "msjsLog": {"tareas": true,"dispositivos": true,"errores": true,"eventos": true}}';
+	var config = '{"ip":"localhost","broadcastTimeout": 3, "port":9999,"claveApp":"9","intervaloEscaneoTareas":5,"retardoCargaTareas":1, "socketTimeout":500, "msjsLog": {"tareas": true,"dispositivos": true,"errores": true,"eventos": true}}';
 	fs.writeFileSync( configPath, config );
 }
 
@@ -231,5 +231,5 @@ http.listen( serverConf.port, serverConf.ip, () => {
 		// Servicio que vigila la ejecución de tareas en caso de falla
 		taskManager.loadScheduler( true ).watchChanges();
 
-	}, serverConf.tiempoEsperaEscaneoTareas || 100);
+	}, (parseInt(serverConf.retardoCargaTareas) * 1000 * 60) || 60000);
 });

@@ -54,10 +54,24 @@ export class Ajustes extends Component {
 									 model={ this.props.route.root.state.config }>
 							</HTML.EditRow>
 						</label>
-						<label> Retardo inicial de escaneo de tareas (ms)
+						<label> Timeout de broadcast a clientes conectados (s)
 							<HTML.EditRow edit={ this.state.edit }
 									 root={ this.props.route.root }
-									 inputKey='tiempoEscaneoTareas'
+									 inputKey='broadcastTimeout'
+									 model={ this.props.route.root.state.config }>
+							</HTML.EditRow>
+						</label>
+						<label> Retardo inicial de carga de tareas (min)
+							<HTML.EditRow edit={ this.state.edit }
+									 root={ this.props.route.root }
+									 inputKey='retardoCargaDeTareas'
+									 model={ this.props.route.root.state.config }>
+							</HTML.EditRow>
+						</label>
+						<label> Intervalo de escaneo de tareas (min)
+							<HTML.EditRow edit={ this.state.edit }
+									 root={ this.props.route.root }
+									 inputKey='intervaloEscaneoTareas'
 									 model={ this.props.route.root.state.config }>
 							</HTML.EditRow>
 						</label>
