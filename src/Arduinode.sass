@@ -34,7 +34,7 @@ a
 
 h1 
     font-size: 1em
-    color: #fff
+    color: $font-color
 
 input[type=date], 
 input[type=time]
@@ -71,6 +71,7 @@ header
         position: absolute
         top: 0        
         left: 0
+        color: #fff
     text-align: left
     top: 0
     left: 0
@@ -138,6 +139,11 @@ header
         color: #fff
         right: 18px
         top: 18px
+
+    input[type='time']
+        background: none
+        color: #fff
+        font-weight: bold
 
     .listIcons
         float: left
@@ -240,6 +246,7 @@ table.salidas
         td 
             a 
                 padding-top: 12px
+                font-size: .9em
 
     .temporizadatrue 
         span
