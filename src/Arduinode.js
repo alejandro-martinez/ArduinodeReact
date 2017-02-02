@@ -31,7 +31,8 @@ var menu = [
 	},
 	{
 		"text": "Configuración",
-		"url": "/Configuracion"
+		"url": "/Configuracion",
+		"onlyAdmin": true
 	}
 ];
 
@@ -205,7 +206,15 @@ class Home extends Component {
 		});
 	}
 	render() { 
-		return ( <HTML.ListaLinks root={ this.props.route.root } items={ this.props.route.root.state.menu } /> ); 
+		var linksHabilitados = this.props.route.root.state.menu.filter( ( link ) => {
+			if ( this.props.route.root.state.adminMode ) {
+				return link;
+			}
+			else {
+				return !link.hasOwnProperty('onlyAdmin');
+			}			
+		});
+		return ( <HTML.ListaLinks root={ this.props.route.root } items={ linksHabilitados } /> ); 
 	}
 }
 
@@ -293,18 +302,18 @@ class Footer extends Component {
 					<li className={ 'show' + showAddIcon}>
 						<a onClick={ this.onAddNew } className='iconMAS'></a>
 					</li>
-					<li className={'iconReloj show' + this.props.root.state.showTimerIcon}>
+					<li className={'Reloj show' + this.props.root.state.showTimerIcon}>
 						<input type="time" onChange={ this.onTemporizacion } 
 									   value={ this.props.root.state.temporizacion } />
 					</li>
-					<li className={"iconMICROFONO show" + !this.props.root.state.adminMode}>
-						<a onClick={ this.props.root.onVoiceCommand }>🎤</a>
-					</li>
-					<li className={'iconDELETE show' + (this.props.root.state.temporizacion != '00:00')}>
+					<li className={'Delete show' + (this.props.root.state.temporizacion != '00:00')}>
 						<a onClick={ this.onTimerReset }></a>
 					</li>
+					<li className={"Microfono show" + !this.props.root.state.adminMode}>
+						<a onClick={ this.props.root.onVoiceCommand }>🎤</a>
+					</li>
 					<li className={'show' + (this.props.root.state.edit && this.props.root.state.adminMode)}>
-						<a onClick={ this.onUpdate } className='iconOK'></a>
+						<a onClick={ this.onUpdate } className='OK'></a>
 					</li>
 				</ul>
 				<h3>{ this.state.horaServidor }</h3>

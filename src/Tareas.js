@@ -66,11 +66,11 @@ export class Tareas extends Component {
 							   model={ item } />
 				<tr>
 					<ul className="listIcons">
-						<li className="iconDispositivos"><Link to={'Tareas/' + item.id + '/dispositivos'}>&#9854;</Link></li>
-						<li className="iconReloj"><Link to={'Tareas/subtareas/' + item.id}></Link></li>
-						<li className="onlyAdmin iconDELETE"><Link onClick={ this.onRemove.bind(this,item) }></Link></li>
-						<li className={'onlyAdmin iconACTIVA' + item.activa }><Link onClick={ this.onSetActiva.bind(this, item) }></Link></li>
-						<li className={'onlyAdmin iconLAMP' + item.accion}><Link onClick={ this.onSetAccion.bind(this, item) }></Link></li>
+						<li className="Dispositivos"><Link to={'Tareas/' + item.id + '/dispositivos'}>&#9854;</Link></li>
+						<li className="Reloj"><Link to={'Tareas/subtareas/' + item.id}></Link></li>
+						<li className="onlyAdmin DELETE"><Link onClick={ this.onRemove.bind(this,item) }></Link></li>
+						<li className={'onlyAdmin ACTIVA' + item.activa }><Link onClick={ this.onSetActiva.bind(this, item) }></Link></li>
+						<li className={'onlyAdmin LAMP' + item.accion}><Link onClick={ this.onSetAccion.bind(this, item) }></Link></li>
 					</ul>
 				</tr>
 			</HTML.EditContainer>
@@ -167,7 +167,7 @@ export class Subtareas extends Tareas {
 							   disabled={ !this.props.route.root.state.adminMode }
 							   value={ item.fechainicio } />
 						</td>
-						<td className={"iconDELETE show" + this.props.route.root.state.adminMode}>
+						<td className={"DELETE show" + this.props.route.root.state.adminMode}>
 							<a onClick={ this.onRemove }></a>
 						</td>
 						<td>Fin: <input type="date"

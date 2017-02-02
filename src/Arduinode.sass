@@ -1,0 +1,241 @@
+/* Colores admin */
+$guest-color:    #F73859
+$admin-color:   #24695f
+$font-color:    #384259
+
+@import _reset.sass
+
+/* General */
+
+.showfalse
+    display: none !important
+
+html
+    height: 100%
+
+body
+    line-height: 1
+    font-family: Arial
+    overflow-x: hidden
+    padding: 27px 0 !important
+    font-size: 18px
+    width: 100%
+    color: $font-color
+    background: #fff
+    margin: 0 auto
+
+a
+    display: inline-block
+    color: #fff
+    font-size: 1.3em
+    text-decoration: none
+
+h1 
+    font-size: 1em
+    color: #fff
+
+.container 
+    padding: 50px 8px
+
+    &> div ul
+        right: 60px
+
+header, .footer
+    position: fixed
+    z-index: 2
+    padding: 5px
+    width: 100%
+    top: 0
+    left: 0
+    height: 40px
+
+header
+    h1
+        position: absolute
+        top: 0        
+        left: 0
+    text-align: left
+    top: 0
+    left: 0
+
+.footer
+    bottom: 0
+    z-index: 2
+
+/* estilos TABLAS */
+table 
+    width: 100%
+    margin-bottom: 20px
+    border-collapse: collapse
+    border-spacing: 0
+    tr 
+        border: 1px solid $font-color
+
+    tr.disabledtrue 
+        border: 1px solid red
+
+    td
+        position: relative
+
+    a
+        color: $font-color
+
+    .listIcons
+        position: absolute
+        right: 0px
+        top: -55px
+        font-size: 1.4em
+
+/* estilos TABLAS */
+
+/* Colores para header y footer segun el usuario logueado */
+
+=setBackground( $color )
+    header, .footer, .switch.on
+        background: $color
+
+a[class*="icon"], 
+li[class*="icon"] 
+    a
+        color: #fff
+        font-size: 1.3em
+
+header 
+    h1
+        padding-top: 15px
+        margin-left: 12px
+        position: absolute
+        top: 0
+        left: 0
+.footer
+    bottom: 0
+    top: auto
+
+.footer 
+    h3
+        position: absolute
+        color: #fff
+        left: 10px
+        top: 22px
+
+/* Setea colores de fondo para los elementos de la pagina segun el usuario logueado */
+.adminModetrue 
+    +setBackground( $admin-color )
+
+.adminModefalse
+    +setBackground( $guest-color )
+
+/* Dispositivos */
+table.dispositivos 
+
+    tr
+        td 
+            padding: 4px 0
+            display: block
+            font-size: .8em
+
+        .tieneLucesEncendidastrue 
+            li.Dispositivos 
+                a 
+                    color: #dabb23
+                span
+                    font-size: 1.1em
+
+    .disabledtrue 
+        td:nth-child( 2 ):after 
+            content: " ------> Sin conexión"
+            color: red
+            -webkit-animation-name: blinker  
+            -webkit-animation-iteration-count: infinite  
+            -webkit-animation-timing-function: cubic-bezier(.5, 0, 1, 1)
+            -webkit-animation-duration: 1s 
+
+        span.nro 
+            display: none
+
+    li.Dispositivos
+        position: relative
+
+/* Dispositivos */
+
+.switchContainer
+    position: relative
+
+div.switchContainer *
+    -moz-transition: none
+    -webkit-transition: none
+    -o-transition: color 0 ease-in
+    transition: none
+
+.switchMainContainer span
+    position: absolute
+    color: $font-color
+    z-index: 1
+    width: 49px
+    font-weight: bold
+    left: 13px
+    top: 58px
+    text-align: left
+
+.disabledtrue
+    .listIcons
+        display: none
+
+.temporizadafalse span, .temporizadanull span, .admintrue .switchContainer, .temporizadatrue .switch span, .adminfalse .onlyAdmin
+    display: none
+
+
+.switch
+    &.on
+        background: $guest-color !important
+        color: #fff
+
+    width: 111px !important
+    height: 35px !important
+    border-radius: 35px !important
+    border: 1px solid $font-color
+    color: $font-color !important
+    
+    &.on:after
+        content: "Encendida" !important
+        color: #fff
+        left: 12px !important
+
+.switch:after, 
+.temporizadatrue span
+    position: absolute
+    top: 10px !important
+    left: 16px !important
+    font-size: 1.1em
+    display: block !important
+    content: "Apagada" !important
+
+
+.temporizadatrue 
+    span
+        color: #fff
+
+    .switch:after
+        content: "" !important        
+
+.switch-toggle
+    display: none
+
+.temporizadatrue .switch:after
+    content: ""
+    left: 38px !important
+
+table.salidas 
+    tr 
+        td 
+            a 
+                padding-top: 12px
+
+table.salidas td:last-child
+    float: right
+    margin: 10px 5px
+
+
+@import _elementos.sass
+
+@import _iconos.sass

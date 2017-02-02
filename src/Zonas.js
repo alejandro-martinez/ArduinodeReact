@@ -55,13 +55,13 @@ export class Zonas extends Component {
 							   model={ item } />
 				<td className="icons">								  
 					<ul className="listIcons">
-						<li className="iconDispositivos onlyAdmin">
+						<li className="Dispositivos onlyAdmin">
 							<Link to={'Zonas/' + item.id + '/dispositivos'}>&#9854;</Link>
 						</li>
-						<li className="iconDELETE onlyAdmin">
+						<li className="DELETE onlyAdmin">
 							<Link onClick={ this.onRemove.bind(this,item) }></Link>
 						</li>
-						<li className="iconSWITCH">
+						<li className="SWITCH">
 							<Toggle model={ item } 
 									onSwitch={ this.onSwitch } 
 									on={ item.estado == 0 }

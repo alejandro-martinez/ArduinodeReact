@@ -31,9 +31,9 @@ export class Header extends Component {
 			<header className={ this.props.class }>
 				<h1 onClick={ this.refresh }>{ this.props.root.state.page }</h1>
 				
-				<ul className="headerIcons">
-					<li> <a onClick={this.onAdminModeChange} className={'icon' + adminClass}></a> </li>
-					<li> <a href='/#/' className='menu iconHeader right'></a> </li>
+				<ul className="listIcons">
+					<li> <a onClick={this.onAdminModeChange} className={adminClass}></a> </li>
+					<li> <a href='/#/' className='menu'></a> </li>
 				</ul>
 			</header>
 		);

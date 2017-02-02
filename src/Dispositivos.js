@@ -98,19 +98,19 @@ export class Dispositivos extends Component {
 				<HTML.EditRow root={ this.props.route.root }
 							   inputKey='descripcion'
 							   model={ disp } />
-				<td>{ item.version }</td>
+				<td><a>{ item.version }</a></td>
 				<HTML.EditRow root={ this.props.route.root }
 							  inputKey='ip'
 							  model={ disp } />
 				<td>
 					<ul className="listIcons">
-						<li className="iconDispositivos"> 
+						<li className="Dispositivos"> 
 							<Link to={'Dispositivos/salidas/' + item.ip}>
 								<span className="nro">{ salidasActivas }</span>
 								&#9854;
 							</Link>
 						</li>
-						<li className='iconDELETE onlyAdmin'>
+						<li className='DELETE onlyAdmin'>
 							<a onClick={ this.onRemove.bind( this, item )}></a>
 						</li>
 					</ul>
@@ -174,7 +174,7 @@ export class SelectsDispositivos extends Component{
 				<td><a>{ item.descripcion + ' - ' + descripcion }</a></td>
 				<td className="icons">
 					<ul className="listIcons">
-						<li className="iconDELETE onlyAdmin">
+						<li className="DELETE onlyAdmin">
 							<Link onClick={ this.onRemove.bind(this,item) }></Link>
 						</li>					
 					</ul>

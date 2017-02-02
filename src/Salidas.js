@@ -19,9 +19,8 @@ export class Toggle extends React.Component {
 
 		<div className={ 'switchContainer temporizada' + estaTemporizada}
 			onClick={ this.props.onSwitch.bind(this, this.props.model) }>
-			<Switch model={ this.props.model } on={ this.props.on }>
-				<span> { Utils.min_a_horario(this.props.model.temporizada) } </span>
-			</Switch>
+			<span> { Utils.min_a_horario(this.props.model.temporizada) } </span>
+			<Switch model={ this.props.model } on={ this.props.on } />
 		</div>
     );
   }

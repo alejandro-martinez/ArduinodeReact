@@ -82,6 +82,3 @@ export class Ajustes extends Component {
 		return null;
 	}	
 }
-
-
-

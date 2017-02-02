@@ -13,7 +13,7 @@
     "socket.io-client": "^1.5.1"
   },
   "scripts": {
-    "run": "sass src/m.sass src/Arduinode.css && npm run build && npm start",
+    "run": "sass src/Arduinode.sass src/Arduinode.css && npm run build && npm start",
     "start": "cd server; node server",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
