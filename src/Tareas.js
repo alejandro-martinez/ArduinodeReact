@@ -166,15 +166,15 @@ export class Subtareas extends Tareas {
 							   disabled={ !this.props.route.root.state.adminMode }
 							   value={ item.fechainicio } />
 						</td>
-						<td className={"DELETE show" + this.props.route.root.state.adminMode}>
-							<a onClick={ this.onRemove }></a>
-						</td>
 						<td>Fin: <input type="date"
 							   name="fechafin" 
 							   required
 							   disabled={ !this.props.route.root.state.adminMode }
 							   onChange={ this.onChange.bind(this, item) } 
 							   value={ item.fechafin } /></td>
+						<td className="floatRight Delete onlyAdmin">
+							<a onClick={ this.onRemove }></a>
+						</td>
 					</tr>
 					<tr className="col3 titulos">
 						<td>Inicio
@@ -204,9 +204,9 @@ export class Subtareas extends Tareas {
 						</td>
 					</tr>
 					<tr>
-						<div className="diasEjecucion">
+						<td className="diasEjecucion">
 							{ DiasSemana }
-						</div>
+						</td>
 					</tr>
 				</HTML.Table>
 				</form>

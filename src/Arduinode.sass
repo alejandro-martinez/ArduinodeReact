@@ -36,6 +36,21 @@ h1
     font-size: 1em
     color: #fff
 
+input[type=date], 
+input[type=time]
+    margin: 0 auto
+    background: #fff
+    outline: none
+    border: 0
+    letter-spacing: .1em
+    color: $font-color
+    width: 70px
+
+input[type=time]
+    height: 19px
+    letter-spacing: 0
+    width: 60px
+
 .container 
     padding: 50px 8px
 
@@ -76,6 +91,9 @@ table
     td
         position: relative
 
+    td.floatRight
+        float: right
+        margin: 10px 5px
     a
         color: $font-color
 
@@ -83,7 +101,7 @@ table
         position: absolute
         z-index: 3
         right: -10px
-        top: 7px
+        top: 3px
         font-size: 1.4em
         
         li
@@ -146,8 +164,9 @@ table.dispositivos
             li.Dispositivos 
                 a 
                     color: #dabb23
-                span
-                    font-size: 1.1em
+    span.nro 
+        a
+            font-size: 1em
 
     .disabledtrue 
         span.nro 
@@ -222,9 +241,6 @@ table.salidas
             a 
                 padding-top: 12px
 
-        td.floatRight
-            float: right
-            margin: 10px 5px
     .temporizadatrue 
         span
             color: #fff
@@ -272,6 +288,19 @@ table.salidas
             height: 68px
 /* Tareas */ 
 
+/* Subtareas */
+.subtareas 
+    tr 
+        td
+            display: inline-block
+            padding: 14px 0 0 5px
+            
+        .floatRight
+            padding: 0 !important
+            margin: 2px 5px
+
+
+/* Subtareas */
 @import _elementos.sass
 
 @import _iconos.sass

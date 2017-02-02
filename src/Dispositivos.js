@@ -99,8 +99,8 @@ export class Dispositivos extends Component {
 					<ul className="listIcons">
 						<li className={"Dispositivos show" + !this.props.route.root.state.adminMode}> 
 							<Link to={'Dispositivos/salidas/' + item.ip}>
-								<span className="nro">{ salidasActivas }</span>
 								&#9854;
+								<span className="Lamp0 nro"><Link>{ salidasActivas }</Link></span>
 							</Link>
 						</li>
 						<li className='Delete onlyAdmin'>

@@ -47,7 +47,9 @@ table {
   border-spacing: 0; }
 
 /* General */
-.showfalse, .switch-toggle {
+.showfalse,
+.switch-toggle,
+.adminModefalse .onlyAdmin {
   display: none !important; }
 
 html {
@@ -73,6 +75,21 @@ a {
 h1 {
   font-size: 1em;
   color: #fff; }
+
+input[type=date],
+input[type=time] {
+  margin: 0 auto;
+  background: #fff;
+  outline: none;
+  border: 0;
+  letter-spacing: 0.1em;
+  color: #384259;
+  width: 70px; }
+
+input[type=time] {
+  height: 19px;
+  letter-spacing: 0;
+  width: 60px; }
 
 .container {
   padding: 50px 8px; }
@@ -110,13 +127,16 @@ table {
     border: 1px solid red; }
   table td {
     position: relative; }
+  table td.floatRight {
+    float: right;
+    margin: 10px 5px; }
   table a {
     color: #384259; }
   table .listIcons {
     position: absolute;
     z-index: 3;
     right: -10px;
-    top: 7px;
+    top: 3px;
     font-size: 1.4em; }
     table .listIcons li {
       margin-left: 10px; }
@@ -163,8 +183,8 @@ table.dispositivos tr td {
   font-size: 0.8em; }
 table.dispositivos tr .tieneLucesEncendidastrue li.Dispositivos a {
   color: #dabb23; }
-table.dispositivos tr .tieneLucesEncendidastrue li.Dispositivos span {
-  font-size: 1.1em; }
+table.dispositivos span.nro a {
+  font-size: 1em; }
 table.dispositivos .disabledtrue span.nro {
   display: none; }
 table.dispositivos li.Dispositivos {
@@ -223,9 +243,6 @@ div.switchContainer * {
 
 table.salidas tr td a {
   padding-top: 12px; }
-table.salidas tr td.floatRight {
-  float: right;
-  margin: 10px 5px; }
 table.salidas .temporizadatrue span {
   color: #fff; }
 table.salidas .temporizadatrue .switch:after {
@@ -255,26 +272,28 @@ table.salidas .temporizadatrue .switch:after {
 .tareas .listIcons {
   font-size: 1em;
   left: 0;
-  top: -15px; }
+  top: 12px;
+  right: -12px;
+  border-top: 1px solid #384259; }
+  .tareas .listIcons li {
+    margin-top: -9px; }
 .tareas tr td:last-child {
   display: block;
-  border: 1px solid #000;
-  height: 40px; }
+  height: 68px; }
 
 /* Tareas */
+/* Subtareas */
+.subtareas tr td {
+  display: inline-block;
+  padding: 14px 0 0 5px; }
+.subtareas tr .floatRight {
+  padding: 0 !important;
+  margin: 2px 5px; }
+
+/* Subtareas */
 /* Menues verticales */
 .menuList li {
   margin-bottom: 20px; }
-
-input[type="time"] {
-  width: 95px !important;
-  letter-spacing: 0;
-  background: none;
-  color: #fff;
-  border: 0;
-  font-weight: bold;
-  font-family: inherit;
-  font-size: 0.6em; }
 
 button, .button {
   font-size: 1em;
@@ -300,7 +319,7 @@ table {
   table tr {
     position: relative; }
     table tr td a {
-      margin: 4px 8px; }
+      margin: 2px 8px; }
 
 #loading {
   bottom: 8px;
@@ -313,7 +332,7 @@ table {
 /* Lista de iconos horizontal */
 .listIcons {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   float: right;
   margin-right: 12px; }
   .listIcons li {
@@ -350,6 +369,25 @@ table .Delete a {
 
 .Save a:after {
   content: "✓"; }
+
+.Lamp0 a {
+  color: #c7c708; }
+  .Lamp0 a:before {
+    content: "☀"; }
+
+.Lamp1 a:before {
+  content: "●";
+  color: grey; }
+
+.Activa0 a {
+  color: #384259; }
+  .Activa0 a:before {
+    content: "☐"; }
+
+.Activa1 a {
+  color: #384259; }
+  .Activa1 a:before {
+    content: "☑"; }
 
 .Microfono {
   font-size: 1.4em !important; }
