@@ -75,10 +75,10 @@ class Subtarea extends Tarea {
 				if ( this.getTiempoRestante() > 0 ) return this.getTiempoRestante();
 			}
 			else {
-				log(0, "Horario inválido");
+				log(0, "--- Horario inválido");
 			}
 		} else {
-			log(0, (this.tarea.activa) ? "Fecha inválida" : "Tarea inactiva");
+			log(0, (this.tarea.activa) ? "--- Fecha inválida" : "--- Tarea inactiva");
 		}
 		return false;
 	};
@@ -103,7 +103,7 @@ const Programador = class {
 	watchChanges() {
 		var retardo = this.config.intervaloEscaneoTareas * 1000 * 60;
 
-		log(0, "Observando las tareas cada " +
+		log(0, "- Observando las tareas cada " +
 					this.config.intervaloEscaneoTareas +
 					" minutos ...");
 		this.watcher = setInterval( this.refreshScheduler, retardo );
@@ -145,7 +145,7 @@ const Programador = class {
 */
 	forceExecute( subtarea ) {
 		var onTask = (subtarea.tarea.accion == 0);
-		log(0, "Chequeando tarea: " + subtarea.tarea.descripcion);
+		log(0, "-- Chequeando tarea: " + subtarea.tarea.descripcion);
 		
 		// Se forza la ejecucion solo si es una tarea de encendido
 		if ( onTask && subtarea.isValid()) {
@@ -156,7 +156,7 @@ const Programador = class {
 		}
 		else {
 			this.registerRunningTasks( subtarea.tarea.id, false);
-			log(0, "La tarea no" + ((onTask) ? " es válida" : " se debe ejecutar"));
+			log(0, "-- La tarea no" + ((onTask) ? " es válida" : " se debe ejecutar"));
 		}
 	}
 	createJob( subtarea ) {
@@ -166,7 +166,7 @@ const Programador = class {
 		if ( subtarea.reglasEjecucion ) {
 			var job = schedule.scheduleJob( subtarea.reglasEjecucion,() => { 
 				if ( subtarea.isValid() ) {
-					log(0, "Ejecutando tarea" + subtarea.tarea.descripcion);
+					log(0, "-- Ejecutando tarea" + subtarea.tarea.descripcion);
 					this.execute( subtarea );	
 				}				
 			});
