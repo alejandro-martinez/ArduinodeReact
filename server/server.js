@@ -189,10 +189,13 @@ http.listen( serverConf.port, serverConf.ip, () => {
 
 		// Accion sobre una salida (Persiana, Luz, Bomba)
 		sCliente.on('switchSalida',( params ) => {
-			log(3, "Se ejecutó la acción: " + params.orden + " " + params.dispositivo);
+			
 			var voiceCommand = (params.hasOwnProperty('orden'));
+
 			if ( voiceCommand ) {
 				
+				log(3, "Se ejecutó la acción: " + params.orden + " " + params.dispositivo);
+
 				var salida = Arduinode.getSalidaByDescripcion( params.salida );
 				if ( salida ) {
 						delete salida.comando;
