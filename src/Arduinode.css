@@ -47,7 +47,7 @@ table {
   border-spacing: 0; }
 
 /* General */
-.showfalse {
+.showfalse, .switch-toggle {
   display: none !important; }
 
 html {
@@ -97,10 +97,6 @@ header {
     top: 0;
     left: 0; }
 
-.footer {
-  bottom: 0;
-  z-index: 2; }
-
 /* estilos TABLAS */
 table {
   width: 100%;
@@ -108,7 +104,8 @@ table {
   border-collapse: collapse;
   border-spacing: 0; }
   table tr {
-    border: 1px solid #384259; }
+    border: 1px solid #384259;
+    height: 57px; }
   table tr.disabledtrue {
     border: 1px solid red; }
   table td {
@@ -117,9 +114,12 @@ table {
     color: #384259; }
   table .listIcons {
     position: absolute;
-    right: 0px;
-    top: -55px;
+    z-index: 3;
+    right: -10px;
+    top: 7px;
     font-size: 1.4em; }
+    table .listIcons li {
+      margin-left: 10px; }
 
 /* estilos TABLAS */
 /* Colores para header y footer segun el usuario logueado */
@@ -137,13 +137,17 @@ header h1 {
 
 .footer {
   bottom: 0;
-  top: auto; }
-
-.footer h3 {
-  position: absolute;
-  color: #fff;
-  left: 10px;
-  top: 22px; }
+  top: auto;
+  z-index: 2; }
+  .footer h3 {
+    position: absolute;
+    color: #fff;
+    right: 18px;
+    top: 18px; }
+  .footer .listIcons {
+    float: left; }
+    .footer .listIcons li {
+      margin: 0 20px 0 0; }
 
 /* Setea colores de fondo para los elementos de la pagina segun el usuario logueado */
 .adminModetrue header, .adminModetrue .footer, .adminModetrue .switch.on {
@@ -161,17 +165,12 @@ table.dispositivos tr .tieneLucesEncendidastrue li.Dispositivos a {
   color: #dabb23; }
 table.dispositivos tr .tieneLucesEncendidastrue li.Dispositivos span {
   font-size: 1.1em; }
-table.dispositivos .disabledtrue td:nth-child(2):after {
-  content: " ------> Sin conexión";
-  color: red;
-  -webkit-animation-name: blinker;
-  -webkit-animation-iteration-count: infinite;
-  -webkit-animation-timing-function: cubic-bezier(0.5, 0, 1, 1);
-  -webkit-animation-duration: 1s; }
 table.dispositivos .disabledtrue span.nro {
   display: none; }
 table.dispositivos li.Dispositivos {
   position: relative; }
+table.dispositivos li .listIcons {
+  right: -30px; }
 
 /* Dispositivos */
 .switchContainer {
@@ -222,25 +221,47 @@ div.switchContainer * {
   display: block !important;
   content: "Apagada" !important; }
 
-.temporizadatrue span {
+table.salidas tr td a {
+  padding-top: 12px; }
+table.salidas tr td.floatRight {
+  float: right;
+  margin: 10px 5px; }
+table.salidas .temporizadatrue span {
   color: #fff; }
-.temporizadatrue .switch:after {
-  content: "" !important; }
-
-.switch-toggle {
-  display: none; }
-
-.temporizadatrue .switch:after {
+table.salidas .temporizadatrue .switch:after {
   content: "";
   left: 38px !important; }
 
-table.salidas tr td a {
-  padding-top: 12px; }
+.dispositivosSelect {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px; }
 
-table.salidas td:last-child {
-  float: right;
-  margin: 10px 5px; }
+/* Zonas */
+.zonas .listIcons {
+  font-size: 1em;
+  top: -19px; }
 
+/* Zonas */
+/* Configuracion */
+.ajustes label {
+  display: block; }
+  .ajustes label a {
+    color: #384259;
+    padding: 20px 0; }
+
+/* Configuracion */
+/* Tareas */
+.tareas .listIcons {
+  font-size: 1em;
+  left: 0;
+  top: -15px; }
+.tareas tr td:last-child {
+  display: block;
+  border: 1px solid #000;
+  height: 40px; }
+
+/* Tareas */
 /* Menues verticales */
 .menuList li {
   margin-bottom: 20px; }
@@ -313,15 +334,28 @@ table {
   .Delete a:after {
     content: "✗"; }
 
+table .Delete a {
+  margin-top: 12px;
+  color: red; }
+
 .menu {
   font-size: 1em;
   margin-top: 5px; }
+  .menu:after {
+    content: "☰"; }
 
-.menu:after {
-  content: "☰"; }
+/* Iconos + y Tilde */
+.Add a:before {
+  content: "✚"; }
+
+.Save a:after {
+  content: "✓"; }
 
 .Microfono {
   font-size: 1.4em !important; }
+
+.Reloj a:before {
+  content: "⏱"; }
 
 .controlPersianas {
   width: 143px;

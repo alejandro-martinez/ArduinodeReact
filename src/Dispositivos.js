@@ -57,7 +57,7 @@ export class SelectDispositivos extends Component {
 		});
 
 		return (
-			<div>
+			<div className="dispositivosSelect">
 				<select onChange={ this.onChange }>
 					<option value="">Selecciona dispositivo</option>
 					{ dispositivos }
@@ -95,26 +95,26 @@ export class Dispositivos extends Component {
 
 		return ( 
 			<HTML.EditContainer key={item.ip} class={"disabled" + item.offline + " tieneLucesEncendidas" + (salidasActivas > 0)}>
-				<HTML.EditRow root={ this.props.route.root }
-							   inputKey='descripcion'
-							   model={ disp } />
-				<td><a>{ item.version }</a></td>
-				<HTML.EditRow root={ this.props.route.root }
-							  inputKey='ip'
-							  model={ disp } />
 				<td>
 					<ul className="listIcons">
-						<li className="Dispositivos"> 
+						<li className={"Dispositivos show" + !this.props.route.root.state.adminMode}> 
 							<Link to={'Dispositivos/salidas/' + item.ip}>
 								<span className="nro">{ salidasActivas }</span>
 								&#9854;
 							</Link>
 						</li>
-						<li className='DELETE onlyAdmin'>
+						<li className='Delete onlyAdmin'>
 							<a onClick={ this.onRemove.bind( this, item )}></a>
 						</li>
 					</ul>
 				</td>
+				<HTML.EditRow root={ this.props.route.root }
+							   inputKey='descripcion'
+							   model={ disp } />
+				<td><a>{ item.version + (( item.offline) ? " - SIN CONEXION" : "")}</a></td>
+				<HTML.EditRow root={ this.props.route.root }
+							  inputKey='ip'
+							  model={ disp } />
 			</HTML.EditContainer>
 		);
 	}
@@ -221,17 +221,16 @@ export class SelectsDispositivos extends Component{
 			this.model = model[0];
 			this.dispositivos = this.model.dispositivos.map( this.generateRow, this );
 			return (
-				<div>
-					<div>
-						<div className={'dispositivos center popup show' + this.state.edit}>
+				<div>				
+					<HTML.Table class={"salidas tareaDispositivos admin" + this.root.state.adminMode}> 
+						{ this.dispositivos } 
+					</HTML.Table>
+					<div className={'show' + this.state.edit}>
 						<SelectDispositivos added={ this.model.dispositivos } 
 											onAdd={ this.onAddNew }
 											root={ this.root } />
 						<input type="button" onClick={ this.onHidePopup } value="Aceptar" />
-						</div>
 					</div>
-					
-					<HTML.Table class={"salidas tareaDispositivos admin" + this.root.state.adminMode}> { this.dispositivos } </HTML.Table>
 				</div>
 			);
 		}

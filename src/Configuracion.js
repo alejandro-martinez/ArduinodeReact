@@ -38,8 +38,8 @@ export class Ajustes extends Component {
 		
 		if ( this.props.route.root.state.config ) {
 			return ( 
-				<div className={"ajustes show" + this.props.route.root.adminMode}>
-					<HTML.EditContainer edit={ this.state.edit }>
+				<div className="ajustes">
+					<HTML.EditContainer>
 						<label> Clave App 
 							<HTML.EditRow edit={ this.state.edit }
 									 root={ this.props.route.root }

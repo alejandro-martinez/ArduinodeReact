@@ -47,27 +47,28 @@ export class Zonas extends Component {
 	}
 	generateRow( item ) {
 		return ( 
-			<HTML.EditContainer edit={ this.state.edit || item.descripcion.length === 0 }>
+			<HTML.EditContainer>
 
 				<HTML.EditRow  root={ this.props.route.root }
 							   link={'Zonas/' + item.id + '/dispositivos'}
 							   inputKey='descripcion'
 							   model={ item } />
-				<td className="icons">								  
+
+				<td className={ "floatRight show" + !this.props.route.root.state.adminMode}>
+					<Toggle model={ item } 
+							onSwitch={ this.onSwitch } 
+							on={ item.estado == 0 }
+					/>
+				</td>
+
+				<td className={ "floatRight show" + this.props.route.root.state.adminMode}>
 					<ul className="listIcons">
 						<li className="Dispositivos onlyAdmin">
 							<Link to={'Zonas/' + item.id + '/dispositivos'}>&#9854;</Link>
 						</li>
-						<li className="DELETE onlyAdmin">
+						<li className="Delete onlyAdmin">
 							<Link onClick={ this.onRemove.bind(this,item) }></Link>
 						</li>
-						<li className="SWITCH">
-							<Toggle model={ item } 
-									onSwitch={ this.onSwitch } 
-									on={ item.estado == 0 }
-									switchClass='showtrue temporizadafalse'
-							/>
-						</li>						
 					</ul>
 				</td>
 			</HTML.EditContainer>
@@ -75,7 +76,7 @@ export class Zonas extends Component {
 	}
 	render() {
 		var rows = this.props.route.root.state.zonas.map( this.generateRow );
-		return (<HTML.Table class={"zonas salidas admin" + this.props.route.root.state.adminMode}> { rows } </HTML.Table>);
+		return (<HTML.Table class="salidas zonas"> { rows } </HTML.Table>);
 	}
 }
 

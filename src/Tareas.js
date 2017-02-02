@@ -59,26 +59,25 @@ export class Tareas extends Component {
 	}
 	generateRow( item ) {
 		return ( 
-			<HTML.EditContainer disabled={ !item.enEjecucion }
-								edit={ this.state.edit || item.descripcion.length === 0 }>
+			<HTML.EditContainer disabled={ !item.enEjecucion }>
 				<HTML.EditRow  root={ this.props.route.root }
 							   inputKey='descripcion'
 							   model={ item } />
-				<tr>
+				<td>
 					<ul className="listIcons">
 						<li className="Dispositivos"><Link to={'Tareas/' + item.id + '/dispositivos'}>&#9854;</Link></li>
 						<li className="Reloj"><Link to={'Tareas/subtareas/' + item.id}></Link></li>
-						<li className="onlyAdmin DELETE"><Link onClick={ this.onRemove.bind(this,item) }></Link></li>
-						<li className={'onlyAdmin ACTIVA' + item.activa }><Link onClick={ this.onSetActiva.bind(this, item) }></Link></li>
-						<li className={'onlyAdmin LAMP' + item.accion}><Link onClick={ this.onSetAccion.bind(this, item) }></Link></li>
+						<li className="onlyAdmin Delete"><Link onClick={ this.onRemove.bind(this,item) }></Link></li>
+						<li className={'onlyAdmin Activa' + item.activa }><Link onClick={ this.onSetActiva.bind(this, item) }></Link></li>
+						<li className={'onlyAdmin Lamp' + item.accion}><Link onClick={ this.onSetAccion.bind(this, item) }></Link></li>
 					</ul>
-				</tr>
+				</td>
 			</HTML.EditContainer>
 		);
 	}
 	render() {
 		var rows = this.props.route.root.state.tareas.map( this.generateRow );
-		return (<HTML.Table class={"tareas admin" + this.props.route.root.state.adminMode}> { rows } </HTML.Table>);
+		return (<HTML.Table class="tareas salidas"> { rows } </HTML.Table>);
 	}
 }
 

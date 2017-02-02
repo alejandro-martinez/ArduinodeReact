@@ -39,13 +39,13 @@ class Persiana extends Component {
 	}
 	render() {
 		return (
-			<HTML.EditContainer edit={ this.state.edit }>
+			<HTML.EditContainer>
 				<HTML.EditRow edit={ false }
 						 root={ this.root }
 						 inputKey='descripcion'
 						 model={ this.props.item }>
 				</HTML.EditRow>
-				<td className={ 'show' + this.props.online}>
+				<td className={ 'floatRight show' + this.props.online}>
 					<ul className="controlPersianas">
 						<li><a className="iconDOWN" onClick={this.onClick.bind(this,this.props.item,1)}></a></li>
 						<li><a className="iconSTOP" onClick={this.onClick.bind(this,this.props.item,2)}></a></li>
@@ -90,7 +90,7 @@ class Luz extends Component {
 		let estaTemporizada = (this.props.item.temporizada !== 0 && this.props.item.temporizada != "00:00");
 		
 		return (
-			<HTML.EditContainer edit={ this.state.edit }>
+			<HTML.EditContainer>
 				
 				<HTML.EditRow edit={ false }
 						 root={ this.root }
@@ -98,7 +98,7 @@ class Luz extends Component {
 						 model={ this.props.item }>
 				</HTML.EditRow>
 
-				<td className={ 'show' + this.props.online}>
+				<td className={ 'floatRight show' + this.props.online}>
 					<Toggle model={ this.props.item } 
 							onSwitch={ this.onSwitch } 
 							on={ this.props.item.estado === 0 }

@@ -231,5 +231,5 @@ http.listen( serverConf.port, serverConf.ip, () => {
 		// Servicio que vigila la ejecución de tareas en caso de falla
 		taskManager.loadScheduler( true ).watchChanges();
 
-	}, (parseInt(serverConf.retardoCargaTareas) * 1000 * 60) || 60000);
+	}, (serverConf.retardoCargaTareas * 1000 * 60) || 1);
 });

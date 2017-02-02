@@ -299,8 +299,8 @@ class Footer extends Component {
 		return (
 			<div className={"footer " + this.props.class}>
 				<ul className="listIcons">
-					<li className={ 'show' + showAddIcon}>
-						<a onClick={ this.onAddNew } className='iconMAS'></a>
+					<li className={ 'Add show' + showAddIcon}>
+						<a onClick={ this.onAddNew }></a>
 					</li>
 					<li className={'Reloj show' + this.props.root.state.showTimerIcon}>
 						<input type="time" onChange={ this.onTemporizacion } 
@@ -312,8 +312,8 @@ class Footer extends Component {
 					<li className={"Microfono show" + !this.props.root.state.adminMode}>
 						<a onClick={ this.props.root.onVoiceCommand }>🎤</a>
 					</li>
-					<li className={'show' + (this.props.root.state.edit && this.props.root.state.adminMode)}>
-						<a onClick={ this.onUpdate } className='OK'></a>
+					<li className={'Save show' + (this.props.root.state.edit && this.props.root.state.adminMode)}>
+						<a onClick={ this.onUpdate }></a>
 					</li>
 				</ul>
 				<h3>{ this.state.horaServidor }</h3>

@@ -10,15 +10,59 @@
 		&:after
 			content: "\2717"
 
+table
+	.Delete
+		a
+			margin-top: 12px
+			color: red
+
 .menu
 	font-size: 1em
 	margin-top: 5px
 
-.menu:after
-	content: "\2630"
+	&:after
+		content: "\2630"
+
+
+/* Iconos + y Tilde */
+.Add a:before
+	content: "\271A"
+
+.Save a:after
+	content: "\2713"
+
+
+.Lamp0 
+	a
+		color: yellow
+
+		&:before
+			content: "\2600"
+
+.Lamp1 
+	a:before
+		content: "\25CF"
+		color: grey
+
+.Activa0 
+	a
+		color: $font-color
+
+		&:before
+			content: "\2610"
+
+.Activa1 
+	a
+		color: #384259
+
+		&:before
+			content: "\2611"
 
 .Microfono
-	font-size: 1.4em !important
+	font-size: 1.4em
+
+.Reloj a:before
+	content: "\23f1"
 
 .controlPersianas
 	width: 143px

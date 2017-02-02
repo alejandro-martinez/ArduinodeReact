@@ -7,7 +7,9 @@ $font-color:    #384259
 
 /* General */
 
-.showfalse
+.showfalse, 
+.switch-toggle,
+.adminModefalse .onlyAdmin
     display: none !important
 
 html
@@ -58,10 +60,6 @@ header
     top: 0
     left: 0
 
-.footer
-    bottom: 0
-    z-index: 2
-
 /* estilos TABLAS */
 table 
     width: 100%
@@ -70,6 +68,7 @@ table
     border-spacing: 0
     tr 
         border: 1px solid $font-color
+        height: 57px
 
     tr.disabledtrue 
         border: 1px solid red
@@ -82,9 +81,13 @@ table
 
     .listIcons
         position: absolute
-        right: 0px
-        top: -55px
+        z-index: 3
+        right: -10px
+        top: 7px
         font-size: 1.4em
+        
+        li
+            margin-left: 10px
 
 /* estilos TABLAS */
 
@@ -107,16 +110,21 @@ header
         position: absolute
         top: 0
         left: 0
+
 .footer
     bottom: 0
     top: auto
-
-.footer 
+    z-index: 2 
     h3
         position: absolute
         color: #fff
-        left: 10px
-        top: 22px
+        right: 18px
+        top: 18px
+
+    .listIcons
+        float: left
+        li
+            margin: 0 20px 0 0
 
 /* Setea colores de fondo para los elementos de la pagina segun el usuario logueado */
 .adminModetrue 
@@ -142,19 +150,16 @@ table.dispositivos
                     font-size: 1.1em
 
     .disabledtrue 
-        td:nth-child( 2 ):after 
-            content: " ------> Sin conexión"
-            color: red
-            -webkit-animation-name: blinker  
-            -webkit-animation-iteration-count: infinite  
-            -webkit-animation-timing-function: cubic-bezier(.5, 0, 1, 1)
-            -webkit-animation-duration: 1s 
-
         span.nro 
             display: none
 
     li.Dispositivos
         position: relative
+
+    li
+        .listIcons
+            right: -30px
+
 
 /* Dispositivos */
 
@@ -211,30 +216,61 @@ div.switchContainer *
     content: "Apagada" !important
 
 
-.temporizadatrue 
-    span
-        color: #fff
-
-    .switch:after
-        content: "" !important        
-
-.switch-toggle
-    display: none
-
-.temporizadatrue .switch:after
-    content: ""
-    left: 38px !important
-
 table.salidas 
     tr 
         td 
             a 
                 padding-top: 12px
 
-table.salidas td:last-child
-    float: right
-    margin: 10px 5px
+        td.floatRight
+            float: right
+            margin: 10px 5px
+    .temporizadatrue 
+        span
+            color: #fff
 
+        .switch:after
+            content: ""
+            left: 38px !important
+
+.dispositivosSelect
+    display: flex
+    justify-content: space-between
+    margin-bottom: 20px
+
+/* Zonas */ 
+.zonas
+    .listIcons
+        font-size: 1em
+        top: -19px
+
+/* Zonas */ 
+
+/* Configuracion */
+.ajustes 
+    label
+        display: block
+        a
+            color: $font-color
+            padding: 20px 0
+/* Configuracion */
+
+
+/* Tareas */ 
+.tareas
+    .listIcons
+        font-size: 1em
+        left: 0
+        top: 12px
+        right: -12px
+        border-top: 1px solid $font-color
+        li
+            margin-top: -9px
+    tr 
+        td:last-child
+            display: block
+            height: 68px
+/* Tareas */ 
 
 @import _elementos.sass
 

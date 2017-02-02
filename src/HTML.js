@@ -49,9 +49,9 @@ export function EditContainer( props ) {
 export class EditRow extends Component {
 	constructor( props ) {
 		super( props );
-		this.root 				= props.root;
-		this.state 				= { model: props.model, edit: false };
-		this.onClick 			= this.onClick.bind( this );
+		this.root 	= props.root;
+		this.state 	= { model: props.model, edit: false };
+		this.onClick = this.onClick.bind( this );
 	}
 	onClick(e) {
 		if (this.root.state.adminMode) {

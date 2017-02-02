@@ -10,8 +10,6 @@ module.exports = function()
 			var date = new Date();
 			var myDate;
 
-			date.setDate(date.getDate() + 20);
-
 			myDate = ('0' + date.getDate()).slice(-2) + '/' 
 				   + ('0' + (date.getMonth()+1)).slice(-2) 
 				   + '/' + date.getFullYear();
