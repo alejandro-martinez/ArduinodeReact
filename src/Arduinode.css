@@ -1,64 +1,491 @@
-/*
-Error: Inconsistent indentation: 4 spaces were used for indentation, but the rest of the document was indented using 1 tab.
-        on line 96 of src/_iconos.sass
-        from line 312 of src/Arduinode.sass
+@charset "UTF-8";
+/* Colores admin */
+/* http://meyerweb.com/eric/tools/css/reset/
+ * v2.0 | 20110126
+ * License: none (public domain) */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline; }
 
-91: 		content: "\25B2"
-92: 
-93: 
-94: /* Google now mic *\/
-95: .googleNowMic
-96:     position: relative
-97:     margin: 5% auto
-98:     background-color: #FE2222
-99:     border-radius: 50%
-100:     width: 5em
-101:     height: 5em
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block; }
 
-Backtrace:
-src/_iconos.sass:96
-src/Arduinode.sass:312
-/home/alejandro/.gem/ruby/2.1.0/gems/sass-3.4.23/lib/sass/engine.rb:486:in `block in tabulate'
-/home/alejandro/.gem/ruby/2.1.0/gems/sass-3.4.23/lib/sass/engine.rb:444:in `each'
-/home/alejandro/.gem/ruby/2.1.0/gems/sass-3.4.23/lib/sass/engine.rb:444:in `each_with_index'
-/home/alejandro/.gem/ruby/2.1.0/gems/sass-3.4.23/lib/sass/engine.rb:444:in `tabulate'
-/home/alejandro/.gem/ruby/2.1.0/gems/sass-3.4.23/lib/sass/engine.rb:409:in `_to_tree'
-/home/alejandro/.gem/ruby/2.1.0/gems/sass-3.4.23/lib/sass/engine.rb:312:in `to_tree'
-/home/alejandro/.gem/ruby/2.1.0/gems/sass-3.4.23/lib/sass/tree/visitors/perform.rb:326:in `block in visit_import'
-/home/alejandro/.gem/ruby/2.1.0/gems/sass-3.4.23/lib/sass/stack.rb:88:in `block in with_import'
-/home/alejandro/.gem/ruby/2.1.0/gems/sass-3.4.23/lib/sass/stack.rb:115:in `with_frame'
-/home/alejandro/.gem/ruby/2.1.0/gems/sass-3.4.23/lib/sass/stack.rb:88:in `with_import'
-/home/alejandro/.gem/ruby/2.1.0/gems/sass-3.4.23/lib/sass/tree/visitors/perform.rb:325:in `visit_import'
-/home/alejandro/.gem/ruby/2.1.0/gems/sass-3.4.23/lib/sass/tree/visitors/base.rb:36:in `visit'
-/home/alejandro/.gem/ruby/2.1.0/gems/sass-3.4.23/lib/sass/tree/visitors/perform.rb:160:in `block in visit'
-/home/alejandro/.gem/ruby/2.1.0/gems/sass-3.4.23/lib/sass/stack.rb:79:in `block in with_base'
-/home/alejandro/.gem/ruby/2.1.0/gems/sass-3.4.23/lib/sass/stack.rb:115:in `with_frame'
-/home/alejandro/.gem/ruby/2.1.0/gems/sass-3.4.23/lib/sass/stack.rb:79:in `with_base'
-/home/alejandro/.gem/ruby/2.1.0/gems/sass-3.4.23/lib/sass/tree/visitors/perform.rb:160:in `visit'
-/home/alejandro/.gem/ruby/2.1.0/gems/sass-3.4.23/lib/sass/tree/visitors/base.rb:52:in `block in visit_children'
-/home/alejandro/.gem/ruby/2.1.0/gems/sass-3.4.23/lib/sass/tree/visitors/base.rb:52:in `map'
-/home/alejandro/.gem/ruby/2.1.0/gems/sass-3.4.23/lib/sass/tree/visitors/base.rb:52:in `visit_children'
-/home/alejandro/.gem/ruby/2.1.0/gems/sass-3.4.23/lib/sass/tree/visitors/perform.rb:169:in `block in visit_children'
-/home/alejandro/.gem/ruby/2.1.0/gems/sass-3.4.23/lib/sass/tree/visitors/perform.rb:181:in `with_environment'
-/home/alejandro/.gem/ruby/2.1.0/gems/sass-3.4.23/lib/sass/tree/visitors/perform.rb:168:in `visit_children'
-/home/alejandro/.gem/ruby/2.1.0/gems/sass-3.4.23/lib/sass/tree/visitors/base.rb:36:in `block in visit'
-/home/alejandro/.gem/ruby/2.1.0/gems/sass-3.4.23/lib/sass/tree/visitors/perform.rb:188:in `visit_root'
-/home/alejandro/.gem/ruby/2.1.0/gems/sass-3.4.23/lib/sass/tree/visitors/base.rb:36:in `visit'
-/home/alejandro/.gem/ruby/2.1.0/gems/sass-3.4.23/lib/sass/tree/visitors/perform.rb:159:in `visit'
-/home/alejandro/.gem/ruby/2.1.0/gems/sass-3.4.23/lib/sass/tree/visitors/perform.rb:8:in `visit'
-/home/alejandro/.gem/ruby/2.1.0/gems/sass-3.4.23/lib/sass/tree/root_node.rb:36:in `css_tree'
-/home/alejandro/.gem/ruby/2.1.0/gems/sass-3.4.23/lib/sass/tree/root_node.rb:29:in `render_with_sourcemap'
-/home/alejandro/.gem/ruby/2.1.0/gems/sass-3.4.23/lib/sass/engine.rb:381:in `_render_with_sourcemap'
-/home/alejandro/.gem/ruby/2.1.0/gems/sass-3.4.23/lib/sass/engine.rb:298:in `render_with_sourcemap'
-/home/alejandro/.gem/ruby/2.1.0/gems/sass-3.4.23/lib/sass/exec/sass_scss.rb:391:in `run'
-/home/alejandro/.gem/ruby/2.1.0/gems/sass-3.4.23/lib/sass/exec/sass_scss.rb:63:in `process_result'
-/home/alejandro/.gem/ruby/2.1.0/gems/sass-3.4.23/lib/sass/exec/base.rb:52:in `parse'
-/home/alejandro/.gem/ruby/2.1.0/gems/sass-3.4.23/lib/sass/exec/base.rb:19:in `parse!'
-/home/alejandro/.gem/ruby/2.1.0/gems/sass-3.4.23/bin/sass:13:in `<top (required)>'
-/usr/local/bin/sass:22:in `load'
-/usr/local/bin/sass:22:in `<main>'
-*/
-body:before {
-  white-space: pre;
-  font-family: monospace;
-  content: "Error: Inconsistent indentation: 4 spaces were used for indentation, but the rest of the document was indented using 1 tab.\A         on line 96 of src/_iconos.sass\A         from line 312 of src/Arduinode.sass\A \A 91: 		content: \"\25B2\"\A 92: \A 93: \A 94: /* Google now mic */\A 95: .googleNowMic\A 96:     position: relative\A 97:     margin: 5% auto\A 98:     background-color: #FE2222\A 99:     border-radius: 50%\A 100:     width: 5em\A 101:     height: 5em"; }
+body {
+  line-height: 1; }
+
+ol, ul {
+  list-style: none; }
+
+blockquote, q {
+  quotes: none; }
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: "";
+  content: none; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+/* General */
+.showfalse,
+.switch-toggle,
+.adminModefalse .onlyAdmin {
+  display: none !important; }
+
+html {
+  height: 100%; }
+
+body {
+  line-height: 1;
+  font-family: Arial;
+  overflow-x: hidden;
+  padding: 27px 0 !important;
+  font-size: 18px;
+  width: 100%;
+  color: #384259;
+  background: #fff;
+  margin: 0 auto; }
+
+a {
+  display: inline-block;
+  color: #fff;
+  font-size: 1.3em;
+  text-decoration: none; }
+
+h1 {
+  font-size: 1em;
+  color: #384259; }
+
+input[type=date],
+input[type=time] {
+  margin: 0 auto;
+  background: #fff;
+  outline: none;
+  border: 0;
+  letter-spacing: 0.1em;
+  color: #384259;
+  width: 70px; }
+
+input[type=time] {
+  height: 19px;
+  letter-spacing: 0;
+  width: 60px; }
+
+.container {
+  padding: 50px 8px; }
+  .container > div ul {
+    right: 60px; }
+
+header, .footer {
+  position: fixed;
+  z-index: 5;
+  padding: 5px;
+  width: 100%;
+  top: 0;
+  left: 0;
+  height: 40px; }
+
+header {
+  text-align: left;
+  top: 0;
+  left: 0; }
+  header h1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: #fff; }
+
+/* estilos TABLAS */
+table {
+  width: 100%;
+  margin-bottom: 20px;
+  border-collapse: collapse;
+  border-spacing: 0; }
+  table tr {
+    border: 1px solid #384259;
+    height: 57px; }
+  table tr.disabledtrue {
+    border: 1px solid red; }
+  table td {
+    position: relative; }
+  table td.floatRight {
+    float: right;
+    margin: 10px 5px; }
+  table a {
+    color: #384259; }
+  table .listIcons {
+    position: absolute;
+    z-index: 3;
+    right: -10px;
+    top: 3px;
+    font-size: 1.4em; }
+    table .listIcons li {
+      margin-left: 10px; }
+
+/* estilos TABLAS */
+/* Colores para header y footer segun el usuario logueado */
+a[class*="icon"] a,
+li[class*="icon"] a {
+  color: #fff;
+  font-size: 1.3em; }
+
+header h1 {
+  padding-top: 15px;
+  margin-left: 12px;
+  position: absolute;
+  top: 0;
+  left: 0; }
+
+.footer {
+  bottom: 0;
+  top: auto; }
+  .footer h3 {
+    position: absolute;
+    color: #fff;
+    right: 18px;
+    top: 18px; }
+  .footer input[type='time'] {
+    background: none;
+    color: #fff;
+    font-weight: bold; }
+  .footer .listIcons {
+    float: left; }
+    .footer .listIcons li {
+      margin: 0 20px 0 0; }
+
+/* Setea colores de fondo para los elementos de la pagina segun el usuario logueado */
+.adminModetrue header, .adminModetrue .footer, .adminModetrue .switch.on {
+  background: #24695f; }
+
+.adminModefalse header, .adminModefalse .footer, .adminModefalse .switch.on {
+  background: #F73859; }
+
+/* Dispositivos */
+table.dispositivos tr td {
+  padding: 4px 0;
+  display: block;
+  font-size: 0.8em; }
+table.dispositivos tr .tieneLucesEncendidastrue li.Dispositivos a {
+  color: #dabb23; }
+table.dispositivos span.nro a {
+  font-size: 1em; }
+table.dispositivos .disabledtrue span.nro {
+  display: none; }
+table.dispositivos li.Dispositivos {
+  position: relative; }
+table.dispositivos li .listIcons {
+  right: -30px; }
+
+/* Dispositivos */
+.switchContainer {
+  position: relative; }
+
+div.switchContainer * {
+  -moz-transition: none;
+  -webkit-transition: none;
+  -o-transition: color 0 ease-in;
+  transition: none; }
+
+.switchMainContainer span {
+  position: absolute;
+  color: #384259;
+  z-index: 1;
+  width: 49px;
+  font-weight: bold;
+  left: 13px;
+  top: 58px;
+  text-align: left; }
+
+.disabledtrue .listIcons {
+  display: none; }
+
+.temporizadafalse span, .temporizadanull span, .admintrue .switchContainer, .temporizadatrue .switch span, .adminfalse .onlyAdmin {
+  display: none; }
+
+.switch {
+  width: 111px !important;
+  height: 35px !important;
+  border-radius: 35px !important;
+  border: 1px solid #384259;
+  color: #384259 !important; }
+  .switch.on {
+    background: #F73859 !important;
+    color: #fff; }
+  .switch.on:after {
+    content: "Encendida" !important;
+    color: #fff;
+    left: 12px !important; }
+
+.switch:after,
+.temporizadatrue span {
+  position: absolute;
+  top: 10px !important;
+  left: 16px !important;
+  font-size: 1.1em;
+  display: block !important;
+  content: "Apagada" !important; }
+
+table.salidas tr td a {
+  padding-top: 12px;
+  font-size: 0.9em; }
+table.salidas .temporizadatrue span {
+  left: 31px !important;
+  color: #fff; }
+table.salidas .temporizadatrue .switch:after {
+  content: "" !important;
+  left: 38px !important; }
+
+.dispositivosSelect {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px; }
+
+/* Zonas */
+.zonas .listIcons {
+  font-size: 1em;
+  top: -19px; }
+
+/* Zonas */
+/* Configuracion */
+.ajustes label {
+  display: block; }
+  .ajustes label a {
+    color: #384259;
+    padding: 20px 0; }
+
+/* Configuracion */
+/* Tareas */
+.tareas .listIcons {
+  font-size: 1em;
+  left: 0;
+  top: 12px;
+  right: -12px;
+  border-top: 1px solid #384259; }
+  .tareas .listIcons li {
+    margin-top: -9px; }
+.tareas tr td:last-child {
+  display: block;
+  height: 68px; }
+
+/* Tareas */
+/* Subtareas */
+.subtareas tr td {
+  display: inline-block;
+  padding: 14px 0 0 5px; }
+.subtareas tr .floatRight {
+  padding: 0 !important;
+  margin: 2px 5px; }
+
+/* Subtareas */
+/* Menues verticales */
+.menuList li {
+  margin-bottom: 20px; }
+
+button, .button {
+  font-size: 1em;
+  background: #fff;
+  border: 1px solid #384259;
+  color: #384259;
+  display: block;
+  border-radius: 3px;
+  min-width: 60px !important;
+  font-weight: bold;
+  padding: 13px;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); }
+
+/* Menues verticales */
+table {
+  width: 100%;
+  margin-bottom: 20px;
+  border-collapse: collapse;
+  border-spacing: 0; }
+  table td {
+    display: inline-block;
+    text-align: left; }
+  table tr {
+    position: relative; }
+    table tr td a {
+      margin: 2px 8px; }
+
+#loading {
+  bottom: 8px;
+  left: 50%;
+  margin-left: -20px;
+  position: absolute; }
+  #loading div {
+    margin: -8px auto; }
+
+/* Lista de iconos horizontal */
+.listIcons {
+  display: flex;
+  justify-content: flex-start;
+  float: right;
+  margin-right: 12px; }
+  .listIcons li {
+    margin-left: 30px;
+    font-size: 1.8em; }
+
+.footer .listIcons .Microfono {
+  margin-top: 7px; }
+
+.Login:before {
+  content: "⚙"; }
+
+.Logout:before {
+  content: "⬅"; }
+
+.Delete a {
+  padding-top: 3px !important; }
+  .Delete a:after {
+    content: "✗"; }
+
+table .Delete a {
+  margin-top: 12px;
+  color: red; }
+
+.menu {
+  font-size: 1em;
+  margin-top: 5px; }
+  .menu:after {
+    content: "☰"; }
+
+/* Iconos + y Tilde */
+.Add a:before {
+  content: "✚"; }
+
+.Save a:after {
+  content: "✓"; }
+
+.Lamp0 a {
+  color: #c7c708; }
+  .Lamp0 a:before {
+    content: "☀"; }
+
+.Lamp1 a:before {
+  content: "●";
+  color: grey; }
+
+.Activa0 a {
+  color: #384259; }
+  .Activa0 a:before {
+    content: "☐"; }
+
+.Activa1 a {
+  color: #384259; }
+  .Activa1 a:before {
+    content: "☑"; }
+
+.Microfono {
+  font-size: 1.4em !important; }
+
+.Reloj a:before {
+  content: "⏱"; }
+
+.controlPersianas {
+  width: 143px;
+  margin: 0px 0 0 -39px;
+  border: 1px solid #ccc;
+  height: 34px;
+  border-radius: 36px; }
+  .controlPersianas li {
+    display: inline-block;
+    width: 47px; }
+    .controlPersianas li a[class*=icon] {
+      margin: -16px 9px;
+      font-size: 2em;
+      color: #384259 !important; }
+  .controlPersianas .iconDOWN:before {
+    content: "▼"; }
+  .controlPersianas .iconSTOP:before {
+    content: "◼"; }
+  .controlPersianas .iconUP:before {
+    content: "▲"; }
+
+/* Google now mic */
+.mic {
+  margin: 0 auto; }
+  .mic h1, .mic p {
+    font-size: 2em;
+    text-align: center;
+    margin: 0 auto;
+    line-height: 1.4em;
+    max-width: 250px;
+    font-size: 1em; }
+  .mic h1 {
+    font-size: 2.5em; }
+
+.mic :before, .mic :after {
+  content: "";
+  position: absolute;
+  background-color: #fff; }
+
+.mc {
+  position: absolute;
+  top: 50%;
+  left: 37%;
+  height: 24%;
+  width: 26.5%;
+  overflow: hidden; }
+
+.mc:before {
+  bottom: 50%;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border-radius: 50%;
+  border: 0.5em solid #fff;
+  background: none; }
+
+.mc:after {
+  top: 50%;
+  left: 40%;
+  width: 20%;
+  height: 25%; }
+
+.googleNowMic {
+  position: relative;
+  margin: 5% auto;
+  background-color: #FE2222;
+  border-radius: 50%;
+  width: 5em;
+  height: 5em;
+  box-shadow: 5px 5px 5px #888;
+  border: 2em solid #F1F1F3; }
+
+.googleNowMic:after {
+  top: 30%;
+  left: 43%;
+  height: 15%;
+  width: 14%;
+  border-top-left-radius: 50%;
+  border-top-right-radius: 50%; }
+
+.googleNowMic:before {
+  top: 40%;
+  left: 43%;
+  height: 15%;
+  width: 14%;
+  border-bottom-left-radius: 50%;
+  border-bottom-right-radius: 50%; }
+
+/*# sourceMappingURL=Arduinode.css.map */
