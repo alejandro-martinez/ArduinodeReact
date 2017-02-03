@@ -6,16 +6,15 @@
 
 .Delete
 	a
-		padding-top: 3px !important
-		&:after
-			content: "\2717"
+		font-size: 1em
+		position: absolute
+		top: 0
+		left: 0
+		width: 30px
+		height: 30px
 
-table
-	.Delete
-		a
-			margin-top: 12px
-			color: red
-
+	&:after
+		content: "\2717"
 .menu
 	font-size: 1em
 	margin-top: 5px
@@ -59,7 +58,9 @@ table
 			content: "\2611"
 
 .Microfono
-	font-size: 1.4em !important
+	font-size: 1.2em !important
+	a
+		color: #fff
 
 .Reloj a:before
 	content: "\23f1"
@@ -76,9 +77,14 @@ table
 		display: inline-block
 		width: 47px
 
+		&:last-child
+			position: absolute
+			right: 16px
+
 		a[class*=icon]
-			margin: -16px 9px
+			margin: -16px 12px
 			font-size: 2em
+			text-align: center
 			color: $font-color !important
 
 	.iconDOWN:before 

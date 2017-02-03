@@ -101,13 +101,18 @@ table
     .listIcons
         position: absolute
         z-index: 3
-        right: -10px
+        right: -3px
         top: 3px
-        font-size: 1.4em
+        font-size: 1.5em
         
         li
             margin-left: 10px
 
+        .Delete 
+            font-size: 1.7em !important
+            margin-top: 14px
+            color: red
+            
 /* estilos TABLAS */
 
 /* Colores para header y footer segun el usuario logueado */
@@ -143,6 +148,8 @@ header
         background: none
         color: #fff
         font-weight: bold
+        font-size: .6em
+        width: 87px
 
     .listIcons
         float: left
@@ -169,9 +176,11 @@ table.dispositivos
             li.Dispositivos 
                 a 
                     color: #dabb23
-    span.nro 
-        a
-            font-size: 1em
+            
+
+        &:before
+            margin-right: 19px
+            font-size: .7em
 
     .disabledtrue 
         span.nro 
@@ -184,6 +193,18 @@ table.dispositivos
         .listIcons
             right: -30px
 
+
+    .Lamp0
+        
+        font-size: .41em
+        display: block
+        position: absolute
+        right: 12px
+        top: 53px
+
+        a:before
+            margin-right: 20px
+            
 
 /* Dispositivos */
 
@@ -264,8 +285,8 @@ table.salidas
 /* Zonas */ 
 .zonas
     .listIcons
-        font-size: 1em
-        top: -19px
+        font-size: 1.5em
+        top: -18px
 
 /* Zonas */ 
 
@@ -282,13 +303,16 @@ table.salidas
 /* Tareas */ 
 .tareas
     .listIcons
-        font-size: 1em
         left: 0
         top: 12px
         right: -12px
         border-top: 1px solid $font-color
         li
             margin-top: -9px
+        
+        li.Delete
+            margin-top: 8px
+
     tr 
         td:last-child
             display: block

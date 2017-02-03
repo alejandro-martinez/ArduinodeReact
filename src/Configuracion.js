@@ -64,7 +64,7 @@ export class Ajustes extends Component {
 						<label> Retardo inicial de carga de tareas (min)
 							<HTML.EditRow edit={ this.state.edit }
 									 root={ this.props.route.root }
-									 inputKey='retardoCargaDeTareas'
+									 inputKey='retardoCargaTareas'
 									 model={ this.props.route.root.state.config }>
 							</HTML.EditRow>
 						</label>
