@@ -73,21 +73,27 @@ Arduinode = {
 				This.data = "";
 
 				socket.on('data', ( data ) => {
-					This.ip = socket.remoteAddress;
-					This.data+= data.toString().replace("\r","+");
+					if (data.toString().indexOf("\n") > -1) {
+						socket.end();
+					}
+					else {
+						This.ip = socket.remoteAddress;
+						This.data+= data.toString().replace("\r","+");
+					}
 				});
 
 				socket.on('end', function() {
-					
-					This.data = This.data.replace("\n","-").replace("+n"," ").slice(0, -1);
-					
-					var salidasUpdated = This.updateEstadoSalidas( This.data.slice(0,-1).split("+-") );
-					
-					salidasUpdated.forEach((s) => {
-						log(1, This.ip + " - Evento externo: Se " + ((s.estado === 0) ? 'prendió ' : 'apagó ') + s.descripcion);
-					});
+					if ( This.data.length ) {
+						This.data = This.data.replace("\n","-").replace("+n"," ").slice(0, -1);
+						
+						var salidasUpdated = This.updateEstadoSalidas( This.data.slice(0,-1).split("+-") );
+						
+						salidasUpdated.forEach((s) => {
+							log(1, This.ip + " - Evento externo: Se " + ((s.estado === 0) ? 'prendió ' : 'apagó ') + s.descripcion);
+						});
 
-					This.broadcastDB();
+						This.broadcastDB();
+					}
 				});
 			});
 				

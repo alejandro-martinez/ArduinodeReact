@@ -232,18 +232,8 @@ http.listen( serverConf.port, serverConf.ip, () => {
 
 	var retardoCargaTareas = (serverConf.retardoCargaTareas * 1000 * 60) || 0;
 
-	if (retardoCargaTareas > 0) {
-		var seg = retardoCargaTareas / 1000;
-		var segElapsed = seg;
-
-		var timeoutLogger = setInterval(function() {
-			segElapsed = segElapsed - 1;
-			log(3, "-- Segundos restantes para escaneo de tareas: " + segElapsed)
-			if ( segElapsed == 1) {
-				clearInterval( timeoutLogger );
-			}
-		}, 1000 )
-	}
+	log(3, "Minutos restantes para escaneo de tareas: " + retardoCargaTareas / 60000);
+	
 	// Carga de tareas programadas
 	setTimeout(() => {
 
