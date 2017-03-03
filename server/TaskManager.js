@@ -200,6 +200,7 @@ const Programador = class {
 
 			this.tareas.push( tarea );
 			if ( reloadJobs ) {
+				log(0, "- Reprogramando tareas");
 				tarea.subtareas.map( this.createJob );
 			}
 		}

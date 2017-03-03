@@ -118,22 +118,16 @@ export class Tarea extends DB {
 			var subtarea = subtareas.reduce(function(prev, current) {
 			    return (prev.fechafin > current.fechafin) ? prev : current
 			});
-			var horafin = subtarea.horafin, 
-				fechafin = subtarea.fechafin;
-		}
-		else {
-			var horafin = "12:00", 
-				fechafin = Utils.getDate();
 		}
 
 		return { 
 			"id": Utils.randomID(),
-	        "diasejecucion": "1,2,3,4,5",
-	        "fechainicio": fechafin,
-	        "fechafin": fechafin,
-	        "horainicio": horafin,
+	        "diasejecucion": (subtarea.diasejecucion) ? subtarea.diasejecucion : "1,2,3,4,5",
+	        "fechainicio": subtarea.fechainicio || "12:00",
+	        "fechafin": subtarea.fechainicio || Utils.getDate(),
+	        "horainicio": subtarea.horainicio,
 	        "horafin": null,
-	        "duracion": null
+	        "duracion": subtarea.duracion || "01:00"
 		};
 	}
 	update(db, callback) {

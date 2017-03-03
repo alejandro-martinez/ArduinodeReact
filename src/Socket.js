@@ -3,6 +3,7 @@ import io from 'socket.io-client'
 import Utils from './Utils';
 
 // Inicializacion de socket para la comunicacion con el servidor
+
 window.socket = io.connect( window.location.origin );
 
 class SocketIO {
