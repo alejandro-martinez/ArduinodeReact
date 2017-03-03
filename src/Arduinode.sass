@@ -36,20 +36,22 @@ h1
     font-size: 1em
     color: $font-color
 
-input[type=date], 
-input[type=time]
-    margin: 0 auto
-    background: #fff
-    outline: none
-    border: 0
-    letter-spacing: .1em
-    color: $font-color
-    width: 70px
+@media (max-width: 800px)
+    input[type=date], 
+    input[type=time]
+        margin: 0 auto
+        background: #fff
+        outline: none
+        border: 0
+        letter-spacing: .1em
+        color: $font-color
+        width: 70px
 
-input[type=time]
-    height: 19px
-    letter-spacing: 0
-    width: 60px
+    input[type=time]
+        height: 19px
+        letter-spacing: 0
+        width: 60px   
+
 
 .container 
     padding: 50px 8px
