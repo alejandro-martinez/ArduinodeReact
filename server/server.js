@@ -62,6 +62,7 @@ http.listen( serverConf.port, serverConf.ip, () => {
 		});
 
 		sCliente.on('getDispositivosDB', () => {
+			console.log("get dispositivos")
 			if ( !waitingBroadcast ) {
 				waitingBroadcast = true;
 				Arduinode.getEstadosDispositivos( function( dispositivos ) {
@@ -72,6 +73,7 @@ http.listen( serverConf.port, serverConf.ip, () => {
 		});
 
 		sCliente.on('getTareasDB', () => { 
+			console.log("Get tareas")
 			sCliente.emit('DBTareasUpdated', DataStore.tareas);
 		});
 

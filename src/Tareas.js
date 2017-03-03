@@ -14,7 +14,8 @@ export class Tareas extends Component {
 			this[m] = this[m].bind( this );
 		});
 		props.route.root.setState({ 
-			dbActual: "Tarea", 
+			updateDB: "Tarea", 
+			broadcastDB: "Tareas",
 			page: "Tareas",
 			showAddIcon: true,
 			showTimerIcon: false
@@ -84,6 +85,11 @@ export class Tareas extends Component {
 export class Subtareas extends Tareas {
 	constructor( props ) {
 		super( props );
+		props.route.root.setState({ 
+			updateDB: "Tarea",
+			page: "Subtareas",
+			broadcastDB: "Tareas"
+		});
 		['onRemove','onSetDiasEjecucion','onChange','onAddNew'].forEach((m)=>{
 			this[m] = this[m].bind( this );
 		});

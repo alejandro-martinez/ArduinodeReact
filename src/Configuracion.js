@@ -27,7 +27,8 @@ export class Ajustes extends Component {
 	constructor( props ) {
 		super( props );
 		props.route.root.setState({ 
-			dbActual: "config",
+			updateDB: "config",
+			broadcastDB: "config",
 			page: "Ajustes servidor",
 			showAddIcon: false,
 			showTimerIcon: false

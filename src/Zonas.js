@@ -15,7 +15,8 @@ export class Zonas extends Component {
 			this[m] = this[m].bind( this );
 		});
 		props.route.root.setState({ 
-			dbActual: "Zona", 
+			updateDB: "Zona",
+			broadcastDB: "Zonas", 
 			page: "Zonas",
 			showAddIcon: true,
 			showTimerIcon: false

@@ -273,7 +273,9 @@ class Footer extends Component {
 	}
 	componentDidMount() {		
 		document.addEventListener("loading",( e ) => {
-			this.setState({ loading: e.detail });
+			if (this.state.loading != e.detail) {
+				this.setState({ loading: e.detail });
+			}
 		});
 	}
 	onUpdate() { this.props.root.updateDB(); }
@@ -326,7 +328,7 @@ class Arduinode extends Component {
 		
 		this.state = { 
 			listenBroadcastUpdate: true,
-			dbActual: "Dispositivo", 
+			updateDB: "Dispositivo", 
 			page: "Home", 
 			edit: false,
 			showAddIcon: false,
@@ -462,7 +464,7 @@ class Arduinode extends Component {
 		return this.state.dispositivos.filter((d) => { return d.ip == ip; })[0];
 	}
 	updateDB() {
-		var db = this.state.dbActual;
+		var db = this.state.updateDB;
 		if (db != 'config') {
 			var dataModel = this.state[ db.concat("s").toLowerCase() ];
 			

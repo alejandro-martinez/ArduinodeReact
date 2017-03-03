@@ -8,9 +8,12 @@ export class Header extends Component {
 	constructor( props ) {
 		super( props );
 		this.onAdminModeChange = this.onAdminModeChange.bind( this );
+		this.onRefresh = this.onRefresh.bind( this );
 	}
-	refresh() {
-		if (!window.waitingBroadcast) Socket.emit('getDispositivosDB'); 
+	onRefresh() {
+		if (!window.waitingBroadcast) {
+			Socket.emit('get'.concat(this.props.root.state.broadcastDB, 'DB'));
+		}
 	}
 	onAdminModeChange() {
 		if ( this.props.root.state.adminMode ) {
@@ -29,7 +32,7 @@ export class Header extends Component {
 
 		return (
 			<header className={ this.props.class }>
-				<h1 onClick={ this.refresh }>{ this.props.root.state.page }</h1>
+				<h1 onClick={ this.onRefresh }>{ this.props.root.state.page }</h1>
 				
 				<ul className="listIcons">
 					<li> <a onClick={this.onAdminModeChange} className={adminClass}></a> </li>

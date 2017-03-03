@@ -75,7 +75,8 @@ export class Dispositivos extends Component {
 	constructor( props ) {
 		super( props );
 		this.props.route.root.setState({ 
-			dbActual: "Dispositivo", 
+			updateDB: "Dispositivo", 
+			broadcastDB: "Dispositivos",
 			page: "Dispositivos",
 			showAddIcon: true,
 			showTimerIcon: false

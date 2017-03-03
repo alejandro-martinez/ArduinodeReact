@@ -159,6 +159,8 @@ export class SalidasActivas extends Component {
 	constructor( props ) {
 		super( props );
 		this.props.route.root.setState({
+			updateDB: "Dispositivos",
+			broadcastDB: "Dispositivos",
 			page: "Luces encendidas",
 			showAddIcon: false
 		});
@@ -173,7 +175,11 @@ export class SalidasActivas extends Component {
 
 export class SalidasDispositivo extends Component {
 	constructor( props ) {
-		super( props );	
+		super( props );
+		props.route.root.setState({
+			updateDB: "Dispositivos",
+			broadcastDB: "Dispositivos"
+		});
 	}
 	getDispositivo() {
 		return this.props.route.root.getDispositivoByIP( this.props.params.ip );
