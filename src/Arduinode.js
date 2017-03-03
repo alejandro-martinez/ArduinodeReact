@@ -390,6 +390,13 @@ class Arduinode extends Component {
 			}
     	});
 
+    	Socket.listen('DBTareasUpdated', ( db ) => {
+    		console.log(db )
+			if ( this.state.listenBroadcastUpdate || !this.state.adminMode) {
+				this.setState({ tareas: db });
+			}
+    	});
+
     	Socket.listen('DBZonasUpdated', ( db ) => {
 			if ( this.state.listenBroadcastUpdate ) {
 				this.setState({ zonas: db }, () => this.updateEstadosZonas());

@@ -17,13 +17,14 @@ export class Tareas extends Component {
 			updateDB: "Tarea", 
 			broadcastDB: "Tareas",
 			page: "Tareas",
+			listenBroadcastUpdate: true,
 			showAddIcon: true,
 			showTimerIcon: false
 		});
 		this.state = { edit:false, changed: false };
 		
 		Socket.listen('DBTareasUpdated', ( db ) => {
-			if ( props.route.root.state.listenBroadcastUpdate ) {
+			if ( !props.route.root.state.adminMode ) {
 				props.route.root.setState({ tareas: db, listenBroadcastUpdate: false });
 			}
     	});
@@ -88,7 +89,8 @@ export class Subtareas extends Tareas {
 		props.route.root.setState({ 
 			updateDB: "Tarea",
 			page: "Subtareas",
-			broadcastDB: "Tareas"
+			broadcastDB: "Tareas",
+			listenBroadcastUpdate: true
 		});
 		['onRemove','onSetDiasEjecucion','onChange','onAddNew'].forEach((m)=>{
 			this[m] = this[m].bind( this );

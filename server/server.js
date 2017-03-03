@@ -55,6 +55,8 @@ http.listen( serverConf.port, serverConf.ip, () => {
 
 		sCliente.emit('DBZonasUpdated', DataStore.zonas);
 		
+		sCliente.emit('DBTareasUpdated', DataStore.tareas);
+
 		sCliente.on('getZonasDB', () => { 
 			Arduinode.loadZonasDB( function() {
 				sCliente.emit('DBZonasUpdated', DataStore.zonas);
@@ -62,7 +64,6 @@ http.listen( serverConf.port, serverConf.ip, () => {
 		});
 
 		sCliente.on('getDispositivosDB', () => {
-			console.log("get dispositivos")
 			if ( !waitingBroadcast ) {
 				waitingBroadcast = true;
 				Arduinode.getEstadosDispositivos( function( dispositivos ) {
@@ -72,7 +73,7 @@ http.listen( serverConf.port, serverConf.ip, () => {
 			}
 		});
 
-		sCliente.on('getTareasDB', () => { 
+		sCliente.on('getTareasDB', () => {
 			sCliente.emit('DBTareasUpdated', DataStore.tareas);
 		});
 
@@ -104,9 +105,9 @@ http.listen( serverConf.port, serverConf.ip, () => {
 		sCliente.on('updateTareasDB', ( db ) => { 
 			if ( DataStore.updateDB('./models/tareas', db) ) {
 				DataStore.tareas = db;
-			}			
-			taskManager.loadScheduler( true );
-			io.sockets.emit('DBTareasUpdated', DataStore.tareas);
+				taskManager.loadScheduler( true );
+				io.sockets.emit('DBTareasUpdated', DataStore.tareas);
+			}
 		});
 
 		sCliente.on('apagarTodo', (params) => {

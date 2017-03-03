@@ -109,7 +109,6 @@ const Programador = class {
 		
 		// Lanzo el refresco inmediatamente para no esperar el intervalo
 		this.refreshScheduler();
-
 		this.watcher = setInterval( this.refreshScheduler, retardo );
 	}
 	refreshScheduler() {
