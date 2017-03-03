@@ -229,11 +229,25 @@ http.listen( serverConf.port, serverConf.ip, () => {
 
 	taskManager.setConfig( serverConf );
 
+	var retardoCargaTareas = (serverConf.retardoCargaTareas * 1000 * 60) || 0;
+
+	if (retardoCargaTareas > 0) {
+		var seg = retardoCargaTareas / 1000;
+		var segElapsed = seg;
+
+		var timeoutLogger = setInterval(function() {
+			segElapsed = segElapsed - 1;
+			log(3, "-- Segundos restantes para escaneo de tareas: " + segElapsed)
+			if ( segElapsed == 1) {
+				clearInterval( timeoutLogger );
+			}
+		}, 1000 )
+	}
 	// Carga de tareas programadas
 	setTimeout(() => {
 
 		// Servicio que vigila la ejecución de tareas en caso de falla
 		taskManager.loadScheduler( true ).watchChanges();
 
-	}, (serverConf.retardoCargaTareas * 1000 * 60) || 0);
+	}, retardoCargaTareas);
 });
