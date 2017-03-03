@@ -113,22 +113,25 @@ export class Tarea extends DB {
 		}
 	}
 	static newSubtareaModel( subtareas ) {
-		
+		var subtarea = {};
+
 		if ( subtareas.length ) {
-			var subtarea = subtareas.reduce(function(prev, current) {
+			subtarea = subtareas.reduce(function(prev, current) {
 			    return (prev.fechafin > current.fechafin) ? prev : current
 			});
 		}
-
-		return { 
+		var model = { 
 			"id": Utils.randomID(),
 	        "diasejecucion": (subtarea.diasejecucion) ? subtarea.diasejecucion : "1,2,3,4,5",
-	        "fechainicio": subtarea.fechainicio || "12:00",
+	        "fechainicio": subtarea.fechainicio || Utils.getDate(),
 	        "fechafin": subtarea.fechainicio || Utils.getDate(),
-	        "horainicio": subtarea.horainicio,
-	        "horafin": null,
-	        "duracion": subtarea.duracion || "01:00"
+	        "horainicio": subtarea.horainicio || "12:00",
+	        "duracion": subtarea.duracion || "00:01"
 		};
+
+		model.horafin = Utils.sumarHoras( model.horainicio, model.duracion);
+
+		return model;
 	}
 	update(db, callback) {
 		if (Tarea.isValid( db )) {
@@ -167,24 +170,42 @@ export class Tarea extends DB {
 			return valid;
 		}
 		/* Compara cada subtarea, con el total de subtareas
-		* y verifica si se superponen las fechas de inicio / fin */
+		* y verifica si se superponen las fechas de inicio / fin
+		* y si tiene una duracion valida segun la accion (ON / OFF)
+		*/
+		try { 
+			db.forEach( ( tarea ) => {
+				if (tarea.subtareas.length) { 
+					tarea.subtareas.every(function(t) {
+						if ( t.accion === 1) { 
+							tarea.subtareas[t].duracion = '00:00'
+						}
+						else {
 
-		db.forEach( ( tarea ) => {
-			if (tarea.subtareas.length) { 
-				for (var t in tarea.subtareas) {
-					if ( tarea.accion === 1) { 
-						tarea.subtareas[t].duracion = '00:00'
-					}
-					valid = overlap( tarea.subtareas, tarea.subtareas[t] );
-				};
-			}
-		});
+							if (!t.duracion || t.duracion === '00:00') {
+								throw "Duración inválida de las tareas";
+								return false;
+							}
 
-		if (!valid) {
-			alert( "Error: Las fechas de las subtareas se superponen");
+							return true;
+						}
+						if ( overlap( tarea.subtareas, t ) ) {
+							throw "Duración inválida de las tareas";
+							return false;
+						}
+						
+						return true;
+					});
+				}
+			});
+
 		}
-		return valid;
-		
+		catch( err ) {
+			alert( "Error: " + err );
+			return false;
+		}
+
+		return true;		
 	}
 }
 
