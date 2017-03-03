@@ -72,7 +72,7 @@ class Dispositivo {
 								response = parseInt( response.replace(/(?:\r\n|\r|\n)/g, ''));
 								salida.estado = response;
 								salida.temporizada = params.temporizada;
-								log(3, "Se " + ((response) ? "apagó" : "prendió") + " " + salida.descripcion + " - " + params_aux.ip);
+								log(3, "--- Se " + ((response) ? "apaga" : "enciende") + " " + salida.descripcion + " - " + params_aux.ip);
 							}
 							callback( response);
 						});
