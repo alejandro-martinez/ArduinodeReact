@@ -106,6 +106,10 @@ const Programador = class {
 		log(0, "- Observando las tareas cada " +
 					this.config.intervaloEscaneoTareas +
 					" minutos ...");
+		
+		// Lanzo el refresco inmediatamente para no esperar el intervalo
+		this.refreshScheduler();
+
 		this.watcher = setInterval( this.refreshScheduler, retardo );
 	}
 	refreshScheduler() {
@@ -194,7 +198,7 @@ const Programador = class {
 				db[_tarea].subtareas.map(s => { 
 					var subtarea = new Subtarea( s );
 					subtarea.tarea = tarea;
-					tarea.subtareas.push(subtarea);
+					tarea.subtareas.push( subtarea );
 				});
 			}
 

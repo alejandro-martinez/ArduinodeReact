@@ -73,7 +73,6 @@ http.listen( serverConf.port, serverConf.ip, () => {
 		});
 
 		sCliente.on('getTareasDB', () => { 
-			console.log("Get tareas")
 			sCliente.emit('DBTareasUpdated', DataStore.tareas);
 		});
 
@@ -104,7 +103,7 @@ http.listen( serverConf.port, serverConf.ip, () => {
 
 		sCliente.on('updateTareasDB', ( db ) => { 
 			if ( DataStore.updateDB('./models/tareas', db) ) {
-				DataStore.tareas = db;	
+				DataStore.tareas = db;
 			}			
 			taskManager.loadScheduler( true );
 			io.sockets.emit('DBTareasUpdated', DataStore.tareas);
